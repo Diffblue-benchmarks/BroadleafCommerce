@@ -18,11 +18,12 @@
 package org.broadleafcommerce.common.email.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,58 +38,49 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmailTrackingManagerImplDiffblueTest {
-  @Mock private EmailReportingDao emailReportingDao;
+  @Mock
+  private EmailReportingDao emailReportingDao;
 
-  @InjectMocks private EmailTrackingManagerImpl emailTrackingManagerImpl;
+  @InjectMocks
+  private EmailTrackingManagerImpl emailTrackingManagerImpl;
 
   /**
    * Test {@link EmailTrackingManagerImpl#createTrackedEmail(String, String, String)}.
-   *
-   * <p>Method under test: {@link EmailTrackingManagerImpl#createTrackedEmail(String, String,
-   * String)}
+   * <p>
+   * Method under test: {@link EmailTrackingManagerImpl#createTrackedEmail(String, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long EmailTrackingManagerImpl.createTrackedEmail(String, String, String)"})
   public void testCreateTrackedEmail() {
     // Arrange
-    when(emailReportingDao.createTracking(
-            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(emailReportingDao.createTracking(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(1L);
 
     // Act
-    Long actualCreateTrackedEmailResult =
-        emailTrackingManagerImpl.createTrackedEmail("42 Main St", "Type", "42");
+    Long actualCreateTrackedEmailResult = emailTrackingManagerImpl.createTrackedEmail("42 Main St", "Type", "42");
 
     // Assert
-    verify(emailReportingDao).createTracking("42 Main St", "Type", "42");
+    verify(emailReportingDao).createTracking(eq("42 Main St"), eq("Type"), eq("42"));
     assertEquals(1L, actualCreateTrackedEmailResult.longValue());
   }
 
   /**
    * Test {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}.
-   *
    * <ul>
-   *   <li>Given {@code email_id}.
-   *   <li>When {@link HashMap#HashMap()} IfAbsent {@code email_id} is {@code requestUri}.
+   *   <li>Given {@code email_id}.</li>
+   *   <li>When {@link HashMap#HashMap()} IfAbsent {@code email_id} is {@code requestUri}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}
+   * <p>
+   * Method under test: {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EmailTrackingManagerImpl.recordClick(Long, Map, String, Map)"})
   public void testRecordClick_givenEmailId_whenHashMapIfAbsentEmailIdIsRequestUri() {
     // Arrange
-    doNothing()
-        .when(emailReportingDao)
-        .recordClick(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any());
+    doNothing().when(emailReportingDao)
+        .recordClick(Mockito.<Long>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any());
 
     HashMap<String, String> parameterMap = new HashMap<>();
     parameterMap.put("foo", "foo");
@@ -98,32 +90,25 @@ public class EmailTrackingManagerImplDiffblueTest {
     emailTrackingManagerImpl.recordClick(1L, parameterMap, "42", new HashMap<>());
 
     // Assert
-    verify(emailReportingDao).recordClick(1L, "42", null, "foo=foo");
+    verify(emailReportingDao).recordClick(eq(1L), eq("42"), isNull(), eq("foo=foo"));
   }
 
   /**
    * Test {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link HashMap#HashMap()} IfAbsent {@code requestUri} is {@code requestUri}.
+   *   <li>Given {@code foo}.</li>
+   *   <li>When {@link HashMap#HashMap()} IfAbsent {@code requestUri} is {@code requestUri}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}
+   * <p>
+   * Method under test: {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EmailTrackingManagerImpl.recordClick(Long, Map, String, Map)"})
   public void testRecordClick_givenFoo_whenHashMapIfAbsentRequestUriIsRequestUri() {
     // Arrange
-    doNothing()
-        .when(emailReportingDao)
-        .recordClick(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any());
+    doNothing().when(emailReportingDao)
+        .recordClick(Mockito.<Long>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any());
 
     HashMap<String, String> parameterMap = new HashMap<>();
     parameterMap.put("foo", "foo");
@@ -133,32 +118,25 @@ public class EmailTrackingManagerImplDiffblueTest {
     emailTrackingManagerImpl.recordClick(1L, parameterMap, "42", new HashMap<>());
 
     // Assert
-    verify(emailReportingDao).recordClick(1L, "42", null, "foo=foo&requestUri=requestUri");
+    verify(emailReportingDao).recordClick(eq(1L), eq("42"), isNull(), eq("foo=foo&requestUri=requestUri"));
   }
 
   /**
    * Test {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}.
-   *
    * <ul>
-   *   <li>Given {@code requestUri}.
-   *   <li>When {@link HashMap#HashMap()} {@code requestUri} is {@code requestUri}.
+   *   <li>Given {@code requestUri}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code requestUri} is {@code requestUri}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}
+   * <p>
+   * Method under test: {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EmailTrackingManagerImpl.recordClick(Long, Map, String, Map)"})
   public void testRecordClick_givenRequestUri_whenHashMapRequestUriIsRequestUri() {
     // Arrange
-    doNothing()
-        .when(emailReportingDao)
-        .recordClick(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any());
+    doNothing().when(emailReportingDao)
+        .recordClick(Mockito.<Long>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any());
 
     HashMap<String, String> parameterMap = new HashMap<>();
     parameterMap.put("requestUri", "requestUri");
@@ -167,48 +145,40 @@ public class EmailTrackingManagerImplDiffblueTest {
     emailTrackingManagerImpl.recordClick(1L, parameterMap, "42", new HashMap<>());
 
     // Assert
-    verify(emailReportingDao).recordClick(1L, "42", null, "requestUri=requestUri");
+    verify(emailReportingDao).recordClick(eq(1L), eq("42"), isNull(), eq("requestUri=requestUri"));
   }
 
   /**
    * Test {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}.
-   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>When {@link HashMap#HashMap()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}
+   * <p>
+   * Method under test: {@link EmailTrackingManagerImpl#recordClick(Long, Map, String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EmailTrackingManagerImpl.recordClick(Long, Map, String, Map)"})
   public void testRecordClick_whenHashMap() {
     // Arrange
-    doNothing()
-        .when(emailReportingDao)
-        .recordClick(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any());
+    doNothing().when(emailReportingDao)
+        .recordClick(Mockito.<Long>any(), Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any());
     HashMap<String, String> parameterMap = new HashMap<>();
 
     // Act
     emailTrackingManagerImpl.recordClick(1L, parameterMap, "42", new HashMap<>());
 
     // Assert
-    verify(emailReportingDao).recordClick(1L, "42", null, null);
+    verify(emailReportingDao).recordClick(eq(1L), eq("42"), isNull(), isNull());
   }
 
   /**
    * Test {@link EmailTrackingManagerImpl#recordOpen(Long, Map)}.
-   *
-   * <p>Method under test: {@link EmailTrackingManagerImpl#recordOpen(Long, Map)}
+   * <p>
+   * Method under test: {@link EmailTrackingManagerImpl#recordOpen(Long, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EmailTrackingManagerImpl.recordOpen(Long, Map)"})
   public void testRecordOpen() {
     // Arrange
@@ -218,6 +188,6 @@ public class EmailTrackingManagerImplDiffblueTest {
     emailTrackingManagerImpl.recordOpen(1L, new HashMap<>());
 
     // Assert
-    verify(emailReportingDao).recordOpen(1L, null);
+    verify(emailReportingDao).recordOpen(eq(1L), isNull());
   }
 }

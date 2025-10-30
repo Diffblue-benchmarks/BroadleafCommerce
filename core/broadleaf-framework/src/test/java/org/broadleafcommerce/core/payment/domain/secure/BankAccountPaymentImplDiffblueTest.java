@@ -21,23 +21,30 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.encryption.EncryptionModule;
 import org.broadleafcommerce.common.encryption.PassthroughEncryptionModule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BankAccountPaymentImplDiffblueTest {
+  @Autowired
+  private BankAccountPaymentImpl bankAccountPaymentImpl;
+
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BankAccountPaymentImpl}
    *   <li>{@link BankAccountPaymentImpl#setEncryptionModule(EncryptionModule)}
@@ -49,17 +56,12 @@ public class BankAccountPaymentImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BankAccountPaymentImpl.<init>()",
-    "EncryptionModule BankAccountPaymentImpl.getEncryptionModule()",
-    "Long BankAccountPaymentImpl.getId()",
-    "String BankAccountPaymentImpl.getReferenceNumber()",
-    "void BankAccountPaymentImpl.setEncryptionModule(EncryptionModule)",
-    "void BankAccountPaymentImpl.setId(Long)",
-    "void BankAccountPaymentImpl.setReferenceNumber(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BankAccountPaymentImpl.<init>()",
+      "EncryptionModule BankAccountPaymentImpl.getEncryptionModule()", "Long BankAccountPaymentImpl.getId()",
+      "String BankAccountPaymentImpl.getReferenceNumber()",
+      "void BankAccountPaymentImpl.setEncryptionModule(EncryptionModule)", "void BankAccountPaymentImpl.setId(Long)",
+      "void BankAccountPaymentImpl.setReferenceNumber(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BankAccountPaymentImpl actualBankAccountPaymentImpl = new BankAccountPaymentImpl();
@@ -79,97 +81,89 @@ public class BankAccountPaymentImplDiffblueTest {
 
   /**
    * Test {@link BankAccountPaymentImpl#getAccountNumber()}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BankAccountPaymentImpl#getAccountNumber()}
+   * <p>
+   * Method under test: {@link BankAccountPaymentImpl#getAccountNumber()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BankAccountPaymentImpl.getAccountNumber()"})
   public void testGetAccountNumber_thenReturnNull() {
     // Arrange
-    BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
-    bankAccountPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    BankAccountPaymentImpl bankAccountPaymentImpl2 = new BankAccountPaymentImpl();
+    bankAccountPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
 
     // Act and Assert
-    assertNull(bankAccountPaymentImpl.getAccountNumber());
+    assertNull(bankAccountPaymentImpl2.getAccountNumber());
   }
 
   /**
    * Test {@link BankAccountPaymentImpl#setAccountNumber(String)}.
-   *
    * <ul>
-   *   <li>Then {@link BankAccountPaymentImpl#BankAccountPaymentImpl()} AccountNumber is {@code 42}.
+   *   <li>Then {@link BankAccountPaymentImpl#BankAccountPaymentImpl()} AccountNumber is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BankAccountPaymentImpl#setAccountNumber(String)}
+   * <p>
+   * Method under test: {@link BankAccountPaymentImpl#setAccountNumber(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BankAccountPaymentImpl.setAccountNumber(String)"})
   public void testSetAccountNumber_thenBankAccountPaymentImplAccountNumberIs42() {
     // Arrange
-    BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
-    bankAccountPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    BankAccountPaymentImpl bankAccountPaymentImpl2 = new BankAccountPaymentImpl();
+    bankAccountPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
 
     // Act
-    bankAccountPaymentImpl.setAccountNumber("42");
+    bankAccountPaymentImpl2.setAccountNumber("42");
 
     // Assert
-    assertEquals("42", bankAccountPaymentImpl.getAccountNumber());
-    assertEquals("42", bankAccountPaymentImpl.accountNumber);
+    assertEquals("42", bankAccountPaymentImpl2.getAccountNumber());
+    assertEquals("42", bankAccountPaymentImpl2.accountNumber);
   }
 
   /**
    * Test {@link BankAccountPaymentImpl#getRoutingNumber()}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BankAccountPaymentImpl#getRoutingNumber()}
+   * <p>
+   * Method under test: {@link BankAccountPaymentImpl#getRoutingNumber()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BankAccountPaymentImpl.getRoutingNumber()"})
   public void testGetRoutingNumber_thenReturnNull() {
     // Arrange
-    BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
-    bankAccountPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    BankAccountPaymentImpl bankAccountPaymentImpl2 = new BankAccountPaymentImpl();
+    bankAccountPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
 
     // Act and Assert
-    assertNull(bankAccountPaymentImpl.getRoutingNumber());
+    assertNull(bankAccountPaymentImpl2.getRoutingNumber());
   }
 
   /**
    * Test {@link BankAccountPaymentImpl#setRoutingNumber(String)}.
-   *
    * <ul>
-   *   <li>Then {@link BankAccountPaymentImpl#BankAccountPaymentImpl()} RoutingNumber is {@code 42}.
+   *   <li>Then {@link BankAccountPaymentImpl#BankAccountPaymentImpl()} RoutingNumber is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BankAccountPaymentImpl#setRoutingNumber(String)}
+   * <p>
+   * Method under test: {@link BankAccountPaymentImpl#setRoutingNumber(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BankAccountPaymentImpl.setRoutingNumber(String)"})
   public void testSetRoutingNumber_thenBankAccountPaymentImplRoutingNumberIs42() {
     // Arrange
-    BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
-    bankAccountPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    BankAccountPaymentImpl bankAccountPaymentImpl2 = new BankAccountPaymentImpl();
+    bankAccountPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
 
     // Act
-    bankAccountPaymentImpl.setRoutingNumber("42");
+    bankAccountPaymentImpl2.setRoutingNumber("42");
 
     // Assert
-    assertEquals("42", bankAccountPaymentImpl.getRoutingNumber());
-    assertEquals("42", bankAccountPaymentImpl.routingNumber);
+    assertEquals("42", bankAccountPaymentImpl2.getRoutingNumber());
+    assertEquals("42", bankAccountPaymentImpl2.routingNumber);
   }
 }

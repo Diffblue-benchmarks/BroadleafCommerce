@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.order.service.call;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +39,8 @@ import org.junit.experimental.categories.Category;
 public class FulfillmentGroupRequestDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FulfillmentGroupRequest}
    *   <li>{@link FulfillmentGroupRequest#setAddress(Address)}
@@ -64,27 +62,18 @@ public class FulfillmentGroupRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentGroupRequest.<init>()",
-    "Address FulfillmentGroupRequest.getAddress()",
-    "List FulfillmentGroupRequest.getFulfillmentGroupItemRequests()",
-    "FulfillmentType FulfillmentGroupRequest.getFulfillmentType()",
-    "String FulfillmentGroupRequest.getMethod()",
-    "FulfillmentOption FulfillmentGroupRequest.getOption()",
-    "Order FulfillmentGroupRequest.getOrder()",
-    "Phone FulfillmentGroupRequest.getPhone()",
-    "String FulfillmentGroupRequest.getService()",
-    "void FulfillmentGroupRequest.setAddress(Address)",
-    "void FulfillmentGroupRequest.setFulfillmentGroupItemRequests(List)",
-    "void FulfillmentGroupRequest.setFulfillmentType(FulfillmentType)",
-    "void FulfillmentGroupRequest.setMethod(String)",
-    "void FulfillmentGroupRequest.setOption(FulfillmentOption)",
-    "void FulfillmentGroupRequest.setOrder(Order)",
-    "void FulfillmentGroupRequest.setPhone(Phone)",
-    "void FulfillmentGroupRequest.setService(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentGroupRequest.<init>()", "Address FulfillmentGroupRequest.getAddress()",
+      "List FulfillmentGroupRequest.getFulfillmentGroupItemRequests()",
+      "FulfillmentType FulfillmentGroupRequest.getFulfillmentType()", "String FulfillmentGroupRequest.getMethod()",
+      "FulfillmentOption FulfillmentGroupRequest.getOption()", "Order FulfillmentGroupRequest.getOrder()",
+      "Phone FulfillmentGroupRequest.getPhone()", "String FulfillmentGroupRequest.getService()",
+      "void FulfillmentGroupRequest.setAddress(Address)",
+      "void FulfillmentGroupRequest.setFulfillmentGroupItemRequests(List)",
+      "void FulfillmentGroupRequest.setFulfillmentType(FulfillmentType)",
+      "void FulfillmentGroupRequest.setMethod(String)", "void FulfillmentGroupRequest.setOption(FulfillmentOption)",
+      "void FulfillmentGroupRequest.setOrder(Order)", "void FulfillmentGroupRequest.setPhone(Phone)",
+      "void FulfillmentGroupRequest.setService(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FulfillmentGroupRequest actualFulfillmentGroupRequest = new FulfillmentGroupRequest();
@@ -102,8 +91,8 @@ public class FulfillmentGroupRequestDiffblueTest {
     actualFulfillmentGroupRequest.setPhone(phone);
     actualFulfillmentGroupRequest.setService("Service");
     Address actualAddress = actualFulfillmentGroupRequest.getAddress();
-    List<FulfillmentGroupItemRequest> actualFulfillmentGroupItemRequests =
-        actualFulfillmentGroupRequest.getFulfillmentGroupItemRequests();
+    List<FulfillmentGroupItemRequest> actualFulfillmentGroupItemRequests = actualFulfillmentGroupRequest
+        .getFulfillmentGroupItemRequests();
     FulfillmentType actualFulfillmentType = actualFulfillmentGroupRequest.getFulfillmentType();
     String actualMethod = actualFulfillmentGroupRequest.getMethod();
     FulfillmentOption actualOption = actualFulfillmentGroupRequest.getOption();
@@ -120,6 +109,6 @@ public class FulfillmentGroupRequestDiffblueTest {
     assertSame(order, actualOrder);
     assertSame(address, actualAddress);
     assertSame(phone, actualPhone);
-    assertSame(FulfillmentType.DIGITAL, actualFulfillmentType);
+    assertSame(actualFulfillmentType.DIGITAL, actualFulfillmentType);
   }
 }

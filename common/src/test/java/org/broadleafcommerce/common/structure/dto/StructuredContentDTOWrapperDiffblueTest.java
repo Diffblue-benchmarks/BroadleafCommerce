@@ -22,12 +22,12 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,497 +44,436 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class StructuredContentDTOWrapperDiffblueTest {
-  @Mock private StructuredContentDTO structuredContentDTO;
+  @Mock
+  private StructuredContentDTO structuredContentDTO;
 
-  @InjectMocks private StructuredContentDTOWrapper structuredContentDTOWrapper;
+  @InjectMocks
+  private StructuredContentDTOWrapper structuredContentDTOWrapper;
 
   /**
    * Test {@link StructuredContentDTOWrapper#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentDTOWrapper.equals(Object)",
-    "int StructuredContentDTOWrapper.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-    StructuredContentDTOWrapper structuredContentDTOWrapper =
-        new StructuredContentDTOWrapper(structuredContentDTO);
-
-    StructuredContentDTO structuredContentDTO2 = new StructuredContentDTO();
-    structuredContentDTO2.setContentName("Not all who wander are lost");
-    structuredContentDTO2.setContentType("text/plain");
-    structuredContentDTO2.setId(1L);
-    structuredContentDTO2.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO2.setLocaleCode("en");
-    structuredContentDTO2.setPriority(1);
-    structuredContentDTO2.setRuleExpression("Rule Expression");
-    structuredContentDTO2.setValues(new HashMap<>());
+    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
+        new StructuredContentDTO());
 
     // Act and Assert
-    assertNotEquals(
-        structuredContentDTOWrapper, new StructuredContentDTOWrapper(structuredContentDTO2));
+    assertNotEquals(structuredContentDTOWrapper, new StructuredContentDTOWrapper(new StructuredContentDTO()));
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentDTOWrapper.equals(Object)",
-    "int StructuredContentDTOWrapper.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
+        new StructuredContentDTOWrapper(new StructuredContentDTO()));
+
+    // Act and Assert
+    assertNotEquals(structuredContentDTOWrapper, new StructuredContentDTOWrapper(new StructuredContentDTO()));
+  }
+
+  /**
+   * Test {@link StructuredContentDTOWrapper#equals(Object)}.
+   * <ul>
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-
-    // Act and Assert
-    assertNotEquals(new StructuredContentDTOWrapper(structuredContentDTO), null);
+    // Arrange, Act and Assert
+    assertNotEquals(new StructuredContentDTOWrapper(new StructuredContentDTO()), null);
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return not equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentDTOWrapper.equals(Object)",
-    "int StructuredContentDTOWrapper.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsSame_thenReturnNotEqual() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-
-    // Act and Assert
-    assertNotEquals(
-        new StructuredContentDTOWrapper(structuredContentDTO),
-        new StructuredContentDTOWrapper(structuredContentDTO));
+    // Arrange, Act and Assert
+    assertNotEquals(new StructuredContentDTOWrapper(new StructuredContentDTO()),
+        new StructuredContentDTOWrapper(new StructuredContentDTO()));
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentDTOWrapper.equals(Object)",
-    "int StructuredContentDTOWrapper.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentDTOWrapper.equals(Object)",
+      "int StructuredContentDTOWrapper.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-
-    // Act and Assert
-    assertNotEquals(
-        new StructuredContentDTOWrapper(structuredContentDTO),
+    // Arrange, Act and Assert
+    assertNotEquals(new StructuredContentDTOWrapper(new StructuredContentDTO()),
         "Different type to StructuredContentDTOWrapper");
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link StructuredContentDTO#getPropertyValue(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getPropertyValue(String)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getPropertyValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object StructuredContentDTOWrapper.getPropertyValue(String)"})
-  public void testGetPropertyValue_thenCallsGetPropertyValue() {
+  public void testGetPropertyValue() {
     // Arrange
-    when(structuredContentDTO.getPropertyValue(Mockito.<String>any()))
-        .thenReturn(BLCFieldUtils.NULL_FIELD);
+    when(structuredContentDTO.getPropertyValue(Mockito.<String>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
 
     // Act
     structuredContentDTOWrapper.getPropertyValue("Property Name");
 
     // Assert
-    verify(structuredContentDTO).getPropertyValue("Property Name");
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getPropertyValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object StructuredContentDTOWrapper.getPropertyValue(String)"})
-  public void testGetPropertyValue_thenReturnNull() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-
-    // Act and Assert
-    assertNull(
-        new StructuredContentDTOWrapper(structuredContentDTO).getPropertyValue("Property Name"));
+    verify(structuredContentDTO).getPropertyValue(eq("Property Name"));
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getId()}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getId()}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Long StructuredContentDTOWrapper.getId()"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long StructuredContentDTOWrapper.getId()"})
   public void testGetId() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO()))).getId());
+  }
 
-    // Act and Assert
-    assertEquals(1L, new StructuredContentDTOWrapper(structuredContentDTO).getId().longValue());
+  /**
+   * Test {@link StructuredContentDTOWrapper#getId()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getId()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long StructuredContentDTOWrapper.getId()"})
+  public void testGetId_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getId());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getContentName()}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getContentName()}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getContentName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StructuredContentDTOWrapper.getContentName()"})
   public void testGetContentName() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
+        .getContentName());
+  }
 
-    // Act and Assert
-    assertEquals(
-        "Not all who wander are lost",
-        new StructuredContentDTOWrapper(structuredContentDTO).getContentName());
+  /**
+   * Test {@link StructuredContentDTOWrapper#getContentName()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getContentName()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getContentName()"})
+  public void testGetContentName_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getContentName());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getContentType()}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getContentType()}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getContentType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StructuredContentDTOWrapper.getContentType()"})
   public void testGetContentType() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
+        .getContentType());
+  }
 
-    // Act and Assert
-    assertEquals(
-        "text/plain", new StructuredContentDTOWrapper(structuredContentDTO).getContentType());
+  /**
+   * Test {@link StructuredContentDTOWrapper#getContentType()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getContentType()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getContentType()"})
+  public void testGetContentType_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getContentType());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getLocaleCode()}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getLocaleCode()}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getLocaleCode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StructuredContentDTOWrapper.getLocaleCode()"})
   public void testGetLocaleCode() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
+    // Arrange, Act and Assert
+    assertNull(
+        (new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO()))).getLocaleCode());
+  }
 
-    // Act and Assert
-    assertEquals("en", new StructuredContentDTOWrapper(structuredContentDTO).getLocaleCode());
+  /**
+   * Test {@link StructuredContentDTOWrapper#getLocaleCode()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getLocaleCode()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getLocaleCode()"})
+  public void testGetLocaleCode_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getLocaleCode());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getPriority()}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getPriority()}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getPriority()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Integer StructuredContentDTOWrapper.getPriority()"})
   public void testGetPriority() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
+    // Arrange, Act and Assert
+    assertNull(
+        (new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO()))).getPriority());
+  }
 
-    // Act and Assert
-    assertEquals(1, new StructuredContentDTOWrapper(structuredContentDTO).getPriority().intValue());
+  /**
+   * Test {@link StructuredContentDTOWrapper#getPriority()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getPriority()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Integer StructuredContentDTOWrapper.getPriority()"})
+  public void testGetPriority_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getPriority());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getValues()}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getValues()}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getValues()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map StructuredContentDTOWrapper.getValues()"})
   public void testGetValues() {
     // Arrange
     StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    HashMap<String, Object> values = new HashMap<>();
-    structuredContentDTO.setValues(values);
 
     // Act
-    Map actualValues = new StructuredContentDTOWrapper(structuredContentDTO).getValues();
+    Map actualValues = (new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(structuredContentDTO)))
+        .getValues();
 
     // Assert
     assertTrue(actualValues.isEmpty());
-    assertSame(values, actualValues);
+    assertSame(structuredContentDTO.values, actualValues);
+  }
+
+  /**
+   * Test {@link StructuredContentDTOWrapper#getValues()}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getValues()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map StructuredContentDTOWrapper.getValues()"})
+  public void testGetValues_thenReturnEmpty() {
+    // Arrange
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+
+    // Act
+    Map actualValues = (new StructuredContentDTOWrapper(structuredContentDTO)).getValues();
+
+    // Assert
+    assertTrue(actualValues.isEmpty());
+    assertSame(structuredContentDTO.values, actualValues);
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getRuleExpression()}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getRuleExpression()}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getRuleExpression()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StructuredContentDTOWrapper.getRuleExpression()"})
   public void testGetRuleExpression() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
+        .getRuleExpression());
+  }
 
-    // Act and Assert
-    assertEquals(
-        "Rule Expression",
-        new StructuredContentDTOWrapper(structuredContentDTO).getRuleExpression());
+  /**
+   * Test {@link StructuredContentDTOWrapper#getRuleExpression()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getRuleExpression()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StructuredContentDTOWrapper.getRuleExpression()"})
+  public void testGetRuleExpression_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getRuleExpression());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List StructuredContentDTOWrapper.getItemCriteriaDTOList()"})
   public void testGetItemCriteriaDTOList() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-
-    // Act and Assert
-    assertTrue(
-        new StructuredContentDTOWrapper(structuredContentDTO).getItemCriteriaDTOList().isEmpty());
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTOWrapper(new StructuredContentDTO())))
+        .getItemCriteriaDTOList());
   }
 
   /**
-   * Test {@link StructuredContentDTOWrapper#setContentName(String)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setContentName(String)}
+   * Test {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#getItemCriteriaDTOList()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentName(String)"})
-  public void testSetContentName() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List StructuredContentDTOWrapper.getItemCriteriaDTOList()"})
+  public void testGetItemCriteriaDTOList_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getItemCriteriaDTOList());
+  }
+
+  /**
+   * Test {@link StructuredContentDTOWrapper#setId(Long)}.
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setId(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setId(Long)"})
+  public void testSetId() {
     // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    HashMap<String, Object> values = new HashMap<>();
-    structuredContentDTO.setValues(values);
-    StructuredContentDTOWrapper structuredContentDTOWrapper =
-        new StructuredContentDTOWrapper(structuredContentDTO);
+    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
+        new StructuredContentDTO());
 
     // Act
-    structuredContentDTOWrapper.setContentName("Not all who wander are lost");
+    structuredContentDTOWrapper.setId(1L);
 
     // Assert
-    Map values2 = structuredContentDTOWrapper.getValues();
-    assertEquals(1, values2.size());
-    assertEquals("Not all who wander are lost", values2.get("contentName"));
-    assertEquals(
-        structuredContentDTOWrapper
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues(),
-        structuredContentDTOWrapper
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues());
-    assertSame(values, values2);
+    assertEquals(1L, structuredContentDTOWrapper.getId().longValue());
+  }
+
+  /**
+   * Test {@link StructuredContentDTOWrapper#setId(Long)}.
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setId(Long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setId(Long)"})
+  public void testSetId2() {
+    // Arrange
+    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
+        new StructuredContentDTOWrapper(new StructuredContentDTO()));
+
+    // Act
+    structuredContentDTOWrapper.setId(1L);
+
+    // Assert
+    assertEquals(1L, structuredContentDTOWrapper.getId().longValue());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#setContentName(String)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link StructuredContentDTO#setContentName(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setContentName(String)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setContentName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentName(String)"})
-  public void testSetContentName_thenCallsSetContentName() {
+  public void testSetContentName() {
     // Arrange
     doNothing().when(structuredContentDTO).setContentName(Mockito.<String>any());
 
@@ -542,78 +481,18 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setContentName("Not all who wander are lost");
 
     // Assert
-    verify(structuredContentDTO).setContentName("Not all who wander are lost");
+    verify(structuredContentDTO).setContentName(eq("Not all who wander are lost"));
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#setContentType(String)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setContentType(String)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setContentType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentType(String)"})
   public void testSetContentType() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    HashMap<String, Object> values = new HashMap<>();
-    structuredContentDTO.setValues(values);
-    StructuredContentDTOWrapper structuredContentDTOWrapper =
-        new StructuredContentDTOWrapper(structuredContentDTO);
-
-    // Act
-    structuredContentDTOWrapper.setContentType("text/plain");
-
-    // Assert
-    Map values2 = structuredContentDTOWrapper.getValues();
-    assertEquals(1, values2.size());
-    assertEquals("text/plain", values2.get("contentType"));
-    assertEquals(
-        structuredContentDTOWrapper
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues(),
-        structuredContentDTOWrapper
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues());
-    assertSame(values, values2);
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#setContentType(String)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link StructuredContentDTO#setContentType(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setContentType(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StructuredContentDTOWrapper.setContentType(String)"})
-  public void testSetContentType_thenCallsSetContentType() {
     // Arrange
     doNothing().when(structuredContentDTO).setContentType(Mockito.<String>any());
 
@@ -621,78 +500,18 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setContentType("text/plain");
 
     // Assert
-    verify(structuredContentDTO).setContentType("text/plain");
+    verify(structuredContentDTO).setContentType(eq("text/plain"));
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#setLocaleCode(String)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setLocaleCode(String)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setLocaleCode(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setLocaleCode(String)"})
   public void testSetLocaleCode() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    HashMap<String, Object> values = new HashMap<>();
-    structuredContentDTO.setValues(values);
-    StructuredContentDTOWrapper structuredContentDTOWrapper =
-        new StructuredContentDTOWrapper(structuredContentDTO);
-
-    // Act
-    structuredContentDTOWrapper.setLocaleCode("en");
-
-    // Assert
-    Map values2 = structuredContentDTOWrapper.getValues();
-    assertEquals(1, values2.size());
-    assertEquals("en", values2.get("localeCode"));
-    assertEquals(
-        structuredContentDTOWrapper
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues(),
-        structuredContentDTOWrapper
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getClone()
-            .getValues());
-    assertSame(values, values2);
-  }
-
-  /**
-   * Test {@link StructuredContentDTOWrapper#setLocaleCode(String)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link StructuredContentDTO#setLocaleCode(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setLocaleCode(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StructuredContentDTOWrapper.setLocaleCode(String)"})
-  public void testSetLocaleCode_thenCallsSetLocaleCode() {
     // Arrange
     doNothing().when(structuredContentDTO).setLocaleCode(Mockito.<String>any());
 
@@ -700,43 +519,32 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setLocaleCode("en");
 
     // Assert
-    verify(structuredContentDTO).setLocaleCode("en");
+    verify(structuredContentDTO).setLocaleCode(eq("en"));
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#setPriority(Integer)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setPriority(Integer)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setPriority(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setPriority(Integer)"})
   public void testSetPriority() {
     // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    HashMap<String, Object> values = new HashMap<>();
-    structuredContentDTO.setValues(values);
-    StructuredContentDTOWrapper structuredContentDTOWrapper =
-        new StructuredContentDTOWrapper(structuredContentDTO);
+    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
+        new StructuredContentDTO());
 
     // Act
     structuredContentDTOWrapper.setPriority(1);
 
     // Assert
-    Map values2 = structuredContentDTOWrapper.getValues();
-    assertEquals(1, values2.size());
-    assertEquals(1, ((Integer) values2.get("priority")).intValue());
+    assertEquals(1, structuredContentDTOWrapper.getPriority().intValue());
+    Map values = structuredContentDTOWrapper.getValues();
+    assertEquals(1, values.size());
+    assertEquals(1, ((Integer) values.get("priority")).intValue());
     assertEquals(
-        structuredContentDTOWrapper
-            .getClone()
+        structuredContentDTOWrapper.getClone()
             .getClone()
             .getClone()
             .getClone()
@@ -745,8 +553,7 @@ public class StructuredContentDTOWrapperDiffblueTest {
             .getClone()
             .getClone()
             .getValues(),
-        structuredContentDTOWrapper
-            .getClone()
+        structuredContentDTOWrapper.getClone()
             .getClone()
             .getClone()
             .getClone()
@@ -755,31 +562,83 @@ public class StructuredContentDTOWrapperDiffblueTest {
             .getClone()
             .getClone()
             .getValues());
-    assertSame(values, values2);
+  }
+
+  /**
+   * Test {@link StructuredContentDTOWrapper#setPriority(Integer)}.
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setPriority(Integer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setPriority(Integer)"})
+  public void testSetPriority2() {
+    // Arrange
+    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
+        new StructuredContentDTOWrapper(new StructuredContentDTO()));
+
+    // Act
+    structuredContentDTOWrapper.setPriority(1);
+
+    // Assert
+    assertEquals(1, structuredContentDTOWrapper.getPriority().intValue());
+    Map values = structuredContentDTOWrapper.getValues();
+    assertEquals(1, values.size());
+    assertEquals(1, ((Integer) values.get("priority")).intValue());
+    assertEquals(
+        structuredContentDTOWrapper.getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getValues(),
+        structuredContentDTOWrapper.getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getClone()
+            .getValues());
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#setValues(Map)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setValues(Map)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setValues(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setValues(Map)"})
   public void testSetValues() {
     // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-    StructuredContentDTOWrapper structuredContentDTOWrapper =
-        new StructuredContentDTOWrapper(structuredContentDTO);
+    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
+        new StructuredContentDTO());
+    HashMap<Object, Object> values = new HashMap<>();
+
+    // Act
+    structuredContentDTOWrapper.setValues((Map) values);
+
+    // Assert
+    assertSame(values, structuredContentDTOWrapper.getValues());
+  }
+
+  /**
+   * Test {@link StructuredContentDTOWrapper#setValues(Map)}.
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setValues(Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentDTOWrapper.setValues(Map)"})
+  public void testSetValues2() {
+    // Arrange
+    StructuredContentDTOWrapper structuredContentDTOWrapper = new StructuredContentDTOWrapper(
+        new StructuredContentDTOWrapper(new StructuredContentDTO()));
     HashMap<Object, Object> values = new HashMap<>();
 
     // Act
@@ -791,12 +650,11 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
   /**
    * Test {@link StructuredContentDTOWrapper#setRuleExpression(String)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setRuleExpression(String)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setRuleExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setRuleExpression(String)"})
   public void testSetRuleExpression() {
     // Arrange
@@ -806,27 +664,23 @@ public class StructuredContentDTOWrapperDiffblueTest {
     structuredContentDTOWrapper.setRuleExpression("Rule Expression");
 
     // Assert
-    verify(structuredContentDTO).setRuleExpression("Rule Expression");
+    verify(structuredContentDTO).setRuleExpression(eq("Rule Expression"));
   }
 
   /**
    * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
-   *
    * <ul>
-   *   <li>Given {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code 42}.
+   *   <li>Given {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setItemCriteriaDTOList(List)"})
   public void testSetItemCriteriaDTOList_givenItemCriteriaDTOMatchRuleIs42() {
     // Arrange
-    doNothing()
-        .when(structuredContentDTO)
-        .setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
+    doNothing().when(structuredContentDTO).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
 
     ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
     itemCriteriaDTO.setMatchRule("Match Rule");
@@ -849,22 +703,18 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
   /**
    * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
-   *
    * <ul>
-   *   <li>Given {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code Match Rule}.
+   *   <li>Given {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code Match Rule}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setItemCriteriaDTOList(List)"})
   public void testSetItemCriteriaDTOList_givenItemCriteriaDTOMatchRuleIsMatchRule() {
     // Arrange
-    doNothing()
-        .when(structuredContentDTO)
-        .setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
+    doNothing().when(structuredContentDTO).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
 
     ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
     itemCriteriaDTO.setMatchRule("Match Rule");
@@ -882,22 +732,18 @@ public class StructuredContentDTOWrapperDiffblueTest {
 
   /**
    * Test {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
+   * <p>
+   * Method under test: {@link StructuredContentDTOWrapper#setItemCriteriaDTOList(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentDTOWrapper.setItemCriteriaDTOList(List)"})
   public void testSetItemCriteriaDTOList_whenArrayList() {
     // Arrange
-    doNothing()
-        .when(structuredContentDTO)
-        .setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
+    doNothing().when(structuredContentDTO).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
 
     // Act
     structuredContentDTOWrapper.setItemCriteriaDTOList(new ArrayList<>());

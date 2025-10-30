@@ -24,8 +24,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,32 +41,28 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CompositeStatusHandler.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CompositeStatusHandlerDiffblueTest {
-  @Autowired private CompositeStatusHandler compositeStatusHandler;
+  @Autowired
+  private CompositeStatusHandler compositeStatusHandler;
 
   /**
    * Test {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}.
-   *
    * <ul>
-   *   <li>Given {@link StatusHandler} {@link StatusHandler#handleStatus(String, ServiceStatusType)}
-   *       does nothing.
-   *   <li>Then calls {@link StatusHandler#handleStatus(String, ServiceStatusType)}.
+   *   <li>Given {@link StatusHandler} {@link StatusHandler#handleStatus(String, ServiceStatusType)} does nothing.</li>
+   *   <li>Then calls {@link StatusHandler#handleStatus(String, ServiceStatusType)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}
+   * <p>
+   * Method under test: {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CompositeStatusHandler.handleStatus(String, ServiceStatusType)"})
   public void testHandleStatus_givenStatusHandlerHandleStatusDoesNothing_thenCallsHandleStatus() {
     // Arrange
     StatusHandler statusHandler = mock(StatusHandler.class);
-    doNothing()
-        .when(statusHandler)
-        .handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
+    doNothing().when(statusHandler).handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
 
     ArrayList<StatusHandler> handlers = new ArrayList<>();
     handlers.add(statusHandler);
@@ -82,9 +77,8 @@ public class CompositeStatusHandlerDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CompositeStatusHandler}
    *   <li>{@link CompositeStatusHandler#setHandlers(List)}
@@ -92,13 +86,9 @@ public class CompositeStatusHandlerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CompositeStatusHandler.<init>()",
-    "List CompositeStatusHandler.getHandlers()",
-    "void CompositeStatusHandler.setHandlers(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CompositeStatusHandler.<init>()", "List CompositeStatusHandler.getHandlers()",
+      "void CompositeStatusHandler.setHandlers(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CompositeStatusHandler actualCompositeStatusHandler = new CompositeStatusHandler();

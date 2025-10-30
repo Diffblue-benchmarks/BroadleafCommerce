@@ -18,8 +18,7 @@
 package org.broadleafcommerce.common.money.util;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Currency;
 import org.junit.Test;
@@ -32,24 +31,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {CurrencyAdapter.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CurrencyAdapterDiffblueTest {
-  @Autowired private CurrencyAdapter currencyAdapter;
+  @Autowired
+  private CurrencyAdapter currencyAdapter;
 
   /**
    * Test {@link CurrencyAdapter#unmarshal(String)} with {@code String}.
-   *
    * <ul>
-   *   <li>When {@code GBP}.
-   *   <li>Then return DisplayName is {@code British Pound}.
+   *   <li>When {@code GBP}.</li>
+   *   <li>Then return DisplayName is {@code British Pound}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CurrencyAdapter#unmarshal(String)}
+   * <p>
+   * Method under test: {@link CurrencyAdapter#unmarshal(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Currency CurrencyAdapter.unmarshal(String)"})
-  public void testUnmarshalWithString_whenGbp_thenReturnDisplayNameIsBritishPound()
-      throws Exception {
+  public void testUnmarshalWithString_whenGbp_thenReturnDisplayNameIsBritishPound() throws Exception {
     // Arrange and Act
     Currency actualUnmarshalResult = currencyAdapter.unmarshal("GBP");
 

@@ -19,8 +19,7 @@ package org.broadleafcommerce.openadmin.server.security.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +29,8 @@ import org.junit.experimental.categories.Category;
 public class EntityFormModifierConfigurationDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EntityFormModifierConfiguration#EntityFormModifierConfiguration()}
    *   <li>{@link EntityFormModifierConfiguration#setData(List)}
@@ -42,26 +40,20 @@ public class EntityFormModifierConfigurationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EntityFormModifierConfiguration.<init>()",
-    "void EntityFormModifierConfiguration.<init>(List, List)",
-    "List EntityFormModifierConfiguration.getData()",
-    "List EntityFormModifierConfiguration.getModifier()",
-    "void EntityFormModifierConfiguration.setData(List)",
-    "void EntityFormModifierConfiguration.setModifier(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityFormModifierConfiguration.<init>()",
+      "void EntityFormModifierConfiguration.<init>(List, List)", "List EntityFormModifierConfiguration.getData()",
+      "List EntityFormModifierConfiguration.getModifier()", "void EntityFormModifierConfiguration.setData(List)",
+      "void EntityFormModifierConfiguration.setModifier(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    EntityFormModifierConfiguration actualEntityFormModifierConfiguration =
-        new EntityFormModifierConfiguration();
+    EntityFormModifierConfiguration actualEntityFormModifierConfiguration = new EntityFormModifierConfiguration();
     ArrayList<EntityFormModifierData<EntityFormModifierDataPoint>> data = new ArrayList<>();
     actualEntityFormModifierConfiguration.setData(data);
     ArrayList<EntityFormModifier> modifier = new ArrayList<>();
     actualEntityFormModifierConfiguration.setModifier(modifier);
-    List<EntityFormModifierData<EntityFormModifierDataPoint>> actualData =
-        actualEntityFormModifierConfiguration.getData();
+    List<EntityFormModifierData<EntityFormModifierDataPoint>> actualData = actualEntityFormModifierConfiguration
+        .getData();
     List<EntityFormModifier> actualModifier = actualEntityFormModifierConfiguration.getModifier();
 
     // Assert
@@ -73,13 +65,11 @@ public class EntityFormModifierConfigurationDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EntityFormModifierConfiguration#EntityFormModifierConfiguration(List, List)}
    *   <li>{@link EntityFormModifierConfiguration#setData(List)}
@@ -89,29 +79,24 @@ public class EntityFormModifierConfigurationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EntityFormModifierConfiguration.<init>()",
-    "void EntityFormModifierConfiguration.<init>(List, List)",
-    "List EntityFormModifierConfiguration.getData()",
-    "List EntityFormModifierConfiguration.getModifier()",
-    "void EntityFormModifierConfiguration.setData(List)",
-    "void EntityFormModifierConfiguration.setModifier(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityFormModifierConfiguration.<init>()",
+      "void EntityFormModifierConfiguration.<init>(List, List)", "List EntityFormModifierConfiguration.getData()",
+      "List EntityFormModifierConfiguration.getModifier()", "void EntityFormModifierConfiguration.setData(List)",
+      "void EntityFormModifierConfiguration.setModifier(List)"})
   public void testGettersAndSetters_whenArrayList() {
     // Arrange
     ArrayList<EntityFormModifier> modifier = new ArrayList<>();
 
     // Act
-    EntityFormModifierConfiguration actualEntityFormModifierConfiguration =
-        new EntityFormModifierConfiguration(modifier, new ArrayList<>());
+    EntityFormModifierConfiguration actualEntityFormModifierConfiguration = new EntityFormModifierConfiguration(
+        modifier, new ArrayList<>());
     ArrayList<EntityFormModifierData<EntityFormModifierDataPoint>> data = new ArrayList<>();
     actualEntityFormModifierConfiguration.setData(data);
     ArrayList<EntityFormModifier> modifier2 = new ArrayList<>();
     actualEntityFormModifierConfiguration.setModifier(modifier2);
-    List<EntityFormModifierData<EntityFormModifierDataPoint>> actualData =
-        actualEntityFormModifierConfiguration.getData();
+    List<EntityFormModifierData<EntityFormModifierDataPoint>> actualData = actualEntityFormModifierConfiguration
+        .getData();
     List<EntityFormModifier> actualModifier = actualEntityFormModifierConfiguration.getModifier();
 
     // Assert

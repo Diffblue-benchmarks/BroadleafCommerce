@@ -20,13 +20,14 @@ package org.broadleafcommerce.admin.server.service.handler;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.security.util.PasswordReset;
@@ -38,6 +39,7 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
+import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.junit.Test;
@@ -53,82 +55,45 @@ public class CustomerPasswordCustomPersistenceHandlerDiffblueTest {
   @InjectMocks
   private CustomerPasswordCustomPersistenceHandler customerPasswordCustomPersistenceHandler;
 
-  @Mock private CustomerService customerService;
+  @Mock
+  private CustomerService customerService;
 
   /**
    * Test {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean CustomerPasswordCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
-  public void testCanHandleUpdate() {
-    // Arrange
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-
-    // Act and Assert
-    assertFalse(customerPasswordCustomPersistenceHandler.canHandleUpdate(persistencePackage));
-  }
-
-  /**
-   * Test {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean CustomerPasswordCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
-  public void testCanHandleUpdate2() {
-    // Arrange
-    Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
-
-    // Act and Assert
-    assertFalse(customerPasswordCustomPersistenceHandler.canHandleUpdate(persistencePackage));
-  }
-
-  /**
-   * Test {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Given array of {@link String} with {@code java.text}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean CustomerPasswordCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
-  public void testCanHandleUpdate_thenReturnTrue() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomerPasswordCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
+  public void testCanHandleUpdate_givenArrayOfStringWithJavaText() {
     // Arrange
-    Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"passwordUpdate", "Custom Criteria"},
-            "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setCustomCriteria(new String[]{"java.text"});
+
+    // Act and Assert
+    assertFalse(customerPasswordCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+  }
+
+  /**
+   * Test {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * <ul>
+   *   <li>Given array of {@link String} with {@code passwordUpdate}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomerPasswordCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
+  public void testCanHandleUpdate_givenArrayOfStringWithPasswordUpdate_thenReturnTrue() {
+    // Arrange
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setCustomCriteria(new String[]{"passwordUpdate"});
 
     // Act and Assert
     assertTrue(customerPasswordCustomPersistenceHandler.canHandleUpdate(persistencePackage));
@@ -136,216 +101,176 @@ public class CustomerPasswordCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given empty array of {@link String}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean CustomerPasswordCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomerPasswordCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
+  public void testCanHandleUpdate_givenEmptyArrayOfString() {
+    // Arrange
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setCustomCriteria(new String[]{});
+
+    // Act and Assert
+    assertFalse(customerPasswordCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+  }
+
+  /**
+   * Test {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * <ul>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPasswordCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean CustomerPasswordCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(customerPasswordCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
   }
 
   /**
-   * Test {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) EmailAddress is {@code 42 Main St}.
-   *   <li>Then calls {@link CustomerService#resetPassword(PasswordReset)}.
+   *   <li>Given {@link Customer} {@link Customer#getEmailAddress()} return {@code 42 Main St}.</li>
+   *   <li>Then calls {@link CustomerService#resetPassword(PasswordReset)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}
+   * <p>
+   * Method under test: {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity CustomerPasswordCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenCustomerImplEmailAddressIs42MainSt_thenCallsResetPassword()
-      throws ServiceException {
+      "Entity CustomerPasswordCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenCustomerGetEmailAddressReturn42MainSt_thenCallsResetPassword() throws ServiceException {
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setEmailAddress("42 Main St");
-    when(customerService.resetPassword(Mockito.<PasswordReset>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(customerImpl);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
+    Customer customer = mock(Customer.class);
+    when(customer.getEmailAddress()).thenReturn("42 Main St");
+    when(customerService.resetPassword(Mockito.<PasswordReset>any())).thenReturn(new CustomerImpl());
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(customer);
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"username"};
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"username"}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act
-    customerPasswordCustomPersistenceHandler.update(
-        persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule());
+    customerPasswordCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao,
+        new AdornedTargetListPersistenceModule());
 
     // Assert
-    verify(entity, atLeast(1)).findProperty("username");
-    verify(property, atLeast(1)).getValue();
-    verify(customerService).readCustomerByUsername("42");
+    verify(entity, atLeast(1)).findProperty(eq("username"));
+    verify(customer, atLeast(1)).getEmailAddress();
+    verify(customerService).readCustomerByUsername(isNull());
     verify(customerService).resetPassword(isA(PasswordReset.class));
   }
 
   /**
-   * Test {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) EmailAddress is empty string.
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Given {@link Customer} {@link Customer#getEmailAddress()} return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}
+   * <p>
+   * Method under test: {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity CustomerPasswordCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenCustomerImplEmailAddressIsEmptyString_thenThrowServiceException()
-      throws ServiceException {
+      "Entity CustomerPasswordCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenCustomerGetEmailAddressReturnEmptyString() throws ServiceException {
     // Arrange
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setEmailAddress("");
-    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(customerImpl);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"username"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            customerPasswordCustomPersistenceHandler.update(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).findProperty("username");
-    verify(property).getValue();
-    verify(customerService).readCustomerByUsername("42");
-  }
-
-  /**
-   * Test {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.
-   *   <li>Then throw {@link ServiceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity CustomerPasswordCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenPropertyGetValueReturn42_thenThrowServiceException()
-      throws ServiceException {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"username"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            customerPasswordCustomPersistenceHandler.update(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).findProperty("username");
-    verify(property).getValue();
-    verify(customerService).readCustomerByUsername("42");
-  }
-
-  /**
-   * Test {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property()}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link
-   *       Property#Property()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity CustomerPasswordCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenProperty_whenEntityFindPropertyReturnProperty()
-      throws ServiceException {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-
+    Customer customer = mock(Customer.class);
+    when(customer.getEmailAddress()).thenReturn("");
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(customer);
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
-    String[] customCriteria = new String[] {"username"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"username"}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            customerPasswordCustomPersistenceHandler.update(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).findProperty("username");
-    verify(customerService).readCustomerByUsername(null);
+    assertThrows(ServiceException.class, () -> customerPasswordCustomPersistenceHandler.update(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity).findProperty(eq("username"));
+    verify(customer).getEmailAddress();
+    verify(customerService).readCustomerByUsername(isNull());
+  }
+
+  /**
+   * Test {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link CustomerService} {@link CustomerService#readCustomerByUsername(String)} return {@link CustomerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity CustomerPasswordCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenCustomerServiceReadCustomerByUsernameReturnCustomerImpl() throws ServiceException {
+    // Arrange
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"username"}, "ABC123");
+
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> customerPasswordCustomPersistenceHandler.update(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity).findProperty(eq("username"));
+    verify(customerService).readCustomerByUsername(isNull());
+  }
+
+  /**
+   * Test {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPasswordCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity CustomerPasswordCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
+    // Arrange
+    Customer customer = mock(Customer.class);
+    when(customer.getEmailAddress()).thenReturn("42 Main St");
+    when(customerService.resetPassword(Mockito.<PasswordReset>any())).thenReturn(new CustomerImpl());
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(customer);
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"username"}, "ABC123");
+
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act
+    customerPasswordCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao,
+        new AdornedTargetListPersistenceModule());
+
+    // Assert
+    verify(entity, atLeast(1)).findProperty(eq("username"));
+    verify(property, atLeast(1)).getValue();
+    verify(customer, atLeast(1)).getEmailAddress();
+    verify(customerService).readCustomerByUsername(eq("42"));
+    verify(customerService).resetPassword(isA(PasswordReset.class));
   }
 }

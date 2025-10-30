@@ -27,8 +27,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,44 +45,43 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SearchFacetImplDiffblueTest {
-  @Autowired private SearchFacetImpl searchFacetImpl;
+  @Autowired
+  private SearchFacetImpl searchFacetImpl;
 
   /**
    * Test {@link SearchFacetImpl#getField()}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getField()}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getField()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Field SearchFacetImpl.getField()"})
   public void testGetField_thenReturnNull() {
     // Arrange
     IndexFieldTypeImpl fieldType = mock(IndexFieldTypeImpl.class);
     when(fieldType.getIndexField()).thenReturn(new IndexFieldImpl());
 
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(fieldType);
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(fieldType);
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setLabel("Label");
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
 
     // Act
-    Field actualField = searchFacetImpl.getField();
+    Field actualField = searchFacetImpl2.getField();
 
     // Assert
     verify(fieldType).getIndexField();
@@ -92,201 +90,113 @@ public class SearchFacetImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetImpl#getFacetFieldType()}.
-   *
    * <ul>
-   *   <li>Given {@link IndexFieldTypeImpl} (default constructor) FieldType is {@link
-   *       FieldType#BOOLEAN}.
-   *   <li>Then return {@code b}.
+   *   <li>Given {@link IndexFieldType} {@link IndexFieldType#getFieldType()} return {@link FieldType#BOOLEAN}.</li>
+   *   <li>Then return {@code b}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getFacetFieldType()}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getFacetFieldType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetImpl.getFacetFieldType()"})
-  public void testGetFacetFieldType_givenIndexFieldTypeImplFieldTypeIsBoolean_thenReturnB() {
+  public void testGetFacetFieldType_givenIndexFieldTypeGetFieldTypeReturnBoolean_thenReturnB() {
     // Arrange
-    IndexFieldTypeImpl fieldType = new IndexFieldTypeImpl();
-    fieldType.setFieldType(FieldType.BOOLEAN);
+    IndexFieldType fieldType = mock(IndexFieldType.class);
+    when(fieldType.getFieldType()).thenReturn(FieldType.BOOLEAN);
 
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(fieldType);
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(fieldType);
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setLabel("Label");
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
 
-    // Act and Assert
-    assertEquals("b", searchFacetImpl.getFacetFieldType());
+    // Act
+    String actualFacetFieldType = searchFacetImpl2.getFacetFieldType();
+
+    // Assert
+    verify(fieldType).getFieldType();
+    assertEquals("b", actualFacetFieldType);
   }
 
   /**
    * Test {@link SearchFacetImpl#getName()}.
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getName()}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetImpl.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertNull(searchFacetImpl.getName());
+    assertNull((new SearchFacetImpl()).getName());
   }
 
   /**
    * Test {@link SearchFacetImpl#getLabel()}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacetImpl} Label is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link SearchFacetImpl} (default constructor) CanMultiselect is {@code true}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getLabel()}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getLabel()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetImpl.getLabel()"})
-  public void testGetLabel_givenSearchFacetImplLabelIsFoo_thenReturnFoo() {
+  public void testGetLabel_givenSearchFacetImplCanMultiselectIsTrue_thenReturnFoo() {
     // Arrange
-    searchFacetImpl.setLabel("foo");
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
+    searchFacetImpl2.setLabel("foo");
 
     // Act and Assert
-    assertEquals("foo", searchFacetImpl.getLabel());
+    assertEquals("foo", searchFacetImpl2.getLabel());
   }
 
   /**
    * Test {@link SearchFacetImpl#getLabel()}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacetImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getLabel()}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getLabel()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetImpl.getLabel()"})
   public void testGetLabel_givenSearchFacetImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(searchFacetImpl.getLabel());
+    assertNull((new SearchFacetImpl()).getLabel());
   }
 
   /**
    * Test {@link SearchFacetImpl#getRequiresAllDependentFacets()}.
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SearchFacetImpl.getRequiresAllDependentFacets()"})
   public void testGetRequiresAllDependentFacets() {
     // Arrange
-    searchFacetImpl.setRequiresAllDependentFacets(null);
-
-    // Act and Assert
-    assertFalse(searchFacetImpl.getRequiresAllDependentFacets());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getRequiresAllDependentFacets()}.
-   *
-   * <ul>
-   *   <li>Given {@link SearchFacetImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SearchFacetImpl.getRequiresAllDependentFacets()"})
-  public void testGetRequiresAllDependentFacets_givenSearchFacetImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(searchFacetImpl.getRequiresAllDependentFacets());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#getRequiresAllDependentFacets()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SearchFacetImpl.getRequiresAllDependentFacets()"})
-  public void testGetRequiresAllDependentFacets_thenReturnTrue() {
-    // Arrange
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-
-    // Act and Assert
-    assertTrue(searchFacetImpl.getRequiresAllDependentFacets());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SearchFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new SearchFacetImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<SearchFacet> actualCreateOrRetrieveCopyInstanceResult =
-        searchFacetImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SearchFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    IndexFieldTypeImpl fieldType = mock(IndexFieldTypeImpl.class);
-    when(fieldType.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new IndexFieldTypeImpl(), true));
-
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setFieldType(fieldType);
-
     SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
     searchFacetImpl2.setCanMultiselect(true);
     searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
@@ -294,96 +204,103 @@ public class SearchFacetImplDiffblueTest {
     searchFacetImpl2.setLabel("Label");
     searchFacetImpl2.setName("Name");
     searchFacetImpl2.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl2.setRequiresAllDependentFacets(true);
     searchFacetImpl2.setSearchDisplayPriority(1);
     searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
     searchFacetImpl2.setShowOnSearch(true);
     searchFacetImpl2.setUseFacetRanges(true);
-    CreateResponse<Object> createResponse = new CreateResponse<>(searchFacetImpl2, false);
+    searchFacetImpl2.setRequiresAllDependentFacets(null);
 
+    // Act and Assert
+    assertFalse(searchFacetImpl2.getRequiresAllDependentFacets());
+  }
+
+  /**
+   * Test {@link SearchFacetImpl#getRequiresAllDependentFacets()}.
+   * <ul>
+   *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SearchFacetImpl.getRequiresAllDependentFacets()"})
+  public void testGetRequiresAllDependentFacets_givenSearchFacetImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new SearchFacetImpl()).getRequiresAllDependentFacets());
+  }
+
+  /**
+   * Test {@link SearchFacetImpl#getRequiresAllDependentFacets()}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getRequiresAllDependentFacets()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SearchFacetImpl.getRequiresAllDependentFacets()"})
+  public void testGetRequiresAllDependentFacets_thenReturnTrue() {
+    // Arrange
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setLabel("Label");
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+
+    // Act and Assert
+    assertTrue(searchFacetImpl2.getRequiresAllDependentFacets());
+  }
+
+  /**
+   * Test {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test: {@link SearchFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse SearchFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    // Arrange
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<SearchFacet> actualCreateOrRetrieveCopyInstanceResult =
-        searchFacetImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<SearchFacet> actualCreateOrRetrieveCopyInstanceResult = searchFacetImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(fieldType).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
     assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test {@link SearchFacetImpl#equals(Object)}, and {@link SearchFacetImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SearchFacetImpl#equals(Object)}
    *   <li>{@link SearchFacetImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    SearchFacetImpl searchFacetImpl = new SearchFacetImpl();
-    searchFacetImpl.setCanMultiselect(true);
-    searchFacetImpl.setFieldType(null);
-    searchFacetImpl.setId(1L);
-    searchFacetImpl.setLabel("Label");
-    searchFacetImpl.setName("Name");
-    searchFacetImpl.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl.setRequiresAllDependentFacets(true);
-    searchFacetImpl.setSearchDisplayPriority(1);
-    searchFacetImpl.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl.setShowOnSearch(true);
-    searchFacetImpl.setUseFacetRanges(true);
-
-    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
-    searchFacetImpl2.setCanMultiselect(true);
-    searchFacetImpl2.setFieldType(null);
-    searchFacetImpl2.setId(1L);
-    searchFacetImpl2.setLabel("Label");
-    searchFacetImpl2.setName("Name");
-    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
-    searchFacetImpl2.setRequiresAllDependentFacets(true);
-    searchFacetImpl2.setSearchDisplayPriority(1);
-    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
-    searchFacetImpl2.setShowOnSearch(true);
-    searchFacetImpl2.setUseFacetRanges(true);
-
-    // Act and Assert
-    assertEquals(searchFacetImpl, searchFacetImpl2);
-    assertEquals(searchFacetImpl.hashCode(), searchFacetImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link SearchFacetImpl#equals(Object)}, and {@link SearchFacetImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SearchFacetImpl#equals(Object)}
-   *   <li>{@link SearchFacetImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -408,17 +325,15 @@ public class SearchFacetImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -454,17 +369,15 @@ public class SearchFacetImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -487,17 +400,15 @@ public class SearchFacetImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SearchFacetImpl.equals(Object)", "int SearchFacetImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -520,50 +431,56 @@ public class SearchFacetImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetImpl#getMainEntityName()}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacetImpl} Label is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link SearchFacetImpl} (default constructor) CanMultiselect is {@code true}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getMainEntityName()}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetImpl.getMainEntityName()"})
-  public void testGetMainEntityName_givenSearchFacetImplLabelIsFoo_thenReturnFoo() {
+  public void testGetMainEntityName_givenSearchFacetImplCanMultiselectIsTrue_thenReturnFoo() {
     // Arrange
-    searchFacetImpl.setLabel("foo");
+    SearchFacetImpl searchFacetImpl2 = new SearchFacetImpl();
+    searchFacetImpl2.setCanMultiselect(true);
+    searchFacetImpl2.setFieldType(new IndexFieldTypeImpl());
+    searchFacetImpl2.setId(1L);
+    searchFacetImpl2.setName("Name");
+    searchFacetImpl2.setRequiredFacets(new ArrayList<>());
+    searchFacetImpl2.setRequiresAllDependentFacets(true);
+    searchFacetImpl2.setSearchDisplayPriority(1);
+    searchFacetImpl2.setSearchFacetRanges(new ArrayList<>());
+    searchFacetImpl2.setShowOnSearch(true);
+    searchFacetImpl2.setUseFacetRanges(true);
+    searchFacetImpl2.setLabel("foo");
 
     // Act and Assert
-    assertEquals("foo", searchFacetImpl.getMainEntityName());
+    assertEquals("foo", searchFacetImpl2.getMainEntityName());
   }
 
   /**
    * Test {@link SearchFacetImpl#getMainEntityName()}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacetImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetImpl#getMainEntityName()}
+   * <p>
+   * Method under test: {@link SearchFacetImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenSearchFacetImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(searchFacetImpl.getMainEntityName());
+    assertNull((new SearchFacetImpl()).getMainEntityName());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SearchFacetImpl}
    *   <li>{@link SearchFacetImpl#setCanMultiselect(Boolean)}
@@ -588,30 +505,17 @@ public class SearchFacetImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetImpl.<init>()",
-    "Boolean SearchFacetImpl.getCanMultiselect()",
-    "IndexFieldType SearchFacetImpl.getFieldType()",
-    "Long SearchFacetImpl.getId()",
-    "List SearchFacetImpl.getRequiredFacets()",
-    "Integer SearchFacetImpl.getSearchDisplayPriority()",
-    "List SearchFacetImpl.getSearchFacetRanges()",
-    "Boolean SearchFacetImpl.getShowOnSearch()",
-    "Boolean SearchFacetImpl.getUseFacetRanges()",
-    "void SearchFacetImpl.setCanMultiselect(Boolean)",
-    "void SearchFacetImpl.setFieldType(IndexFieldType)",
-    "void SearchFacetImpl.setId(Long)",
-    "void SearchFacetImpl.setLabel(String)",
-    "void SearchFacetImpl.setName(String)",
-    "void SearchFacetImpl.setRequiredFacets(List)",
-    "void SearchFacetImpl.setRequiresAllDependentFacets(Boolean)",
-    "void SearchFacetImpl.setSearchDisplayPriority(Integer)",
-    "void SearchFacetImpl.setSearchFacetRanges(List)",
-    "void SearchFacetImpl.setShowOnSearch(Boolean)",
-    "void SearchFacetImpl.setUseFacetRanges(Boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchFacetImpl.<init>()", "Boolean SearchFacetImpl.getCanMultiselect()",
+      "IndexFieldType SearchFacetImpl.getFieldType()", "Long SearchFacetImpl.getId()",
+      "List SearchFacetImpl.getRequiredFacets()", "Integer SearchFacetImpl.getSearchDisplayPriority()",
+      "List SearchFacetImpl.getSearchFacetRanges()", "Boolean SearchFacetImpl.getShowOnSearch()",
+      "Boolean SearchFacetImpl.getUseFacetRanges()", "void SearchFacetImpl.setCanMultiselect(Boolean)",
+      "void SearchFacetImpl.setFieldType(IndexFieldType)", "void SearchFacetImpl.setId(Long)",
+      "void SearchFacetImpl.setLabel(String)", "void SearchFacetImpl.setName(String)",
+      "void SearchFacetImpl.setRequiredFacets(List)", "void SearchFacetImpl.setRequiresAllDependentFacets(Boolean)",
+      "void SearchFacetImpl.setSearchDisplayPriority(Integer)", "void SearchFacetImpl.setSearchFacetRanges(List)",
+      "void SearchFacetImpl.setShowOnSearch(Boolean)", "void SearchFacetImpl.setUseFacetRanges(Boolean)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchFacetImpl actualSearchFacetImpl = new SearchFacetImpl();

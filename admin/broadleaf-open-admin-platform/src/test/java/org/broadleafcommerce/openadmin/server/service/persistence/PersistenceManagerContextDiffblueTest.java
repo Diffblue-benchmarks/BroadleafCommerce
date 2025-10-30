@@ -20,22 +20,32 @@ package org.broadleafcommerce.openadmin.server.service.persistence;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class PersistenceManagerContextDiffblueTest {
   /**
-   * Test {@link PersistenceManagerContext#addPersistenceManager(PersistenceManager)}.
-   *
-   * <p>Method under test: {@link
-   * PersistenceManagerContext#addPersistenceManager(PersistenceManager)}
+   * Test {@link PersistenceManagerContext#getPersistenceManagerContext()}.
+   * <p>
+   * Method under test: {@link PersistenceManagerContext#getPersistenceManagerContext()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceManagerContext PersistenceManagerContext.getPersistenceManagerContext()"})
+  public void testGetPersistenceManagerContext() {
+    // Arrange, Act and Assert
+    assertNull(PersistenceManagerContext.getPersistenceManagerContext());
+  }
+
+  /**
+   * Test {@link PersistenceManagerContext#addPersistenceManager(PersistenceManager)}.
+   * <p>
+   * Method under test: {@link PersistenceManagerContext#addPersistenceManager(PersistenceManager)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistenceManagerContext.addPersistenceManager(PersistenceManager)"})
   public void testAddPersistenceManager() {
     // Arrange
@@ -51,35 +61,31 @@ public class PersistenceManagerContextDiffblueTest {
 
   /**
    * Test {@link PersistenceManagerContext#getPersistenceManager()}.
-   *
    * <ul>
-   *   <li>Given {@link PersistenceManagerContext} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link PersistenceManagerContext} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerContext#getPersistenceManager()}
+   * <p>
+   * Method under test: {@link PersistenceManagerContext#getPersistenceManager()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistenceManager PersistenceManagerContext.getPersistenceManager()"})
   public void testGetPersistenceManager_givenPersistenceManagerContext_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new PersistenceManagerContext().getPersistenceManager());
+    assertNull((new PersistenceManagerContext()).getPersistenceManager());
   }
 
   /**
    * Test {@link PersistenceManagerContext#getPersistenceManager()}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistenceManagerImpl} (default constructor).
+   *   <li>Then return {@link PersistenceManagerImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerContext#getPersistenceManager()}
+   * <p>
+   * Method under test: {@link PersistenceManagerContext#getPersistenceManager()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistenceManager PersistenceManagerContext.getPersistenceManager()"})
   public void testGetPersistenceManager_thenReturnPersistenceManagerImpl() {
     // Arrange
@@ -93,16 +99,14 @@ public class PersistenceManagerContextDiffblueTest {
 
   /**
    * Test {@link PersistenceManagerContext#remove()}.
-   *
    * <ul>
-   *   <li>Given {@link PersistenceManagerContext} (default constructor).
+   *   <li>Given {@link PersistenceManagerContext} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerContext#remove()}
+   * <p>
+   * Method under test: {@link PersistenceManagerContext#remove()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistenceManagerContext.remove()"})
   public void testRemove_givenPersistenceManagerContext() {
     // Arrange
@@ -117,17 +121,14 @@ public class PersistenceManagerContextDiffblueTest {
 
   /**
    * Test {@link PersistenceManagerContext#remove()}.
-   *
    * <ul>
-   *   <li>Then {@link PersistenceManagerContext} (default constructor) PersistenceManager is {@code
-   *       null}.
+   *   <li>Then {@link PersistenceManagerContext} (default constructor) PersistenceManager is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerContext#remove()}
+   * <p>
+   * Method under test: {@link PersistenceManagerContext#remove()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistenceManagerContext.remove()"})
   public void testRemove_thenPersistenceManagerContextPersistenceManagerIsNull() {
     // Arrange
@@ -143,17 +144,14 @@ public class PersistenceManagerContextDiffblueTest {
 
   /**
    * Test {@link PersistenceManagerContext#remove()}.
-   *
    * <ul>
-   *   <li>Then {@link PersistenceManagerContext} (default constructor) PersistenceManager {@link
-   *       PersistenceManagerImpl}.
+   *   <li>Then {@link PersistenceManagerContext} (default constructor) PersistenceManager {@link PersistenceManagerImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerContext#remove()}
+   * <p>
+   * Method under test: {@link PersistenceManagerContext#remove()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistenceManagerContext.remove()"})
   public void testRemove_thenPersistenceManagerContextPersistenceManagerPersistenceManagerImpl() {
     // Arrange
@@ -173,15 +171,14 @@ public class PersistenceManagerContextDiffblueTest {
 
   /**
    * Test new {@link PersistenceManagerContext} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link PersistenceManagerContext}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link PersistenceManagerContext}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistenceManagerContext.<init>()"})
   public void testNewPersistenceManagerContext() {
     // Arrange, Act and Assert
-    assertNull(new PersistenceManagerContext().getPersistenceManager());
+    assertNull((new PersistenceManagerContext()).getPersistenceManager());
   }
 }

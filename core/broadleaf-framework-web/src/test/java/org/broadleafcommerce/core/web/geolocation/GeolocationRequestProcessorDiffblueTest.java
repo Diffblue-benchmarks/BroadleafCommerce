@@ -23,22 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.geolocation.GeolocationDTO;
 import org.broadleafcommerce.core.geolocation.GeolocationService;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -48,34 +43,37 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
 class GeolocationRequestProcessorDiffblueTest {
-  @Mock private Environment environment;
+  @Mock
+  private Environment environment;
 
-  @InjectMocks private GeolocationRequestProcessor geolocationRequestProcessor;
+  @InjectMocks
+  private GeolocationRequestProcessor geolocationRequestProcessor;
 
-  @Mock private GeolocationService geolocationService;
+  @Mock
+  private GeolocationService geolocationService;
 
   /**
    * Test {@link GeolocationRequestProcessor#process(WebRequest)}.
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#process(WebRequest)}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#process(WebRequest)}
    */
   @Test
   @DisplayName("Test process(WebRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void GeolocationRequestProcessor.process(WebRequest)"})
   void testProcess() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
         .thenReturn(true);
 
     GeolocationDTO geolocationDTO = new GeolocationDTO();
@@ -90,74 +88,67 @@ class GeolocationRequestProcessorDiffblueTest {
     geolocationDTO.setRegionName("us-east-2");
     geolocationDTO.setSource("Source");
     when(geolocationService.getLocationData(Mockito.<String>any())).thenReturn(geolocationDTO);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"})));
 
     // Act
-    geolocationRequestProcessor.process(request2);
+    geolocationRequestProcessor.process(request);
 
     // Assert
     verify(environment).getProperty(eq("geolocation.api.enabled"), isA(Class.class), eq(false));
-    Object sessionMutex = request2.getSessionMutex();
+    Object sessionMutex = request.getSessionMutex();
     assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(
-        new String[] {GeolocationRequestProcessor.GEOLOCATON_ATTRIBUTE_NAME},
+    assertArrayEquals(new String[]{GeolocationRequestProcessor.GEOLOCATON_ATTRIBUTE_NAME},
         ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
    * Test {@link GeolocationRequestProcessor#process(WebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code false}.
-   *   <li>When {@link ServletWebRequest}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   *   <li>Then array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#process(WebRequest)}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#process(WebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test process(WebRequest); given Environment getProperty(String, Class, Object) return 'false'; when ServletWebRequest")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test process(WebRequest); given Environment getProperty(String, Class, Object) return 'false'; then array length is zero")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void GeolocationRequestProcessor.process(WebRequest)"})
-  void testProcess_givenEnvironmentGetPropertyReturnFalse_whenServletWebRequest() {
+  void testProcess_givenEnvironmentGetPropertyReturnFalse_thenArrayLengthIsZero() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
         .thenReturn(false);
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"})));
 
     // Act
-    geolocationRequestProcessor.process(mock(ServletWebRequest.class));
+    geolocationRequestProcessor.process(request);
 
-    // Assert
+    // Assert that nothing has changed
     verify(environment).getProperty(eq("geolocation.api.enabled"), isA(Class.class), eq(false));
+    Object sessionMutex = request.getSessionMutex();
+    assertTrue(sessionMutex instanceof MockHttpSession);
+    assertEquals(0, ((MockHttpSession) sessionMutex).getValueNames().length);
   }
 
   /**
    * Test {@link GeolocationRequestProcessor#process(WebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code true}.
-   *   <li>When {@code null}.
-   *   <li>Then calls {@link Environment#getProperty(String, Class, Object)}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then calls {@link PropertyResolver#getProperty(String, Class, Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#process(WebRequest)}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#process(WebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test process(WebRequest); given Environment getProperty(String, Class, Object) return 'true'; when 'null'; then calls getProperty(String, Class, Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test process(WebRequest); given Environment getProperty(String, Class, Object) return 'true'; when 'null'; then calls getProperty(String, Class, Object)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void GeolocationRequestProcessor.process(WebRequest)"})
   void testProcess_givenEnvironmentGetPropertyReturnTrue_whenNull_thenCallsGetProperty() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
         .thenReturn(true);
 
     // Act
@@ -168,77 +159,21 @@ class GeolocationRequestProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link GeolocationRequestProcessor#process(WebRequest)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then calls {@link GeolocationService#getLocationData(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#process(WebRequest)}
-   */
-  @Test
-  @DisplayName("Test process(WebRequest); given 'null'; then calls getLocationData(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void GeolocationRequestProcessor.process(WebRequest)"})
-  void testProcess_givenNull_thenCallsGetLocationData() {
-    // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
-        .thenReturn(true);
-
-    GeolocationDTO geolocationDTO = new GeolocationDTO();
-    geolocationDTO.setCity("Oxford");
-    geolocationDTO.setCountryCode("GB");
-    geolocationDTO.setCountryName("GB");
-    geolocationDTO.setIpAddress("42 Main St");
-    geolocationDTO.setLatitude(10.0d);
-    geolocationDTO.setLongitude(10.0d);
-    geolocationDTO.setPostalCode("Postal Code");
-    geolocationDTO.setRegionCode("us-east-2");
-    geolocationDTO.setRegionName("us-east-2");
-    geolocationDTO.setSource("Source");
-    when(geolocationService.getLocationData(Mockito.<String>any())).thenReturn(geolocationDTO);
-
-    ServletWebRequest request = mock(ServletWebRequest.class);
-    doNothing().when(request).setAttribute(Mockito.<String>any(), Mockito.<Object>any(), anyInt());
-    when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(null);
-    when(request.getHeader(Mockito.<String>any())).thenReturn("Header");
-
-    // Act
-    geolocationRequestProcessor.process(request);
-
-    // Assert
-    verify(geolocationService).getLocationData("Header");
-    verify(environment).getProperty(eq("geolocation.api.enabled"), isA(Class.class), eq(false));
-    verify(request, atLeast(1)).getAttribute(Mockito.<String>any(), anyInt());
-    verify(request, atLeast(1))
-        .setAttribute(Mockito.<String>any(), Mockito.<Object>any(), anyInt());
-    verify(request).getHeader("X-FORWARDED-FOR");
-  }
-
-  /**
    * Test {@link GeolocationRequestProcessor#isGeolocationEnabled()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code false}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#isGeolocationEnabled()}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#isGeolocationEnabled()}
    */
   @Test
-  @DisplayName(
-      "Test isGeolocationEnabled(); given Environment getProperty(String, Class, Object) return 'false'; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test isGeolocationEnabled(); given Environment getProperty(String, Class, Object) return 'false'; then return 'false'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean GeolocationRequestProcessor.isGeolocationEnabled()"})
   void testIsGeolocationEnabled_givenEnvironmentGetPropertyReturnFalse_thenReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
         .thenReturn(false);
 
     // Act
@@ -251,25 +186,20 @@ class GeolocationRequestProcessorDiffblueTest {
 
   /**
    * Test {@link GeolocationRequestProcessor#isGeolocationEnabled()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#isGeolocationEnabled()}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#isGeolocationEnabled()}
    */
   @Test
-  @DisplayName(
-      "Test isGeolocationEnabled(); given Environment getProperty(String, Class, Object) return 'true'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test isGeolocationEnabled(); given Environment getProperty(String, Class, Object) return 'true'; then return 'true'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean GeolocationRequestProcessor.isGeolocationEnabled()"})
   void testIsGeolocationEnabled_givenEnvironmentGetPropertyReturnTrue_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any(), Mockito.<Boolean>any()))
         .thenReturn(true);
 
     // Act
@@ -282,138 +212,100 @@ class GeolocationRequestProcessorDiffblueTest {
 
   /**
    * Test {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@code 42 Main St}.
-   *   <li>Then return {@code 42 Main St}.
+   *   <li>Given {@code 42 Main St}.</li>
+   *   <li>Then return {@code 42 Main St}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}
    */
   @Test
   @DisplayName("Test getIPAddress(ServletWebRequest); given '42 Main St'; then return '42 Main St'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GeolocationRequestProcessor.getIPAddress(ServletWebRequest)"})
   void testGetIPAddress_given42MainSt_thenReturn42MainSt() {
     // Arrange
-    DefaultMultipartHttpServletRequest servletRequest =
-        mock(DefaultMultipartHttpServletRequest.class);
+    DefaultMultipartHttpServletRequest servletRequest = mock(DefaultMultipartHttpServletRequest.class);
     when(servletRequest.getRemoteAddr()).thenReturn("42 Main St");
     when(servletRequest.getHeader(Mockito.<String>any())).thenReturn("");
-    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest);
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
 
     // Act
-    String actualIPAddress =
-        geolocationRequestProcessor.getIPAddress(new ServletWebRequest(request2));
+    String actualIPAddress = geolocationRequestProcessor.getIPAddress(new ServletWebRequest(new SearchRequestWrapper(
+        new XssRequestWrapper(servletRequest, environment, new String[]{"White List Param Names"}))));
 
     // Assert
     verify(servletRequest).getRemoteAddr();
-    verify(servletRequest).getHeader("X-FORWARDED-FOR");
+    verify(servletRequest).getHeader(eq("X-FORWARDED-FOR"));
     assertEquals("42 Main St", actualIPAddress);
   }
 
   /**
    * Test {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@code https://example.org/example}.
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Given {@code https://example.org/example}.</li>
+   *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test getIPAddress(ServletWebRequest); given 'https://example.org/example'; then return 'https://example.org/example'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getIPAddress(ServletWebRequest); given 'https://example.org/example'; then return 'https://example.org/example'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GeolocationRequestProcessor.getIPAddress(ServletWebRequest)"})
   void testGetIPAddress_givenHttpsExampleOrgExample_thenReturnHttpsExampleOrgExample() {
     // Arrange
-    DefaultMultipartHttpServletRequest servletRequest =
-        mock(DefaultMultipartHttpServletRequest.class);
+    DefaultMultipartHttpServletRequest servletRequest = mock(DefaultMultipartHttpServletRequest.class);
     when(servletRequest.getHeader(Mockito.<String>any())).thenReturn("https://example.org/example");
-    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest);
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
 
     // Act
-    String actualIPAddress =
-        geolocationRequestProcessor.getIPAddress(new ServletWebRequest(request2));
+    String actualIPAddress = geolocationRequestProcessor.getIPAddress(new ServletWebRequest(new SearchRequestWrapper(
+        new XssRequestWrapper(servletRequest, environment, new String[]{"White List Param Names"}))));
 
     // Assert
-    verify(servletRequest).getHeader("X-FORWARDED-FOR");
+    verify(servletRequest).getHeader(eq("X-FORWARDED-FOR"));
     assertEquals("https://example.org/example", actualIPAddress);
   }
 
   /**
    * Test {@link GeolocationRequestProcessor#getRuleMapFromRequest(WebRequest)}.
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#getRuleMapFromRequest(WebRequest)}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#getRuleMapFromRequest(WebRequest)}
    */
   @Test
   @DisplayName("Test getRuleMapFromRequest(WebRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map GeolocationRequestProcessor.getRuleMapFromRequest(WebRequest)"})
   void testGetRuleMapFromRequest() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-
-    // Act and Assert
-    assertTrue(
-        geolocationRequestProcessor
-            .getRuleMapFromRequest(new ServletWebRequest(request))
-            .isEmpty());
+    // Arrange, Act and Assert
+    assertTrue(geolocationRequestProcessor
+        .getRuleMapFromRequest(new ServletWebRequest(new SearchRequestWrapper(
+            new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}))))
+        .isEmpty());
   }
 
   /**
    * Test {@link GeolocationRequestProcessor#getRuleMapFromRequest(WebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link MockHttpSession#MockHttpSession()}.
-   *   <li>Then calls {@link MockHttpServletRequest#addParameter(String, String)}.
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then calls {@link RequestAttributes#getAttribute(String, int)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GeolocationRequestProcessor#getRuleMapFromRequest(WebRequest)}
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#getRuleMapFromRequest(WebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test getRuleMapFromRequest(WebRequest); given MockHttpSession(); then calls addParameter(String, String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getRuleMapFromRequest(WebRequest); given HashMap(); then calls getAttribute(String, int)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map GeolocationRequestProcessor.getRuleMapFromRequest(WebRequest)"})
-  void testGetRuleMapFromRequest_givenMockHttpSession_thenCallsAddParameter()
-      throws UnsupportedEncodingException {
+  void testGetRuleMapFromRequest_givenHashMap_thenCallsGetAttribute() {
     // Arrange
-    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
-    when(servletRequest.getSession(anyBoolean())).thenReturn(new MockHttpSession());
-    doNothing().when(servletRequest).setCharacterEncoding(Mockito.<String>any());
-    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(new HashMap<>());
-    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
-    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
-    servletRequest.addParameter("blRuleMap", "42");
-
-    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest);
-    request.setCharacterEncoding("blRuleMap");
-    request.setAttribute("blRuleMap", "42");
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    ServletWebRequest request3 = new ServletWebRequest(request2);
-    request3.setAttribute("blRuleMap", "Value", 1);
+    WebRequest request = mock(WebRequest.class);
+    when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(new HashMap<>());
 
     // Act
-    Map<String, Object> actualRuleMapFromRequest =
-        geolocationRequestProcessor.getRuleMapFromRequest(request3);
+    Map<String, Object> actualRuleMapFromRequest = geolocationRequestProcessor.getRuleMapFromRequest(request);
 
     // Assert
-    verify(servletRequest).addParameter("blRuleMap", "42");
-    verify(servletRequest).getAttribute("blRuleMap");
-    verify(servletRequest).getSession(true);
-    verify(servletRequest).setAttribute(eq("blRuleMap"), isA(Object.class));
-    verify(servletRequest).setCharacterEncoding("blRuleMap");
+    verify(request).getAttribute(eq("blRuleMap"), eq(0));
     assertTrue(actualRuleMapFromRequest.isEmpty());
   }
 }

@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.currency.domain;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,9 +27,8 @@ import org.junit.experimental.categories.Category;
 public class NullBroadleafCurrencyDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link NullBroadleafCurrency}
    *   <li>{@link NullBroadleafCurrency#setCurrencyCode(String)}
@@ -43,18 +41,12 @@ public class NullBroadleafCurrencyDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NullBroadleafCurrency.<init>()",
-    "String NullBroadleafCurrency.getCurrencyCode()",
-    "boolean NullBroadleafCurrency.getDefaultFlag()",
-    "String NullBroadleafCurrency.getFriendlyName()",
-    "java.util.Currency NullBroadleafCurrency.getJavaCurrency()",
-    "void NullBroadleafCurrency.setCurrencyCode(String)",
-    "void NullBroadleafCurrency.setDefaultFlag(boolean)",
-    "void NullBroadleafCurrency.setFriendlyName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NullBroadleafCurrency.<init>()", "String NullBroadleafCurrency.getCurrencyCode()",
+      "boolean NullBroadleafCurrency.getDefaultFlag()", "String NullBroadleafCurrency.getFriendlyName()",
+      "java.util.Currency NullBroadleafCurrency.getJavaCurrency()",
+      "void NullBroadleafCurrency.setCurrencyCode(String)", "void NullBroadleafCurrency.setDefaultFlag(boolean)",
+      "void NullBroadleafCurrency.setFriendlyName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     NullBroadleafCurrency actualNullBroadleafCurrency = new NullBroadleafCurrency();

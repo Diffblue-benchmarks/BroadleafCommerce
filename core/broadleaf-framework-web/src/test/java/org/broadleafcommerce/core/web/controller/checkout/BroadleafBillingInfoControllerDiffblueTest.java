@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -61,39 +60,32 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class BroadleafBillingInfoControllerDiffblueTest {
-  @Mock private AddressService addressService;
+  @Mock
+  private AddressService addressService;
 
-  @InjectMocks private BroadleafBillingInfoController broadleafBillingInfoController;
+  @InjectMocks
+  private BroadleafBillingInfoController broadleafBillingInfoController;
 
   /**
-   * Test {@link BroadleafBillingInfoController#copyShippingAddressToBillingAddress(Order,
-   * BillingInfoForm)}.
-   *
+   * Test {@link BroadleafBillingInfoController#copyShippingAddressToBillingAddress(Order, BillingInfoForm)}.
    * <ul>
-   *   <li>Then calls {@link AddressService#copyAddress(Address)}.
+   *   <li>Then calls {@link AddressService#copyAddress(Address)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafBillingInfoController#copyShippingAddressToBillingAddress(Order, BillingInfoForm)}
+   * <p>
+   * Method under test: {@link BroadleafBillingInfoController#copyShippingAddressToBillingAddress(Order, BillingInfoForm)}
    */
   @Test
-  @DisplayName(
-      "Test copyShippingAddressToBillingAddress(Order, BillingInfoForm); then calls copyAddress(Address)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafBillingInfoController.copyShippingAddressToBillingAddress(Order, BillingInfoForm)"
-  })
+  @DisplayName("Test copyShippingAddressToBillingAddress(Order, BillingInfoForm); then calls copyAddress(Address)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafBillingInfoController.copyShippingAddressToBillingAddress(Order, BillingInfoForm)"})
   void testCopyShippingAddressToBillingAddress_thenCallsCopyAddress() {
     // Arrange
     when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -114,10 +106,13 @@ class BroadleafBillingInfoControllerDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("Service");
     fulfillmentGroupImpl.setShippingOverride(true);
+    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(new FulfillmentGroupStatusType("Type", "Friendly Type"));
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -148,11 +143,11 @@ class BroadleafBillingInfoControllerDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(new OrderStatus("Type", "Friendly Type"));
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setFulfillmentGroups(fulfillmentGroups);
 
@@ -174,31 +169,23 @@ class BroadleafBillingInfoControllerDiffblueTest {
 
   /**
    * Test new {@link BroadleafBillingInfoController} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BroadleafBillingInfoController}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link BroadleafBillingInfoController}
    */
   @Test
   @DisplayName("Test new BroadleafBillingInfoController (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void BroadleafBillingInfoController.<init>()"})
   void testNewBroadleafBillingInfoController() {
     // Arrange and Act
-    BroadleafBillingInfoController actualBroadleafBillingInfoController =
-        new BroadleafBillingInfoController();
+    BroadleafBillingInfoController actualBroadleafBillingInfoController = new BroadleafBillingInfoController();
 
     // Assert
-    assertEquals(
-        "ajaxredirect:/confirmation",
-        actualBroadleafBillingInfoController.getBaseConfirmationView());
+    assertEquals("ajaxredirect:/confirmation", actualBroadleafBillingInfoController.getBaseConfirmationView());
     assertEquals("checkout/checkout", actualBroadleafBillingInfoController.getCheckoutView());
-    assertEquals(
-        "checkout/partials/checkoutStages",
-        actualBroadleafBillingInfoController.getCheckoutStagesPartial());
+    assertEquals("checkout/partials/checkoutStages", actualBroadleafBillingInfoController.getCheckoutStagesPartial());
     assertEquals("redirect:/cart", actualBroadleafBillingInfoController.getCartPageRedirect());
-    assertEquals(
-        "redirect:/checkout", actualBroadleafBillingInfoController.getCheckoutPageRedirect());
+    assertEquals("redirect:/checkout", actualBroadleafBillingInfoController.getCheckoutPageRedirect());
     assertNull(actualBroadleafBillingInfoController.isoService);
     assertNull(actualBroadleafBillingInfoController.paymentGatewayCheckoutService);
     assertNull(actualBroadleafBillingInfoController.checkoutService);

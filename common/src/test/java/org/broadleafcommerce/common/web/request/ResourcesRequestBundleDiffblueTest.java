@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.web.request;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,18 +30,15 @@ import org.junit.experimental.categories.Category;
 public class ResourcesRequestBundleDiffblueTest {
   /**
    * Test {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return BundleFilePaths is {@link ArrayList#ArrayList()}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return BundleFilePaths is {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String,
-   * List, List)}
+   * <p>
+   * Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourcesRequestBundle.<init>(String, String, List, List)"})
   public void testNewResourcesRequestBundle_given42_thenReturnBundleFilePathsIsArrayList() {
     // Arrange
@@ -52,28 +48,22 @@ public class ResourcesRequestBundleDiffblueTest {
     bundleFilePaths.add("42");
     bundleFilePaths.add("foo");
 
-    // Act
-    ResourcesRequestBundle actualResourcesRequestBundle =
-        new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, bundleFilePaths);
-
-    // Assert
-    assertEquals(bundleFilePaths, actualResourcesRequestBundle.getBundleFilePaths());
+    // Act and Assert
+    assertEquals(bundleFilePaths,
+        (new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, bundleFilePaths)).getBundleFilePaths());
   }
 
   /**
    * Test {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return Files is {@link ArrayList#ArrayList()}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return Files is {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String,
-   * List, List)}
+   * <p>
+   * Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourcesRequestBundle.<init>(String, String, List, List)"})
   public void testNewResourcesRequestBundle_given42_thenReturnFilesIsArrayList() {
     // Arrange
@@ -82,8 +72,8 @@ public class ResourcesRequestBundleDiffblueTest {
     files.add("foo");
 
     // Act
-    ResourcesRequestBundle actualResourcesRequestBundle =
-        new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, new ArrayList<>());
+    ResourcesRequestBundle actualResourcesRequestBundle = new ResourcesRequestBundle("Bundle Name", "Mapping Prefix",
+        files, new ArrayList<>());
 
     // Assert
     assertEquals("Bundle Name", actualResourcesRequestBundle.getBundleName());
@@ -95,18 +85,15 @@ public class ResourcesRequestBundleDiffblueTest {
 
   /**
    * Test {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, String)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String,
-   * List, String)}
+   * <p>
+   * Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourcesRequestBundle.<init>(String, String, List, String)"})
   public void testNewResourcesRequestBundle_given42_whenArrayListAdd42() {
     // Arrange
@@ -115,8 +102,8 @@ public class ResourcesRequestBundleDiffblueTest {
     files.add("foo");
 
     // Act
-    ResourcesRequestBundle actualResourcesRequestBundle =
-        new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, "Bundle Path");
+    ResourcesRequestBundle actualResourcesRequestBundle = new ResourcesRequestBundle("Bundle Name", "Mapping Prefix",
+        files, "Bundle Path");
 
     // Assert
     assertEquals("Bundle Name", actualResourcesRequestBundle.getBundleName());
@@ -128,18 +115,15 @@ public class ResourcesRequestBundleDiffblueTest {
 
   /**
    * Test {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then return BundleFilePaths size is one.
+   *   <li>Given {@code foo}.</li>
+   *   <li>Then return BundleFilePaths size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String,
-   * List, List)}
+   * <p>
+   * Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourcesRequestBundle.<init>(String, String, List, List)"})
   public void testNewResourcesRequestBundle_givenFoo_thenReturnBundleFilePathsSizeIsOne() {
     // Arrange
@@ -149,8 +133,8 @@ public class ResourcesRequestBundleDiffblueTest {
     bundleFilePaths.add("foo");
 
     // Act
-    ResourcesRequestBundle actualResourcesRequestBundle =
-        new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, bundleFilePaths);
+    ResourcesRequestBundle actualResourcesRequestBundle = new ResourcesRequestBundle("Bundle Name", "Mapping Prefix",
+        files, bundleFilePaths);
 
     // Assert
     List<String> bundleFilePaths2 = actualResourcesRequestBundle.getBundleFilePaths();
@@ -161,18 +145,15 @@ public class ResourcesRequestBundleDiffblueTest {
 
   /**
    * Test {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, String)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then return Files is {@link ArrayList#ArrayList()}.
+   *   <li>Given {@code foo}.</li>
+   *   <li>Then return Files is {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String,
-   * List, String)}
+   * <p>
+   * Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourcesRequestBundle.<init>(String, String, List, String)"})
   public void testNewResourcesRequestBundle_givenFoo_thenReturnFilesIsArrayList() {
     // Arrange
@@ -180,8 +161,8 @@ public class ResourcesRequestBundleDiffblueTest {
     files.add("foo");
 
     // Act
-    ResourcesRequestBundle actualResourcesRequestBundle =
-        new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, "Bundle Path");
+    ResourcesRequestBundle actualResourcesRequestBundle = new ResourcesRequestBundle("Bundle Name", "Mapping Prefix",
+        files, "Bundle Path");
 
     // Assert
     assertEquals("Bundle Name", actualResourcesRequestBundle.getBundleName());
@@ -193,18 +174,15 @@ public class ResourcesRequestBundleDiffblueTest {
 
   /**
    * Test {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then return Files is {@link ArrayList#ArrayList()}.
+   *   <li>Given {@code foo}.</li>
+   *   <li>Then return Files is {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String,
-   * List, List)}
+   * <p>
+   * Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourcesRequestBundle.<init>(String, String, List, List)"})
   public void testNewResourcesRequestBundle_givenFoo_thenReturnFilesIsArrayList2() {
     // Arrange
@@ -212,8 +190,8 @@ public class ResourcesRequestBundleDiffblueTest {
     files.add("foo");
 
     // Act
-    ResourcesRequestBundle actualResourcesRequestBundle =
-        new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, new ArrayList<>());
+    ResourcesRequestBundle actualResourcesRequestBundle = new ResourcesRequestBundle("Bundle Name", "Mapping Prefix",
+        files, new ArrayList<>());
 
     // Assert
     assertEquals("Bundle Name", actualResourcesRequestBundle.getBundleName());
@@ -225,24 +203,20 @@ public class ResourcesRequestBundleDiffblueTest {
 
   /**
    * Test {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, String)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Files Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Files Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String,
-   * List, String)}
+   * <p>
+   * Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourcesRequestBundle.<init>(String, String, List, String)"})
   public void testNewResourcesRequestBundle_whenArrayList_thenReturnFilesEmpty() {
     // Arrange and Act
-    ResourcesRequestBundle actualResourcesRequestBundle =
-        new ResourcesRequestBundle(
-            "Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path");
+    ResourcesRequestBundle actualResourcesRequestBundle = new ResourcesRequestBundle("Bundle Name", "Mapping Prefix",
+        new ArrayList<>(), "Bundle Path");
 
     // Assert
     assertEquals("Bundle Name", actualResourcesRequestBundle.getBundleName());
@@ -254,26 +228,23 @@ public class ResourcesRequestBundleDiffblueTest {
 
   /**
    * Test {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Files Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Files Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String,
-   * List, List)}
+   * <p>
+   * Method under test: {@link ResourcesRequestBundle#ResourcesRequestBundle(String, String, List, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourcesRequestBundle.<init>(String, String, List, List)"})
   public void testNewResourcesRequestBundle_whenArrayList_thenReturnFilesEmpty2() {
     // Arrange
     ArrayList<String> files = new ArrayList<>();
 
     // Act
-    ResourcesRequestBundle actualResourcesRequestBundle =
-        new ResourcesRequestBundle("Bundle Name", "Mapping Prefix", files, new ArrayList<>());
+    ResourcesRequestBundle actualResourcesRequestBundle = new ResourcesRequestBundle("Bundle Name", "Mapping Prefix",
+        files, new ArrayList<>());
 
     // Assert
     assertEquals("Bundle Name", actualResourcesRequestBundle.getBundleName());
@@ -285,9 +256,8 @@ public class ResourcesRequestBundleDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ResourcesRequestBundle#getBundleFilePaths()}
    *   <li>{@link ResourcesRequestBundle#getBundleName()}
@@ -297,20 +267,14 @@ public class ResourcesRequestBundleDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ResourcesRequestBundle.getBundleFilePaths()",
-    "String ResourcesRequestBundle.getBundleName()",
-    "String ResourcesRequestBundle.getBundlePath()",
-    "List ResourcesRequestBundle.getFiles()",
-    "String ResourcesRequestBundle.getMappingPrefix()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List ResourcesRequestBundle.getBundleFilePaths()",
+      "String ResourcesRequestBundle.getBundleName()", "String ResourcesRequestBundle.getBundlePath()",
+      "List ResourcesRequestBundle.getFiles()", "String ResourcesRequestBundle.getMappingPrefix()"})
   public void testGettersAndSetters() {
     // Arrange
-    ResourcesRequestBundle resourcesRequestBundle =
-        new ResourcesRequestBundle(
-            "Bundle Name", "Mapping Prefix", new ArrayList<>(), "Bundle Path");
+    ResourcesRequestBundle resourcesRequestBundle = new ResourcesRequestBundle("Bundle Name", "Mapping Prefix",
+        new ArrayList<>(), "Bundle Path");
 
     // Act
     List<String> actualBundleFilePaths = resourcesRequestBundle.getBundleFilePaths();

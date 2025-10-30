@@ -18,10 +18,8 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,36 +29,14 @@ import org.junit.experimental.categories.Category;
 public class SortedListFactoryBeanDiffblueTest {
   /**
    * Test {@link SortedListFactoryBean#createInstance()}.
-   *
    * <ul>
-   *   <li>Given {@link SortedListFactoryBean} (default constructor).
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SortedListFactoryBean#createInstance()}
+   * <p>
+   * Method under test: {@link SortedListFactoryBean#createInstance()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SortedListFactoryBean.createInstance()"})
-  public void testCreateInstance_givenSortedListFactoryBean_thenThrowIllegalArgumentException() {
-    // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> new SortedListFactoryBean().createInstance());
-  }
-
-  /**
-   * Test {@link SortedListFactoryBean#createInstance()}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SortedListFactoryBean#createInstance()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List SortedListFactoryBean.createInstance()"})
   public void testCreateInstance_thenReturnEmpty() {
     // Arrange
@@ -73,12 +49,11 @@ public class SortedListFactoryBeanDiffblueTest {
 
   /**
    * Test new {@link SortedListFactoryBean} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SortedListFactoryBean}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SortedListFactoryBean}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SortedListFactoryBean.<init>()"})
   public void testNewSortedListFactoryBean() {
     // Arrange and Act

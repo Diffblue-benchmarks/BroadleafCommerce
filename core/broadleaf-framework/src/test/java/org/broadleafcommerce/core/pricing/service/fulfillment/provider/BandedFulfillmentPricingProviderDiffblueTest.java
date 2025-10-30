@@ -28,8 +28,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -58,201 +57,159 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {BandedFulfillmentPricingProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BandedFulfillmentPricingProviderDiffblueTest {
-  @Autowired private BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
+  @Autowired
+  private BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
-   * FulfillmentOption)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
-   * FulfillmentOption)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"
-  })
+      "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
   public void testCanCalculateCostForFulfillmentGroup_thenReturnFalse() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
-    assertFalse(
-        bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(
-            fulfillmentGroup, new FulfillmentOptionImpl()));
+    assertFalse(bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
+        new FulfillmentOptionImpl()));
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
-   * FulfillmentOption)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
    * <ul>
-   *   <li>When {@link BandedPriceFulfillmentOptionImpl} (default constructor).
+   *   <li>When {@link BandedPriceFulfillmentOptionImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
-   * FulfillmentOption)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"
-  })
+      "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
   public void testCanCalculateCostForFulfillmentGroup_whenBandedPriceFulfillmentOptionImpl() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
-    assertTrue(
-        bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(
-            fulfillmentGroup, new BandedPriceFulfillmentOptionImpl()));
+    assertTrue(bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
+        new BandedPriceFulfillmentOptionImpl()));
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
-   * FulfillmentOption)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
    * <ul>
-   *   <li>When {@link BandedWeightFulfillmentOptionImpl} (default constructor).
+   *   <li>When {@link BandedWeightFulfillmentOptionImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
-   * FulfillmentOption)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"
-  })
+      "boolean BandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
   public void testCanCalculateCostForFulfillmentGroup_whenBandedWeightFulfillmentOptionImpl() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
-    assertTrue(
-        bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(
-            fulfillmentGroup, new BandedWeightFulfillmentOptionImpl()));
+    assertTrue(bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
+        new BandedWeightFulfillmentOptionImpl()));
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
-  })
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup() throws FulfillmentPriceException {
     // Arrange
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
 
-    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl =
-        new BandedPriceFulfillmentOptionImpl();
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = new BandedPriceFulfillmentOptionImpl();
     bandedPriceFulfillmentOptionImpl.setBands(new ArrayList<>());
     bandedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
     bandedPriceFulfillmentOptionImpl.setId(1L);
     bandedPriceFulfillmentOptionImpl.setLongDescription(
         "An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
-    bandedPriceFulfillmentOptionImpl.setName(
-        "An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
-    bandedPriceFulfillmentOptionImpl.setTaxCode(
-        "An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
+    bandedPriceFulfillmentOptionImpl
+        .setName("An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
+    bandedPriceFulfillmentOptionImpl
+        .setTaxCode("An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
     bandedPriceFulfillmentOptionImpl.setTaxable(true);
     bandedPriceFulfillmentOptionImpl.setUseFlatRates(true);
-
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getFulfillmentOption()).thenReturn(bandedPriceFulfillmentOptionImpl);
     when(fulfillmentGroup.getFulfillmentGroupItems()).thenReturn(fulfillmentGroupItemList);
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
+    assertThrows(IllegalStateException.class,
         () -> bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
     verify(fulfillmentGroup).getFulfillmentGroupItems();
     verify(fulfillmentGroup, atLeast(1)).getFulfillmentOption();
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
-  })
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup2() throws FulfillmentPriceException {
     // Arrange
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
 
-    BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl =
-        new BandedWeightFulfillmentOptionImpl();
+    BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl = new BandedWeightFulfillmentOptionImpl();
     bandedWeightFulfillmentOptionImpl.setBands(new ArrayList<>());
     bandedWeightFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
     bandedWeightFulfillmentOptionImpl.setId(1L);
     bandedWeightFulfillmentOptionImpl.setLongDescription(
         "An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
-    bandedWeightFulfillmentOptionImpl.setName(
-        "An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
-    bandedWeightFulfillmentOptionImpl.setTaxCode(
-        "An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
+    bandedWeightFulfillmentOptionImpl
+        .setName("An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
+    bandedWeightFulfillmentOptionImpl
+        .setTaxCode("An unsupported FulfillmentOption was passed to the calculateCostForFulfillmentGroup method");
     bandedWeightFulfillmentOptionImpl.setTaxable(true);
     bandedWeightFulfillmentOptionImpl.setUseFlatRates(true);
-
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getFulfillmentOption()).thenReturn(bandedWeightFulfillmentOptionImpl);
     when(fulfillmentGroup.getFulfillmentGroupItems()).thenReturn(fulfillmentGroupItemList);
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
+    assertThrows(IllegalStateException.class,
         () -> bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
     verify(fulfillmentGroup).getFulfillmentGroupItems();
     verify(fulfillmentGroup, atLeast(1)).getFulfillmentOption();
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
-   *   <li>Given one.
-   *   <li>Then return {@link FulfillmentGroupImpl}.
+   *   <li>Given one.</li>
+   *   <li>Then return {@link FulfillmentGroupImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
-  })
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_givenOne_thenReturnFulfillmentGroupImpl()
       throws FulfillmentPriceException {
     // Arrange
@@ -264,8 +221,8 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
     doNothing().when(fulfillmentGroup).setSaleFulfillmentPrice(Mockito.<Money>any());
 
     // Act
-    FulfillmentGroup actualCalculateCostForFulfillmentGroupResult =
-        bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup);
+    FulfillmentGroup actualCalculateCostForFulfillmentGroupResult = bandedFulfillmentPricingProvider
+        .calculateCostForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
     verify(fulfillmentGroup).getFulfillmentGroupItems();
@@ -277,39 +234,29 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
-   *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.
+   *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testCalculateCostForFulfillmentGroup_thenCallsGetBands()
-      throws FulfillmentPriceException {
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
+  public void testCalculateCostForFulfillmentGroup_thenCallsGetBands() throws FulfillmentPriceException {
     // Arrange
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
-
-    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl =
-        mock(BandedPriceFulfillmentOptionImpl.class);
-    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException());
-
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = mock(BandedPriceFulfillmentOptionImpl.class);
+    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException("foo"));
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getFulfillmentOption()).thenReturn(bandedPriceFulfillmentOptionImpl);
     when(fulfillmentGroup.getFulfillmentGroupItems()).thenReturn(fulfillmentGroupItemList);
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
+    assertThrows(IllegalStateException.class,
         () -> bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
     verify(fulfillmentGroup).getFulfillmentGroupItems();
     verify(fulfillmentGroup, atLeast(1)).getFulfillmentOption();
@@ -317,42 +264,29 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
-   *   <li>Then calls {@link BandedWeightFulfillmentOptionImpl#getBands()}.
+   *   <li>Then calls {@link BandedWeightFulfillmentOptionImpl#getBands()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testCalculateCostForFulfillmentGroup_thenCallsGetBands2()
-      throws FulfillmentPriceException {
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
+  public void testCalculateCostForFulfillmentGroup_thenCallsGetBands2() throws FulfillmentPriceException {
     // Arrange
-    BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider =
-        new BandedFulfillmentPricingProvider();
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
-
-    BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl =
-        mock(BandedWeightFulfillmentOptionImpl.class);
-    when(bandedWeightFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException());
-
+    BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl = mock(BandedWeightFulfillmentOptionImpl.class);
+    when(bandedWeightFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException("foo"));
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getFulfillmentOption()).thenReturn(bandedWeightFulfillmentOptionImpl);
     when(fulfillmentGroup.getFulfillmentGroupItems()).thenReturn(fulfillmentGroupItemList);
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
+    assertThrows(IllegalStateException.class,
         () -> bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
     verify(fulfillmentGroup).getFulfillmentGroupItems();
     verify(fulfillmentGroup, atLeast(1)).getFulfillmentOption();
@@ -360,89 +294,67 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
-   *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).
+   *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testCalculateCostForFulfillmentGroup_thenReturnFulfillmentGroupImpl()
-      throws FulfillmentPriceException {
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
+  public void testCalculateCostForFulfillmentGroup_thenReturnFulfillmentGroupImpl() throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
-    // Act
-    FulfillmentGroup actualCalculateCostForFulfillmentGroupResult =
-        bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup);
-
-    // Assert
-    assertSame(fulfillmentGroup, actualCalculateCostForFulfillmentGroupResult);
+    // Act and Assert
+    assertSame(fulfillmentGroup, bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
   }
 
   /**
-   * Test {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
    * <ul>
-   *   <li>Then throw {@link FulfillmentPriceException}.
+   *   <li>Then throw {@link FulfillmentPriceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
-  })
+      "FulfillmentGroup BandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateCostForFulfillmentGroup_thenThrowFulfillmentPriceException()
       throws FulfillmentPriceException {
     // Arrange
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
-
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getFulfillmentOption()).thenReturn(new FulfillmentOptionImpl());
     when(fulfillmentGroup.getFulfillmentGroupItems()).thenReturn(fulfillmentGroupItemList);
 
     // Act and Assert
-    assertThrows(
-        FulfillmentPriceException.class,
+    assertThrows(FulfillmentPriceException.class,
         () -> bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
     verify(fulfillmentGroup).getFulfillmentGroupItems();
     verify(fulfillmentGroup).getFulfillmentOption();
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup,
-   * Set)}.
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
-  })
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup() throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
-    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl =
-        new BandedPriceFulfillmentOptionImpl();
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = new BandedPriceFulfillmentOptionImpl();
     bandedPriceFulfillmentOptionImpl.setBands(new ArrayList<>());
     bandedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
     bandedPriceFulfillmentOptionImpl.setId(1L);
@@ -456,32 +368,24 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
     options.add(bandedPriceFulfillmentOptionImpl);
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(
-                fulfillmentGroup, options));
+    assertThrows(IllegalStateException.class,
+        () -> bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup,
-   * Set)}.
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
-  })
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup2() throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
-    BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl =
-        new BandedWeightFulfillmentOptionImpl();
+    BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl = new BandedWeightFulfillmentOptionImpl();
     bandedWeightFulfillmentOptionImpl.setBands(new ArrayList<>());
     bandedWeightFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
     bandedWeightFulfillmentOptionImpl.setId(1L);
@@ -495,107 +399,77 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
     options.add(bandedWeightFulfillmentOptionImpl);
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(
-                fulfillmentGroup, options));
+    assertThrows(IllegalStateException.class,
+        () -> bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup,
-   * Set)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
-   *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.
+   *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
-  })
-  public void testEstimateCostForFulfillmentGroup_thenCallsGetBands()
-      throws FulfillmentPriceException {
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
+  public void testEstimateCostForFulfillmentGroup_givenFulfillmentOptionImpl() throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-
-    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl =
-        mock(BandedPriceFulfillmentOptionImpl.class);
-    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException());
-
-    HashSet<FulfillmentOption> options = new HashSet<>();
-    options.add(bandedPriceFulfillmentOptionImpl);
-
-    // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(
-                fulfillmentGroup, options));
-    verify(bandedPriceFulfillmentOptionImpl).getBands();
-  }
-
-  /**
-   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup,
-   * Set)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
-  })
-  public void testEstimateCostForFulfillmentGroup_thenCallsGetBands2()
-      throws FulfillmentPriceException {
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-
-    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl =
-        mock(BandedPriceFulfillmentOptionImpl.class);
-    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException());
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = mock(BandedPriceFulfillmentOptionImpl.class);
+    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException("foo"));
 
     HashSet<FulfillmentOption> options = new HashSet<>();
     options.add(new FulfillmentOptionImpl());
     options.add(bandedPriceFulfillmentOptionImpl);
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(
-                fulfillmentGroup, options));
+    assertThrows(IllegalStateException.class,
+        () -> bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
     verify(bandedPriceFulfillmentOptionImpl).getBands();
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup,
-   * Set)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
-   *   <li>Then return FulfillmentOptionPrices Empty.
+   *   <li>Then calls {@link BandedPriceFulfillmentOptionImpl#getBands()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
-  })
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
+  public void testEstimateCostForFulfillmentGroup_thenCallsGetBands() throws FulfillmentPriceException {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl = mock(BandedPriceFulfillmentOptionImpl.class);
+    when(bandedPriceFulfillmentOptionImpl.getBands()).thenThrow(new IllegalStateException("foo"));
+
+    HashSet<FulfillmentOption> options = new HashSet<>();
+    options.add(bandedPriceFulfillmentOptionImpl);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class,
+        () -> bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
+    verify(bandedPriceFulfillmentOptionImpl).getBands();
+  }
+
+  /**
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * <ul>
+   *   <li>Then return FulfillmentOptionPrices Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup_thenReturnFulfillmentOptionPricesEmpty()
       throws FulfillmentPriceException {
     // Arrange
@@ -605,185 +479,119 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
     options.add(new FulfillmentOptionImpl());
 
     // Act and Assert
-    assertTrue(
-        bandedFulfillmentPricingProvider
-            .estimateCostForFulfillmentGroup(fulfillmentGroup, options)
-            .getFulfillmentOptionPrices()
-            .isEmpty());
+    assertTrue(bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options)
+        .getFulfillmentOptionPrices()
+        .isEmpty());
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup,
-   * Set)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
+   *   <li>When {@link HashSet#HashSet()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
-  })
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
   public void testEstimateCostForFulfillmentGroup_whenHashSet() throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
-    assertTrue(
-        bandedFulfillmentPricingProvider
-            .estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>())
-            .getFulfillmentOptionPrices()
-            .isEmpty());
+    assertTrue(bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>())
+        .getFulfillmentOptionPrices()
+        .isEmpty());
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>When {@link WeightUnitOfMeasureType#KILOGRAMS}.
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 1.043262451}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 1.043262451}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"
-  })
-  public void testConvertWeight_whenKilograms_thenReturnBigDecimalWith1043262451() {
-    // Arrange and Act
-    BigDecimal actualConvertWeightResult =
-        bandedFulfillmentPricingProvider.convertWeight(
-            new BigDecimal("2.3"), WeightUnitOfMeasureType.KILOGRAMS);
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"})
+  public void testConvertWeight_thenReturnBigDecimalWith1043262451() {
+    // Arrange
+    BigDecimal weight = new BigDecimal("2.3");
+
+    // Act
+    BigDecimal actualConvertWeightResult = bandedFulfillmentPricingProvider.convertWeight(weight,
+        new WeightUnitOfMeasureType("KILOGRAMS", "Friendly Type"));
 
     // Assert
     assertEquals(new BigDecimal("1.043262451"), actualConvertWeightResult);
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with {@code
-   *       Type} and {@code Friendly Type}.
+   *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with {@code Type} and {@code Friendly Type}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"})
   public void testConvertWeight_whenWeightUnitOfMeasureTypeWithTypeAndFriendlyType() {
     // Arrange
     BigDecimal weight = new BigDecimal("2.3");
 
     // Act
-    BigDecimal actualConvertWeightResult =
-        bandedFulfillmentPricingProvider.convertWeight(
-            weight, new WeightUnitOfMeasureType("Type", "Friendly Type"));
+    BigDecimal actualConvertWeightResult = bandedFulfillmentPricingProvider.convertWeight(weight,
+        new WeightUnitOfMeasureType("Type", "Friendly Type"));
 
     // Assert
     assertEquals(new BigDecimal("2.3"), actualConvertWeightResult);
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType(String, String)} with type is
-   *       {@code KILOGRAMS} and {@code Friendly Type}.
+   *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType()}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"
-  })
-  public void testConvertWeight_whenWeightUnitOfMeasureTypeWithTypeIsKilogramsAndFriendlyType() {
-    // Arrange
-    BigDecimal weight = new BigDecimal("2.3");
-
-    // Act
-    BigDecimal actualConvertWeightResult =
-        bandedFulfillmentPricingProvider.convertWeight(
-            weight, new WeightUnitOfMeasureType("KILOGRAMS", "Friendly Type"));
-
-    // Assert
-    assertEquals(new BigDecimal("1.043262451"), actualConvertWeightResult);
-  }
-
-  /**
-   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}.
-   *
-   * <ul>
-   *   <li>When {@link WeightUnitOfMeasureType#WeightUnitOfMeasureType()}.
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"})
   public void testConvertWeight_whenWeightUnitOfMeasureType_thenReturnBigDecimalWith23() {
     // Arrange
     BigDecimal weight = new BigDecimal("2.3");
 
     // Act
-    BigDecimal actualConvertWeightResult =
-        bandedFulfillmentPricingProvider.convertWeight(weight, new WeightUnitOfMeasureType());
+    BigDecimal actualConvertWeightResult = bandedFulfillmentPricingProvider.convertWeight(weight,
+        new WeightUnitOfMeasureType());
 
     // Assert
     assertEquals(new BigDecimal("2.3"), actualConvertWeightResult);
   }
 
   /**
-   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}.
-   *
+   * Test {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
-   *   <li>When {@link WeightUnitOfMeasureType}.
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   *   <li>When {@link WeightUnitOfMeasureType}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal,
-   * WeightUnitOfMeasureType)}
+   * <p>
+   * Method under test: {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal BandedFulfillmentPricingProvider.convertWeight(BigDecimal, WeightUnitOfMeasureType)"})
   public void testConvertWeight_whenWeightUnitOfMeasureType_thenReturnBigDecimalWith232() {
     // Arrange and Act
-    BigDecimal actualConvertWeightResult =
-        bandedFulfillmentPricingProvider.convertWeight(
-            new BigDecimal("2.3"), mock(WeightUnitOfMeasureType.class));
+    BigDecimal actualConvertWeightResult = bandedFulfillmentPricingProvider.convertWeight(new BigDecimal("2.3"),
+        mock(WeightUnitOfMeasureType.class));
 
     // Assert
     assertEquals(new BigDecimal("2.3"), actualConvertWeightResult);

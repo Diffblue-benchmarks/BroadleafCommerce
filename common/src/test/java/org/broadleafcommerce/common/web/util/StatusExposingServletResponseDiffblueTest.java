@@ -19,14 +19,12 @@ package org.broadleafcommerce.common.web.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -45,41 +43,36 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class StatusExposingServletResponseDiffblueTest {
-  @Mock private HttpServletResponse httpServletResponse;
+  @Mock
+  private HttpServletResponse httpServletResponse;
 
-  @InjectMocks private StatusExposingServletResponse statusExposingServletResponse;
+  @InjectMocks
+  private StatusExposingServletResponse statusExposingServletResponse;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StatusExposingServletResponse#StatusExposingServletResponse(HttpServletResponse)}
    *   <li>{@link StatusExposingServletResponse#getStatus()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StatusExposingServletResponse.<init>(HttpServletResponse)",
-    "int StatusExposingServletResponse.getStatus()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StatusExposingServletResponse.<init>(HttpServletResponse)",
+      "int StatusExposingServletResponse.getStatus()"})
   public void testGettersAndSetters() throws IOException {
     // Arrange
-    FileSystemResponseWrapper response =
-        new FileSystemResponseWrapper(
-            new MockHttpServletResponse(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(response);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    FileSystemResponseWrapper response2 = new FileSystemResponseWrapper(response,
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
 
     // Act
-    StatusExposingServletResponse actualStatusExposingServletResponse =
-        new StatusExposingServletResponse(response2);
+    StatusExposingServletResponse actualStatusExposingServletResponse = new StatusExposingServletResponse(response2);
 
     // Assert
     assertEquals(200, actualStatusExposingServletResponse.getStatus());
@@ -88,209 +81,164 @@ public class StatusExposingServletResponseDiffblueTest {
 
   /**
    * Test {@link StatusExposingServletResponse#sendError(int)} with {@code sc}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#sendError(int)}
+   * <p>
+   * Method under test: {@link StatusExposingServletResponse#sendError(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int)"})
   public void testSendErrorWithSc() throws IOException {
     // Arrange
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(
-            new HttpServletResponseWrapper(new MockHttpServletResponse()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
     statusExposingServletResponse.sendError(1);
 
     // Assert
-    ServletResponse response = statusExposingServletResponse.getResponse();
-    assertTrue(response instanceof HttpServletResponseWrapper);
-    ServletResponse response2 = ((HttpServletResponseWrapper) response).getResponse();
-    assertTrue(response2 instanceof MockHttpServletResponse);
-    assertEquals(1, ((HttpServletResponseWrapper) response).getStatus());
+    ServletResponse response2 = statusExposingServletResponse.getResponse();
+    assertTrue(response2 instanceof FileSystemResponseWrapper);
+    ServletResponse response3 = ((FileSystemResponseWrapper) response2).getResponse();
+    assertTrue(response3 instanceof MockHttpServletResponse);
+    assertEquals(1, ((FileSystemResponseWrapper) response2).getStatus());
     assertEquals(1, statusExposingServletResponse.getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response2).getStatus());
-    assertTrue(response.isCommitted());
+    assertEquals(1, ((MockHttpServletResponse) response3).getStatus());
     assertTrue(response2.isCommitted());
+    assertTrue(response3.isCommitted());
     assertTrue(statusExposingServletResponse.isCommitted());
   }
 
   /**
    * Test {@link StatusExposingServletResponse#sendError(int)} with {@code sc}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#sendError(int)}
+   * <p>
+   * Method under test: {@link StatusExposingServletResponse#sendError(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int)"})
   public void testSendErrorWithSc2() throws IOException {
     // Arrange
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(response);
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(response2);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())));
+    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response2, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
     statusExposingServletResponse.sendError(1);
 
     // Assert
     ServletResponse response3 = statusExposingServletResponse.getResponse();
-    assertTrue(response3 instanceof HttpServletResponseWrapper);
-    ServletResponse response4 = ((HttpServletResponseWrapper) response3).getResponse();
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
     assertTrue(response4 instanceof HttpServletResponseWrapper);
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
     ServletResponse response5 = ((HttpServletResponseWrapper) response4).getResponse();
-    assertTrue(response5 instanceof StatusExposingServletResponse);
     ServletResponse response6 = ((StatusExposingServletResponse) response5).getResponse();
-    assertTrue(response6 instanceof MockHttpServletResponse);
+    assertTrue(response6 instanceof FileSystemResponseWrapper);
+    assertTrue(response5 instanceof StatusExposingServletResponse);
+    ServletResponse response7 = ((FileSystemResponseWrapper) response6).getResponse();
+    assertTrue(response7 instanceof MockHttpServletResponse);
     assertEquals(1, ((HttpServletResponseWrapper) response4).getStatus());
+    assertEquals(1, ((FileSystemResponseWrapper) response6).getStatus());
     assertEquals(1, ((StatusExposingServletResponse) response5).getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response6).getStatus());
+    assertEquals(1, ((MockHttpServletResponse) response7).getStatus());
     assertTrue(response4.isCommitted());
-    assertTrue(response6.isCommitted());
   }
 
   /**
    * Test {@link StatusExposingServletResponse#sendError(int)} with {@code sc}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#sendError(int)}
+   * <p>
+   * Method under test: {@link StatusExposingServletResponse#sendError(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int)"})
   public void testSendErrorWithSc3() throws IOException {
     // Arrange
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    SecurityWrapperResponse response2 = new SecurityWrapperResponse(response, "Mode");
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(new HttpServletResponseWrapper(response2));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    SecurityWrapperResponse response2 = new SecurityWrapperResponse(new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())),
+        "Mode");
+
+    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response2, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
     statusExposingServletResponse.sendError(1);
 
     // Assert
     ServletResponse response3 = statusExposingServletResponse.getResponse();
-    assertTrue(response3 instanceof HttpServletResponseWrapper);
-    ServletResponse response4 = ((HttpServletResponseWrapper) response3).getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
     ServletResponse response5 = ((SecurityWrapperResponse) response4).getResponse();
-    assertTrue(response5 instanceof HttpServletResponseWrapper);
-    ServletResponse response6 = ((HttpServletResponseWrapper) response5).getResponse();
-    assertTrue(response6 instanceof StatusExposingServletResponse);
+    ServletResponse response6 = ((StatusExposingServletResponse) response5).getResponse();
+    assertTrue(response6 instanceof FileSystemResponseWrapper);
+    assertTrue(response5 instanceof StatusExposingServletResponse);
     assertTrue(response4 instanceof SecurityWrapperResponse);
-    ServletResponse response7 = ((StatusExposingServletResponse) response6).getResponse();
+    ServletResponse response7 = ((FileSystemResponseWrapper) response6).getResponse();
     assertTrue(response7 instanceof MockHttpServletResponse);
     assertEquals("HTTP error code: 1", ((MockHttpServletResponse) response7).getErrorMessage());
-    assertEquals(200, ((HttpServletResponseWrapper) response3).getStatus());
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
     assertTrue(response4.isCommitted());
-    assertTrue(response6.isCommitted());
     assertTrue(response7.isCommitted());
   }
 
   /**
    * Test {@link StatusExposingServletResponse#sendError(int)} with {@code sc}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#sendError(int)}
+   * <p>
+   * Method under test: {@link StatusExposingServletResponse#sendError(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int)"})
   public void testSendErrorWithSc4() throws IOException {
     // Arrange
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    StatusExposingServletResponse response2 = new StatusExposingServletResponse(response);
-    HttpServletResponseWrapper response3 = new HttpServletResponseWrapper(response2);
-    SecurityWrapperResponse response4 = new SecurityWrapperResponse(response3, "Mode");
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(new HttpServletResponseWrapper(response4));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())));
+    SecurityWrapperResponse response3 = new SecurityWrapperResponse(new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response2, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())),
+        "Mode");
+
+    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response3, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
     statusExposingServletResponse.sendError(1);
 
     // Assert
-    ServletResponse response5 = statusExposingServletResponse.getResponse();
-    assertTrue(response5 instanceof HttpServletResponseWrapper);
-    ServletResponse response6 = ((HttpServletResponseWrapper) response5).getResponse();
-    ServletResponse response7 = ((SecurityWrapperResponse) response6).getResponse();
-    ServletResponse response8 = ((HttpServletResponseWrapper) response7).getResponse();
-    ServletResponse response9 = ((StatusExposingServletResponse) response8).getResponse();
-    assertTrue(response9 instanceof HttpServletResponseWrapper);
-    assertTrue(response7 instanceof HttpServletResponseWrapper);
-    ServletResponse response10 = ((HttpServletResponseWrapper) response9).getResponse();
-    assertTrue(response10 instanceof StatusExposingServletResponse);
-    assertTrue(response8 instanceof StatusExposingServletResponse);
-    assertTrue(response6 instanceof SecurityWrapperResponse);
-    ServletResponse response11 = ((StatusExposingServletResponse) response10).getResponse();
-    assertTrue(response11 instanceof MockHttpServletResponse);
-    assertEquals("HTTP error code: 1", ((MockHttpServletResponse) response11).getErrorMessage());
-    assertTrue(response10.isCommitted());
-    assertTrue(response11.isCommitted());
+    ServletResponse response4 = statusExposingServletResponse.getResponse();
+    ServletResponse response5 = ((FileSystemResponseWrapper) response4).getResponse();
+    ServletResponse response6 = ((SecurityWrapperResponse) response5).getResponse();
+    ServletResponse response7 = ((StatusExposingServletResponse) response6).getResponse();
+    ServletResponse response8 = ((FileSystemResponseWrapper) response7).getResponse();
+    assertTrue(response8 instanceof HttpServletResponseWrapper);
+    assertTrue(response4 instanceof FileSystemResponseWrapper);
+    ServletResponse response9 = ((HttpServletResponseWrapper) response8).getResponse();
+    ServletResponse response10 = ((StatusExposingServletResponse) response9).getResponse();
+    assertTrue(response10 instanceof FileSystemResponseWrapper);
+    assertTrue(response7 instanceof FileSystemResponseWrapper);
+    assertTrue(response9 instanceof StatusExposingServletResponse);
+    assertTrue(response6 instanceof StatusExposingServletResponse);
+    assertTrue(response5 instanceof SecurityWrapperResponse);
     assertTrue(response9.isCommitted());
+    assertTrue(response8.isCommitted());
+    assertTrue(response10.isCommitted());
   }
 
   /**
    * Test {@link StatusExposingServletResponse#sendError(int, String)} with {@code sc}, {@code msg}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#sendError(int, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int, String)"})
-  public void testSendErrorWithScMsg() throws IOException {
-    // Arrange
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(response);
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(response2);
-
-    // Act
-    statusExposingServletResponse.sendError(1, "Msg");
-
-    // Assert
-    ServletResponse response3 = statusExposingServletResponse.getResponse();
-    assertTrue(response3 instanceof HttpServletResponseWrapper);
-    ServletResponse response4 = ((HttpServletResponseWrapper) response3).getResponse();
-    assertTrue(response4 instanceof HttpServletResponseWrapper);
-    ServletResponse response5 = ((HttpServletResponseWrapper) response4).getResponse();
-    assertTrue(response5 instanceof StatusExposingServletResponse);
-    ServletResponse response6 = ((StatusExposingServletResponse) response5).getResponse();
-    assertTrue(response6 instanceof MockHttpServletResponse);
-    assertEquals("Msg", ((MockHttpServletResponse) response6).getErrorMessage());
-    assertEquals(1, ((HttpServletResponseWrapper) response4).getStatus());
-    assertEquals(1, ((StatusExposingServletResponse) response5).getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response6).getStatus());
-    assertTrue(response4.isCommitted());
-    assertTrue(response5.isCommitted());
-    assertTrue(response6.isCommitted());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#sendError(int, String)} with {@code sc}, {@code msg}.
-   *
    * <ul>
-   *   <li>Then {@link StatusExposingServletResponse} Status is one.
+   *   <li>Then {@link StatusExposingServletResponse} Status is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#sendError(int, String)}
+   * <p>
+   * Method under test: {@link StatusExposingServletResponse#sendError(int, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int, String)"})
-  public void testSendErrorWithScMsg_thenStatusExposingServletResponseStatusIsOne()
-      throws IOException {
+  public void testSendErrorWithScMsg_thenStatusExposingServletResponseStatusIsOne() throws IOException {
     // Arrange
     doNothing().when(httpServletResponse).sendError(anyInt(), Mockito.<String>any());
 
@@ -298,233 +246,82 @@ public class StatusExposingServletResponseDiffblueTest {
     statusExposingServletResponse.sendError(1, "Msg");
 
     // Assert
-    verify(httpServletResponse).sendError(1, "Msg");
+    verify(httpServletResponse).sendError(eq(1), eq("Msg"));
     assertEquals(1, statusExposingServletResponse.getStatus());
   }
 
   /**
-   * Test {@link StatusExposingServletResponse#sendError(int, String)} with {@code sc}, {@code msg}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IOException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#sendError(int, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StatusExposingServletResponse.sendError(int, String)"})
-  public void testSendErrorWithScMsg_thenThrowIOException() throws IOException {
-    // Arrange
-    doThrow(new IOException()).when(httpServletResponse).sendError(anyInt(), Mockito.<String>any());
-
-    // Act and Assert
-    assertThrows(IOException.class, () -> statusExposingServletResponse.sendError(1, "Msg"));
-    verify(httpServletResponse).sendError(1, "Msg");
-  }
-
-  /**
    * Test {@link StatusExposingServletResponse#setStatus(int)} with {@code sc}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#setStatus(int)}
+   * <p>
+   * Method under test: {@link StatusExposingServletResponse#setStatus(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int)"})
-  public void testSetStatusWithSc() {
+  public void testSetStatusWithSc() throws IOException {
     // Arrange
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(
-            new HttpServletResponseWrapper(new MockHttpServletResponse()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
     statusExposingServletResponse.setStatus(1);
 
     // Assert
-    ServletResponse response = statusExposingServletResponse.getResponse();
-    assertTrue(response instanceof HttpServletResponseWrapper);
-    ServletResponse response2 = ((HttpServletResponseWrapper) response).getResponse();
-    assertTrue(response2 instanceof MockHttpServletResponse);
-    assertEquals(1, ((HttpServletResponseWrapper) response).getStatus());
+    ServletResponse response2 = statusExposingServletResponse.getResponse();
+    assertTrue(response2 instanceof FileSystemResponseWrapper);
+    ServletResponse response3 = ((FileSystemResponseWrapper) response2).getResponse();
+    assertTrue(response3 instanceof MockHttpServletResponse);
+    assertEquals(1, ((FileSystemResponseWrapper) response2).getStatus());
     assertEquals(1, statusExposingServletResponse.getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response2).getStatus());
+    assertEquals(1, ((MockHttpServletResponse) response3).getStatus());
   }
 
   /**
    * Test {@link StatusExposingServletResponse#setStatus(int)} with {@code sc}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#setStatus(int)}
+   * <p>
+   * Method under test: {@link StatusExposingServletResponse#setStatus(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int)"})
-  public void testSetStatusWithSc2() {
+  public void testSetStatusWithSc2() throws IOException {
     // Arrange
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(response);
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(response2);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())));
+    StatusExposingServletResponse statusExposingServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response2, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
     statusExposingServletResponse.setStatus(1);
 
     // Assert
     ServletResponse response3 = statusExposingServletResponse.getResponse();
-    assertTrue(response3 instanceof HttpServletResponseWrapper);
-    ServletResponse response4 = ((HttpServletResponseWrapper) response3).getResponse();
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
     assertTrue(response4 instanceof HttpServletResponseWrapper);
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
     ServletResponse response5 = ((HttpServletResponseWrapper) response4).getResponse();
-    assertTrue(response5 instanceof StatusExposingServletResponse);
     ServletResponse response6 = ((StatusExposingServletResponse) response5).getResponse();
-    assertTrue(response6 instanceof MockHttpServletResponse);
-    assertEquals(1, ((HttpServletResponseWrapper) response3).getStatus());
+    assertTrue(response6 instanceof FileSystemResponseWrapper);
+    assertTrue(response5 instanceof StatusExposingServletResponse);
+    ServletResponse response7 = ((FileSystemResponseWrapper) response6).getResponse();
+    assertTrue(response7 instanceof MockHttpServletResponse);
     assertEquals(1, ((HttpServletResponseWrapper) response4).getStatus());
-    assertEquals(1, statusExposingServletResponse.getStatus());
+    assertEquals(1, ((FileSystemResponseWrapper) response6).getStatus());
     assertEquals(1, ((StatusExposingServletResponse) response5).getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response6).getStatus());
+    assertEquals(1, ((MockHttpServletResponse) response7).getStatus());
   }
 
   /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with {@code status}, {@code
-   * string}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#setStatus(int, String)}
+   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with {@code status}, {@code string}.
+   * <p>
+   * Method under test: {@link StatusExposingServletResponse#setStatus(int, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int, String)"})
   public void testSetStatusWithStatusString() {
-    // Arrange
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    HttpServletResponseWrapper response2 = new HttpServletResponseWrapper(response);
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(response2);
-
-    // Act
-    statusExposingServletResponse.setStatus(1, "String");
-
-    // Assert
-    ServletResponse response3 = statusExposingServletResponse.getResponse();
-    assertTrue(response3 instanceof HttpServletResponseWrapper);
-    ServletResponse response4 = ((HttpServletResponseWrapper) response3).getResponse();
-    assertTrue(response4 instanceof HttpServletResponseWrapper);
-    ServletResponse response5 = ((HttpServletResponseWrapper) response4).getResponse();
-    assertTrue(response5 instanceof StatusExposingServletResponse);
-    ServletResponse response6 = ((StatusExposingServletResponse) response5).getResponse();
-    assertTrue(response6 instanceof MockHttpServletResponse);
-    assertEquals("String", ((MockHttpServletResponse) response6).getErrorMessage());
-    assertEquals(1, ((HttpServletResponseWrapper) response4).getStatus());
-    assertEquals(1, ((StatusExposingServletResponse) response5).getStatus());
-    assertEquals(1, ((MockHttpServletResponse) response6).getStatus());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with {@code status}, {@code
-   * string}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#setStatus(int, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int, String)"})
-  public void testSetStatusWithStatusString2() {
-    // Arrange
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    SecurityWrapperResponse response2 = new SecurityWrapperResponse(response, "Mode");
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(new HttpServletResponseWrapper(response2));
-
-    // Act
-    statusExposingServletResponse.setStatus(1, "String");
-
-    // Assert
-    ServletResponse response3 = statusExposingServletResponse.getResponse();
-    assertTrue(response3 instanceof HttpServletResponseWrapper);
-    ServletResponse response4 = ((HttpServletResponseWrapper) response3).getResponse();
-    ServletResponse response5 = ((SecurityWrapperResponse) response4).getResponse();
-    assertTrue(response5 instanceof HttpServletResponseWrapper);
-    ServletResponse response6 = ((HttpServletResponseWrapper) response5).getResponse();
-    assertTrue(response6 instanceof StatusExposingServletResponse);
-    assertTrue(response4 instanceof SecurityWrapperResponse);
-    assertEquals(200, ((HttpServletResponseWrapper) response3).getStatus());
-    assertTrue(response3.isCommitted());
-    assertTrue(response4.isCommitted());
-    assertTrue(response6.isCommitted());
-    assertTrue(response5.isCommitted());
-    assertTrue(statusExposingServletResponse.isCommitted());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with {@code status}, {@code
-   * string}.
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#setStatus(int, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int, String)"})
-  public void testSetStatusWithStatusString3() {
-    // Arrange
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    StatusExposingServletResponse response2 = new StatusExposingServletResponse(response);
-    HttpServletResponseWrapper response3 = new HttpServletResponseWrapper(response2);
-    SecurityWrapperResponse response4 = new SecurityWrapperResponse(response3, "Mode");
-    StatusExposingServletResponse statusExposingServletResponse =
-        new StatusExposingServletResponse(new HttpServletResponseWrapper(response4));
-
-    // Act
-    statusExposingServletResponse.setStatus(1, "String");
-
-    // Assert
-    ServletResponse response5 = statusExposingServletResponse.getResponse();
-    assertTrue(response5 instanceof HttpServletResponseWrapper);
-    ServletResponse response6 = ((HttpServletResponseWrapper) response5).getResponse();
-    ServletResponse response7 = ((SecurityWrapperResponse) response6).getResponse();
-    ServletResponse response8 = ((HttpServletResponseWrapper) response7).getResponse();
-    ServletResponse response9 = ((StatusExposingServletResponse) response8).getResponse();
-    assertTrue(response9 instanceof HttpServletResponseWrapper);
-    assertTrue(response7 instanceof HttpServletResponseWrapper);
-    ServletResponse response10 = ((HttpServletResponseWrapper) response9).getResponse();
-    assertTrue(response10 instanceof StatusExposingServletResponse);
-    assertTrue(response8 instanceof StatusExposingServletResponse);
-    assertTrue(response6 instanceof SecurityWrapperResponse);
-    ServletResponse response11 = ((StatusExposingServletResponse) response10).getResponse();
-    assertTrue(response11 instanceof MockHttpServletResponse);
-    assertEquals("String", ((MockHttpServletResponse) response11).getErrorMessage());
-    assertTrue(response10.isCommitted());
-    assertTrue(response11.isCommitted());
-    assertTrue(response9.isCommitted());
-  }
-
-  /**
-   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with {@code status}, {@code
-   * string}.
-   *
-   * <ul>
-   *   <li>Then {@link StatusExposingServletResponse} Status is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link StatusExposingServletResponse#setStatus(int, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StatusExposingServletResponse.setStatus(int, String)"})
-  public void testSetStatusWithStatusString_thenStatusExposingServletResponseStatusIsOne() {
     // Arrange
     doNothing().when(httpServletResponse).setStatus(anyInt(), Mockito.<String>any());
 
@@ -532,7 +329,7 @@ public class StatusExposingServletResponseDiffblueTest {
     statusExposingServletResponse.setStatus(1, "String");
 
     // Assert
-    verify(httpServletResponse).setStatus(1, "String");
+    verify(httpServletResponse).setStatus(eq(1), eq("String"));
     assertEquals(1, statusExposingServletResponse.getStatus());
   }
 }

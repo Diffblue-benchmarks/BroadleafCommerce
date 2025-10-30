@@ -23,8 +23,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,42 +40,39 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {NamedOperationManagerImpl.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class NamedOperationManagerImplDiffblueTest {
-  @Autowired private NamedOperationManagerImpl namedOperationManagerImpl;
+  @Autowired
+  private NamedOperationManagerImpl namedOperationManagerImpl;
 
   /**
    * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
-   *   <li>Then calls {@link NamedOperationComponent#setOperationValues(Map, Map)}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
+   *   <li>Then calls {@link NamedOperationComponent#setOperationValues(Map, Map)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   * <p>
+   * Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
   public void testManageNamedParameters_givenArrayListAddFoo_thenCallsSetOperationValues() {
     // Arrange
     ArrayList<String> stringList = new ArrayList<>();
     stringList.add("foo");
-
     NamedOperationComponent namedOperationComponent = mock(NamedOperationComponent.class);
-    when(namedOperationComponent.setOperationValues(
-            Mockito.<Map<String, String>>any(), Mockito.<Map<String, String>>any()))
-        .thenReturn(stringList);
+    when(namedOperationComponent.setOperationValues(Mockito.<Map<String, String>>any(),
+        Mockito.<Map<String, String>>any())).thenReturn(stringList);
 
     ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
     namedOperationComponents.add(namedOperationComponent);
     namedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
 
     // Act
-    Map<String, String> actualManageNamedParametersResult =
-        namedOperationManagerImpl.manageNamedParameters(new HashMap<>());
+    Map<String, String> actualManageNamedParametersResult = namedOperationManagerImpl
+        .manageNamedParameters(new HashMap<>());
 
     // Assert
     verify(namedOperationComponent).setOperationValues(isA(Map.class), isA(Map.class));
@@ -85,16 +81,14 @@ public class NamedOperationManagerImplDiffblueTest {
 
   /**
    * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
-   *
    * <ul>
-   *   <li>Given {@link NamedOperationManagerImpl}.
+   *   <li>Given {@link NamedOperationManagerImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   * <p>
+   * Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
   public void testManageNamedParameters_givenNamedOperationManagerImpl() {
     // Arrange, Act and Assert
@@ -103,31 +97,28 @@ public class NamedOperationManagerImplDiffblueTest {
 
   /**
    * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
-   *
    * <ul>
-   *   <li>Then calls {@link NamedOperationComponent#setOperationValues(Map, Map)}.
+   *   <li>Then calls {@link NamedOperationComponent#setOperationValues(Map, Map)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   * <p>
+   * Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
   public void testManageNamedParameters_thenCallsSetOperationValues() {
     // Arrange
     NamedOperationComponent namedOperationComponent = mock(NamedOperationComponent.class);
-    when(namedOperationComponent.setOperationValues(
-            Mockito.<Map<String, String>>any(), Mockito.<Map<String, String>>any()))
-        .thenReturn(new ArrayList<>());
+    when(namedOperationComponent.setOperationValues(Mockito.<Map<String, String>>any(),
+        Mockito.<Map<String, String>>any())).thenReturn(new ArrayList<>());
 
     ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
     namedOperationComponents.add(namedOperationComponent);
     namedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
 
     // Act
-    Map<String, String> actualManageNamedParametersResult =
-        namedOperationManagerImpl.manageNamedParameters(new HashMap<>());
+    Map<String, String> actualManageNamedParametersResult = namedOperationManagerImpl
+        .manageNamedParameters(new HashMap<>());
 
     // Assert
     verify(namedOperationComponent).setOperationValues(isA(Map.class), isA(Map.class));
@@ -136,9 +127,8 @@ public class NamedOperationManagerImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link NamedOperationManagerImpl}
    *   <li>{@link NamedOperationManagerImpl#setNamedOperationComponents(List)}
@@ -146,20 +136,17 @@ public class NamedOperationManagerImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NamedOperationManagerImpl.<init>()",
-    "List NamedOperationManagerImpl.getNamedOperationComponents()",
-    "void NamedOperationManagerImpl.setNamedOperationComponents(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NamedOperationManagerImpl.<init>()",
+      "List NamedOperationManagerImpl.getNamedOperationComponents()",
+      "void NamedOperationManagerImpl.setNamedOperationComponents(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     NamedOperationManagerImpl actualNamedOperationManagerImpl = new NamedOperationManagerImpl();
     ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
     actualNamedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
-    List<NamedOperationComponent> actualNamedOperationComponents =
-        actualNamedOperationManagerImpl.getNamedOperationComponents();
+    List<NamedOperationComponent> actualNamedOperationComponents = actualNamedOperationManagerImpl
+        .getNamedOperationComponents();
 
     // Assert
     assertTrue(actualNamedOperationComponents.isEmpty());

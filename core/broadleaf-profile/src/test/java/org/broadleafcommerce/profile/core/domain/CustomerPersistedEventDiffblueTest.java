@@ -19,8 +19,7 @@ package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,12 +27,11 @@ import org.junit.experimental.categories.Category;
 public class CustomerPersistedEventDiffblueTest {
   /**
    * Test {@link CustomerPersistedEvent#CustomerPersistedEvent(Customer)}.
-   *
-   * <p>Method under test: {@link CustomerPersistedEvent#CustomerPersistedEvent(Customer)}
+   * <p>
+   * Method under test: {@link CustomerPersistedEvent#CustomerPersistedEvent(Customer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CustomerPersistedEvent.<init>(Customer)"})
   public void testNewCustomerPersistedEvent() {
     // Arrange
@@ -51,18 +49,17 @@ public class CustomerPersistedEventDiffblueTest {
 
   /**
    * Test {@link CustomerPersistedEvent#getCustomer()}.
-   *
-   * <p>Method under test: {@link CustomerPersistedEvent#getCustomer()}
+   * <p>
+   * Method under test: {@link CustomerPersistedEvent#getCustomer()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Customer CustomerPersistedEvent.getCustomer()"})
   public void testGetCustomer() {
     // Arrange
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
-    assertSame(customer, new CustomerPersistedEvent(customer).getCustomer());
+    assertSame(customer, (new CustomerPersistedEvent(customer)).getCustomer());
   }
 }

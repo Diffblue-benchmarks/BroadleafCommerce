@@ -27,8 +27,7 @@ import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -52,38 +51,37 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OfferCodeDaoImplDiffblueTest {
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
-  @Mock private OfferCodeDaoExtensionManager offerCodeDaoExtensionManager;
+  @InjectMocks
+  private OfferCodeDaoImpl offerCodeDaoImpl;
 
-  @InjectMocks private OfferCodeDaoImpl offerCodeDaoImpl;
+  @Mock
+  private OfferCodeDaoExtensionManager offerCodeDaoExtensionManager;
 
   /**
    * Test {@link OfferCodeDaoImpl#create()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} (default constructor) EmailAddress is {@code 42 Main St}.
-   *   <li>Then return {@link OfferCodeImpl} (default constructor).
+   *   <li>Given {@link OfferCodeImpl} (default constructor) EmailAddress is {@code 42 Main St}.</li>
+   *   <li>Then return {@link OfferCodeImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeDaoImpl#create()}
+   * <p>
+   * Method under test: {@link OfferCodeDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OfferCode OfferCodeDaoImpl.create()"})
   public void testCreate_givenOfferCodeImplEmailAddressIs42MainSt_thenReturnOfferCodeImpl() {
     // Arrange
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     offerCodeImpl.setEmailAddress("42 Main St");
-    offerCodeImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl.setMaxUses(3);
     offerCodeImpl.setOfferCode("Offer Code");
     offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setUses(1);
     when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(offerCodeImpl);
 
@@ -91,23 +89,20 @@ public class OfferCodeDaoImplDiffblueTest {
     OfferCode actualCreateResult = offerCodeDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.offer.domain.OfferCode");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.OfferCode"));
     assertSame(offerCodeImpl, actualCreateResult);
   }
 
   /**
    * Test {@link OfferCodeDaoImpl#create()}.
-   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.
+   *   <li>Then throw {@link NoResultException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeDaoImpl#create()}
+   * <p>
+   * Method under test: {@link OfferCodeDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OfferCode OfferCodeDaoImpl.create()"})
   public void testCreate_thenThrowNoResultException() {
     // Arrange
@@ -116,27 +111,23 @@ public class OfferCodeDaoImplDiffblueTest {
 
     // Act and Assert
     assertThrows(NoResultException.class, () -> offerCodeDaoImpl.create());
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.offer.domain.OfferCode");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.OfferCode"));
   }
 
   /**
    * Test {@link OfferCodeDaoImpl#readOfferCodeByCode(String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.
+   *   <li>Then throw {@link NoResultException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeDaoImpl#readOfferCodeByCode(String)}
+   * <p>
+   * Method under test: {@link OfferCodeDaoImpl#readOfferCodeByCode(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OfferCode OfferCodeDaoImpl.readOfferCodeByCode(String)"})
   public void testReadOfferCodeByCode_thenThrowNoResultException() {
     // Arrange
-    when(offerCodeDaoExtensionManager.getProxy())
-        .thenThrow(new NoResultException("An error occurred"));
+    when(offerCodeDaoExtensionManager.getProxy()).thenThrow(new NoResultException("An error occurred"));
 
     // Act and Assert
     assertThrows(NoResultException.class, () -> offerCodeDaoImpl.readOfferCodeByCode("Code"));
@@ -145,21 +136,18 @@ public class OfferCodeDaoImplDiffblueTest {
 
   /**
    * Test {@link OfferCodeDaoImpl#readAllOfferCodesByCode(String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.
+   *   <li>Then throw {@link NoResultException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeDaoImpl#readAllOfferCodesByCode(String)}
+   * <p>
+   * Method under test: {@link OfferCodeDaoImpl#readAllOfferCodesByCode(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List OfferCodeDaoImpl.readAllOfferCodesByCode(String)"})
   public void testReadAllOfferCodesByCode_thenThrowNoResultException() {
     // Arrange
-    when(offerCodeDaoExtensionManager.getProxy())
-        .thenThrow(new NoResultException("An error occurred"));
+    when(offerCodeDaoExtensionManager.getProxy()).thenThrow(new NoResultException("An error occurred"));
 
     // Act and Assert
     assertThrows(NoResultException.class, () -> offerCodeDaoImpl.readAllOfferCodesByCode("Code"));
@@ -168,27 +156,21 @@ public class OfferCodeDaoImplDiffblueTest {
 
   /**
    * Test {@link OfferCodeDaoImpl#readOfferCodesQuery(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeDaoImpl#readOfferCodesQuery(String)}
+   * <p>
+   * Method under test: {@link OfferCodeDaoImpl#readOfferCodesQuery(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Query OfferCodeDaoImpl.readOfferCodesQuery(String)"})
   public void testReadOfferCodesQuery_thenReturnNull() {
     // Arrange
-    DefaultOfferCodeDaoExtensionHandler defaultOfferCodeDaoExtensionHandler =
-        mock(DefaultOfferCodeDaoExtensionHandler.class);
-    when(defaultOfferCodeDaoExtensionHandler.createReadOfferCodeByCodeQuery(
-            Mockito.<EntityManager>any(),
-            Mockito.<ExtensionResultHolder<Query>>any(),
-            Mockito.<String>any(),
-            anyBoolean(),
-            Mockito.<String>any()))
+    DefaultOfferCodeDaoExtensionHandler defaultOfferCodeDaoExtensionHandler = mock(
+        DefaultOfferCodeDaoExtensionHandler.class);
+    when(defaultOfferCodeDaoExtensionHandler.createReadOfferCodeByCodeQuery(Mockito.<EntityManager>any(),
+        Mockito.<ExtensionResultHolder<Query>>any(), Mockito.<String>any(), anyBoolean(), Mockito.<String>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(offerCodeDaoExtensionManager.getProxy()).thenReturn(defaultOfferCodeDaoExtensionHandler);
 
@@ -197,32 +179,8 @@ public class OfferCodeDaoImplDiffblueTest {
 
     // Assert
     verify(offerCodeDaoExtensionManager).getProxy();
-    verify(defaultOfferCodeDaoExtensionHandler)
-        .createReadOfferCodeByCodeQuery(
-            isNull(), isA(ExtensionResultHolder.class), eq("Code"), eq(true), eq("query.Offer"));
+    verify(defaultOfferCodeDaoExtensionHandler).createReadOfferCodeByCodeQuery(isNull(),
+        isA(ExtensionResultHolder.class), eq("Code"), eq(true), eq("query.Offer"));
     assertNull(actualReadOfferCodesQueryResult);
-  }
-
-  /**
-   * Test {@link OfferCodeDaoImpl#readOfferCodesQuery(String)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link NoResultException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeDaoImpl#readOfferCodesQuery(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Query OfferCodeDaoImpl.readOfferCodesQuery(String)"})
-  public void testReadOfferCodesQuery_thenThrowNoResultException() {
-    // Arrange
-    when(offerCodeDaoExtensionManager.getProxy())
-        .thenThrow(new NoResultException("An error occurred"));
-
-    // Act and Assert
-    assertThrows(NoResultException.class, () -> offerCodeDaoImpl.readOfferCodesQuery("Code"));
-    verify(offerCodeDaoExtensionManager).getProxy();
   }
 }

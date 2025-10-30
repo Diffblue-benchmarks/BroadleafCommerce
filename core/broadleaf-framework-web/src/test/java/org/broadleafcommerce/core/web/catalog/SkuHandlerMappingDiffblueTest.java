@@ -20,17 +20,15 @@ package org.broadleafcommerce.core.web.catalog;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -39,31 +37,141 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.DefaultCorsProcessor;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SkuHandlerMappingDiffblueTest {
-  @Mock private CatalogService catalogService;
+  @InjectMocks
+  private SkuHandlerMapping skuHandlerMapping;
 
-  @InjectMocks private SkuHandlerMapping skuHandlerMapping;
+  @Mock
+  private CatalogService catalogService;
+
+  @Mock
+  private Environment environment;
 
   /**
    * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getHandlerInternal(HttpServletRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
   void testGetHandlerInternal() throws Exception {
     // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    when(catalogService.findSkuByURI(Mockito.<String>any())).thenReturn(new SkuImpl());
+
+    // Act
+    Object actualHandlerInternal = skuHandlerMapping.getHandlerInternal(new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"})));
+
+    // Assert
+    verify(catalogService).findSkuByURI(eq(""));
+    assertEquals("blSkuController", actualHandlerInternal);
+  }
+
+  /**
+   * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
+   * <ul>
+   *   <li>Given {@link CatalogService} {@link CatalogService#findSkuByURI(String)} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   */
+  @Test
+  @DisplayName("Test getHandlerInternal(HttpServletRequest); given CatalogService findSkuByURI(String) return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
+  void testGetHandlerInternal_givenCatalogServiceFindSkuByURIReturnNull() throws Exception {
+    // Arrange
+    when(catalogService.findSkuByURI(Mockito.<String>any())).thenReturn(null);
+
+    // Act
+    Object actualHandlerInternal = skuHandlerMapping.getHandlerInternal(new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"})));
+
+    // Assert
+    verify(catalogService).findSkuByURI(eq(""));
+    assertNull(actualHandlerInternal);
+  }
+
+  /**
+   * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
+   * <ul>
+   *   <li>Given {@code Request}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   */
+  @Test
+  @DisplayName("Test getHandlerInternal(HttpServletRequest); given 'Request'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
+  void testGetHandlerInternal_givenRequest() throws Exception {
+    // Arrange
+    when(catalogService.findSkuByURI(Mockito.<String>any())).thenReturn(new SkuImpl());
+
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.setRequestURI("Request");
+    request.setContextPath(null);
+
+    // Act
+    Object actualHandlerInternal = skuHandlerMapping.getHandlerInternal(request);
+
+    // Assert
+    verify(catalogService).findSkuByURI(eq("Request"));
+    assertEquals("blSkuController", actualHandlerInternal);
+  }
+
+  /**
+   * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
+   * <ul>
+   *   <li>Given {@code ;}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   */
+  @Test
+  @DisplayName("Test getHandlerInternal(HttpServletRequest); given ';'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
+  void testGetHandlerInternal_givenSemicolon() throws Exception {
+    // Arrange
+    when(catalogService.findSkuByURI(Mockito.<String>any())).thenReturn(new SkuImpl());
+
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.setRequestURI(";");
+    request.setContextPath(null);
+
+    // Act
+    Object actualHandlerInternal = skuHandlerMapping.getHandlerInternal(request);
+
+    // Assert
+    verify(catalogService).findSkuByURI(eq(""));
+    assertEquals("blSkuController", actualHandlerInternal);
+  }
+
+  /**
+   * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
+   * <ul>
+   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()} RequestURI is {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   */
+  @Test
+  @DisplayName("Test getHandlerInternal(HttpServletRequest); when MockHttpServletRequest() RequestURI is 'null'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
+  void testGetHandlerInternal_whenMockHttpServletRequestRequestURIIsNull_thenReturnNull() throws Exception {
+    // Arrange
+    MockHttpServletRequest request = new MockHttpServletRequest();
     request.setRequestURI(null);
     request.setContextPath(null);
 
@@ -73,107 +181,16 @@ class SkuHandlerMappingDiffblueTest {
 
   /**
    * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test getHandlerInternal(HttpServletRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
-  void testGetHandlerInternal2() throws Exception {
-    // Arrange
-    when(catalogService.findSkuByURI(Mockito.<String>any())).thenReturn(new SkuImpl());
-
-    // Act
-    Object actualHandlerInternal =
-        skuHandlerMapping.getHandlerInternal(
-            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest())));
-
-    // Assert
-    verify(catalogService).findSkuByURI("");
-    assertEquals("blSkuController", actualHandlerInternal);
-  }
-
-  /**
-   * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
-   *
    * <ul>
-   *   <li>Then calls {@link DefaultMultipartHttpServletRequest#getContextPath()}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test getHandlerInternal(HttpServletRequest); then calls getContextPath()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
-  void testGetHandlerInternal_thenCallsGetContextPath() throws Exception {
-    // Arrange
-    when(catalogService.findSkuByURI(Mockito.<String>any())).thenReturn(null);
-
-    DefaultMultipartHttpServletRequest servletRequest =
-        mock(DefaultMultipartHttpServletRequest.class);
-    when(servletRequest.getContextPath()).thenReturn("https://example.org/example");
-    when(servletRequest.getRequestURI()).thenReturn("https://example.org/example");
-    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest);
-
-    // Act
-    Object actualHandlerInternal =
-        skuHandlerMapping.getHandlerInternal(new HttpServletRequestWrapper(request));
-
-    // Assert
-    verify(servletRequest, atLeast(1)).getContextPath();
-    verify(servletRequest, atLeast(1)).getRequestURI();
-    verify(catalogService).findSkuByURI("");
-    assertNull(actualHandlerInternal);
-  }
-
-  /**
-   * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Then return {@code blSkuController}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test getHandlerInternal(HttpServletRequest); then return 'blSkuController'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
-  void testGetHandlerInternal_thenReturnBlSkuController() throws Exception {
-    // Arrange
-    when(catalogService.findSkuByURI(Mockito.<String>any())).thenReturn(new SkuImpl());
-
-    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
-    request.setRequestURI(";");
-    request.setContextPath(null);
-
-    // Act
-    Object actualHandlerInternal = skuHandlerMapping.getHandlerInternal(request);
-
-    // Assert
-    verify(catalogService).findSkuByURI("");
-    assertEquals("blSkuController", actualHandlerInternal);
-  }
-
-  /**
-   * Test {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link SkuHandlerMapping#getHandlerInternal(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getHandlerInternal(HttpServletRequest); when 'null'; then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Object SkuHandlerMapping.getHandlerInternal(HttpServletRequest)"})
   void testGetHandlerInternal_whenNull_thenReturnNull() throws Exception {
     // Arrange, Act and Assert
@@ -182,9 +199,8 @@ class SkuHandlerMappingDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SkuHandlerMapping#setDefaultTemplateName(String)}
    *   <li>{@link SkuHandlerMapping#getDefaultTemplateName()}
@@ -192,12 +208,9 @@ class SkuHandlerMappingDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String SkuHandlerMapping.getDefaultTemplateName()",
-    "void SkuHandlerMapping.setDefaultTemplateName(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String SkuHandlerMapping.getDefaultTemplateName()",
+      "void SkuHandlerMapping.setDefaultTemplateName(String)"})
   void testGettersAndSetters() {
     // Arrange
     SkuHandlerMapping skuHandlerMapping = new SkuHandlerMapping();
@@ -211,13 +224,12 @@ class SkuHandlerMappingDiffblueTest {
 
   /**
    * Test new {@link SkuHandlerMapping} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SkuHandlerMapping}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SkuHandlerMapping}
    */
   @Test
   @DisplayName("Test new SkuHandlerMapping (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void SkuHandlerMapping.<init>()"})
   void testNewSkuHandlerMapping() {
     // Arrange and Act

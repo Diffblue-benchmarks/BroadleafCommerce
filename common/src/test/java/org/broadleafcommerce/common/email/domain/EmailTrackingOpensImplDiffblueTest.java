@@ -22,8 +22,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -38,100 +37,85 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class EmailTrackingOpensImplDiffblueTest {
-  @Autowired private EmailTrackingOpensImpl emailTrackingOpensImpl;
+  @Autowired
+  private EmailTrackingOpensImpl emailTrackingOpensImpl;
 
   /**
    * Test {@link EmailTrackingOpensImpl#setUserAgent(String)}.
-   *
-   * <ul>
-   *   <li>When {@code User Agent}.
-   *   <li>Then {@link EmailTrackingOpensImpl} UserAgent is {@code User Agent}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#setUserAgent(String)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#setUserAgent(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EmailTrackingOpensImpl.setUserAgent(String)"})
-  public void testSetUserAgent_whenUserAgent_thenEmailTrackingOpensImplUserAgentIsUserAgent() {
-    // Arrange and Act
-    emailTrackingOpensImpl.setUserAgent("User Agent");
+  public void testSetUserAgent() {
+    // Arrange
+    EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
+
+    // Act
+    emailTrackingOpensImpl2.setUserAgent("User Agent");
 
     // Assert
-    assertEquals("User Agent", emailTrackingOpensImpl.getUserAgent());
+    assertEquals("User Agent", emailTrackingOpensImpl2.getUserAgent());
   }
 
   /**
-   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link
-   * EmailTrackingOpensImpl#hashCode()}.
-   *
+   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link EmailTrackingOpensImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EmailTrackingOpensImpl#equals(Object)}
    *   <li>{@link EmailTrackingOpensImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
 
     // Act and Assert
     assertEquals(emailTrackingOpensImpl, emailTrackingOpensImpl2);
-    assertEquals(emailTrackingOpensImpl.hashCode(), emailTrackingOpensImpl2.hashCode());
+    int expectedHashCodeResult = emailTrackingOpensImpl.hashCode();
+    assertEquals(expectedHashCodeResult, emailTrackingOpensImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link
-   * EmailTrackingOpensImpl#hashCode()}.
-   *
+   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link EmailTrackingOpensImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EmailTrackingOpensImpl#equals(Object)}
    *   <li>{@link EmailTrackingOpensImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
@@ -148,125 +132,107 @@ public class EmailTrackingOpensImplDiffblueTest {
 
     // Act and Assert
     assertEquals(emailTrackingOpensImpl, emailTrackingOpensImpl2);
-    assertEquals(emailTrackingOpensImpl.hashCode(), emailTrackingOpensImpl2.hashCode());
+    int expectedHashCodeResult = emailTrackingOpensImpl.hashCode();
+    assertEquals(expectedHashCodeResult, emailTrackingOpensImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link
-   * EmailTrackingOpensImpl#hashCode()}.
-   *
+   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link EmailTrackingOpensImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EmailTrackingOpensImpl#equals(Object)}
    *   <li>{@link EmailTrackingOpensImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(null);
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(null);
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
 
     // Act and Assert
     assertEquals(emailTrackingOpensImpl, emailTrackingOpensImpl2);
-    assertEquals(emailTrackingOpensImpl.hashCode(), emailTrackingOpensImpl2.hashCode());
+    int expectedHashCodeResult = emailTrackingOpensImpl.hashCode();
+    assertEquals(expectedHashCodeResult, emailTrackingOpensImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link
-   * EmailTrackingOpensImpl#hashCode()}.
-   *
+   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link EmailTrackingOpensImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EmailTrackingOpensImpl#equals(Object)}
    *   <li>{@link EmailTrackingOpensImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(null);
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(null);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
 
     // Act and Assert
     assertEquals(emailTrackingOpensImpl, emailTrackingOpensImpl2);
-    assertEquals(emailTrackingOpensImpl.hashCode(), emailTrackingOpensImpl2.hashCode());
+    int expectedHashCodeResult = emailTrackingOpensImpl.hashCode();
+    assertEquals(expectedHashCodeResult, emailTrackingOpensImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link
-   * EmailTrackingOpensImpl#hashCode()}.
-   *
+   * Test {@link EmailTrackingOpensImpl#equals(Object)}, and {@link EmailTrackingOpensImpl#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EmailTrackingOpensImpl#equals(Object)}
    *   <li>{@link EmailTrackingOpensImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
@@ -279,32 +245,27 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(new Date());
+    emailTrackingOpensImpl.setDateOpened(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
@@ -315,21 +276,16 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
@@ -339,8 +295,8 @@ public class EmailTrackingOpensImplDiffblueTest {
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
@@ -351,33 +307,28 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(null);
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
@@ -388,33 +339,28 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    emailTrackingOpensImpl.setEmailTracking(mock(EmailTracking.class));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl.setEmailTracking(mock(EmailTrackingImpl.class));
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
@@ -425,33 +371,28 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(2L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
@@ -462,33 +403,28 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(null);
     emailTrackingOpensImpl.setUserAgent("User Agent");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
@@ -499,33 +435,28 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("42");
 
     EmailTrackingOpensImpl emailTrackingOpensImpl2 = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl2.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl2
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl2.setId(1L);
     emailTrackingOpensImpl2.setUserAgent("User Agent");
@@ -536,26 +467,21 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
@@ -566,26 +492,21 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingOpensImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link EmailTrackingOpensImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EmailTrackingOpensImpl.equals(Object)",
-    "int EmailTrackingOpensImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean EmailTrackingOpensImpl.equals(Object)", "int EmailTrackingOpensImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     EmailTrackingOpensImpl emailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    emailTrackingOpensImpl.setDateOpened(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingOpensImpl
+        .setDateOpened(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingOpensImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingOpensImpl.setId(1L);
     emailTrackingOpensImpl.setUserAgent("User Agent");
@@ -596,9 +517,8 @@ public class EmailTrackingOpensImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link EmailTrackingOpensImpl}
    *   <li>{@link EmailTrackingOpensImpl#setDateOpened(Date)}
@@ -611,23 +531,15 @@ public class EmailTrackingOpensImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailTrackingOpensImpl.<init>()",
-    "Date EmailTrackingOpensImpl.getDateOpened()",
-    "EmailTracking EmailTrackingOpensImpl.getEmailTracking()",
-    "Long EmailTrackingOpensImpl.getId()",
-    "String EmailTrackingOpensImpl.getUserAgent()",
-    "void EmailTrackingOpensImpl.setDateOpened(Date)",
-    "void EmailTrackingOpensImpl.setEmailTracking(EmailTracking)",
-    "void EmailTrackingOpensImpl.setId(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EmailTrackingOpensImpl.<init>()", "Date EmailTrackingOpensImpl.getDateOpened()",
+      "EmailTracking EmailTrackingOpensImpl.getEmailTracking()", "Long EmailTrackingOpensImpl.getId()",
+      "String EmailTrackingOpensImpl.getUserAgent()", "void EmailTrackingOpensImpl.setDateOpened(Date)",
+      "void EmailTrackingOpensImpl.setEmailTracking(EmailTracking)", "void EmailTrackingOpensImpl.setId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     EmailTrackingOpensImpl actualEmailTrackingOpensImpl = new EmailTrackingOpensImpl();
-    Date dateOpened =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date dateOpened = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     actualEmailTrackingOpensImpl.setDateOpened(dateOpened);
     EmailTrackingImpl emailTracking = new EmailTrackingImpl();
     actualEmailTrackingOpensImpl.setEmailTracking(emailTracking);

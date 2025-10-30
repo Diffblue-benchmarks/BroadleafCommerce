@@ -24,8 +24,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,23 +39,26 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SkuMediaServiceImplDiffblueTest {
-  @Mock private Environment environment;
+  @Mock
+  private Environment environment;
 
-  @Mock private SkuMediaDao skuMediaDao;
+  @Mock
+  private SkuMediaDao skuMediaDao;
 
-  @InjectMocks private SkuMediaServiceImpl skuMediaServiceImpl;
+  @InjectMocks
+  private SkuMediaServiceImpl skuMediaServiceImpl;
 
   /**
    * Test {@link SkuMediaServiceImpl#save(SkuMediaXref)}.
-   *
-   * <p>Method under test: {@link SkuMediaServiceImpl#save(SkuMediaXref)}
+   * <p>
+   * Method under test: {@link SkuMediaServiceImpl#save(SkuMediaXref)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SkuMediaXref SkuMediaServiceImpl.save(SkuMediaXref)"})
   public void testSave() {
     // Arrange
@@ -73,107 +75,88 @@ public class SkuMediaServiceImplDiffblueTest {
 
   /**
    * Test {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}
+   * <p>
+   * Method under test: {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List SkuMediaServiceImpl.findSkuMediaBySkuId(Long)"})
   public void testFindSkuMediaBySkuId_givenEnvironmentGetPropertyReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
     when(skuMediaDao.readSkuMediaBySkuId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<SkuMediaXref> actualFindSkuMediaBySkuIdResult =
-        skuMediaServiceImpl.findSkuMediaBySkuId(1L);
+    List<SkuMediaXref> actualFindSkuMediaBySkuIdResult = skuMediaServiceImpl.findSkuMediaBySkuId(1L);
 
     // Assert
-    verify(skuMediaDao).readSkuMediaBySkuId(1L);
-    verify(environment)
-        .getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
+    verify(skuMediaDao).readSkuMediaBySkuId(eq(1L));
+    verify(environment).getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
     assertTrue(actualFindSkuMediaBySkuIdResult.isEmpty());
   }
 
   /**
    * Test {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code true}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}
+   * <p>
+   * Method under test: {@link SkuMediaServiceImpl#findSkuMediaBySkuId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List SkuMediaServiceImpl.findSkuMediaBySkuId(Long)"})
   public void testFindSkuMediaBySkuId_givenEnvironmentGetPropertyReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     when(skuMediaDao.readSkuMediaBySkuId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<SkuMediaXref> actualFindSkuMediaBySkuIdResult =
-        skuMediaServiceImpl.findSkuMediaBySkuId(1L);
+    List<SkuMediaXref> actualFindSkuMediaBySkuIdResult = skuMediaServiceImpl.findSkuMediaBySkuId(1L);
 
     // Assert
-    verify(skuMediaDao).readSkuMediaBySkuId(1L);
-    verify(environment)
-        .getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
+    verify(skuMediaDao).readSkuMediaBySkuId(eq(1L));
+    verify(environment).getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
     assertTrue(actualFindSkuMediaBySkuIdResult.isEmpty());
   }
 
   /**
    * Test {@link SkuMediaServiceImpl#sort(List)}.
-   *
    * <ul>
-   *   <li>Given {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Given {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuMediaServiceImpl#sort(List)}
+   * <p>
+   * Method under test: {@link SkuMediaServiceImpl#sort(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List SkuMediaServiceImpl.sort(List)"})
   public void testSort_givenSkuMediaXrefImpl_thenReturnArrayList() {
     // Arrange
     ArrayList<SkuMediaXref> skuMediaXrefs = new ArrayList<>();
     skuMediaXrefs.add(new SkuMediaXrefImpl());
 
-    // Act
-    List<SkuMediaXref> actualSortResult = skuMediaServiceImpl.sort(skuMediaXrefs);
-
-    // Assert
-    assertSame(skuMediaXrefs, actualSortResult);
+    // Act and Assert
+    assertSame(skuMediaXrefs, skuMediaServiceImpl.sort(skuMediaXrefs));
   }
 
   /**
    * Test {@link SkuMediaServiceImpl#sort(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuMediaServiceImpl#sort(List)}
+   * <p>
+   * Method under test: {@link SkuMediaServiceImpl#sort(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List SkuMediaServiceImpl.sort(List)"})
   public void testSort_whenArrayList_thenReturnEmpty() {
     // Arrange, Act and Assert
@@ -182,57 +165,49 @@ public class SkuMediaServiceImplDiffblueTest {
 
   /**
    * Test {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}
+   * <p>
+   * Method under test: {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuMediaServiceImpl.isOrderedSkuMediaEnabled()"})
   public void testIsOrderedSkuMediaEnabled_thenReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
 
     // Act
     boolean actualIsOrderedSkuMediaEnabledResult = skuMediaServiceImpl.isOrderedSkuMediaEnabled();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
     assertFalse(actualIsOrderedSkuMediaEnabledResult);
   }
 
   /**
    * Test {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}
+   * <p>
+   * Method under test: {@link SkuMediaServiceImpl#isOrderedSkuMediaEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuMediaServiceImpl.isOrderedSkuMediaEnabled()"})
   public void testIsOrderedSkuMediaEnabled_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
 
     // Act
     boolean actualIsOrderedSkuMediaEnabledResult = skuMediaServiceImpl.isOrderedSkuMediaEnabled();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("sku.media.display-order.enabled"), isA(Class.class), isA(Object.class));
     assertTrue(actualIsOrderedSkuMediaEnabledResult);
   }
 }

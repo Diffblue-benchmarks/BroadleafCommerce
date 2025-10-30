@@ -23,11 +23,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -49,34 +49,31 @@ import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequ
 
 @RunWith(MockitoJUnitRunner.class)
 public class JSCompatibilityRequestWrapperDiffblueTest {
-  @Mock private HttpServletRequest httpServletRequest;
+  @Mock
+  private HttpServletRequest httpServletRequest;
 
-  @InjectMocks private JSCompatibilityRequestWrapper jSCompatibilityRequestWrapper;
+  @InjectMocks
+  private JSCompatibilityRequestWrapper jSCompatibilityRequestWrapper;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link JSCompatibilityRequestWrapper#JSCompatibilityRequestWrapper(HttpServletRequest)}
    *   <li>{@link JSCompatibilityRequestWrapper#reset()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void JSCompatibilityRequestWrapper.<init>(HttpServletRequest)",
-    "void JSCompatibilityRequestWrapper.reset()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void JSCompatibilityRequestWrapper.<init>(HttpServletRequest)",
+      "void JSCompatibilityRequestWrapper.reset()"})
   public void testGettersAndSetters() {
     // Arrange
-    HttpServletRequestWrapper request = new HttpServletRequestWrapper(new MockHttpServletRequest());
+    MockHttpServletRequest request = new MockHttpServletRequest();
 
     // Act
-    JSCompatibilityRequestWrapper actualJsCompatibilityRequestWrapper =
-        new JSCompatibilityRequestWrapper(request);
+    JSCompatibilityRequestWrapper actualJsCompatibilityRequestWrapper = new JSCompatibilityRequestWrapper(request);
     actualJsCompatibilityRequestWrapper.reset();
 
     // Assert
@@ -85,83 +82,46 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getContextPath()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getContextPath()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getContextPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getContextPath()"})
   public void testGetContextPath() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertEquals("", new JSCompatibilityRequestWrapper(request2).getContextPath());
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getContextPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link MockHttpServletRequest#MockHttpServletRequest()} ContextPath is {@code
-   *       null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getContextPath()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getContextPath()"})
-  public void testGetContextPath_givenMockHttpServletRequestContextPathIsNull_thenReturnNull() {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setContextPath(null);
-
-    // Act and Assert
-    assertNull(
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request)).getContextPath());
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getContextPath()}.
-   *
-   * <ul>
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getContextPath()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getContextPath()"})
-  public void testGetContextPath_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals(
-        "",
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
+    assertEquals("",
+        (new JSCompatibilityRequestWrapper(
+            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
             .getContextPath());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getContextPath()}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getContextPath()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getContextPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getContextPath()"})
+  public void testGetContextPath_thenReturnEmptyString() {
+    // Arrange, Act and Assert
+    assertEquals("", (new JSCompatibilityRequestWrapper(new MockHttpServletRequest())).getContextPath());
+  }
+
+  /**
+   * Test {@link JSCompatibilityRequestWrapper#getContextPath()}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getContextPath()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getContextPath()"})
   public void testGetContextPath_thenReturnHttpsExampleOrgExample() {
     // Arrange
@@ -169,80 +129,62 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     request.setContextPath("https://example.org/example");
 
     // Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request)).getContextPath());
+    assertEquals("https://example.org/example", (new JSCompatibilityRequestWrapper(request)).getContextPath());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getPathTranslated()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getPathTranslated()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getPathTranslated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getPathTranslated()"})
   public void testGetPathTranslated() {
     // Arrange, Act and Assert
-    assertNull(
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
-            .getPathTranslated());
+    assertNull((new JSCompatibilityRequestWrapper(new MockHttpServletRequest())).getPathTranslated());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getPathTranslated()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getPathTranslated()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getPathTranslated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getPathTranslated()"})
   public void testGetPathTranslated2() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertNull(new JSCompatibilityRequestWrapper(request2).getPathTranslated());
+    // Arrange, Act and Assert
+    assertNull((new JSCompatibilityRequestWrapper(
+        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
+        .getPathTranslated());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getQueryString()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getQueryString()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getQueryString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getQueryString()"})
   public void testGetQueryString() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertNull(new JSCompatibilityRequestWrapper(request2).getQueryString());
+    // Arrange, Act and Assert
+    assertNull((new JSCompatibilityRequestWrapper(
+        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
+        .getQueryString());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getQueryString()}.
-   *
    * <ul>
-   *   <li>Then return empty string.
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getQueryString()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getQueryString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getQueryString()"})
   public void testGetQueryString_thenReturnEmptyString() {
     // Arrange
@@ -250,23 +192,19 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     request.setQueryString("");
 
     // Act and Assert
-    assertEquals(
-        "",
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request)).getQueryString());
+    assertEquals("", (new JSCompatibilityRequestWrapper(request)).getQueryString());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getQueryString()}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getQueryString()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getQueryString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getQueryString()"})
   public void testGetQueryString_thenReturnHttpsExampleOrgExample() {
     // Arrange
@@ -274,241 +212,147 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     request.setQueryString("https://example.org/example");
 
     // Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request)).getQueryString());
+    assertEquals("https://example.org/example", (new JSCompatibilityRequestWrapper(request)).getQueryString());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getQueryString()}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getQueryString()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getQueryString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getQueryString()"})
   public void testGetQueryString_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
-            .getQueryString());
+    assertNull((new JSCompatibilityRequestWrapper(new MockHttpServletRequest())).getQueryString());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getRequestURI()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getRequestURI()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getRequestURI()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getRequestURI()"})
   public void testGetRequestURI() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertEquals("", new JSCompatibilityRequestWrapper(request2).getRequestURI());
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getRequestURI()}.
-   *
-   * <ul>
-   *   <li>Given {@link MockHttpServletRequest#MockHttpServletRequest()} RequestURI is {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getRequestURI()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getRequestURI()"})
-  public void testGetRequestURI_givenMockHttpServletRequestRequestURIIsNull_thenReturnNull() {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setRequestURI(null);
-
-    // Act and Assert
-    assertNull(
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request)).getRequestURI());
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getRequestURI()}.
-   *
-   * <ul>
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getRequestURI()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getRequestURI()"})
-  public void testGetRequestURI_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals(
-        "",
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
+    assertEquals("",
+        (new JSCompatibilityRequestWrapper(
+            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
             .getRequestURI());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getRequestURI()}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getRequestURI()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getRequestURI()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getRequestURI()"})
+  public void testGetRequestURI_thenReturnEmptyString() {
+    // Arrange, Act and Assert
+    assertEquals("", (new JSCompatibilityRequestWrapper(new MockHttpServletRequest())).getRequestURI());
+  }
+
+  /**
+   * Test {@link JSCompatibilityRequestWrapper#getRequestURI()}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getRequestURI()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getRequestURI()"})
   public void testGetRequestURI_thenReturnHttpsExampleOrgExample() {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setRequestURI("https://example.org/example");
-
-    // Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request)).getRequestURI());
+    // Arrange, Act and Assert
+    assertEquals("https://example.org/example", (new JSCompatibilityRequestWrapper(
+        new MockHttpServletRequest("https://example.org/example", "https://example.org/example"))).getRequestURI());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getRequestURL()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getRequestURL()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getRequestURL()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"StringBuffer JSCompatibilityRequestWrapper.getRequestURL()"})
   public void testGetRequestURL() {
     // Arrange, Act and Assert
-    assertEquals(
-        "http://localhost",
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
+    assertEquals("http://localhost",
+        (new JSCompatibilityRequestWrapper(new MockHttpServletRequest())).getRequestURL().toString());
+  }
+
+  /**
+   * Test {@link JSCompatibilityRequestWrapper#getRequestURL()}.
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getRequestURL()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StringBuffer JSCompatibilityRequestWrapper.getRequestURL()"})
+  public void testGetRequestURL2() {
+    // Arrange, Act and Assert
+    assertEquals("http://localhost",
+        (new JSCompatibilityRequestWrapper(
+            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
             .getRequestURL()
             .toString());
   }
 
   /**
-   * Test {@link JSCompatibilityRequestWrapper#getRequestURL()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getRequestURL()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"StringBuffer JSCompatibilityRequestWrapper.getRequestURL()"})
-  public void testGetRequestURL2() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertEquals(
-        "http://localhost", new JSCompatibilityRequestWrapper(request2).getRequestURL().toString());
-  }
-
-  /**
    * Test {@link JSCompatibilityRequestWrapper#getServletPath()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getServletPath()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getServletPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getServletPath()"})
   public void testGetServletPath() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertEquals("", new JSCompatibilityRequestWrapper(request2).getServletPath());
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getServletPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link MockHttpServletRequest#MockHttpServletRequest()} ServletPath is {@code
-   *       null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getServletPath()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getServletPath()"})
-  public void testGetServletPath_givenMockHttpServletRequestServletPathIsNull_thenReturnNull() {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setServletPath(null);
-
-    // Act and Assert
-    assertNull(
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request)).getServletPath());
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getServletPath()}.
-   *
-   * <ul>
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getServletPath()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getServletPath()"})
-  public void testGetServletPath_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals(
-        "",
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
+    assertEquals("",
+        (new JSCompatibilityRequestWrapper(
+            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
             .getServletPath());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getServletPath()}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getServletPath()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getServletPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getServletPath()"})
+  public void testGetServletPath_thenReturnEmptyString() {
+    // Arrange, Act and Assert
+    assertEquals("", (new JSCompatibilityRequestWrapper(new MockHttpServletRequest())).getServletPath());
+  }
+
+  /**
+   * Test {@link JSCompatibilityRequestWrapper#getServletPath()}.
+   * <ul>
+   *   <li>Then return {@code https://example.org/example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getServletPath()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getServletPath()"})
   public void testGetServletPath_thenReturnHttpsExampleOrgExample() {
     // Arrange
@@ -516,60 +360,19 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     request.setServletPath("https://example.org/example");
 
     // Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request)).getServletPath());
+    assertEquals("https://example.org/example", (new JSCompatibilityRequestWrapper(request)).getServletPath());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameter(String)}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameter(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getParameter(String)"})
-  public void testGetParameter() {
-    // Arrange, Act and Assert
-    assertNull(
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
-            .getParameter("Name"));
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getParameter(String)}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameter(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getParameter(String)"})
-  public void testGetParameter2() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertNull(new JSCompatibilityRequestWrapper(request2).getParameter("Name"));
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getParameter(String)}.
-   *
    * <ul>
-   *   <li>Then return empty string.
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameter(String)}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameter(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getParameter(String)"})
   public void testGetParameter_thenReturnEmptyString() {
     // Arrange
@@ -579,22 +382,20 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     String actualParameter = jSCompatibilityRequestWrapper.getParameter("Name");
 
     // Assert
-    verify(httpServletRequest).getParameter("Name");
+    verify(httpServletRequest).getParameter(eq("Name"));
     assertEquals("", actualParameter);
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameter(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Parameter}.
+   *   <li>Then return {@code Parameter}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameter(String)}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameter(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String JSCompatibilityRequestWrapper.getParameter(String)"})
   public void testGetParameter_thenReturnParameter() {
     // Arrange
@@ -604,29 +405,23 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     String actualParameter = jSCompatibilityRequestWrapper.getParameter("Name");
 
     // Assert
-    verify(httpServletRequest).getParameter("Name");
+    verify(httpServletRequest).getParameter(eq("Name"));
     assertEquals("Parameter", actualParameter);
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNames()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNames()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNames()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Enumeration JSCompatibilityRequestWrapper.getParameterNames()"})
   public void testGetParameterNames() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act
-    Enumeration actualParameterNames =
-        new JSCompatibilityRequestWrapper(request2).getParameterNames();
+    // Arrange and Act
+    Enumeration actualParameterNames = (new JSCompatibilityRequestWrapper(
+        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
+        .getParameterNames();
 
     // Assert
     assertTrue(actualParameterNames instanceof Enumerator);
@@ -635,12 +430,11 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNames()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNames()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNames()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Enumeration JSCompatibilityRequestWrapper.getParameterNames()"})
   public void testGetParameterNames2() {
     // Arrange
@@ -648,9 +442,7 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     request.addParameter("https://example.org/example", "https://example.org/example");
 
     // Act
-    Enumeration actualParameterNames =
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request))
-            .getParameterNames();
+    Enumeration actualParameterNames = (new JSCompatibilityRequestWrapper(request)).getParameterNames();
 
     // Assert
     assertTrue(actualParameterNames instanceof Enumerator);
@@ -659,12 +451,11 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNames()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNames()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNames()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Enumeration JSCompatibilityRequestWrapper.getParameterNames()"})
   public void testGetParameterNames3() {
     // Arrange
@@ -672,9 +463,7 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     request.addParameter("", "https://example.org/example");
 
     // Act
-    Enumeration actualParameterNames =
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request))
-            .getParameterNames();
+    Enumeration actualParameterNames = (new JSCompatibilityRequestWrapper(request)).getParameterNames();
 
     // Assert
     assertTrue(actualParameterNames instanceof Enumerator);
@@ -683,23 +472,19 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNames()}.
-   *
    * <ul>
-   *   <li>Then return not hasMoreElements.
+   *   <li>Then return not hasMoreElements.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNames()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNames()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Enumeration JSCompatibilityRequestWrapper.getParameterNames()"})
   public void testGetParameterNames_thenReturnNotHasMoreElements() {
     // Arrange and Act
-    Enumeration actualParameterNames =
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
-            .getParameterNames();
+    Enumeration actualParameterNames = (new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))
+        .getParameterNames();
 
     // Assert
     assertTrue(actualParameterNames instanceof Enumerator);
@@ -708,192 +493,144 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterMap()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterMap()"})
   public void testGetParameterMap() {
     // Arrange, Act and Assert
-    assertTrue(
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
-            .getParameterMap()
-            .isEmpty());
+    assertTrue((new JSCompatibilityRequestWrapper(
+        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
+        .getParameterMap()
+        .isEmpty());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterMap()}.
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterMap()"})
   public void testGetParameterMap2() {
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertTrue(new JSCompatibilityRequestWrapper(request2).getParameterMap().isEmpty());
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getParameterMap()}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterMap()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterMap()"})
-  public void testGetParameterMap_thenReturnEmpty() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(
+        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest())));
     LinkedMultiValueMap<String, MultipartFile> mpFiles = new LinkedMultiValueMap<>();
     HashMap<String, String[]> mpParams = new HashMap<>();
 
-    DefaultMultipartHttpServletRequest request2 =
-        new DefaultMultipartHttpServletRequest(request, mpFiles, mpParams, new HashMap<>());
-
     // Act and Assert
-    assertTrue(
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request2))
-            .getParameterMap()
-            .isEmpty());
+    assertTrue((new JSCompatibilityRequestWrapper(
+        new DefaultMultipartHttpServletRequest(request, mpFiles, mpParams, new HashMap<>()))).getParameterMap()
+        .isEmpty());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterMap()}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterMap()"})
+  public void testGetParameterMap_thenReturnEmpty() {
+    // Arrange, Act and Assert
+    assertTrue((new JSCompatibilityRequestWrapper(new MockHttpServletRequest())).getParameterMap().isEmpty());
+  }
+
+  /**
+   * Test {@link JSCompatibilityRequestWrapper#getParameterMap()}.
+   * <ul>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterMap()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterMap()"})
   public void testGetParameterMap_thenReturnEmpty2() {
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
-    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
     LinkedMultiValueMap<String, MultipartFile> mpFiles = new LinkedMultiValueMap<>();
     HashMap<String, String[]> mpParams = new HashMap<>();
 
-    DefaultMultipartHttpServletRequest request4 =
-        new DefaultMultipartHttpServletRequest(request3, mpFiles, mpParams, new HashMap<>());
-
     // Act and Assert
-    assertTrue(
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request4))
-            .getParameterMap()
-            .isEmpty());
+    assertTrue((new JSCompatibilityRequestWrapper(
+        new DefaultMultipartHttpServletRequest(request, mpFiles, mpParams, new HashMap<>()))).getParameterMap()
+        .isEmpty());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterNameConversionMap()"})
   public void testGetParameterNameConversionMap_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue(
-        new JSCompatibilityRequestWrapper(
-                new HttpServletRequestWrapper(new MockHttpServletRequest()))
-            .getParameterNameConversionMap()
-            .isEmpty());
+        (new JSCompatibilityRequestWrapper(new MockHttpServletRequest())).getParameterNameConversionMap().isEmpty());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterNameConversionMap()"})
   public void testGetParameterNameConversionMap_thenReturnEmpty2() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertTrue(
-        new JSCompatibilityRequestWrapper(request2).getParameterNameConversionMap().isEmpty());
+    // Arrange, Act and Assert
+    assertTrue((new JSCompatibilityRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest())))
+        .getParameterNameConversionMap()
+        .isEmpty());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterNameConversionMap()"})
   public void testGetParameterNameConversionMap_thenReturnEmpty3() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
-    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
-    HttpServletRequestWrapper request4 = new HttpServletRequestWrapper(request3);
-
-    // Act and Assert
-    assertTrue(
-        new JSCompatibilityRequestWrapper(request4).getParameterNameConversionMap().isEmpty());
+    // Arrange, Act and Assert
+    assertTrue((new JSCompatibilityRequestWrapper(
+        new JSCompatibilityRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))))
+        .getParameterNameConversionMap()
+        .isEmpty());
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}.
-   *
    * <ul>
-   *   <li>Then return empty string.
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterNameConversionMap()"})
   public void testGetParameterNameConversionMap_thenReturnEmptyString() {
     // Arrange
@@ -901,9 +638,8 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     request.addParameter("", "https://example.org/example");
 
     // Act
-    Map<String, String> actualParameterNameConversionMap =
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request))
-            .getParameterNameConversionMap();
+    Map<String, String> actualParameterNameConversionMap = (new JSCompatibilityRequestWrapper(request))
+        .getParameterNameConversionMap();
 
     // Assert
     assertEquals(1, actualParameterNameConversionMap.size());
@@ -912,16 +648,14 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterNameConversionMap()"})
   public void testGetParameterNameConversionMap_thenReturnHttpsExampleOrgExample() {
     // Arrange
@@ -929,130 +663,61 @@ public class JSCompatibilityRequestWrapperDiffblueTest {
     request.addParameter("https://example.org/example", "https://example.org/example");
 
     // Act
-    Map<String, String> actualParameterNameConversionMap =
-        new JSCompatibilityRequestWrapper(new HttpServletRequestWrapper(request))
-            .getParameterNameConversionMap();
+    Map<String, String> actualParameterNameConversionMap = (new JSCompatibilityRequestWrapper(request))
+        .getParameterNameConversionMap();
 
     // Assert
     assertEquals(1, actualParameterNameConversionMap.size());
-    assertEquals(
-        "https://example.org/example",
-        actualParameterNameConversionMap.get("https://example.org/example"));
+    assertEquals("https://example.org/example", actualParameterNameConversionMap.get("https://example.org/example"));
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterNameConversionMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map JSCompatibilityRequestWrapper.getParameterNameConversionMap()"})
   public void testGetParameterNameConversionMap_thenReturnHttpsExampleOrgExample2() {
     // Arrange
     MockHttpServletRequest request = new MockHttpServletRequest();
     request.addParameter("https://example.org/example", "https://example.org/example");
-    HttpServletRequestWrapper request2 =
-        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(request));
-    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
 
     // Act
-    Map<String, String> actualParameterNameConversionMap =
-        new JSCompatibilityRequestWrapper(request3).getParameterNameConversionMap();
+    Map<String, String> actualParameterNameConversionMap = (new JSCompatibilityRequestWrapper(
+        new JSCompatibilityRequestWrapper(request))).getParameterNameConversionMap();
 
     // Assert
     assertEquals(1, actualParameterNameConversionMap.size());
-    assertEquals(
-        "https://example.org/example",
-        actualParameterNameConversionMap.get("https://example.org/example"));
+    assertEquals("https://example.org/example", actualParameterNameConversionMap.get("https://example.org/example"));
   }
 
   /**
    * Test {@link JSCompatibilityRequestWrapper#getParameterValues(String)}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@code 42}.
-   *   <li>When {@code 42}.
-   *   <li>Then return array of {@link String} with {@code 42}.
+   *   <li>Then return array of {@link String} with {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterValues(String)}
+   * <p>
+   * Method under test: {@link JSCompatibilityRequestWrapper#getParameterValues(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String[] JSCompatibilityRequestWrapper.getParameterValues(String)"})
-  public void testGetParameterValues_givenHashMap42Is42_when42_thenReturnArrayOfStringWith42() {
-    // Arrange
-    HashMap<Object, Object> objectObjectMap = new HashMap<>();
-    objectObjectMap.put("42", "42");
-    when(httpServletRequest.getParameterValues(Mockito.<String>any()))
-        .thenReturn(new String[] {"42"});
-    when(httpServletRequest.getAttribute(Mockito.<String>any())).thenReturn(objectObjectMap);
-
-    // Act
-    String[] actualParameterValues = jSCompatibilityRequestWrapper.getParameterValues("42");
-
-    // Assert
-    verify(httpServletRequest, atLeast(1)).getAttribute("requestParameterConversionMap");
-    verify(httpServletRequest).getParameterValues("42");
-    assertArrayEquals(new String[] {"42"}, actualParameterValues);
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getParameterValues(String)}.
-   *
-   * <ul>
-   *   <li>Then return array of {@link String} with {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterValues(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String[] JSCompatibilityRequestWrapper.getParameterValues(String)"})
   public void testGetParameterValues_thenReturnArrayOfStringWith42() {
     // Arrange
-    when(httpServletRequest.getParameterValues(Mockito.<String>any()))
-        .thenReturn(new String[] {"42"});
+    when(httpServletRequest.getParameterValues(Mockito.<String>any())).thenReturn(new String[]{"42"});
     when(httpServletRequest.getAttribute(Mockito.<String>any())).thenReturn(new HashMap<>());
 
     // Act
     String[] actualParameterValues = jSCompatibilityRequestWrapper.getParameterValues("Name");
 
     // Assert
-    verify(httpServletRequest, atLeast(1)).getAttribute("requestParameterConversionMap");
-    verify(httpServletRequest).getParameterValues("Name");
-    assertArrayEquals(new String[] {"42"}, actualParameterValues);
-  }
-
-  /**
-   * Test {@link JSCompatibilityRequestWrapper#getParameterValues(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link JSCompatibilityRequestWrapper#getParameterValues(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String[] JSCompatibilityRequestWrapper.getParameterValues(String)"})
-  public void testGetParameterValues_thenReturnNull() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertNull(new JSCompatibilityRequestWrapper(request2).getParameterValues("Name"));
+    verify(httpServletRequest, atLeast(1)).getAttribute(eq("requestParameterConversionMap"));
+    verify(httpServletRequest).getParameterValues(eq("Name"));
+    assertArrayEquals(new String[]{"42"}, actualParameterValues);
   }
 }

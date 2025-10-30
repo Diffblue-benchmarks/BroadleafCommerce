@@ -31,23 +31,21 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
+import org.broadleafcommerce.common.service.ParentCategoryLegacyModeService;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
+import org.broadleafcommerce.core.catalog.domain.ProductImpl;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
@@ -55,15 +53,16 @@ import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.Property;
-import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPath;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.Restriction;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate.PredicateProvider;
@@ -77,128 +76,99 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductCustomPersistenceHandlerDiffblueTest {
-  @Mock private CatalogService catalogService;
+  @InjectMocks
+  private ProductCustomPersistenceHandler productCustomPersistenceHandler;
 
-  @InjectMocks private ProductCustomPersistenceHandler productCustomPersistenceHandler;
+  @Mock
+  private ParentCategoryLegacyModeService parentCategoryLegacyModeService;
+
+  @Mock
+  private CatalogService catalogService;
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleAdd(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd2() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleAdd(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd3() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"productDirectEdit", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleAdd(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_thenReturnTrue() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "org.broadleafcommerce.core.catalog.domain.Product",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"productDirectEdit", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertTrue(productCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    assertTrue(productCustomPersistenceHandler
+        .canHandleAdd(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
@@ -206,127 +176,88 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleUpdate(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate2() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleUpdate(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate3() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"productDirectEdit", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleUpdate(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_thenReturnTrue() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "org.broadleafcommerce.core.catalog.domain.Product",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"productDirectEdit", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertTrue(productCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    assertTrue(productCustomPersistenceHandler
+        .canHandleUpdate(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
@@ -334,127 +265,88 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleRemove(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleRemove(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove2() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleRemove(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleRemove(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove3() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"productDirectEdit", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleRemove(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleRemove(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove_thenReturnTrue() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "org.broadleafcommerce.core.catalog.domain.Product",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"productDirectEdit", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertTrue(productCustomPersistenceHandler.canHandleRemove(persistencePackage));
+    assertTrue(productCustomPersistenceHandler
+        .canHandleRemove(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.canHandleRemove(new PersistencePackage()));
@@ -462,783 +354,562 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleFetch(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleFetch(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch2() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleFetch(persistencePackage));
+    assertTrue(productCustomPersistenceHandler.canHandleFetch(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"upsaleProduct"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch3() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"upsaleProduct", "crossSaleProduct"},
-            "ABC123");
 
     // Act and Assert
-    assertTrue(productCustomPersistenceHandler.canHandleFetch(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleFetch(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch4() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"productDirectEdit"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleFetch(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleFetch(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch5() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"productDirectEdit"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "org.broadleafcommerce.core.catalog.domain.Product",
-            entity,
-            new PersistencePerspective(),
-            customCriteria,
-            "ABC123");
 
     // Act and Assert
-    assertTrue(productCustomPersistenceHandler.canHandleFetch(persistencePackage));
+    assertTrue(productCustomPersistenceHandler
+        .canHandleFetch(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleInspect(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleInspect(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect2() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleInspect(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleInspect(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect3() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"productDirectEdit", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.canHandleInspect(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.canHandleInspect(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect_thenReturnTrue() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "org.broadleafcommerce.core.catalog.domain.Product",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"productDirectEdit", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertTrue(productCustomPersistenceHandler.canHandleInspect(persistencePackage));
+    assertTrue(productCustomPersistenceHandler
+        .canHandleInspect(new PersistencePackage("org.broadleafcommerce.core.catalog.domain.Product", entity,
+            new PersistencePerspective(), new String[]{"productDirectEdit"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.canHandleInspect(new PersistencePackage()));
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
-   *       Type}.
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Given {@link ParentCategoryLegacyModeService} {@link ParentCategoryLegacyModeService#isLegacyMode()} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity ProductCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
+      "DynamicResultSet ProductCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_givenParentCategoryLegacyModeServiceIsLegacyModeReturnFalse() throws ServiceException {
+    // Arrange
+    when(parentCategoryLegacyModeService.isLegacyMode()).thenReturn(false);
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
+
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(new DynamicResultSet());
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    productCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+
+    // Assert
+    verify(parentCategoryLegacyModeService).isLegacyMode();
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    List<FilterMapping> nonCountAdditionalFilterMappings = cto.getNonCountAdditionalFilterMappings();
+    assertEquals(1, nonCountAdditionalFilterMappings.size());
+    FilterMapping getResult = nonCountAdditionalFilterMappings.get(0);
+    assertNull(getResult.getInheritedFromClass());
+    assertNull(getResult.getOrder());
+    assertNull(getResult.getFullPropertyName());
+    Restriction restriction = getResult.getRestriction();
+    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
+    assertNull(fieldPathBuilder.getRestrictions());
+    assertNull(fieldPathBuilder.getCriteria());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getFieldPath());
+    assertNull(restriction.getFilterValueConverter());
+    assertTrue(getResult.getDirectFilterValues().isEmpty());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getNullsLast());
+  }
+
+  /**
+   * Test {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) NonCountAdditionalFilterMappings Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet ProductCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_thenCriteriaTransferObjectNonCountAdditionalFilterMappingsEmpty() throws ServiceException {
+    // Arrange
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"upsaleProduct"}, "ABC123");
+
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    DynamicResultSet actualFetchResult = productCustomPersistenceHandler.fetch(persistencePackage, cto,
+        dynamicEntityDao, helper);
+
+    // Assert
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    assertTrue(cto.getNonCountAdditionalFilterMappings().isEmpty());
+    assertSame(dynamicResultSet, actualFetchResult);
+  }
+
+  /**
+   * Test {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) NonCountAdditionalFilterMappings size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DynamicResultSet ProductCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_thenCriteriaTransferObjectNonCountAdditionalFilterMappingsSizeIsOne() throws ServiceException {
+    // Arrange
+    when(parentCategoryLegacyModeService.isLegacyMode()).thenReturn(true);
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
+
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(new DynamicResultSet());
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    productCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+
+    // Assert
+    verify(parentCategoryLegacyModeService).isLegacyMode();
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    List<FilterMapping> nonCountAdditionalFilterMappings = cto.getNonCountAdditionalFilterMappings();
+    assertEquals(1, nonCountAdditionalFilterMappings.size());
+    FilterMapping getResult = nonCountAdditionalFilterMappings.get(0);
+    assertNull(getResult.getInheritedFromClass());
+    assertNull(getResult.getOrder());
+    assertNull(getResult.getFullPropertyName());
+    Restriction restriction = getResult.getRestriction();
+    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
+    assertNull(fieldPathBuilder.getRestrictions());
+    assertNull(fieldPathBuilder.getCriteria());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getFieldPath());
+    assertNull(restriction.getFilterValueConverter());
+    assertTrue(getResult.getDirectFilterValues().isEmpty());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getNullsLast());
+  }
+
+  /**
+   * Test {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code Type}.</li>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity ProductCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenEntityGetTypeReturnArrayOfStringWithType_thenThrowServiceException()
       throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
+    when(entity.getType()).thenReturn(new String[]{"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            productCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    assertThrows(ServiceException.class, () -> productCustomPersistenceHandler.add(persistencePackage, dynamicEntityDao,
+        new AdornedTargetListPersistenceModule()));
     verify(entity, atLeast(1)).getType();
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given array of {@link String} with {@code defaultCategory}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenArrayOfStringWithDefaultCategory() throws ServiceException {
+      "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
     // Arrange
-    Entity entity = new Entity();
-    entity.setType(new String[] {"defaultCategory"});
-    String[] customCriteria = new String[] {"Unable to update entity for "};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
-    stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(stringFieldMetadataMap);
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
-    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"),
-            isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@code null}.
-   *   <li>Then calls {@link Entity#findProperty(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenNull_whenEntityFindPropertyReturnNull_thenCallsFindProperty()
-      throws ServiceException {
-    // Arrange
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(null);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
-    String[] customCriteria = new String[] {"Unable to update entity for "};
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Unable to update entity for "}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
     stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
-
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(stringFieldMetadataMap);
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
-    verify(entity).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(entity, atLeast(1)).getType();
+    verify(property).getValue();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"),
-            isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
+        isA(PersistencePerspective.class));
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return empty string.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return empty string.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenPropertyGetValueReturnEmptyString_thenCallsGetValue()
-      throws ServiceException {
+      "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyGetValueReturnEmptyString_thenCallsGetValue() throws ServiceException {
     // Arrange
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("");
-
     Entity entity = mock(Entity.class);
+    when(entity.getType()).thenReturn(new String[]{"Type"});
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
-    String[] customCriteria = new String[] {"Unable to update entity for "};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Unable to update entity for "}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
     stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
-
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(stringFieldMetadataMap);
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(entity, atLeast(1)).getType();
     verify(property).getValue();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"),
-            isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
+        isA(PersistencePerspective.class));
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link Property#Property(String, String)} with name is {@code defaultCategory} and value is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenPropertyGetValueThrowRuntimeException_thenCallsGetValue()
-      throws ServiceException {
+      "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyWithNameIsDefaultCategoryAndValueIs42() throws ServiceException {
     // Arrange
-    Property property = mock(Property.class);
-    when(property.getValue()).thenThrow(new RuntimeException());
-
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
-    String[] customCriteria = new String[] {"Unable to update entity for "};
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("defaultCategory", "42"));
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Unable to update entity for "}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
     stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(stringFieldMetadataMap);
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(entity).getType();
-    verify(property).getValue();
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"),
-            isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenPropertyWithNameAndValueIs42() throws ServiceException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "42"));
-    when(entity.getType()).thenReturn(new String[] {"Type"});
-    String[] customCriteria = new String[] {"Unable to update entity for "};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
-    stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
-
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(stringFieldMetadataMap);
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(entity, atLeast(1)).getType();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"),
-            isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
+        isA(PersistencePerspective.class));
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is empty
-   *       string.
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenPropertyWithNameAndValueIsEmptyString() throws ServiceException {
+      "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenProperty_whenEntityFindPropertyReturnProperty() throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", ""));
-    when(entity.getType()).thenReturn(new String[] {"Type"});
-    String[] customCriteria = new String[] {"Unable to update entity for "};
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Unable to update entity for "}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
     stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
-
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(stringFieldMetadataMap);
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(entity, atLeast(1)).getType();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"),
-            isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"),
+        isA(PersistencePerspective.class));
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       null}.
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ProductCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenPropertyWithNameAndValueIsNull() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testRemove_thenThrowServiceException() throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
-    String[] customCriteria = new String[] {"Unable to update entity for "};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
-    stringFieldMetadataMap.put("defaultCategory", new BasicFieldMetadata());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(stringFieldMetadataMap);
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> productCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(entity, atLeast(1)).getType();
-    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"),
-            isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
-   *       Type}.
-   *   <li>Then calls {@link Entity#getType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_givenEntityGetTypeReturnArrayOfStringWithType_thenCallsGetType()
-      throws ServiceException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
+    when(entity.getType()).thenReturn(new String[]{"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> productCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper));
     verify(entity, atLeast(1)).getType();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"), isNull());
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Product"), isNull());
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Entity} (default constructor) Type is array of {@link String} with {@code
-   *       Type}.
-   *   <li>Then throw {@link ServiceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * Test {@link ProductCustomPersistenceHandler#removeProduct(PersistencePackage, Product, RecordHelper)}.
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeProduct(PersistencePackage, Product, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_givenEntityTypeIsArrayOfStringWithType_thenThrowServiceException()
-      throws ServiceException {
-    // Arrange
-    Entity entity = new Entity();
-    entity.setType(new String[] {"Type"});
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> productCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper));
-    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Product"), isNull());
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeProduct(PersistencePackage, Product,
-   * RecordHelper)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeProduct(PersistencePackage,
-   * Product, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeProduct(PersistencePackage, Product, RecordHelper)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeProduct(PersistencePackage, Product, RecordHelper)"})
   public void testRemoveProduct() throws ServiceException {
     // Arrange
     doNothing().when(catalogService).removeProduct(Mockito.<Product>any());
@@ -1246,8 +917,8 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     ProductBundleImpl adminInstance = new ProductBundleImpl();
 
     // Act
-    productCustomPersistenceHandler.removeProduct(
-        persistencePackage, adminInstance, new AdornedTargetListPersistenceModule());
+    productCustomPersistenceHandler.removeProduct(persistencePackage, adminInstance,
+        new AdornedTargetListPersistenceModule());
 
     // Assert
     verify(catalogService).removeProduct(isA(Product.class));
@@ -1255,15 +926,12 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#isDefaultCategoryLegacyMode()}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#isDefaultCategoryLegacyMode()}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#isDefaultCategoryLegacyMode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ProductCustomPersistenceHandler.isDefaultCategoryLegacyMode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ProductCustomPersistenceHandler.isDefaultCategoryLegacyMode()"})
   public void testIsDefaultCategoryLegacyMode() {
     // Arrange, Act and Assert
     assertFalse(productCustomPersistenceHandler.isDefaultCategoryLegacyMode());
@@ -1271,17 +939,15 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}.
-   *
    * <ul>
-   *   <li>Given {@code defaultCategory}.
-   *   <li>Then {@link HashMap#HashMap()} size is one.
+   *   <li>Given {@code defaultCategory}.</li>
+   *   <li>Then {@link HashMap#HashMap()} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#modifyParentCategoryMetadata(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ProductCustomPersistenceHandler.modifyParentCategoryMetadata(Map)"})
   public void testModifyParentCategoryMetadata_givenDefaultCategory_thenHashMapSizeIsOne() {
     // Arrange
@@ -1301,181 +967,38 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}.
-   *
    * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getExistingDefaultCategory(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category ProductCustomPersistenceHandler.getExistingDefaultCategory(Product)"
-  })
+      "org.broadleafcommerce.core.catalog.domain.Category ProductCustomPersistenceHandler.getExistingDefaultCategory(Product)"})
   public void testGetExistingDefaultCategory_whenProductBundleImpl_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(productCustomPersistenceHandler.getExistingDefaultCategory(new ProductBundleImpl()));
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    CategoryImpl categoryImpl2 = new CategoryImpl();
-    categoryImpl2.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    CategoryProductXref categoryProductXref = mock(CategoryProductXref.class);
-    when(categoryProductXref.getDefaultReference()).thenReturn(null);
-    when(categoryProductXref.getCategory()).thenReturn(categoryImpl2);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXref);
-    categoryProductXrefList.add(categoryProductXrefImpl);
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(null);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXref).getCategory();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default
-   *       constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default constructor).</li>
+   *   <li>When {@link Entity} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenArrayListAddCategoryProductXrefImpl() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(new CategoryProductXrefImpl());
-    categoryProductXrefList.add(categoryProductXrefImpl);
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(null);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default
-   *       constructor).
-   *   <li>When {@link Entity} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenArrayListAddCategoryProductXrefImpl_whenEntity() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(new CategoryProductXrefImpl());
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
@@ -1488,74 +1011,44 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link CategoryProductXref}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenArrayList_thenCallsGetValue() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
+  public void testRemoveOldDefault_givenArrayList_whenCategoryProductXref() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    CategoryProductXref oldDefault = mock(CategoryProductXref.class);
 
     // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
+    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, new Entity());
 
     // Assert
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>When {@link Entity} (default constructor).
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link Entity} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenArrayList_whenEntity() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
@@ -1568,151 +1061,53 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>When {@code null}.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then calls {@link ProductImpl#getAllParentCategoryXrefs()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenArrayList_whenNull_thenCallsGetValue() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
+  public void testRemoveOldDefault_givenArrayList_whenNull_thenCallsGetAllParentCategoryXrefs() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
 
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
     // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, null, entity);
+    productCustomPersistenceHandler.removeOldDefault(adminInstance, null, new Entity());
 
     // Assert
     verify(adminInstance).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link CategoryImpl}.
+   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenCategoryImpl() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(new CategoryProductXrefImpl());
-    categoryProductXrefList.add(categoryProductXrefImpl);
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(mock(CategoryImpl.class));
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getCategory()}
-   *       return {@link CategoryImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenCategoryProductXrefImplGetCategoryReturnCategoryImpl() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getCategory()).thenReturn(new CategoryImpl());
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
     Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
+    when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
@@ -1722,54 +1117,36 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     // Assert
     verify(categoryProductXrefImpl).getCategory();
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(property).getValue();
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link CategoryProductXrefImpl} {@link
-   *       CategoryProductXrefImpl#getDefaultReference()} return {@code false}.
+   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getDefaultReference()} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenCategoryProductXrefImplGetDefaultReferenceReturnFalse() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
-
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getDefaultReference()).thenReturn(false);
     when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
     Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
+    when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
@@ -1781,54 +1158,36 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     verify(categoryProductXrefImpl).getCategory();
     verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(property).getValue();
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link CategoryProductXrefImpl} {@link
-   *       CategoryProductXrefImpl#getDefaultReference()} return {@code null}.
+   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getDefaultReference()} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenCategoryProductXrefImplGetDefaultReferenceReturnNull() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
-
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getDefaultReference()).thenReturn(null);
     when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
     Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
+    when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
@@ -1840,54 +1199,36 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     verify(categoryProductXrefImpl).getCategory();
     verify(categoryProductXrefImpl).getDefaultReference();
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(property).getValue();
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link CategoryProductXrefImpl} {@link
-   *       CategoryProductXrefImpl#getDefaultReference()} return {@code true}.
+   *   <li>Given {@link CategoryProductXrefImpl} {@link CategoryProductXrefImpl#getDefaultReference()} return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
   public void testRemoveOldDefault_givenCategoryProductXrefImplGetDefaultReferenceReturnTrue() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
-
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
     when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
     Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
+    when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
@@ -1899,56 +1240,61 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     verify(categoryProductXrefImpl).getCategory();
     verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(property).getValue();
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link CategoryProductXrefImpl} (default constructor) Category is {@code null}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenNull_whenCategoryProductXrefImplCategoryIsNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
+  public void testRemoveOldDefault_givenPropertyGetValueReturn42_thenCallsGetValue() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
+    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(null);
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
+    // Act
+    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
+
+    // Assert
+    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
+    verify(property).getValue();
+  }
+
+  /**
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return empty string.</li>
+   *   <li>Then calls {@link ProductImpl#setCategory(Category)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
+  public void testRemoveOldDefault_givenPropertyGetValueReturnEmptyString_thenCallsSetCategory() {
+    // Arrange
+    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
+    doNothing().when(adminInstance).setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
+    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
@@ -1956,292 +1302,59 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
 
     // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
     verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
     verify(property).getValue();
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link CategoryProductXrefImpl} (default constructor) Product is {@code null}.
+   *   <li>Given {@link Property#Property(String, String)} with name is {@code defaultCategory} and value is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenNull_whenCategoryProductXrefImplProductIsNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
+  public void testRemoveOldDefault_givenPropertyWithNameIsDefaultCategoryAndValueIs42() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXrefImpl);
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setProduct(null);
-    oldDefault.setCategory(null);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenNull_whenEntityFindPropertyReturnNull() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(null);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("defaultCategory", "42"));
 
     // Act
     productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
 
     // Assert
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(entity).findProperty("defaultCategory");
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
+   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenProductBundleImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"})
+  public void testRemoveOldDefault_givenProperty_whenEntityFindPropertyReturnProperty() {
     // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setProduct(new ProductBundleImpl());
-    oldDefault.setCategory(null);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.
-   *   <li>When {@link CategoryProductXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenPropertyGetValueReturnNull_whenCategoryProductXrefImpl() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
-    CategoryProductXrefImpl oldDefault = mock(CategoryProductXrefImpl.class);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn(null);
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenPropertyWithNameAndValueIs42() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
+    doNothing().when(adminInstance).setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
     CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "42"));
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is empty
-   *       string.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenPropertyWithNameAndValueIsEmptyString() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", ""));
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
     // Act
     productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
@@ -2249,128 +1362,17 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
     // Assert
     verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
     verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_givenPropertyWithNameAndValueIsNull() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-
-    Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#removeOldDefault(Product, CategoryProductXref,
-   * Entity)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CategoryProductXref#getCategory()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#removeOldDefault(Product,
-   * CategoryProductXref, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductCustomPersistenceHandler.removeOldDefault(Product, CategoryProductXref, Entity)"
-  })
-  public void testRemoveOldDefault_thenCallsGetCategory() {
-    // Arrange
-    ProductCustomPersistenceHandler productCustomPersistenceHandler =
-        new ProductCustomPersistenceHandler();
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.isActive()).thenReturn(true);
-
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    CategoryProductXref categoryProductXref = mock(CategoryProductXref.class);
-    when(categoryProductXref.getCategory()).thenReturn(new CategoryImpl());
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXref);
-    categoryProductXrefList.add(categoryProductXrefImpl);
-
-    ProductBundleImpl adminInstance = mock(ProductBundleImpl.class);
-    doNothing()
-        .when(adminInstance)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    when(adminInstance.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    CategoryProductXrefImpl oldDefault = new CategoryProductXrefImpl();
-    oldDefault.setCategory(null);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    productCustomPersistenceHandler.removeOldDefault(adminInstance, oldDefault, entity);
-
-    // Assert
-    verify(categoryImpl).isActive();
-    verify(categoryProductXref).getCategory();
-    verify(categoryProductXrefImpl).getCategory();
-    verify(categoryProductXrefImpl, atLeast(1)).getDefaultReference();
-    verify(adminInstance, atLeast(1)).getAllParentCategoryXrefs();
-    verify(adminInstance).setCategory(isNull());
-    verify(entity, atLeast(1)).findProperty("defaultCategory");
-    verify(property).getValue();
+    verify(entity, atLeast(1)).findProperty(eq("defaultCategory"));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
@@ -2378,13 +1380,11 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
 
     // Act
-    CategoryProductXref actualCurrentDefaultXref =
-        productCustomPersistenceHandler.getCurrentDefaultXref(product);
+    CategoryProductXref actualCurrentDefaultXref = productCustomPersistenceHandler.getCurrentDefaultXref(product);
 
     // Assert
     verify(categoryProductXrefImpl).getCategory();
@@ -2394,27 +1394,22 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref2() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
-
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
     when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
 
@@ -2430,33 +1425,27 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref3() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
-
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getDefaultReference()).thenReturn(false);
     when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
 
     // Act
-    CategoryProductXref actualCurrentDefaultXref =
-        productCustomPersistenceHandler.getCurrentDefaultXref(product);
+    CategoryProductXref actualCurrentDefaultXref = productCustomPersistenceHandler.getCurrentDefaultXref(product);
 
     // Assert
     verify(categoryImpl).isActive();
@@ -2468,33 +1457,27 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref4() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.isActive()).thenReturn(true);
-
     CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
     when(categoryProductXrefImpl.getDefaultReference()).thenReturn(null);
     when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(categoryProductXrefImpl);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
 
     // Act
-    CategoryProductXref actualCurrentDefaultXref =
-        productCustomPersistenceHandler.getCurrentDefaultXref(product);
+    CategoryProductXref actualCurrentDefaultXref = productCustomPersistenceHandler.getCurrentDefaultXref(product);
 
     // Assert
     verify(categoryImpl).isActive();
@@ -2506,66 +1489,24 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
-  public void testGetCurrentDefaultXref5() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    CategoryProductXrefImpl categoryProductXrefImpl = mock(CategoryProductXrefImpl.class);
-    when(categoryProductXrefImpl.getDefaultReference()).thenReturn(true);
-    when(categoryProductXrefImpl.getCategory()).thenReturn(categoryImpl);
-
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(categoryProductXrefImpl);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    // Act
-    productCustomPersistenceHandler.getCurrentDefaultXref(product);
-
-    // Assert
-    verify(categoryProductXrefImpl).getCategory();
-    verify(product).getAllParentCategoryXrefs();
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default
-   *       constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref_givenArrayListAddCategoryProductXrefImpl() {
     // Arrange
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(new CategoryProductXrefImpl());
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
 
     // Act
-    CategoryProductXref actualCurrentDefaultXref =
-        productCustomPersistenceHandler.getCurrentDefaultXref(product);
+    CategoryProductXref actualCurrentDefaultXref = productCustomPersistenceHandler.getCurrentDefaultXref(product);
 
     // Assert
     verify(product).getAllParentCategoryXrefs();
@@ -2574,62 +1515,23 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default
-   *       constructor).
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
-  public void testGetCurrentDefaultXref_givenArrayListAddCategoryProductXrefImpl2() {
-    // Arrange
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(new CategoryProductXrefImpl());
-    categoryProductXrefList.add(new CategoryProductXrefImpl());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getAllParentCategoryXrefs()).thenReturn(categoryProductXrefList);
-
-    // Act
-    CategoryProductXref actualCurrentDefaultXref =
-        productCustomPersistenceHandler.getCurrentDefaultXref(product);
-
-    // Assert
-    verify(product).getAllParentCategoryXrefs();
-    assertNull(actualCurrentDefaultXref);
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref_givenArrayList_thenReturnNull() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getAllParentCategoryXrefs()).thenReturn(new ArrayList<>());
 
     // Act
-    CategoryProductXref actualCurrentDefaultXref =
-        productCustomPersistenceHandler.getCurrentDefaultXref(product);
+    CategoryProductXref actualCurrentDefaultXref = productCustomPersistenceHandler.getCurrentDefaultXref(product);
 
     // Assert
     verify(product).getAllParentCategoryXrefs();
@@ -2638,20 +1540,16 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}.
-   *
    * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getCurrentDefaultXref(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CategoryProductXref ProductCustomPersistenceHandler.getCurrentDefaultXref(Product)"})
   public void testGetCurrentDefaultXref_whenProductBundleImpl_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(productCustomPersistenceHandler.getCurrentDefaultXref(new ProductBundleImpl()));
@@ -2659,85 +1557,60 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductCustomPersistenceHandler.isRecursiveProductSelection(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductCustomPersistenceHandler.isRecursiveProductSelection(PersistencePackage)"})
   public void testIsRecursiveProductSelection_thenReturnFalse() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(productCustomPersistenceHandler.isRecursiveProductSelection(persistencePackage));
+    assertFalse(productCustomPersistenceHandler.isRecursiveProductSelection(new PersistencePackage("Dr Jane Doe",
+        entity, new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
    * Test {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#isRecursiveProductSelection(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductCustomPersistenceHandler.isRecursiveProductSelection(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductCustomPersistenceHandler.isRecursiveProductSelection(PersistencePackage)"})
   public void testIsRecursiveProductSelection_thenReturnTrue() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"upsaleProduct", "crossSaleProduct"},
-            "ABC123");
 
     // Act and Assert
-    assertTrue(productCustomPersistenceHandler.isRecursiveProductSelection(persistencePackage));
+    assertTrue(productCustomPersistenceHandler.isRecursiveProductSelection(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"upsaleProduct"}, "ABC123")));
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String,
-   * PredicateProvider)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}
+   * Test {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}.
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#createFilterMappingForProperty(String, PredicateProvider)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "FilterMapping ProductCustomPersistenceHandler.createFilterMappingForProperty(String, PredicateProvider)"
-  })
+      "FilterMapping ProductCustomPersistenceHandler.createFilterMappingForProperty(String, PredicateProvider)"})
   public void testCreateFilterMappingForProperty() {
     // Arrange
     PredicateProvider predicateProvider = mock(PredicateProvider.class);
 
     // Act
-    FilterMapping actualCreateFilterMappingForPropertyResult =
-        productCustomPersistenceHandler.createFilterMappingForProperty(
-            "Target Property Name", predicateProvider);
+    FilterMapping actualCreateFilterMappingForPropertyResult = productCustomPersistenceHandler
+        .createFilterMappingForProperty("Target Property Name", predicateProvider);
 
     // Assert
     FieldPath fieldPath = actualCreateFilterMappingForPropertyResult.getFieldPath();
@@ -2757,162 +1630,41 @@ public class ProductCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage,
-   * CriteriaTransferObject, RecordHelper)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage,
-   * CriteriaTransferObject, RecordHelper)}
+   * Test {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)}.
+   * <ul>
+   *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "DynamicResultSet ProductCustomPersistenceHandler.getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)"
-  })
-  public void testGetFilteredDynamicResultSet() throws ServiceException {
+      "DynamicResultSet ProductCustomPersistenceHandler.getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)"})
+  public void testGetFilteredDynamicResultSet_thenReturnDynamicResultSet() throws ServiceException {
     // Arrange
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(persistencePerspective);
     CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    DynamicResultSet actualFilteredDynamicResultSet =
-        productCustomPersistenceHandler.getFilteredDynamicResultSet(
-            persistencePackage, cto, helper);
+    DynamicResultSet actualFilteredDynamicResultSet = productCustomPersistenceHandler
+        .getFilteredDynamicResultSet(persistencePackage, cto, helper);
 
     // Assert
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    assertTrue(cto.getAdditionalFilterMappings().isEmpty());
-    assertSame(dynamicResultSet, actualFilteredDynamicResultSet);
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage,
-   * CriteriaTransferObject, RecordHelper)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage,
-   * CriteriaTransferObject, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet ProductCustomPersistenceHandler.getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)"
-  })
-  public void testGetFilteredDynamicResultSet2() throws ServiceException {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(new DynamicResultSet());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    productCustomPersistenceHandler.getFilteredDynamicResultSet(persistencePackage, cto, helper);
-
-    // Assert
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    List<FilterMapping> additionalFilterMappings = cto.getAdditionalFilterMappings();
-    assertEquals(1, additionalFilterMappings.size());
-    FilterMapping getResult = additionalFilterMappings.get(0);
-    FieldPath fieldPath = getResult.getFieldPath();
-    assertEquals("id", fieldPath.getTargetProperty());
-    assertNull(getResult.getInheritedFromClass());
-    assertNull(getResult.getOrder());
-    assertNull(getResult.getFullPropertyName());
-    assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestriction().getFilterValueConverter());
-    assertTrue(fieldPath.getAssociationPath().isEmpty());
-    assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
-    assertTrue(getResult.getDirectFilterValues().isEmpty());
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult.getNullsLast());
-  }
-
-  /**
-   * Test {@link ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage,
-   * CriteriaTransferObject, RecordHelper)}.
-   *
-   * <p>Method under test: {@link
-   * ProductCustomPersistenceHandler#getFilteredDynamicResultSet(PersistencePackage,
-   * CriteriaTransferObject, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet ProductCustomPersistenceHandler.getFilteredDynamicResultSet(PersistencePackage, CriteriaTransferObject, RecordHelper)"
-  })
-  public void testGetFilteredDynamicResultSet3() throws ServiceException {
-    // Arrange
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {});
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    DynamicResultSet actualFilteredDynamicResultSet =
-        productCustomPersistenceHandler.getFilteredDynamicResultSet(
-            persistencePackage, cto, helper);
-
-    // Assert
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    assertTrue(cto.getAdditionalFilterMappings().isEmpty());
+    verify(persistencePerspective).getOperationTypes();
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
     assertSame(dynamicResultSet, actualFilteredDynamicResultSet);
   }
 }

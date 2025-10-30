@@ -19,11 +19,11 @@ package org.broadleafcommerce.profile.core.service;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.dao.PhoneDao;
 import org.broadleafcommerce.profile.core.domain.Phone;
@@ -38,18 +38,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PhoneServiceImplDiffblueTest {
-  @Mock private PhoneDao phoneDao;
+  @Mock
+  private PhoneDao phoneDao;
 
-  @InjectMocks private PhoneServiceImpl phoneServiceImpl;
+  @InjectMocks
+  private PhoneServiceImpl phoneServiceImpl;
 
   /**
    * Test {@link PhoneServiceImpl#savePhone(Phone)}.
-   *
-   * <p>Method under test: {@link PhoneServiceImpl#savePhone(Phone)}
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#savePhone(Phone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneServiceImpl.savePhone(Phone)"})
   public void testSavePhone() {
     // Arrange
@@ -66,12 +67,11 @@ public class PhoneServiceImplDiffblueTest {
 
   /**
    * Test {@link PhoneServiceImpl#readPhoneById(Long)}.
-   *
-   * <p>Method under test: {@link PhoneServiceImpl#readPhoneById(Long)}
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#readPhoneById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneServiceImpl.readPhoneById(Long)"})
   public void testReadPhoneById() {
     // Arrange
@@ -82,18 +82,17 @@ public class PhoneServiceImplDiffblueTest {
     Phone actualReadPhoneByIdResult = phoneServiceImpl.readPhoneById(1L);
 
     // Assert
-    verify(phoneDao).readPhoneById(1L);
+    verify(phoneDao).readPhoneById(eq(1L));
     assertSame(phoneImpl, actualReadPhoneByIdResult);
   }
 
   /**
    * Test {@link PhoneServiceImpl#create()}.
-   *
-   * <p>Method under test: {@link PhoneServiceImpl#create()}
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneServiceImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -110,18 +109,15 @@ public class PhoneServiceImplDiffblueTest {
 
   /**
    * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest}, {@code orig}.
-   *
    * <ul>
-   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default
-   *       constructor).
-   *   <li>Then calls {@link PhoneDao#create()}.
+   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then calls {@link PhoneDao#create()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone, Phone)"})
   public void testCopyPhoneWithDestOrig_givenPhoneDaoCreateReturnPhoneImpl_thenCallsCreate() {
     // Arrange
@@ -137,17 +133,15 @@ public class PhoneServiceImplDiffblueTest {
 
   /**
    * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest}, {@code orig}.
-   *
    * <ul>
-   *   <li>When {@link PhoneImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>When {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone, Phone)"})
   public void testCopyPhoneWithDestOrig_whenPhoneImpl_thenReturnNull() {
     // Arrange, Act and Assert
@@ -156,43 +150,35 @@ public class PhoneServiceImplDiffblueTest {
 
   /**
    * Test {@link PhoneServiceImpl#copyPhone(Phone, Phone)} with {@code dest}, {@code orig}.
-   *
    * <ul>
-   *   <li>When {@link PhoneImpl} (default constructor).
-   *   <li>Then return {@link PhoneImpl} (default constructor).
+   *   <li>When {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then return {@link PhoneImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#copyPhone(Phone, Phone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone, Phone)"})
   public void testCopyPhoneWithDestOrig_whenPhoneImpl_thenReturnPhoneImpl() {
     // Arrange
     PhoneImpl dest = new PhoneImpl();
 
-    // Act
-    Phone actualCopyPhoneResult = phoneServiceImpl.copyPhone(dest, new PhoneImpl());
-
-    // Assert
-    assertSame(dest, actualCopyPhoneResult);
+    // Act and Assert
+    assertSame(dest, phoneServiceImpl.copyPhone(dest, new PhoneImpl()));
   }
 
   /**
    * Test {@link PhoneServiceImpl#copyPhone(Phone)} with {@code orig}.
-   *
    * <ul>
-   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default
-   *       constructor).
-   *   <li>Then return {@link PhoneImpl} (default constructor).
+   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then return {@link PhoneImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneServiceImpl#copyPhone(Phone)}
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#copyPhone(Phone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone)"})
   public void testCopyPhoneWithOrig_givenPhoneDaoCreateReturnPhoneImpl_thenReturnPhoneImpl() {
     // Arrange
@@ -209,19 +195,16 @@ public class PhoneServiceImplDiffblueTest {
 
   /**
    * Test {@link PhoneServiceImpl#copyPhone(Phone)} with {@code orig}.
-   *
    * <ul>
-   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default
-   *       constructor).
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link PhoneDao} {@link PhoneDao#create()} return {@link PhoneImpl} (default constructor).</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneServiceImpl#copyPhone(Phone)}
+   * <p>
+   * Method under test: {@link PhoneServiceImpl#copyPhone(Phone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneServiceImpl.copyPhone(Phone)"})
   public void testCopyPhoneWithOrig_givenPhoneDaoCreateReturnPhoneImpl_whenNull_thenReturnNull() {
     // Arrange

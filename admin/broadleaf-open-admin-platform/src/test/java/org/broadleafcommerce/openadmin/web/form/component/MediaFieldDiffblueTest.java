@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.media.domain.MediaDto;
@@ -33,9 +32,8 @@ import org.junit.experimental.categories.Category;
 public class MediaFieldDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link MediaField}
    *   <li>{@link MediaField#setHeight(String)}
@@ -45,15 +43,9 @@ public class MediaFieldDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MediaField.<init>()",
-    "String MediaField.getHeight()",
-    "Media MediaField.getMedia()",
-    "void MediaField.setHeight(String)",
-    "void MediaField.setMedia(Media)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MediaField.<init>()", "String MediaField.getHeight()", "Media MediaField.getMedia()",
+      "void MediaField.setHeight(String)", "void MediaField.setMedia(Media)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MediaField actualMediaField = new MediaField();

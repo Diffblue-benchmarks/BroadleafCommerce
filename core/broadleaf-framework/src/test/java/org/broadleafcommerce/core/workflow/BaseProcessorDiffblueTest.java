@@ -23,294 +23,297 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BaseProcessorDiffblueTest {
+  @InjectMocks
+  private EmptySequenceProcessor emptySequenceProcessor;
+
   /**
    * Test {@link BaseProcessor#setBeanName(String)}.
-   *
-   * <p>Method under test: {@link BaseProcessor#setBeanName(String)}
+   * <p>
+   * Method under test: {@link BaseProcessor#setBeanName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseProcessor.setBeanName(String)"})
   public void testSetBeanName() {
     // Arrange
-    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
 
     // Act
-    emptySequenceProcessor.setBeanName("Bean Name");
+    sequenceProcessor.setBeanName("Bean Name");
 
     // Assert
-    assertEquals("Bean Name", emptySequenceProcessor.getBeanName());
-    assertEquals("Workflow Processor: Bean Name", emptySequenceProcessor.getBeanDesc());
+    assertEquals("Bean Name", sequenceProcessor.getBeanName());
+    assertEquals("Workflow Processor: Bean Name", sequenceProcessor.getBeanDesc());
   }
 
   /**
    * Test {@link BaseProcessor#setBeanFactory(BeanFactory)}.
-   *
-   * <p>Method under test: {@link BaseProcessor#setBeanFactory(BeanFactory)}
+   * <p>
+   * Method under test: {@link BaseProcessor#setBeanFactory(BeanFactory)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseProcessor.setBeanFactory(BeanFactory)"})
   public void testSetBeanFactory() throws BeansException {
     // Arrange
-    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
     DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
     // Act
-    emptySequenceProcessor.setBeanFactory(beanFactory);
+    sequenceProcessor.setBeanFactory(beanFactory);
 
     // Assert
-    assertSame(beanFactory, emptySequenceProcessor.getBeanFactory());
+    assertSame(beanFactory, sequenceProcessor.getBeanFactory());
   }
 
   /**
    * Test {@link BaseProcessor#getAutoRollbackOnError()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getAutoRollbackOnError()}
+   * <p>
+   * Method under test: {@link BaseProcessor#getAutoRollbackOnError()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BaseProcessor.getAutoRollbackOnError()"})
   public void testGetAutoRollbackOnError() {
-    // Arrange, Act and Assert
-    assertTrue(new EmptySequenceProcessor().getAutoRollbackOnError());
+    // Arrange
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act and Assert
+    assertTrue(sequenceProcessor.getAutoRollbackOnError());
   }
 
   /**
    * Test {@link BaseProcessor#isAllowEmptyActivities()}.
-   *
    * <ul>
-   *   <li>Given {@link EmptySequenceProcessor} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SequenceProcessor} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
+   * <p>
+   * Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BaseProcessor.isAllowEmptyActivities()"})
-  public void testIsAllowEmptyActivities_givenEmptySequenceProcessor_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new EmptySequenceProcessor().isAllowEmptyActivities());
+  public void testIsAllowEmptyActivities_givenSequenceProcessor_thenReturnFalse() {
+    // Arrange
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act and Assert
+    assertFalse(sequenceProcessor.isAllowEmptyActivities());
   }
 
   /**
    * Test {@link BaseProcessor#isAllowEmptyActivities()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
+   * <p>
+   * Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BaseProcessor.isAllowEmptyActivities()"})
   public void testIsAllowEmptyActivities_thenReturnTrue() {
     // Arrange
-    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
-    emptySequenceProcessor.setAllowEmptyActivities(true);
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+    sequenceProcessor.setAllowEmptyActivities(true);
 
     // Act and Assert
-    assertTrue(emptySequenceProcessor.isAllowEmptyActivities());
+    assertTrue(sequenceProcessor.isAllowEmptyActivities());
   }
 
   /**
    * Test {@link BaseProcessor#setAllowEmptyActivities(boolean)}.
-   *
-   * <p>Method under test: {@link BaseProcessor#setAllowEmptyActivities(boolean)}
+   * <p>
+   * Method under test: {@link BaseProcessor#setAllowEmptyActivities(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseProcessor.setAllowEmptyActivities(boolean)"})
   public void testSetAllowEmptyActivities() {
     // Arrange
-    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
 
     // Act
-    emptySequenceProcessor.setAllowEmptyActivities(true);
+    sequenceProcessor.setAllowEmptyActivities(true);
 
     // Assert
-    assertTrue(emptySequenceProcessor.isAllowEmptyActivities());
+    assertTrue(sequenceProcessor.isAllowEmptyActivities());
   }
 
   /**
-   * Test {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)} with {@code
-   * ContextRefreshedEvent}.
-   *
-   * <p>Method under test: {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)}
+   * Test {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)} with {@code ContextRefreshedEvent}.
+   * <p>
+   * Method under test: {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseProcessor.onApplicationEvent(ContextRefreshedEvent)"})
   public void testOnApplicationEventWithContextRefreshedEvent() {
     // Arrange
-    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
 
     // Act and Assert
-    assertThrows(
-        BeanInitializationException.class,
-        () ->
-            emptySequenceProcessor.onApplicationEvent(
-                new ContextRefreshedEvent(mock(ApplicationContext.class))));
+    assertThrows(BeanInitializationException.class, () -> sequenceProcessor
+        .onApplicationEvent(new ContextRefreshedEvent(new AnnotationConfigReactiveWebApplicationContext())));
   }
 
   /**
-   * Test {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)} with {@code
-   * ContextRefreshedEvent}.
-   *
-   * <p>Method under test: {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)}
+   * Test {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)} with {@code ContextRefreshedEvent}.
+   * <p>
+   * Method under test: {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseProcessor.onApplicationEvent(ContextRefreshedEvent)"})
   public void testOnApplicationEventWithContextRefreshedEvent2() throws BeansException {
     // Arrange
-    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
-    emptySequenceProcessor.setBeanFactory(new StaticListableBeanFactory());
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+    sequenceProcessor.setBeanFactory(new StaticListableBeanFactory());
 
     // Act and Assert
-    assertThrows(
-        UnsatisfiedDependencyException.class,
-        () ->
-            emptySequenceProcessor.onApplicationEvent(
-                new ContextRefreshedEvent(mock(ApplicationContext.class))));
+    assertThrows(UnsatisfiedDependencyException.class, () -> sequenceProcessor
+        .onApplicationEvent(new ContextRefreshedEvent(new AnnotationConfigReactiveWebApplicationContext())));
   }
 
   /**
    * Test {@link BaseProcessor#getBeanDesc()}.
-   *
    * <ul>
-   *   <li>Given {@link EmptySequenceProcessor} (default constructor).
-   *   <li>Then return {@code Workflow Processor: null}.
+   *   <li>Given {@link SequenceProcessor} (default constructor).</li>
+   *   <li>Then return {@code Workflow Processor: null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BaseProcessor#getBeanDesc()}
+   * <p>
+   * Method under test: {@link BaseProcessor#getBeanDesc()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BaseProcessor.getBeanDesc()"})
-  public void testGetBeanDesc_givenEmptySequenceProcessor_thenReturnWorkflowProcessorNull() {
-    // Arrange, Act and Assert
-    assertEquals("Workflow Processor: null", new EmptySequenceProcessor().getBeanDesc());
+  public void testGetBeanDesc_givenSequenceProcessor_thenReturnWorkflowProcessorNull() {
+    // Arrange
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act and Assert
+    assertEquals("Workflow Processor: null", sequenceProcessor.getBeanDesc());
   }
 
   /**
    * Test {@link BaseProcessor#setDefaultErrorHandler(ErrorHandler)}.
-   *
-   * <p>Method under test: {@link BaseProcessor#setDefaultErrorHandler(ErrorHandler)}
+   * <p>
+   * Method under test: {@link BaseProcessor#setDefaultErrorHandler(ErrorHandler)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseProcessor.setDefaultErrorHandler(ErrorHandler)"})
   public void testSetDefaultErrorHandler() {
     // Arrange
-    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
     DefaultErrorHandler defaultErrorHandler = new DefaultErrorHandler();
 
     // Act
-    emptySequenceProcessor.setDefaultErrorHandler(defaultErrorHandler);
+    sequenceProcessor.setDefaultErrorHandler(defaultErrorHandler);
 
     // Assert
-    assertSame(defaultErrorHandler, emptySequenceProcessor.getDefaultErrorHandler());
+    assertSame(defaultErrorHandler, sequenceProcessor.getDefaultErrorHandler());
   }
 
   /**
    * Test {@link BaseProcessor#getActivities()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getActivities()}
+   * <p>
+   * Method under test: {@link BaseProcessor#getActivities()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List BaseProcessor.getActivities()"})
   public void testGetActivities() {
-    // Arrange, Act and Assert
-    assertTrue(new EmptySequenceProcessor().getActivities().isEmpty());
+    // Arrange
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act and Assert
+    assertTrue(sequenceProcessor.getActivities().isEmpty());
   }
 
   /**
    * Test {@link BaseProcessor#getModuleActivities()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getModuleActivities()}
+   * <p>
+   * Method under test: {@link BaseProcessor#getModuleActivities()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List BaseProcessor.getModuleActivities()"})
   public void testGetModuleActivities() {
-    // Arrange, Act and Assert
-    assertTrue(new EmptySequenceProcessor().getModuleActivities().isEmpty());
+    // Arrange
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act and Assert
+    assertTrue(sequenceProcessor.getModuleActivities().isEmpty());
   }
 
   /**
    * Test {@link BaseProcessor#getBeanName()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getBeanName()}
+   * <p>
+   * Method under test: {@link BaseProcessor#getBeanName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BaseProcessor.getBeanName()"})
   public void testGetBeanName() {
-    // Arrange, Act and Assert
-    assertNull(new EmptySequenceProcessor().getBeanName());
+    // Arrange
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act and Assert
+    assertNull(sequenceProcessor.getBeanName());
   }
 
   /**
    * Test {@link BaseProcessor#getDefaultErrorHandler()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getDefaultErrorHandler()}
+   * <p>
+   * Method under test: {@link BaseProcessor#getDefaultErrorHandler()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ErrorHandler BaseProcessor.getDefaultErrorHandler()"})
   public void testGetDefaultErrorHandler() {
-    // Arrange, Act and Assert
-    assertNull(new EmptySequenceProcessor().getDefaultErrorHandler());
+    // Arrange
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act and Assert
+    assertNull(sequenceProcessor.getDefaultErrorHandler());
   }
 
   /**
    * Test {@link BaseProcessor#getBeanFactory()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getBeanFactory()}
+   * <p>
+   * Method under test: {@link BaseProcessor#getBeanFactory()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BeanFactory BaseProcessor.getBeanFactory()"})
   public void testGetBeanFactory() {
-    // Arrange, Act and Assert
-    assertNull(new EmptySequenceProcessor().getBeanFactory());
+    // Arrange
+    SequenceProcessor<?, ?> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act and Assert
+    assertNull(sequenceProcessor.getBeanFactory());
   }
 }

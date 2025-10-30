@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.i18n.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {TranslatedEntity.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TranslatedEntityDiffblueTest {
-  @Autowired private TranslatedEntity translatedEntity;
+  @Autowired
+  private TranslatedEntity translatedEntity;
 
   /**
    * Test {@link TranslatedEntity#getInstance(String)}.
-   *
-   * <p>Method under test: {@link TranslatedEntity#getInstance(String)}
+   * <p>
+   * Method under test: {@link TranslatedEntity#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TranslatedEntity TranslatedEntity.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,17 +54,15 @@ public class TranslatedEntityDiffblueTest {
 
   /**
    * Test {@link TranslatedEntity#getInstanceFromFriendlyType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code 42}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TranslatedEntity#getInstanceFromFriendlyType(String)}
+   * <p>
+   * Method under test: {@link TranslatedEntity#getInstanceFromFriendlyType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TranslatedEntity TranslatedEntity.getInstanceFromFriendlyType(String)"})
   public void testGetInstanceFromFriendlyType_when42_thenReturnNull() {
     // Arrange, Act and Assert
@@ -74,12 +71,11 @@ public class TranslatedEntityDiffblueTest {
 
   /**
    * Test {@link TranslatedEntity#TranslatedEntity(String, String)}.
-   *
-   * <p>Method under test: {@link TranslatedEntity#TranslatedEntity(String, String)}
+   * <p>
+   * Method under test: {@link TranslatedEntity#TranslatedEntity(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TranslatedEntity.<init>(String, String)"})
   public void testNewTranslatedEntity() {
     // Arrange and Act
@@ -92,22 +88,19 @@ public class TranslatedEntityDiffblueTest {
 
   /**
    * Test {@link TranslatedEntity#equals(Object)}, and {@link TranslatedEntity#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TranslatedEntity#equals(Object)}
    *   <li>{@link TranslatedEntity#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TranslatedEntity.equals(Object)", "int TranslatedEntity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -116,59 +109,53 @@ public class TranslatedEntityDiffblueTest {
 
     // Act and Assert
     assertEquals(translatedEntity, translatedEntity2);
-    assertEquals(translatedEntity.hashCode(), translatedEntity2.hashCode());
+    int expectedHashCodeResult = translatedEntity.hashCode();
+    assertEquals(expectedHashCodeResult, translatedEntity2.hashCode());
   }
 
   /**
    * Test {@link TranslatedEntity#equals(Object)}, and {@link TranslatedEntity#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TranslatedEntity#equals(Object)}
    *   <li>{@link TranslatedEntity#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TranslatedEntity.equals(Object)", "int TranslatedEntity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     TranslatedEntity translatedEntity = TranslatedEntity.CATEGORY;
-    TranslatedEntity translatedEntity2 =
-        new TranslatedEntity(
-            "org.broadleafcommerce.core.catalog.domain.Category",
-            "org.broadleafcommerce.core.catalog.domain.Category");
+    TranslatedEntity translatedEntity2 = new TranslatedEntity("org.broadleafcommerce.core.catalog.domain.Category",
+        "org.broadleafcommerce.core.catalog.domain.Category");
 
     // Act and Assert
     assertEquals(translatedEntity, translatedEntity2);
-    assertEquals(translatedEntity.hashCode(), translatedEntity2.hashCode());
+    int expectedHashCodeResult = translatedEntity.hashCode();
+    assertEquals(expectedHashCodeResult, translatedEntity2.hashCode());
   }
 
   /**
    * Test {@link TranslatedEntity#equals(Object)}, and {@link TranslatedEntity#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TranslatedEntity#equals(Object)}
    *   <li>{@link TranslatedEntity#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TranslatedEntity.equals(Object)", "int TranslatedEntity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -177,27 +164,25 @@ public class TranslatedEntityDiffblueTest {
 
     // Act and Assert
     assertEquals(translatedEntity, translatedEntity2);
-    assertEquals(translatedEntity.hashCode(), translatedEntity2.hashCode());
+    int expectedHashCodeResult = translatedEntity.hashCode();
+    assertEquals(expectedHashCodeResult, translatedEntity2.hashCode());
   }
 
   /**
    * Test {@link TranslatedEntity#equals(Object)}, and {@link TranslatedEntity#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TranslatedEntity#equals(Object)}
    *   <li>{@link TranslatedEntity#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TranslatedEntity.equals(Object)", "int TranslatedEntity.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -211,17 +196,15 @@ public class TranslatedEntityDiffblueTest {
 
   /**
    * Test {@link TranslatedEntity#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TranslatedEntity#equals(Object)}
+   * <p>
+   * Method under test: {@link TranslatedEntity#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TranslatedEntity.equals(Object)", "int TranslatedEntity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -230,17 +213,15 @@ public class TranslatedEntityDiffblueTest {
 
   /**
    * Test {@link TranslatedEntity#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TranslatedEntity#equals(Object)}
+   * <p>
+   * Method under test: {@link TranslatedEntity#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TranslatedEntity.equals(Object)", "int TranslatedEntity.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -249,17 +230,15 @@ public class TranslatedEntityDiffblueTest {
 
   /**
    * Test {@link TranslatedEntity#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TranslatedEntity#equals(Object)}
+   * <p>
+   * Method under test: {@link TranslatedEntity#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TranslatedEntity.equals(Object)", "int TranslatedEntity.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -268,17 +247,15 @@ public class TranslatedEntityDiffblueTest {
 
   /**
    * Test {@link TranslatedEntity#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TranslatedEntity#equals(Object)}
+   * <p>
+   * Method under test: {@link TranslatedEntity#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TranslatedEntity.equals(Object)", "int TranslatedEntity.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

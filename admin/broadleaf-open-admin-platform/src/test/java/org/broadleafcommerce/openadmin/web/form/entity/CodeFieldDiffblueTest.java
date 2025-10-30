@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -30,9 +29,8 @@ import org.junit.experimental.categories.Category;
 public class CodeFieldDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CodeField}
    *   <li>{@link CodeField#setFetchUrlSuffix(String)}
@@ -42,15 +40,10 @@ public class CodeFieldDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CodeField.<init>()",
-    "String CodeField.getFetchUrlSuffix()",
-    "String CodeField.getFileType()",
-    "void CodeField.setFetchUrlSuffix(String)",
-    "void CodeField.setFileType(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CodeField.<init>()", "String CodeField.getFetchUrlSuffix()",
+      "String CodeField.getFileType()", "void CodeField.setFetchUrlSuffix(String)",
+      "void CodeField.setFileType(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CodeField actualCodeField = new CodeField();

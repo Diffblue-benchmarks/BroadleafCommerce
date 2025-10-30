@@ -18,18 +18,23 @@
 package org.broadleafcommerce.cms.structure.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -41,31 +46,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class StructuredContentRuleImplDiffblueTest {
-  @Autowired private StructuredContentRuleImpl structuredContentRuleImpl;
+  @Autowired
+  private StructuredContentRuleImpl structuredContentRuleImpl;
 
   /**
-   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link
-   * StructuredContentRuleImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link StructuredContentRuleImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentRuleImpl#equals(Object)}
    *   <li>{@link StructuredContentRuleImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentRuleImpl.equals(Object)",
-    "int StructuredContentRuleImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
@@ -78,32 +77,26 @@ public class StructuredContentRuleImplDiffblueTest {
 
     // Act and Assert
     assertEquals(structuredContentRuleImpl, structuredContentRuleImpl2);
-    assertEquals(structuredContentRuleImpl.hashCode(), structuredContentRuleImpl2.hashCode());
+    int expectedHashCodeResult = structuredContentRuleImpl.hashCode();
+    assertEquals(expectedHashCodeResult, structuredContentRuleImpl2.hashCode());
   }
 
   /**
-   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link
-   * StructuredContentRuleImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link StructuredContentRuleImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentRuleImpl#equals(Object)}
    *   <li>{@link StructuredContentRuleImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentRuleImpl.equals(Object)",
-    "int StructuredContentRuleImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
@@ -116,32 +109,26 @@ public class StructuredContentRuleImplDiffblueTest {
 
     // Act and Assert
     assertEquals(structuredContentRuleImpl, structuredContentRuleImpl2);
-    assertNotEquals(structuredContentRuleImpl.hashCode(), structuredContentRuleImpl2.hashCode());
+    int notExpectedHashCodeResult = structuredContentRuleImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, structuredContentRuleImpl2.hashCode());
   }
 
   /**
-   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link
-   * StructuredContentRuleImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link StructuredContentRuleImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentRuleImpl#equals(Object)}
    *   <li>{@link StructuredContentRuleImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentRuleImpl.equals(Object)",
-    "int StructuredContentRuleImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
@@ -154,32 +141,58 @@ public class StructuredContentRuleImplDiffblueTest {
 
     // Act and Assert
     assertEquals(structuredContentRuleImpl, structuredContentRuleImpl2);
-    assertNotEquals(structuredContentRuleImpl.hashCode(), structuredContentRuleImpl2.hashCode());
+    int notExpectedHashCodeResult = structuredContentRuleImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, structuredContentRuleImpl2.hashCode());
   }
 
   /**
-   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link
-   * StructuredContentRuleImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link StructuredContentRuleImpl#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentRuleImpl#equals(Object)}
    *   <li>{@link StructuredContentRuleImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentRuleImpl.equals(Object)",
-    "int StructuredContentRuleImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
+    structuredContentRuleImpl.setId(null);
+    structuredContentRuleImpl.setMatchRule(null);
+
+    StructuredContentRuleImpl structuredContentRuleImpl2 = new StructuredContentRuleImpl();
+    structuredContentRuleImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentRuleImpl2.setMatchRule(null);
+
+    // Act and Assert
+    assertEquals(structuredContentRuleImpl, structuredContentRuleImpl2);
+    int notExpectedHashCodeResult = structuredContentRuleImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, structuredContentRuleImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link StructuredContentRuleImpl#equals(Object)}, and {@link StructuredContentRuleImpl#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link StructuredContentRuleImpl#equals(Object)}
+   *   <li>{@link StructuredContentRuleImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
@@ -194,21 +207,16 @@ public class StructuredContentRuleImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentRuleImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentRuleImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentRuleImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentRuleImpl.equals(Object)",
-    "int StructuredContentRuleImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
@@ -225,22 +233,43 @@ public class StructuredContentRuleImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentRuleImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentRuleImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentRuleImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentRuleImpl.equals(Object)",
-    "int StructuredContentRuleImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
+    structuredContentRuleImpl.setId(null);
+    structuredContentRuleImpl.setMatchRule(null);
+
+    StructuredContentRuleImpl structuredContentRuleImpl2 = new StructuredContentRuleImpl();
+    structuredContentRuleImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentRuleImpl2.setMatchRule("Match Rule");
+
+    // Act and Assert
+    assertNotEquals(structuredContentRuleImpl, structuredContentRuleImpl2);
+  }
+
+  /**
+   * Test {@link StructuredContentRuleImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentRuleImpl#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
     structuredContentRuleImpl.setId(null);
@@ -256,21 +285,16 @@ public class StructuredContentRuleImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentRuleImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentRuleImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentRuleImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentRuleImpl.equals(Object)",
-    "int StructuredContentRuleImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
@@ -283,21 +307,16 @@ public class StructuredContentRuleImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentRuleImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentRuleImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentRuleImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentRuleImpl.equals(Object)",
-    "int StructuredContentRuleImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentRuleImpl.equals(Object)", "int StructuredContentRuleImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     StructuredContentRuleImpl structuredContentRuleImpl = new StructuredContentRuleImpl();
@@ -310,44 +329,43 @@ public class StructuredContentRuleImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentRuleImpl#cloneEntity()}.
-   *
-   * <p>Method under test: {@link StructuredContentRuleImpl#cloneEntity()}
+   * <p>
+   * Method under test: {@link StructuredContentRuleImpl#cloneEntity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"StructuredContentRule StructuredContentRuleImpl.cloneEntity()"})
   public void testCloneEntity() {
-    // Arrange and Act
-    StructuredContentRule actualCloneEntityResult = structuredContentRuleImpl.cloneEntity();
+    // Arrange
+    StructuredContentRuleImpl structuredContentRuleImpl2 = new StructuredContentRuleImpl();
+
+    // Act
+    StructuredContentRule actualCloneEntityResult = structuredContentRuleImpl2.cloneEntity();
 
     // Assert
     assertTrue(actualCloneEntityResult instanceof StructuredContentRuleImpl);
-    assertEquals(structuredContentRuleImpl, actualCloneEntityResult);
+    assertEquals(structuredContentRuleImpl2, actualCloneEntityResult);
   }
 
   /**
    * Test {@link StructuredContentRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StructuredContentRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link StructuredContentRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StructuredContentRuleImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse StructuredContentRuleImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
+    StructuredContentRuleImpl structuredContentRuleImpl2 = new StructuredContentRuleImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(new StructuredContentRuleImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<StructuredContentRule> actualCreateOrRetrieveCopyInstanceResult =
-        structuredContentRuleImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<StructuredContentRule> actualCreateOrRetrieveCopyInstanceResult = structuredContentRuleImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -356,36 +374,47 @@ public class StructuredContentRuleImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StructuredContentRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <ul>
+   *   <li>Then Clone return {@link StructuredContentRuleImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StructuredContentRuleImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse StructuredContentRuleImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance_thenCloneReturnStructuredContentRuleImpl()
+      throws CloneNotSupportedException {
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(structuredContentRuleImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    StructuredContentRuleImpl structuredContentRuleImpl2 = new StructuredContentRuleImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<StructuredContentRule> actualCreateOrRetrieveCopyInstanceResult =
-        structuredContentRuleImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<StructuredContentRule> actualCreateOrRetrieveCopyInstanceResult = structuredContentRuleImpl2
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService)
+        .getCeilingImplClass(eq("org.broadleafcommerce.cms.structure.domain.StructuredContentRuleImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    StructuredContentRule clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof StructuredContentRuleImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(structuredContentRuleImpl2, clone);
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link StructuredContentRuleImpl}
    *   <li>{@link StructuredContentRuleImpl#setId(Long)}
@@ -395,15 +424,10 @@ public class StructuredContentRuleImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StructuredContentRuleImpl.<init>()",
-    "Long StructuredContentRuleImpl.getId()",
-    "String StructuredContentRuleImpl.getMatchRule()",
-    "void StructuredContentRuleImpl.setId(Long)",
-    "void StructuredContentRuleImpl.setMatchRule(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentRuleImpl.<init>()", "Long StructuredContentRuleImpl.getId()",
+      "String StructuredContentRuleImpl.getMatchRule()", "void StructuredContentRuleImpl.setId(Long)",
+      "void StructuredContentRuleImpl.setMatchRule(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     StructuredContentRuleImpl actualStructuredContentRuleImpl = new StructuredContentRuleImpl();

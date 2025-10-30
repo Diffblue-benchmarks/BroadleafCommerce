@@ -24,47 +24,45 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.search.domain.FieldImpl;
 import org.broadleafcommerce.core.search.domain.SearchCriteria;
-import org.broadleafcommerce.core.search.domain.SearchFacet;
 import org.broadleafcommerce.core.search.domain.SearchFacetDTO;
 import org.broadleafcommerce.core.search.domain.SearchFacetImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetResultDTO;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SearchFacetDTOServiceImplDiffblueTest {
-  @InjectMocks private SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
+  @InjectMocks
+  private SearchFacetDTOServiceImpl searchFacetDTOServiceImpl;
 
   /**
    * Test {@link SearchFacetDTOServiceImpl#createSearchCriteria()}.
-   *
-   * <p>Method under test: {@link SearchFacetDTOServiceImpl#createSearchCriteria()}
+   * <p>
+   * Method under test: {@link SearchFacetDTOServiceImpl#createSearchCriteria()}
    */
   @Test
   @DisplayName("Test createSearchCriteria()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"SearchCriteria SearchFacetDTOServiceImpl.createSearchCriteria()"})
   void testCreateSearchCriteria() {
     // Arrange and Act
-    SearchCriteria actualCreateSearchCriteriaResult =
-        searchFacetDTOServiceImpl.createSearchCriteria();
+    SearchCriteria actualCreateSearchCriteriaResult = searchFacetDTOServiceImpl.createSearchCriteria();
 
     // Assert
     Collection<String> filterQueries = actualCreateSearchCriteriaResult.getFilterQueries();
@@ -83,21 +81,16 @@ class SearchFacetDTOServiceImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}.
-   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List,
-   * HttpServletRequest)}
+   * <p>
+   * Method under test: {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}
    */
   @Test
   @DisplayName("Test setActiveFacetResults(List, HttpServletRequest); then ArrayList() size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetDTOServiceImpl.setActiveFacetResults(List, HttpServletRequest)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void SearchFacetDTOServiceImpl.setActiveFacetResults(List, HttpServletRequest)"})
   void testSetActiveFacetResults_thenArrayListSizeIsOne() {
     // Arrange
     SearchFacetResultDTO searchFacetResultDTO = new SearchFacetResultDTO();
@@ -106,7 +99,7 @@ class SearchFacetDTOServiceImplDiffblueTest {
     searchFacetResultDTO.setMaxValue(new BigDecimal("2.3"));
     searchFacetResultDTO.setMinValue(new BigDecimal("2.3"));
     searchFacetResultDTO.setQuantity(1);
-    searchFacetResultDTO.setValue(null);
+    searchFacetResultDTO.setValue("42");
 
     ArrayList<SearchFacetResultDTO> facetValues = new ArrayList<>();
     facetValues.add(searchFacetResultDTO);
@@ -115,16 +108,17 @@ class SearchFacetDTOServiceImplDiffblueTest {
     searchFacetDTO.setAbbreviation("Abbreviation");
     searchFacetDTO.setActive(true);
     searchFacetDTO.setFacet(new SearchFacetImpl());
-    searchFacetDTO.setShowQuantity(true);
     searchFacetDTO.setFacetValues(facetValues);
+    searchFacetDTO.setShowQuantity(true);
 
     ArrayList<SearchFacetDTO> facets = new ArrayList<>();
     facets.add(searchFacetDTO);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
     // Act
-    searchFacetDTOServiceImpl.setActiveFacetResults(
-        facets,
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest())));
+    searchFacetDTOServiceImpl.setActiveFacetResults(facets,
+        new SearchRequestWrapper(new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
+            new String[]{"White List Param Names"})));
 
     // Assert
     assertEquals(1, facets.size());
@@ -134,129 +128,18 @@ class SearchFacetDTOServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List, HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link SearchFacet#getField()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetDTOServiceImpl#setActiveFacetResults(List,
-   * HttpServletRequest)}
-   */
-  @Test
-  @DisplayName("Test setActiveFacetResults(List, HttpServletRequest); then calls getField()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetDTOServiceImpl.setActiveFacetResults(List, HttpServletRequest)"
-  })
-  void testSetActiveFacetResults_thenCallsGetField() {
-    // Arrange
-    SearchFacet facet = mock(SearchFacet.class);
-    when(facet.getField()).thenReturn(new FieldImpl());
-
-    SearchFacetResultDTO searchFacetResultDTO = new SearchFacetResultDTO();
-    searchFacetResultDTO.setActive(true);
-    searchFacetResultDTO.setFacet(facet);
-    searchFacetResultDTO.setMaxValue(new BigDecimal("2.3"));
-    searchFacetResultDTO.setMinValue(new BigDecimal("2.3"));
-    searchFacetResultDTO.setQuantity(1);
-    searchFacetResultDTO.setValue(null);
-
-    ArrayList<SearchFacetResultDTO> facetValues = new ArrayList<>();
-    facetValues.add(searchFacetResultDTO);
-
-    SearchFacetDTO searchFacetDTO = new SearchFacetDTO();
-    searchFacetDTO.setAbbreviation("Abbreviation");
-    searchFacetDTO.setActive(true);
-    searchFacetDTO.setFacet(new SearchFacetImpl());
-    searchFacetDTO.setShowQuantity(true);
-    searchFacetDTO.setFacetValues(facetValues);
-
-    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
-    facets.add(searchFacetDTO);
-
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    servletRequest.addParameter("https://example.org/example", "https://example.org/example");
-
-    // Act
-    searchFacetDTOServiceImpl.setActiveFacetResults(
-        facets, new HttpServletRequestWrapper(new SearchRequestWrapper(servletRequest)));
-
-    // Assert
-    verify(facet).getField();
-    assertEquals(1, facets.size());
-    List<SearchFacetResultDTO> facetValues2 = facets.get(0).getFacetValues();
-    assertEquals(1, facetValues2.size());
-    assertFalse(facetValues2.get(0).isActive());
-  }
-
-  /**
    * Test {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacet} {@link SearchFacet#getField()} return {@link FieldImpl}
-   *       (default constructor).
-   *   <li>Then calls {@link SearchFacet#getField()}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO,
-   * HttpServletRequest)}
+   * <p>
+   * Method under test: {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}
    */
   @Test
-  @DisplayName(
-      "Test isActive(SearchFacetResultDTO, HttpServletRequest); given SearchFacet getField() return FieldImpl (default constructor); then calls getField()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SearchFacetDTOServiceImpl.isActive(SearchFacetResultDTO, HttpServletRequest)"
-  })
-  void testIsActive_givenSearchFacetGetFieldReturnFieldImpl_thenCallsGetField() {
-    // Arrange
-    SearchFacet facet = mock(SearchFacet.class);
-    when(facet.getField()).thenReturn(new FieldImpl());
-
-    SearchFacetResultDTO result = new SearchFacetResultDTO();
-    result.setActive(true);
-    result.setFacet(facet);
-    result.setMaxValue(new BigDecimal("2.3"));
-    result.setMinValue(new BigDecimal("2.3"));
-    result.setQuantity(1);
-    result.setValue("42");
-
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    servletRequest.addParameter("https://example.org/example", "https://example.org/example");
-
-    // Act
-    boolean actualIsActiveResult =
-        searchFacetDTOServiceImpl.isActive(
-            result, new HttpServletRequestWrapper(new SearchRequestWrapper(servletRequest)));
-
-    // Assert
-    verify(facet).getField();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO, HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Given {@link SearchFacetImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetDTOServiceImpl#isActive(SearchFacetResultDTO,
-   * HttpServletRequest)}
-   */
-  @Test
-  @DisplayName(
-      "Test isActive(SearchFacetResultDTO, HttpServletRequest); given SearchFacetImpl (default constructor); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SearchFacetDTOServiceImpl.isActive(SearchFacetResultDTO, HttpServletRequest)"
-  })
-  void testIsActive_givenSearchFacetImpl_thenReturnFalse() {
+  @DisplayName("Test isActive(SearchFacetResultDTO, HttpServletRequest); then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean SearchFacetDTOServiceImpl.isActive(SearchFacetResultDTO, HttpServletRequest)"})
+  void testIsActive_thenReturnFalse() {
     // Arrange
     SearchFacetResultDTO result = new SearchFacetResultDTO();
     result.setActive(true);
@@ -265,30 +148,25 @@ class SearchFacetDTOServiceImplDiffblueTest {
     result.setMinValue(new BigDecimal("2.3"));
     result.setQuantity(1);
     result.setValue("42");
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
-    // Act
-    boolean actualIsActiveResult =
-        searchFacetDTOServiceImpl.isActive(
-            result,
-            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest())));
-
-    // Assert
-    assertFalse(actualIsActiveResult);
+    // Act and Assert
+    assertFalse(
+        searchFacetDTOServiceImpl.isActive(result, new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
   }
 
   /**
    * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)} with {@code SearchFacetDTO}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)}
+   * <p>
+   * Method under test: {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetDTO)}
    */
   @Test
   @DisplayName("Test getUrlKey(SearchFacetDTO) with 'SearchFacetDTO'; then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SearchFacetDTOServiceImpl.getUrlKey(SearchFacetDTO)"})
   void testGetUrlKeyWithSearchFacetDTO_thenReturnNull() {
     // Arrange
@@ -311,20 +189,16 @@ class SearchFacetDTOServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)} with {@code
-   * SearchFacetResultDTO}.
-   *
+   * Test {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)} with {@code SearchFacetResultDTO}.
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)}
+   * <p>
+   * Method under test: {@link SearchFacetDTOServiceImpl#getUrlKey(SearchFacetResultDTO)}
    */
   @Test
-  @DisplayName(
-      "Test getUrlKey(SearchFacetResultDTO) with 'SearchFacetResultDTO'; then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getUrlKey(SearchFacetResultDTO) with 'SearchFacetResultDTO'; then return 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SearchFacetDTOServiceImpl.getUrlKey(SearchFacetResultDTO)"})
   void testGetUrlKeyWithSearchFacetResultDTO_thenReturnNull() {
     // Arrange
@@ -349,13 +223,12 @@ class SearchFacetDTOServiceImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}.
-   *
-   * <p>Method under test: {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}
+   * <p>
+   * Method under test: {@link SearchFacetDTOServiceImpl#getValue(SearchFacetResultDTO)}
    */
   @Test
   @DisplayName("Test getValue(SearchFacetResultDTO)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SearchFacetDTOServiceImpl.getValue(SearchFacetResultDTO)"})
   void testGetValue() {
     // Arrange

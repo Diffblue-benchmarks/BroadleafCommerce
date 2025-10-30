@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.hibernate.type.descriptor.java.JavaTypeDescriptor;
 import org.hibernate.type.descriptor.sql.BasicBinder;
@@ -33,12 +32,11 @@ import org.junit.experimental.categories.Category;
 public class PostgreSQLClobTypeDescriptorDiffblueTest {
   /**
    * Test {@link PostgreSQLClobTypeDescriptor#getClobBinder(JavaTypeDescriptor)}.
-   *
-   * <p>Method under test: {@link PostgreSQLClobTypeDescriptor#getClobBinder(JavaTypeDescriptor)}
+   * <p>
+   * Method under test: {@link PostgreSQLClobTypeDescriptor#getClobBinder(JavaTypeDescriptor)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BasicBinder PostgreSQLClobTypeDescriptor.getClobBinder(JavaTypeDescriptor)"})
   public void testGetClobBinder() {
     // Arrange
@@ -46,8 +44,7 @@ public class PostgreSQLClobTypeDescriptorDiffblueTest {
     JavaTypeDescriptor<Object> javaTypeDescriptor = mock(JavaTypeDescriptor.class);
 
     // Act
-    BasicBinder<Object> actualClobBinder =
-        postgreSQLClobTypeDescriptor.getClobBinder(javaTypeDescriptor);
+    BasicBinder<Object> actualClobBinder = postgreSQLClobTypeDescriptor.getClobBinder(javaTypeDescriptor);
 
     // Assert
     SqlTypeDescriptor sqlDescriptor = actualClobBinder.getSqlDescriptor();
@@ -59,16 +56,14 @@ public class PostgreSQLClobTypeDescriptorDiffblueTest {
 
   /**
    * Test new {@link PostgreSQLClobTypeDescriptor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * PostgreSQLClobTypeDescriptor}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link PostgreSQLClobTypeDescriptor}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PostgreSQLClobTypeDescriptor.<init>()"})
   public void testNewPostgreSQLClobTypeDescriptor() {
     // Arrange, Act and Assert
-    assertEquals(2005, new PostgreSQLClobTypeDescriptor().getSqlType());
+    assertEquals(2005, (new PostgreSQLClobTypeDescriptor()).getSqlType());
   }
 }

@@ -19,9 +19,10 @@ package org.broadleafcommerce.core.web.expression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,38 +45,40 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class BasicAddressVariableExpressionDiffblueTest {
-  @InjectMocks private BasicAddressVariableExpression basicAddressVariableExpression;
+  @InjectMocks
+  private BasicAddressVariableExpression basicAddressVariableExpression;
 
-  @Mock private CountryService countryService;
+  @Mock
+  private CountryService countryService;
 
-  @Mock private CountrySubdivisionService countrySubdivisionService;
+  @Mock
+  private CountrySubdivisionService countrySubdivisionService;
 
-  @Mock private StateService stateService;
+  @Mock
+  private StateService stateService;
 
   /**
    * Test {@link BasicAddressVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link BasicAddressVariableExpression#getName()}
+   * <p>
+   * Method under test: {@link BasicAddressVariableExpression#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String BasicAddressVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("address", new BasicAddressVariableExpression().getName());
+    assertEquals("address", (new BasicAddressVariableExpression()).getName());
   }
 
   /**
    * Test {@link BasicAddressVariableExpression#getStateOptions()}.
-   *
-   * <p>Method under test: {@link BasicAddressVariableExpression#getStateOptions()}
+   * <p>
+   * Method under test: {@link BasicAddressVariableExpression#getStateOptions()}
    */
   @Test
   @DisplayName("Test getStateOptions()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"List BasicAddressVariableExpression.getStateOptions()"})
   void testGetStateOptions() {
     // Arrange
@@ -91,53 +94,41 @@ class BasicAddressVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BasicAddressVariableExpression#getCountrySubOptionsByISOCountry(ISOCountry)}.
-   *
    * <ul>
-   *   <li>Then calls {@link CountrySubdivisionService#findSubdivisions(String)}.
+   *   <li>Then calls {@link CountrySubdivisionService#findSubdivisions(String)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BasicAddressVariableExpression#getCountrySubOptionsByISOCountry(ISOCountry)}
+   * <p>
+   * Method under test: {@link BasicAddressVariableExpression#getCountrySubOptionsByISOCountry(ISOCountry)}
    */
   @Test
-  @DisplayName(
-      "Test getCountrySubOptionsByISOCountry(ISOCountry); then calls findSubdivisions(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List BasicAddressVariableExpression.getCountrySubOptionsByISOCountry(ISOCountry)"
-  })
+  @DisplayName("Test getCountrySubOptionsByISOCountry(ISOCountry); then calls findSubdivisions(String)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"List BasicAddressVariableExpression.getCountrySubOptionsByISOCountry(ISOCountry)"})
   void testGetCountrySubOptionsByISOCountry_thenCallsFindSubdivisions() {
     // Arrange
-    when(countrySubdivisionService.findSubdivisions(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+    when(countrySubdivisionService.findSubdivisions(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<CountrySubdivision> actualCountrySubOptionsByISOCountry =
-        basicAddressVariableExpression.getCountrySubOptionsByISOCountry(new ISOCountryImpl());
+    List<CountrySubdivision> actualCountrySubOptionsByISOCountry = basicAddressVariableExpression
+        .getCountrySubOptionsByISOCountry(new ISOCountryImpl());
 
     // Assert
-    verify(countrySubdivisionService).findSubdivisions(null);
+    verify(countrySubdivisionService).findSubdivisions(isNull());
     assertTrue(actualCountrySubOptionsByISOCountry.isEmpty());
   }
 
   /**
    * Test {@link BasicAddressVariableExpression#getCountrySubOptionsByISOCountry(ISOCountry)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BasicAddressVariableExpression#getCountrySubOptionsByISOCountry(ISOCountry)}
+   * <p>
+   * Method under test: {@link BasicAddressVariableExpression#getCountrySubOptionsByISOCountry(ISOCountry)}
    */
   @Test
   @DisplayName("Test getCountrySubOptionsByISOCountry(ISOCountry); when 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List BasicAddressVariableExpression.getCountrySubOptionsByISOCountry(ISOCountry)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"List BasicAddressVariableExpression.getCountrySubOptionsByISOCountry(ISOCountry)"})
   void testGetCountrySubOptionsByISOCountry_whenNull() {
     // Arrange, Act and Assert
     assertTrue(basicAddressVariableExpression.getCountrySubOptionsByISOCountry(null).isEmpty());
@@ -145,40 +136,34 @@ class BasicAddressVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BasicAddressVariableExpression#getCountrySubOptionsByCountryAbbrev(String)}.
-   *
-   * <p>Method under test: {@link
-   * BasicAddressVariableExpression#getCountrySubOptionsByCountryAbbrev(String)}
+   * <p>
+   * Method under test: {@link BasicAddressVariableExpression#getCountrySubOptionsByCountryAbbrev(String)}
    */
   @Test
   @DisplayName("Test getCountrySubOptionsByCountryAbbrev(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List BasicAddressVariableExpression.getCountrySubOptionsByCountryAbbrev(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"List BasicAddressVariableExpression.getCountrySubOptionsByCountryAbbrev(String)"})
   void testGetCountrySubOptionsByCountryAbbrev() {
     // Arrange
-    when(countrySubdivisionService.findSubdivisions(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+    when(countrySubdivisionService.findSubdivisions(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<CountrySubdivision> actualCountrySubOptionsByCountryAbbrev =
-        basicAddressVariableExpression.getCountrySubOptionsByCountryAbbrev("GB");
+    List<CountrySubdivision> actualCountrySubOptionsByCountryAbbrev = basicAddressVariableExpression
+        .getCountrySubOptionsByCountryAbbrev("GB");
 
     // Assert
-    verify(countrySubdivisionService).findSubdivisions("GB");
+    verify(countrySubdivisionService).findSubdivisions(eq("GB"));
     assertTrue(actualCountrySubOptionsByCountryAbbrev.isEmpty());
   }
 
   /**
    * Test {@link BasicAddressVariableExpression#getCountryOptions()}.
-   *
-   * <p>Method under test: {@link BasicAddressVariableExpression#getCountryOptions()}
+   * <p>
+   * Method under test: {@link BasicAddressVariableExpression#getCountryOptions()}
    */
   @Test
   @DisplayName("Test getCountryOptions()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"List BasicAddressVariableExpression.getCountryOptions()"})
   void testGetCountryOptions() {
     // Arrange

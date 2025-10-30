@@ -18,7 +18,6 @@
 package org.broadleafcommerce.common.web.validator;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -27,17 +26,15 @@ import org.junit.jupiter.api.Test;
 class BroadleafCommonAddressValidatorDiffblueTest {
   /**
    * Test new {@link BroadleafCommonAddressValidator} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BroadleafCommonAddressValidator}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link BroadleafCommonAddressValidator}
    */
   @Test
   @DisplayName("Test new BroadleafCommonAddressValidator (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void BroadleafCommonAddressValidator.<init>()"})
   void testNewBroadleafCommonAddressValidator() {
     // Arrange, Act and Assert
-    assertNull(new BroadleafCommonAddressValidator().validatorExtensionManager);
+    assertNull((new BroadleafCommonAddressValidator()).validatorExtensionManager);
   }
 }

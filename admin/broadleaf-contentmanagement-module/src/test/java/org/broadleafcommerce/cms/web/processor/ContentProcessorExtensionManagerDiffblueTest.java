@@ -18,24 +18,29 @@
 package org.broadleafcommerce.cms.web.processor;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ContentProcessorExtensionManagerDiffblueTest {
+  @InjectMocks
+  private ContentProcessorExtensionManager contentProcessorExtensionManager;
+
   /**
    * Test {@link ContentProcessorExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link ContentProcessorExtensionManager#continueOnHandled()}
+   * <p>
+   * Method under test: {@link ContentProcessorExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ContentProcessorExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
     // Arrange, Act and Assert
-    assertTrue(new ContentProcessorExtensionManager().continueOnHandled());
+    assertTrue(contentProcessorExtensionManager.continueOnHandled());
   }
 }

@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.inventory.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,9 +28,8 @@ import org.junit.experimental.categories.Category;
 public class AvailabilityStatusTypeDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AvailabilityStatusType#AvailabilityStatusType()}
    *   <li>{@link AvailabilityStatusType#getFriendlyType()}
@@ -39,13 +37,9 @@ public class AvailabilityStatusTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AvailabilityStatusType.<init>()",
-    "String AvailabilityStatusType.getFriendlyType()",
-    "String AvailabilityStatusType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AvailabilityStatusType.<init>()", "String AvailabilityStatusType.getFriendlyType()",
+      "String AvailabilityStatusType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     AvailabilityStatusType actualAvailabilityStatusType = new AvailabilityStatusType();
@@ -57,28 +51,21 @@ public class AvailabilityStatusTypeDiffblueTest {
   }
 
   /**
-   * Test {@link AvailabilityStatusType#equals(Object)}, and {@link
-   * AvailabilityStatusType#hashCode()}.
-   *
+   * Test {@link AvailabilityStatusType#equals(Object)}, and {@link AvailabilityStatusType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AvailabilityStatusType#equals(Object)}
    *   <li>{@link AvailabilityStatusType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AvailabilityStatusType.equals(Object)",
-    "int AvailabilityStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AvailabilityStatusType.equals(Object)", "int AvailabilityStatusType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     AvailabilityStatusType availabilityStatusType = AvailabilityStatusType.AVAILABLE;
@@ -86,32 +73,26 @@ public class AvailabilityStatusTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(availabilityStatusType, availabilityStatusType2);
-    assertEquals(availabilityStatusType.hashCode(), availabilityStatusType2.hashCode());
+    int expectedHashCodeResult = availabilityStatusType.hashCode();
+    assertEquals(expectedHashCodeResult, availabilityStatusType2.hashCode());
   }
 
   /**
-   * Test {@link AvailabilityStatusType#equals(Object)}, and {@link
-   * AvailabilityStatusType#hashCode()}.
-   *
+   * Test {@link AvailabilityStatusType#equals(Object)}, and {@link AvailabilityStatusType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AvailabilityStatusType#equals(Object)}
    *   <li>{@link AvailabilityStatusType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AvailabilityStatusType.equals(Object)",
-    "int AvailabilityStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AvailabilityStatusType.equals(Object)", "int AvailabilityStatusType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     AvailabilityStatusType availabilityStatusType = new AvailabilityStatusType();
@@ -119,32 +100,26 @@ public class AvailabilityStatusTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(availabilityStatusType, availabilityStatusType2);
-    assertEquals(availabilityStatusType.hashCode(), availabilityStatusType2.hashCode());
+    int expectedHashCodeResult = availabilityStatusType.hashCode();
+    assertEquals(expectedHashCodeResult, availabilityStatusType2.hashCode());
   }
 
   /**
-   * Test {@link AvailabilityStatusType#equals(Object)}, and {@link
-   * AvailabilityStatusType#hashCode()}.
-   *
+   * Test {@link AvailabilityStatusType#equals(Object)}, and {@link AvailabilityStatusType#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AvailabilityStatusType#equals(Object)}
    *   <li>{@link AvailabilityStatusType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AvailabilityStatusType.equals(Object)",
-    "int AvailabilityStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AvailabilityStatusType.equals(Object)", "int AvailabilityStatusType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     AvailabilityStatusType availabilityStatusType = AvailabilityStatusType.AVAILABLE;
@@ -157,21 +132,16 @@ public class AvailabilityStatusTypeDiffblueTest {
 
   /**
    * Test {@link AvailabilityStatusType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AvailabilityStatusType#equals(Object)}
+   * <p>
+   * Method under test: {@link AvailabilityStatusType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AvailabilityStatusType.equals(Object)",
-    "int AvailabilityStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AvailabilityStatusType.equals(Object)", "int AvailabilityStatusType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(AvailabilityStatusType.BACKORDERED, AvailabilityStatusType.AVAILABLE);
@@ -179,21 +149,16 @@ public class AvailabilityStatusTypeDiffblueTest {
 
   /**
    * Test {@link AvailabilityStatusType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AvailabilityStatusType#equals(Object)}
+   * <p>
+   * Method under test: {@link AvailabilityStatusType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AvailabilityStatusType.equals(Object)",
-    "int AvailabilityStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AvailabilityStatusType.equals(Object)", "int AvailabilityStatusType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new AvailabilityStatusType(), AvailabilityStatusType.AVAILABLE);
@@ -201,21 +166,16 @@ public class AvailabilityStatusTypeDiffblueTest {
 
   /**
    * Test {@link AvailabilityStatusType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AvailabilityStatusType#equals(Object)}
+   * <p>
+   * Method under test: {@link AvailabilityStatusType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AvailabilityStatusType.equals(Object)",
-    "int AvailabilityStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AvailabilityStatusType.equals(Object)", "int AvailabilityStatusType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(AvailabilityStatusType.AVAILABLE, null);
@@ -223,21 +183,16 @@ public class AvailabilityStatusTypeDiffblueTest {
 
   /**
    * Test {@link AvailabilityStatusType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AvailabilityStatusType#equals(Object)}
+   * <p>
+   * Method under test: {@link AvailabilityStatusType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AvailabilityStatusType.equals(Object)",
-    "int AvailabilityStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AvailabilityStatusType.equals(Object)", "int AvailabilityStatusType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(AvailabilityStatusType.AVAILABLE, "Different type to AvailabilityStatusType");

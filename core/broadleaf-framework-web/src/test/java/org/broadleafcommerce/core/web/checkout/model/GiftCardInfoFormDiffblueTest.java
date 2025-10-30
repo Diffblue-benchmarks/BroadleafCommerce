@@ -18,7 +18,6 @@
 package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -27,9 +26,8 @@ import org.junit.jupiter.api.Test;
 class GiftCardInfoFormDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link GiftCardInfoForm}
    *   <li>{@link GiftCardInfoForm#setGiftCardEmailAddress(String)}
@@ -40,15 +38,10 @@ class GiftCardInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void GiftCardInfoForm.<init>()",
-    "String GiftCardInfoForm.getGiftCardEmailAddress()",
-    "String GiftCardInfoForm.getGiftCardNumber()",
-    "void GiftCardInfoForm.setGiftCardEmailAddress(String)",
-    "void GiftCardInfoForm.setGiftCardNumber(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void GiftCardInfoForm.<init>()", "String GiftCardInfoForm.getGiftCardEmailAddress()",
+      "String GiftCardInfoForm.getGiftCardNumber()", "void GiftCardInfoForm.setGiftCardEmailAddress(String)",
+      "void GiftCardInfoForm.setGiftCardNumber(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     GiftCardInfoForm actualGiftCardInfoForm = new GiftCardInfoForm();

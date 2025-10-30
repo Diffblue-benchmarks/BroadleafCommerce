@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.media.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.util.UnknownUnwrapTypeException;
 import org.junit.Test;
@@ -34,19 +33,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class MediaDtoDiffblueTest {
-  @Autowired private MediaDto mediaDto;
+  @Autowired
+  private MediaDto mediaDto;
 
   /**
    * Test {@link MediaDto#getId()}.
-   *
-   * <p>Method under test: {@link MediaDto#getId()}
+   * <p>
+   * Method under test: {@link MediaDto#getId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long MediaDto.getId()"})
   public void testGetId() {
     // Arrange, Act and Assert
@@ -55,12 +54,11 @@ public class MediaDtoDiffblueTest {
 
   /**
    * Test {@link MediaDto#setId(Long)}.
-   *
-   * <p>Method under test: {@link MediaDto#setId(Long)}
+   * <p>
+   * Method under test: {@link MediaDto#setId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MediaDto.setId(Long)"})
   public void testSetId() {
     // Arrange and Act
@@ -73,12 +71,11 @@ public class MediaDtoDiffblueTest {
 
   /**
    * Test {@link MediaDto#isUnwrappableAs(Class)}.
-   *
-   * <p>Method under test: {@link MediaDto#isUnwrappableAs(Class)}
+   * <p>
+   * Method under test: {@link MediaDto#isUnwrappableAs(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MediaDto.isUnwrappableAs(Class)"})
   public void testIsUnwrappableAs() {
     // Arrange
@@ -90,17 +87,15 @@ public class MediaDtoDiffblueTest {
 
   /**
    * Test {@link MediaDto#unwrap(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then throw {@link UnknownUnwrapTypeException}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then throw {@link UnknownUnwrapTypeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MediaDto#unwrap(Class)}
+   * <p>
+   * Method under test: {@link MediaDto#unwrap(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object MediaDto.unwrap(Class)"})
   public void testUnwrap_whenJavaLangObject_thenThrowUnknownUnwrapTypeException() {
     // Arrange
@@ -112,9 +107,8 @@ public class MediaDtoDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link MediaDto}
    *   <li>{@link MediaDto#setAltText(String)}
@@ -128,19 +122,10 @@ public class MediaDtoDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MediaDto.<init>()",
-    "String MediaDto.getAltText()",
-    "String MediaDto.getTags()",
-    "String MediaDto.getTitle()",
-    "String MediaDto.getUrl()",
-    "void MediaDto.setAltText(String)",
-    "void MediaDto.setTags(String)",
-    "void MediaDto.setTitle(String)",
-    "void MediaDto.setUrl(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MediaDto.<init>()", "String MediaDto.getAltText()", "String MediaDto.getTags()",
+      "String MediaDto.getTitle()", "String MediaDto.getUrl()", "void MediaDto.setAltText(String)",
+      "void MediaDto.setTags(String)", "void MediaDto.setTitle(String)", "void MediaDto.setUrl(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MediaDto actualMediaDto = new MediaDto();

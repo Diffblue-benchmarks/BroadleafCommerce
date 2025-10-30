@@ -21,8 +21,7 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.offer.service.ShippingOfferService;
 import org.broadleafcommerce.core.order.domain.Order;
@@ -38,26 +37,25 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ShippingOfferActivityDiffblueTest {
-  @InjectMocks private ShippingOfferActivity shippingOfferActivity;
+  @InjectMocks
+  private ShippingOfferActivity shippingOfferActivity;
 
-  @Mock private ShippingOfferService shippingOfferService;
+  @Mock
+  private ShippingOfferService shippingOfferService;
 
   /**
    * Test {@link ShippingOfferActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>When {@link DefaultProcessContextImpl} (default constructor).
-   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).
+   *   <li>When {@link DefaultProcessContextImpl} (default constructor).</li>
+   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ShippingOfferActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link ShippingOfferActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext ShippingOfferActivity.execute(ProcessContext)"})
-  public void testExecute_whenDefaultProcessContextImpl_thenReturnDefaultProcessContextImpl()
-      throws Exception {
+  public void testExecute_whenDefaultProcessContextImpl_thenReturnDefaultProcessContextImpl() throws Exception {
     // Arrange
     doNothing().when(shippingOfferService).reviewOffers(Mockito.<Order>any());
     DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();

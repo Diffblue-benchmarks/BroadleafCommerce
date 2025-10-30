@@ -25,8 +25,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
@@ -35,53 +34,44 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PageAttributeImplDiffblueTest {
-  @Autowired private PageAttributeImpl pageAttributeImpl;
+  @Autowired
+  private PageAttributeImpl pageAttributeImpl;
 
   /**
    * Test {@link PageAttributeImpl#getValue()}.
-   *
-   * <p>Method under test: {@link PageAttributeImpl#getValue()}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#getValue()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PageAttributeImpl.getValue()"})
   public void testGetValue() {
     // Arrange, Act and Assert
-    assertNull(pageAttributeImpl.getValue());
+    assertNull((new PageAttributeImpl()).getValue());
   }
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}, and {@link PageAttributeImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PageAttributeImpl#equals(Object)}
    *   <li>{@link PageAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -98,31 +88,26 @@ public class PageAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(pageAttributeImpl, pageAttributeImpl2);
-    assertNotEquals(pageAttributeImpl.hashCode(), pageAttributeImpl2.hashCode());
+    int notExpectedHashCodeResult = pageAttributeImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, pageAttributeImpl2.hashCode());
   }
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}, and {@link PageAttributeImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PageAttributeImpl#equals(Object)}
    *   <li>{@link PageAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -139,72 +124,26 @@ public class PageAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(pageAttributeImpl, pageAttributeImpl2);
-    assertEquals(pageAttributeImpl.hashCode(), pageAttributeImpl2.hashCode());
+    int expectedHashCodeResult = pageAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, pageAttributeImpl2.hashCode());
   }
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}, and {@link PageAttributeImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PageAttributeImpl#equals(Object)}
    *   <li>{@link PageAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
-    pageAttributeImpl.setId(null);
-    pageAttributeImpl.setName("Name");
-    pageAttributeImpl.setPage(null);
-    pageAttributeImpl.setValue(null);
-
-    PageAttributeImpl pageAttributeImpl2 = new PageAttributeImpl();
-    pageAttributeImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageAttributeImpl2.setName("Name");
-    pageAttributeImpl2.setPage(null);
-    pageAttributeImpl2.setValue(null);
-
-    // Act and Assert
-    assertEquals(pageAttributeImpl, pageAttributeImpl2);
-    assertEquals(pageAttributeImpl.hashCode(), pageAttributeImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link PageAttributeImpl#equals(Object)}, and {@link PageAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PageAttributeImpl#equals(Object)}
-   *   <li>{@link PageAttributeImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -221,21 +160,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -256,21 +190,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -291,21 +220,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -326,21 +250,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -361,21 +280,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -396,21 +310,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -431,21 +340,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -466,21 +370,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -501,21 +400,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -536,21 +430,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -565,21 +454,16 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageAttributeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageAttributeImpl.equals(Object)",
-    "int PageAttributeImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageAttributeImpl.equals(Object)", "int PageAttributeImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
@@ -594,77 +478,33 @@ public class PageAttributeImplDiffblueTest {
 
   /**
    * Test {@link PageAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * PageAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link PageAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse PageAttributeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse PageAttributeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new PageAttributeImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<PageAttribute> actualCreateOrRetrieveCopyInstanceResult =
-        pageAttributeImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link PageAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * PageAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse PageAttributeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    PageImpl page = mock(PageImpl.class);
-    when(page.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new PageImpl(), true));
-
-    PageAttributeImpl pageAttributeImpl = new PageAttributeImpl();
-    pageAttributeImpl.setPage(page);
-
     PageAttributeImpl pageAttributeImpl2 = new PageAttributeImpl();
-    pageAttributeImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageAttributeImpl2.setName("Name");
-    pageAttributeImpl2.setPage(new PageImpl());
-    pageAttributeImpl2.setValue("42");
-    CreateResponse<Object> createResponse = new CreateResponse<>(pageAttributeImpl2, false);
-
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<PageAttribute> actualCreateOrRetrieveCopyInstanceResult =
-        pageAttributeImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<PageAttribute> actualCreateOrRetrieveCopyInstanceResult = pageAttributeImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(page).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PageAttributeImpl}
    *   <li>{@link PageAttributeImpl#setId(Long)}
@@ -678,19 +518,11 @@ public class PageAttributeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageAttributeImpl.<init>()",
-    "Long PageAttributeImpl.getId()",
-    "String PageAttributeImpl.getName()",
-    "Page PageAttributeImpl.getPage()",
-    "void PageAttributeImpl.setId(Long)",
-    "void PageAttributeImpl.setName(String)",
-    "void PageAttributeImpl.setPage(Page)",
-    "void PageAttributeImpl.setValue(String)",
-    "String PageAttributeImpl.toString()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageAttributeImpl.<init>()", "Long PageAttributeImpl.getId()",
+      "String PageAttributeImpl.getName()", "Page PageAttributeImpl.getPage()", "void PageAttributeImpl.setId(Long)",
+      "void PageAttributeImpl.setName(String)", "void PageAttributeImpl.setPage(Page)",
+      "void PageAttributeImpl.setValue(String)", "String PageAttributeImpl.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PageAttributeImpl actualPageAttributeImpl = new PageAttributeImpl();

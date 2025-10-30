@@ -17,9 +17,9 @@
  */
 package org.broadleafcommerce.profile.core.service;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.anyBoolean;
@@ -28,8 +28,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,6 @@ import org.broadleafcommerce.profile.core.dao.CustomerPhoneDao;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPhone;
 import org.broadleafcommerce.profile.core.domain.CustomerPhoneImpl;
-import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -49,310 +47,198 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerPhoneServiceImplDiffblueTest {
-  @Mock private CustomerPhoneDao customerPhoneDao;
+  @Mock
+  private CustomerPhoneDao customerPhoneDao;
 
-  @InjectMocks private CustomerPhoneServiceImpl customerPhoneServiceImpl;
-
-  /**
-   * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
-   *
-   * <ul>
-   *   <li>Given {@link CustomerPhoneImpl} {@link CustomerPhoneImpl#getId()} return one.
-   *   <li>Then calls {@link CustomerPhoneImpl#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
-  public void testSaveCustomerPhone_givenCustomerPhoneImplGetIdReturnOne_thenCallsGetId() {
-    // Arrange
-    CustomerPhoneImpl customerPhoneImpl = mock(CustomerPhoneImpl.class);
-    when(customerPhoneImpl.getId()).thenReturn(1L);
-
-    ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
-    customerPhoneList.add(customerPhoneImpl);
-    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any()))
-        .thenReturn(customerPhoneList);
-    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
-    when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl2);
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144");
-    phone.setDefault(true);
-
-    CustomerPhoneImpl customerPhone = new CustomerPhoneImpl();
-    customerPhone.setCustomer(new CustomerImpl());
-    customerPhone.setId(1L);
-    customerPhone.setPhoneName("6625550144");
-    customerPhone.setPhone(phone);
-
-    // Act
-    CustomerPhone actualSaveCustomerPhoneResult =
-        customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
-
-    // Assert
-    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
-    verify(customerPhoneDao).save(isA(CustomerPhone.class));
-    verify(customerPhoneImpl).getId();
-    Phone phone2 = customerPhone.getPhone();
-    assertTrue(phone2 instanceof PhoneImpl);
-    assertTrue(phone2.isDefault());
-    assertSame(customerPhoneImpl2, actualSaveCustomerPhoneResult);
-  }
+  @InjectMocks
+  private CustomerPhoneServiceImpl customerPhoneServiceImpl;
 
   /**
    * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
-   *
    * <ul>
-   *   <li>Given {@link CustomerPhoneImpl} {@link CustomerPhoneImpl#getPhone()} return {@link
-   *       PhoneImpl} (default constructor).
+   *   <li>Given {@link CustomerPhoneImpl} {@link CustomerPhoneImpl#getPhone()} return {@link PhoneImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
   public void testSaveCustomerPhone_givenCustomerPhoneImplGetPhoneReturnPhoneImpl() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = mock(CustomerPhoneImpl.class);
-    when(customerPhoneImpl.getId()).thenReturn(1L);
+    when(customerPhoneImpl.getId()).thenReturn(14L);
     when(customerPhoneImpl.getPhone()).thenReturn(new PhoneImpl());
 
     ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
     customerPhoneList.add(customerPhoneImpl);
-    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any()))
-        .thenReturn(customerPhoneList);
     CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
     when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl2);
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144");
-    phone.setDefault(true);
-
-    CustomerPhoneImpl customerPhone = new CustomerPhoneImpl();
-    customerPhone.setCustomer(new CustomerImpl());
-    customerPhone.setId(2L);
-    customerPhone.setPhoneName("6625550144");
-    customerPhone.setPhone(phone);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(customerPhoneList);
+    PhoneImpl phoneImpl = mock(PhoneImpl.class);
+    when(phoneImpl.isDefault()).thenReturn(true);
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getId()).thenReturn(1L);
+    when(customerPhone.getPhone()).thenReturn(phoneImpl);
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
 
     // Act
-    CustomerPhone actualSaveCustomerPhoneResult =
-        customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
 
     // Assert
     verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
     verify(customerPhoneDao).save(isA(CustomerPhone.class));
+    verify(customerPhone).getCustomer();
     verify(customerPhoneImpl).getId();
+    verify(customerPhone).getId();
     verify(customerPhoneImpl).getPhone();
-    Phone phone2 = customerPhone.getPhone();
-    assertTrue(phone2 instanceof PhoneImpl);
-    assertTrue(phone2.isDefault());
+    verify(customerPhone).getPhone();
+    verify(phoneImpl).isDefault();
     assertSame(customerPhoneImpl2, actualSaveCustomerPhoneResult);
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
-   *
    * <ul>
-   *   <li>Given {@link PhoneImpl} (default constructor) Default is {@code false}.
+   *   <li>Given {@link PhoneImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
-  public void testSaveCustomerPhone_givenPhoneImplDefaultIsFalse() {
+  public void testSaveCustomerPhone_givenPhoneImpl() {
     // Arrange
-    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any()))
-        .thenReturn(new ArrayList<>());
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
     when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl);
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144");
-    phone.setDefault(false);
-
-    CustomerPhoneImpl customerPhone = new CustomerPhoneImpl();
-    customerPhone.setCustomer(new CustomerImpl());
-    customerPhone.setId(1L);
-    customerPhone.setPhoneName("6625550144");
-    customerPhone.setPhone(phone);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getPhone()).thenReturn(new PhoneImpl());
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
 
     // Act
-    CustomerPhone actualSaveCustomerPhoneResult =
-        customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
 
     // Assert
     verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
     verify(customerPhoneDao).save(isA(CustomerPhone.class));
-    Phone phone2 = customerPhone.getPhone();
-    assertTrue(phone2 instanceof PhoneImpl);
-    assertTrue(phone2.isDefault());
+    verify(customerPhone).getCustomer();
+    verify(customerPhone).getPhone();
     assertSame(customerPhoneImpl, actualSaveCustomerPhoneResult);
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
-   *
    * <ul>
-   *   <li>Given {@link Phone} {@link Phone#setDefault(boolean)} does nothing.
-   *   <li>Then calls {@link Phone#isDefault()}.
+   *   <li>Given {@link PhoneImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
-  public void testSaveCustomerPhone_givenPhoneSetDefaultDoesNothing_thenCallsIsDefault() {
+  public void testSaveCustomerPhone_givenPhoneImpl2() {
     // Arrange
-    Phone phone = mock(Phone.class);
-    doNothing().when(phone).setDefault(anyBoolean());
-    when(phone.isDefault()).thenReturn(true);
+    ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
+    customerPhoneList.add(new CustomerPhoneImpl());
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(customerPhoneList);
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getPhone()).thenReturn(new PhoneImpl());
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
 
+    // Act
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+
+    // Assert
+    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
+    verify(customerPhoneDao).save(isA(CustomerPhone.class));
+    verify(customerPhone).getCustomer();
+    verify(customerPhone).getPhone();
+    assertSame(customerPhoneImpl, actualSaveCustomerPhoneResult);
+  }
+
+  /**
+   * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
+   * <ul>
+   *   <li>Given {@link PhoneImpl} {@link PhoneImpl#setDefault(boolean)} does nothing.</li>
+   *   <li>Then calls {@link PhoneImpl#setDefault(boolean)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
+  public void testSaveCustomerPhone_givenPhoneImplSetDefaultDoesNothing_thenCallsSetDefault() {
+    // Arrange
+    PhoneImpl phoneImpl = mock(PhoneImpl.class);
+    doNothing().when(phoneImpl).setDefault(anyBoolean());
+    when(phoneImpl.isDefault()).thenReturn(true);
     CustomerPhoneImpl customerPhoneImpl = mock(CustomerPhoneImpl.class);
-    when(customerPhoneImpl.getId()).thenReturn(1L);
-    when(customerPhoneImpl.getPhone()).thenReturn(phone);
+    when(customerPhoneImpl.getId()).thenReturn(14L);
+    when(customerPhoneImpl.getPhone()).thenReturn(phoneImpl);
 
     ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
     customerPhoneList.add(customerPhoneImpl);
-    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any()))
-        .thenReturn(customerPhoneList);
     CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
     when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl2);
-
-    PhoneImpl phone2 = new PhoneImpl();
-    phone2.setActive(true);
-    phone2.setCountryCode("GB");
-    phone2.setExtension("Extension");
-    phone2.setId(1L);
-    phone2.setPhoneNumber("6625550144");
-    phone2.setDefault(true);
-
-    CustomerPhoneImpl customerPhone = new CustomerPhoneImpl();
-    customerPhone.setCustomer(new CustomerImpl());
-    customerPhone.setId(2L);
-    customerPhone.setPhoneName("6625550144");
-    customerPhone.setPhone(phone2);
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(customerPhoneList);
+    PhoneImpl phoneImpl2 = mock(PhoneImpl.class);
+    when(phoneImpl2.isDefault()).thenReturn(true);
+    CustomerPhoneImpl customerPhone = mock(CustomerPhoneImpl.class);
+    when(customerPhone.getId()).thenReturn(1L);
+    when(customerPhone.getPhone()).thenReturn(phoneImpl2);
+    when(customerPhone.getCustomer()).thenReturn(new CustomerImpl());
 
     // Act
-    CustomerPhone actualSaveCustomerPhoneResult =
-        customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
+    CustomerPhone actualSaveCustomerPhoneResult = customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
 
     // Assert
     verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
     verify(customerPhoneDao, atLeast(1)).save(Mockito.<CustomerPhone>any());
+    verify(customerPhone).getCustomer();
     verify(customerPhoneImpl).getId();
+    verify(customerPhone).getId();
+    verify(customerPhone).getPhone();
     verify(customerPhoneImpl, atLeast(1)).getPhone();
-    verify(phone).isDefault();
-    verify(phone).setDefault(false);
-    Phone phone3 = customerPhone.getPhone();
-    assertTrue(phone3 instanceof PhoneImpl);
-    assertTrue(phone3.isDefault());
+    verify(phoneImpl).isDefault();
+    verify(phoneImpl2).isDefault();
+    verify(phoneImpl).setDefault(eq(false));
     assertSame(customerPhoneImpl2, actualSaveCustomerPhoneResult);
   }
 
   /**
-   * Test {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}.
-   *
-   * <ul>
-   *   <li>Then not {@link CustomerPhoneImpl} (default constructor) Phone Default.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#saveCustomerPhone(CustomerPhone)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.saveCustomerPhone(CustomerPhone)"})
-  public void testSaveCustomerPhone_thenNotCustomerPhoneImplPhoneDefault() {
-    // Arrange
-    ArrayList<CustomerPhone> customerPhoneList = new ArrayList<>();
-    customerPhoneList.add(new CustomerPhoneImpl());
-    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any()))
-        .thenReturn(customerPhoneList);
-    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
-    when(customerPhoneDao.save(Mockito.<CustomerPhone>any())).thenReturn(customerPhoneImpl);
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144");
-    phone.setDefault(false);
-
-    CustomerPhoneImpl customerPhone = new CustomerPhoneImpl();
-    customerPhone.setCustomer(new CustomerImpl());
-    customerPhone.setId(1L);
-    customerPhone.setPhoneName("6625550144");
-    customerPhone.setPhone(phone);
-
-    // Act
-    CustomerPhone actualSaveCustomerPhoneResult =
-        customerPhoneServiceImpl.saveCustomerPhone(customerPhone);
-
-    // Assert
-    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(isNull());
-    verify(customerPhoneDao).save(isA(CustomerPhone.class));
-    Phone phone2 = customerPhone.getPhone();
-    assertTrue(phone2 instanceof PhoneImpl);
-    assertFalse(phone2.isDefault());
-    assertSame(customerPhoneImpl, actualSaveCustomerPhoneResult);
-  }
-
-  /**
    * Test {@link CustomerPhoneServiceImpl#readActiveCustomerPhonesByCustomerId(Long)}.
-   *
-   * <p>Method under test: {@link
-   * CustomerPhoneServiceImpl#readActiveCustomerPhonesByCustomerId(Long)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#readActiveCustomerPhonesByCustomerId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CustomerPhoneServiceImpl.readActiveCustomerPhonesByCustomerId(Long)"})
   public void testReadActiveCustomerPhonesByCustomerId() {
     // Arrange
-    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any()))
-        .thenReturn(new ArrayList<>());
+    when(customerPhoneDao.readActiveCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<CustomerPhone> actualReadActiveCustomerPhonesByCustomerIdResult =
-        customerPhoneServiceImpl.readActiveCustomerPhonesByCustomerId(1L);
+    List<CustomerPhone> actualReadActiveCustomerPhonesByCustomerIdResult = customerPhoneServiceImpl
+        .readActiveCustomerPhonesByCustomerId(1L);
 
     // Assert
-    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(1L);
+    verify(customerPhoneDao).readActiveCustomerPhonesByCustomerId(eq(1L));
     assertTrue(actualReadActiveCustomerPhonesByCustomerIdResult.isEmpty());
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#readCustomerPhoneById(Long)}.
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#readCustomerPhoneById(Long)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#readCustomerPhoneById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.readCustomerPhoneById(Long)"})
   public void testReadCustomerPhoneById() {
     // Arrange
@@ -360,44 +246,39 @@ public class CustomerPhoneServiceImplDiffblueTest {
     when(customerPhoneDao.readCustomerPhoneById(Mockito.<Long>any())).thenReturn(customerPhoneImpl);
 
     // Act
-    CustomerPhone actualReadCustomerPhoneByIdResult =
-        customerPhoneServiceImpl.readCustomerPhoneById(1L);
+    CustomerPhone actualReadCustomerPhoneByIdResult = customerPhoneServiceImpl.readCustomerPhoneById(1L);
 
     // Assert
-    verify(customerPhoneDao).readCustomerPhoneById(1L);
+    verify(customerPhoneDao).readCustomerPhoneById(eq(1L));
     assertSame(customerPhoneImpl, actualReadCustomerPhoneByIdResult);
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#makeCustomerPhoneDefault(Long, Long)}.
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#makeCustomerPhoneDefault(Long, Long)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#makeCustomerPhoneDefault(Long, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CustomerPhoneServiceImpl.makeCustomerPhoneDefault(Long, Long)"})
   public void testMakeCustomerPhoneDefault() {
     // Arrange
-    doNothing()
-        .when(customerPhoneDao)
-        .makeCustomerPhoneDefault(Mockito.<Long>any(), Mockito.<Long>any());
+    doNothing().when(customerPhoneDao).makeCustomerPhoneDefault(Mockito.<Long>any(), Mockito.<Long>any());
 
     // Act
     customerPhoneServiceImpl.makeCustomerPhoneDefault(1L, 1L);
 
     // Assert
-    verify(customerPhoneDao).makeCustomerPhoneDefault(1L, 1L);
+    verify(customerPhoneDao).makeCustomerPhoneDefault(eq(1L), eq(1L));
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#deleteCustomerPhoneById(Long)}.
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#deleteCustomerPhoneById(Long)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#deleteCustomerPhoneById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CustomerPhoneServiceImpl.deleteCustomerPhoneById(Long)"})
   public void testDeleteCustomerPhoneById() {
     // Arrange
@@ -407,64 +288,58 @@ public class CustomerPhoneServiceImplDiffblueTest {
     customerPhoneServiceImpl.deleteCustomerPhoneById(1L);
 
     // Assert
-    verify(customerPhoneDao).deleteCustomerPhoneById(1L);
+    verify(customerPhoneDao).deleteCustomerPhoneById(eq(1L));
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#findDefaultCustomerPhone(Long)}.
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#findDefaultCustomerPhone(Long)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#findDefaultCustomerPhone(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.findDefaultCustomerPhone(Long)"})
   public void testFindDefaultCustomerPhone() {
     // Arrange
     CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
-    when(customerPhoneDao.findDefaultCustomerPhone(Mockito.<Long>any()))
-        .thenReturn(customerPhoneImpl);
+    when(customerPhoneDao.findDefaultCustomerPhone(Mockito.<Long>any())).thenReturn(customerPhoneImpl);
 
     // Act
-    CustomerPhone actualFindDefaultCustomerPhoneResult =
-        customerPhoneServiceImpl.findDefaultCustomerPhone(1L);
+    CustomerPhone actualFindDefaultCustomerPhoneResult = customerPhoneServiceImpl.findDefaultCustomerPhone(1L);
 
     // Assert
-    verify(customerPhoneDao).findDefaultCustomerPhone(1L);
+    verify(customerPhoneDao).findDefaultCustomerPhone(eq(1L));
     assertSame(customerPhoneImpl, actualFindDefaultCustomerPhoneResult);
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#readAllCustomerPhonesByCustomerId(Long)}.
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#readAllCustomerPhonesByCustomerId(Long)}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#readAllCustomerPhonesByCustomerId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CustomerPhoneServiceImpl.readAllCustomerPhonesByCustomerId(Long)"})
   public void testReadAllCustomerPhonesByCustomerId() {
     // Arrange
-    when(customerPhoneDao.readAllCustomerPhonesByCustomerId(Mockito.<Long>any()))
-        .thenReturn(new ArrayList<>());
+    when(customerPhoneDao.readAllCustomerPhonesByCustomerId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<CustomerPhone> actualReadAllCustomerPhonesByCustomerIdResult =
-        customerPhoneServiceImpl.readAllCustomerPhonesByCustomerId(1L);
+    List<CustomerPhone> actualReadAllCustomerPhonesByCustomerIdResult = customerPhoneServiceImpl
+        .readAllCustomerPhonesByCustomerId(1L);
 
     // Assert
-    verify(customerPhoneDao).readAllCustomerPhonesByCustomerId(1L);
+    verify(customerPhoneDao).readAllCustomerPhonesByCustomerId(eq(1L));
     assertTrue(actualReadAllCustomerPhonesByCustomerIdResult.isEmpty());
   }
 
   /**
    * Test {@link CustomerPhoneServiceImpl#create()}.
-   *
-   * <p>Method under test: {@link CustomerPhoneServiceImpl#create()}
+   * <p>
+   * Method under test: {@link CustomerPhoneServiceImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerPhone CustomerPhoneServiceImpl.create()"})
   public void testCreate() {
     // Arrange

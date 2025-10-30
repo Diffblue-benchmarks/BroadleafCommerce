@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Properties;
 import javax.mail.Session;
@@ -38,24 +37,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {LoggingMailSender.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class LoggingMailSenderDiffblueTest {
-  @Autowired private LoggingMailSender loggingMailSender;
+  @Autowired
+  private LoggingMailSender loggingMailSender;
 
   /**
    * Test new {@link LoggingMailSender} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link LoggingMailSender}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link LoggingMailSender}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void LoggingMailSender.<init>()"})
   public void testNewLoggingMailSender() {
     // Arrange and Act
     LoggingMailSender actualLoggingMailSender = new LoggingMailSender();
 
     // Assert
-    assertTrue(
-        actualLoggingMailSender.getDefaultFileTypeMap() instanceof ConfigurableMimeFileTypeMap);
+    assertTrue(actualLoggingMailSender.getDefaultFileTypeMap() instanceof ConfigurableMimeFileTypeMap);
     assertNull(actualLoggingMailSender.getDefaultEncoding());
     assertNull(actualLoggingMailSender.getHost());
     assertNull(actualLoggingMailSender.getPassword());

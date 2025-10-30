@@ -26,8 +26,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.imageio.metadata.IIOMetadataNode;
 import org.apache.html.dom.HTMLDocumentImpl;
@@ -59,21 +58,17 @@ import org.w3c.dom.Element;
 public class MergeXmlBeanDefinitionReaderDiffblueTest {
   /**
    * Test BeanUtil {@link BeanUtil#isXMLBean(BeanDefinition)}.
-   *
-   * <p>Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BeanUtil.isXMLBean(BeanDefinition)"})
   public void testBeanUtilIsXMLBean() {
     // Arrange
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(
-            new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1},
-            "The characteristics of someone or something");
-    beanDefinition.setResource(resource);
+    GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+    beanDefinition.setResource(new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1},
+        "The characteristics of someone or something"));
 
     // Act and Assert
     assertFalse(BeanUtil.isXMLBean(beanDefinition));
@@ -81,23 +76,19 @@ public class MergeXmlBeanDefinitionReaderDiffblueTest {
 
   /**
    * Test BeanUtil {@link BeanUtil#isXMLBean(BeanDefinition)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BeanUtil.isXMLBean(BeanDefinition)"})
   public void testBeanUtilIsXMLBean_thenReturnTrue() {
     // Arrange
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml");
-    beanDefinition.setResource(resource);
+    GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+    beanDefinition.setResource(new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml"));
 
     // Act and Assert
     assertTrue(BeanUtil.isXMLBean(beanDefinition));
@@ -105,17 +96,15 @@ public class MergeXmlBeanDefinitionReaderDiffblueTest {
 
   /**
    * Test BeanUtil {@link BeanUtil#isXMLBean(BeanDefinition)}.
-   *
    * <ul>
-   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BeanUtil.isXMLBean(BeanDefinition)"})
   public void testBeanUtilIsXMLBean_whenGenericBeanDefinition_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -124,17 +113,15 @@ public class MergeXmlBeanDefinitionReaderDiffblueTest {
 
   /**
    * Test BeanUtil {@link BeanUtil#isXMLBean(BeanDefinition)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BeanUtil.isXMLBean(BeanDefinition)"})
   public void testBeanUtilIsXMLBean_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -142,229 +129,164 @@ public class MergeXmlBeanDefinitionReaderDiffblueTest {
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#getBeanId(Element)}.
-   *
+   * Test MergeBeanDefinitionDocumentReader {@link MergeBeanDefinitionDocumentReader#getBeanId(Element)}.
    * <ul>
-   *   <li>Then return empty string.
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#getBeanId(Element)}
+   * <p>
+   * Method under test: {@link MergeBeanDefinitionDocumentReader#getBeanId(Element)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String MergeBeanDefinitionDocumentReader.getBeanId(Element)"})
   public void testMergeBeanDefinitionDocumentReaderGetBeanId_thenReturnEmptyString() {
     // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
+    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeBeanDefinitionDocumentReader();
 
     // Act and Assert
-    assertEquals("", mergeBeanDefinitionDocumentReader.getBeanId(new IIOMetadataNode()));
+    assertEquals("", mergeBeanDefinitionDocumentReader.getBeanId(new IIOMetadataNode("foo")));
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   * Test MergeBeanDefinitionDocumentReader {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
+   * <p>
+   * Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MergeBeanDefinitionDocumentReader.isXMLBean(BeanDefinition)"})
   public void testMergeBeanDefinitionDocumentReaderIsXMLBean() {
     // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
+    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeBeanDefinitionDocumentReader();
 
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(
-            new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1},
-            "The characteristics of someone or something");
-    beanDefinition.setResource(resource);
+    GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+    beanDefinition.setResource(new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1},
+        "The characteristics of someone or something"));
 
-    // Act
-    boolean actualIsXMLBeanResult = mergeBeanDefinitionDocumentReader.isXMLBean(beanDefinition);
-
-    // Assert
-    assertFalse(actualIsXMLBeanResult);
+    // Act and Assert
+    assertFalse(mergeBeanDefinitionDocumentReader.isXMLBean(beanDefinition));
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
-   *
+   * Test MergeBeanDefinitionDocumentReader {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MergeBeanDefinitionDocumentReader.isXMLBean(BeanDefinition)"})
   public void testMergeBeanDefinitionDocumentReaderIsXMLBean_thenReturnTrue() {
     // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
+    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeBeanDefinitionDocumentReader();
 
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml");
-    beanDefinition.setResource(resource);
+    GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+    beanDefinition.setResource(new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml"));
 
-    // Act
-    boolean actualIsXMLBeanResult = mergeBeanDefinitionDocumentReader.isXMLBean(beanDefinition);
-
-    // Assert
-    assertTrue(actualIsXMLBeanResult);
+    // Act and Assert
+    assertTrue(mergeBeanDefinitionDocumentReader.isXMLBean(beanDefinition));
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
-   *
+   * Test MergeBeanDefinitionDocumentReader {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
    * <ul>
-   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.
+   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MergeBeanDefinitionDocumentReader.isXMLBean(BeanDefinition)"})
   public void testMergeBeanDefinitionDocumentReaderIsXMLBean_whenGenericBeanDefinition() {
     // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
+    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeBeanDefinitionDocumentReader();
 
     // Act and Assert
     assertFalse(mergeBeanDefinitionDocumentReader.isXMLBean(new GenericBeanDefinition()));
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
-   *
+   * Test MergeBeanDefinitionDocumentReader {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MergeBeanDefinitionDocumentReader.isXMLBean(BeanDefinition)"})
   public void testMergeBeanDefinitionDocumentReaderIsXMLBean_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new MergeBeanDefinitionDocumentReader().isXMLBean(null));
+    assertFalse((new MergeBeanDefinitionDocumentReader()).isXMLBean(null));
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader new {@link MergeBeanDefinitionDocumentReader} (default
-   * constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * MergeBeanDefinitionDocumentReader}
+   * Test MergeBeanDefinitionDocumentReader new {@link MergeBeanDefinitionDocumentReader} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of {@link MergeBeanDefinitionDocumentReader}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MergeBeanDefinitionDocumentReader.<init>()"})
   public void testMergeBeanDefinitionDocumentReaderNewMergeBeanDefinitionDocumentReader() {
     // Arrange and Act
-    MergeBeanDefinitionDocumentReader actualMergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
+    MergeBeanDefinitionDocumentReader actualMergeBeanDefinitionDocumentReader = new MergeBeanDefinitionDocumentReader();
     HTMLDocumentImpl doc = new HTMLDocumentImpl();
     GeneratedResource resource = new GeneratedResource();
     FailFastProblemReporter problemReporter = new FailFastProblemReporter();
     EmptyReaderEventListener eventListener = new EmptyReaderEventListener();
     NullSourceExtractor sourceExtractor = new NullSourceExtractor();
     XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
-    XmlReaderContext readerContext =
-        new XmlReaderContext(
-            resource,
-            problemReporter,
-            eventListener,
-            sourceExtractor,
-            reader,
-            new DefaultNamespaceHandlerResolver());
-    actualMergeBeanDefinitionDocumentReader.registerBeanDefinitions(doc, readerContext);
+    actualMergeBeanDefinitionDocumentReader.registerBeanDefinitions(doc, new XmlReaderContext(resource, problemReporter,
+        eventListener, sourceExtractor, reader, new DefaultNamespaceHandlerResolver()));
 
     // Assert
     assertFalse(actualMergeBeanDefinitionDocumentReader.isXMLBean(null));
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#processBeanDefinition(Element,
-   * BeanDefinitionParserDelegate)}.
-   *
+   * Test MergeBeanDefinitionDocumentReader {@link MergeBeanDefinitionDocumentReader#processBeanDefinition(Element, BeanDefinitionParserDelegate)}.
    * <ul>
-   *   <li>Then calls {@link DefaultElement#getAttribute(String)}.
+   *   <li>Then calls {@link DefaultElement#getAttribute(String)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#processBeanDefinition(Element,
-   * BeanDefinitionParserDelegate)}
+   * <p>
+   * Method under test: {@link MergeBeanDefinitionDocumentReader#processBeanDefinition(Element, BeanDefinitionParserDelegate)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void MergeBeanDefinitionDocumentReader.processBeanDefinition(Element, BeanDefinitionParserDelegate)"
-  })
+      "void MergeBeanDefinitionDocumentReader.processBeanDefinition(Element, BeanDefinitionParserDelegate)"})
   public void testMergeBeanDefinitionDocumentReaderProcessBeanDefinition_thenCallsGetAttribute() {
     // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
+    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeBeanDefinitionDocumentReader();
     HTMLDocumentImpl doc = new HTMLDocumentImpl();
     GeneratedResource resource = new GeneratedResource();
     FailFastProblemReporter problemReporter = new FailFastProblemReporter();
     EmptyReaderEventListener eventListener = new EmptyReaderEventListener();
     NullSourceExtractor sourceExtractor = new NullSourceExtractor();
     XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
-
-    XmlReaderContext readerContext =
-        new XmlReaderContext(
-            resource,
-            problemReporter,
-            eventListener,
-            sourceExtractor,
-            reader,
-            new DefaultNamespaceHandlerResolver());
-
-    mergeBeanDefinitionDocumentReader.registerBeanDefinitions(doc, readerContext);
-
+    mergeBeanDefinitionDocumentReader.registerBeanDefinitions(doc, new XmlReaderContext(resource, problemReporter,
+        eventListener, sourceExtractor, reader, new DefaultNamespaceHandlerResolver()));
     DefaultElement ele = mock(DefaultElement.class);
     when(ele.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
     when(ele.hasAttribute(Mockito.<String>any())).thenReturn(false);
     when(ele.getAttribute(Mockito.<String>any())).thenReturn("Attribute");
-    when(ele.getChildNodes()).thenReturn(new IIOMetadataNode());
+    when(ele.getChildNodes()).thenReturn(new IIOMetadataNode("foo"));
     GeneratedResource resource2 = new GeneratedResource();
     FailFastProblemReporter problemReporter2 = new FailFastProblemReporter();
     EmptyReaderEventListener eventListener2 = new EmptyReaderEventListener();
     NullSourceExtractor sourceExtractor2 = new NullSourceExtractor();
     XmlBeanDefinitionReader reader2 = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
 
-    XmlReaderContext readerContext2 =
-        new XmlReaderContext(
-            resource2,
-            problemReporter2,
-            eventListener2,
-            sourceExtractor2,
-            reader2,
-            new DefaultNamespaceHandlerResolver());
-
     // Act
-    mergeBeanDefinitionDocumentReader.processBeanDefinition(
-        ele, new BeanDefinitionParserDelegate(readerContext2));
+    mergeBeanDefinitionDocumentReader.processBeanDefinition(ele,
+        new BeanDefinitionParserDelegate(new XmlReaderContext(resource2, problemReporter2, eventListener2,
+            sourceExtractor2, reader2, new DefaultNamespaceHandlerResolver())));
 
     // Assert
     verify(ele, atLeast(1)).getAttribute(Mockito.<String>any());
@@ -375,35 +297,27 @@ public class MergeXmlBeanDefinitionReaderDiffblueTest {
 
   /**
    * Test {@link MergeXmlBeanDefinitionReader#MergeXmlBeanDefinitionReader(BeanDefinitionRegistry)}.
-   *
-   * <p>Method under test: {@link
-   * MergeXmlBeanDefinitionReader#MergeXmlBeanDefinitionReader(BeanDefinitionRegistry)}
+   * <p>
+   * Method under test: {@link MergeXmlBeanDefinitionReader#MergeXmlBeanDefinitionReader(BeanDefinitionRegistry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MergeXmlBeanDefinitionReader.<init>(BeanDefinitionRegistry)"})
   public void testNewMergeXmlBeanDefinitionReader() {
     // Arrange
     DefaultListableBeanFactory registry = new DefaultListableBeanFactory();
 
     // Act
-    MergeXmlBeanDefinitionReader actualMergeXmlBeanDefinitionReader =
-        new MergeXmlBeanDefinitionReader(registry);
+    MergeXmlBeanDefinitionReader actualMergeXmlBeanDefinitionReader = new MergeXmlBeanDefinitionReader(registry);
 
     // Assert
-    assertTrue(
-        actualMergeXmlBeanDefinitionReader.getBeanNameGenerator()
-            instanceof DefaultBeanNameGenerator);
+    assertTrue(actualMergeXmlBeanDefinitionReader.getBeanNameGenerator() instanceof DefaultBeanNameGenerator);
     BeanDefinitionRegistry beanFactory = actualMergeXmlBeanDefinitionReader.getBeanFactory();
     assertTrue(beanFactory instanceof DefaultListableBeanFactory);
     assertTrue(
-        actualMergeXmlBeanDefinitionReader.getNamespaceHandlerResolver()
-            instanceof DefaultNamespaceHandlerResolver);
+        actualMergeXmlBeanDefinitionReader.getNamespaceHandlerResolver() instanceof DefaultNamespaceHandlerResolver);
     assertTrue(actualMergeXmlBeanDefinitionReader.getEnvironment() instanceof StandardEnvironment);
-    assertTrue(
-        actualMergeXmlBeanDefinitionReader.getResourceLoader()
-            instanceof PathMatchingResourcePatternResolver);
+    assertTrue(actualMergeXmlBeanDefinitionReader.getResourceLoader() instanceof PathMatchingResourcePatternResolver);
     assertNull(actualMergeXmlBeanDefinitionReader.getBeanClassLoader());
     assertEquals(1, actualMergeXmlBeanDefinitionReader.getValidationMode());
     assertFalse(actualMergeXmlBeanDefinitionReader.isNamespaceAware());
@@ -413,80 +327,64 @@ public class MergeXmlBeanDefinitionReaderDiffblueTest {
 
   /**
    * Test {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}.
-   *
-   * <p>Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MergeXmlBeanDefinitionReader.isXMLBean(BeanDefinition)"})
   public void testIsXMLBean() {
     // Arrange
-    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader =
-        new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory());
+    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader = new MergeXmlBeanDefinitionReader(
+        new DefaultListableBeanFactory());
 
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(
-            new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1},
-            "The characteristics of someone or something");
-    beanDefinition.setResource(resource);
+    GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+    beanDefinition.setResource(new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1},
+        "The characteristics of someone or something"));
 
-    // Act
-    boolean actualIsXMLBeanResult = mergeXmlBeanDefinitionReader.isXMLBean(beanDefinition);
-
-    // Assert
-    assertFalse(actualIsXMLBeanResult);
+    // Act and Assert
+    assertFalse(mergeXmlBeanDefinitionReader.isXMLBean(beanDefinition));
   }
 
   /**
    * Test {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MergeXmlBeanDefinitionReader.isXMLBean(BeanDefinition)"})
   public void testIsXMLBean_thenReturnTrue() {
     // Arrange
-    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader =
-        new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory());
+    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader = new MergeXmlBeanDefinitionReader(
+        new DefaultListableBeanFactory());
 
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml");
-    beanDefinition.setResource(resource);
+    GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+    beanDefinition.setResource(new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml"));
 
-    // Act
-    boolean actualIsXMLBeanResult = mergeXmlBeanDefinitionReader.isXMLBean(beanDefinition);
-
-    // Assert
-    assertTrue(actualIsXMLBeanResult);
+    // Act and Assert
+    assertTrue(mergeXmlBeanDefinitionReader.isXMLBean(beanDefinition));
   }
 
   /**
    * Test {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}.
-   *
    * <ul>
-   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MergeXmlBeanDefinitionReader.isXMLBean(BeanDefinition)"})
   public void testIsXMLBean_whenGenericBeanDefinition_thenReturnFalse() {
     // Arrange
-    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader =
-        new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory());
+    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader = new MergeXmlBeanDefinitionReader(
+        new DefaultListableBeanFactory());
 
     // Act and Assert
     assertFalse(mergeXmlBeanDefinitionReader.isXMLBean(new GenericBeanDefinition()));
@@ -494,20 +392,18 @@ public class MergeXmlBeanDefinitionReaderDiffblueTest {
 
   /**
    * Test {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
+   * <p>
+   * Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MergeXmlBeanDefinitionReader.isXMLBean(BeanDefinition)"})
   public void testIsXMLBean_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory()).isXMLBean(null));
+    assertFalse((new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory())).isXMLBean(null));
   }
 }

@@ -18,10 +18,10 @@
 package org.broadleafcommerce.core.pricing.dao;
 
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
@@ -37,18 +37,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ShippingRateDaoImplDiffblueTest {
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
-  @InjectMocks private ShippingRateDaoImpl shippingRateDaoImpl;
+  @InjectMocks
+  private ShippingRateDaoImpl shippingRateDaoImpl;
 
   /**
    * Test {@link ShippingRateDaoImpl#create()}.
-   *
-   * <p>Method under test: {@link ShippingRateDaoImpl#create()}
+   * <p>
+   * Method under test: {@link ShippingRateDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ShippingRate ShippingRateDaoImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -60,15 +61,13 @@ public class ShippingRateDaoImplDiffblueTest {
     shippingRateImpl.setFeeSubType("Fee Sub Type");
     shippingRateImpl.setFeeType("Fee Type");
     shippingRateImpl.setId(1L);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(shippingRateImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(shippingRateImpl);
 
     // Act
     ShippingRate actualCreateResult = shippingRateDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.pricing.domain.ShippingRate");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.pricing.domain.ShippingRate"));
     assertSame(shippingRateImpl, actualCreateResult);
   }
 }

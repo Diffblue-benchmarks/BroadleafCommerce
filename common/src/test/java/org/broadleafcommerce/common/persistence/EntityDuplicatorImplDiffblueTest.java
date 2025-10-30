@@ -23,8 +23,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.service.GenericEntityService;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
@@ -38,30 +37,29 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class EntityDuplicatorImplDiffblueTest {
-  @InjectMocks private EntityDuplicatorImpl entityDuplicatorImpl;
+  @InjectMocks
+  private EntityDuplicatorImpl entityDuplicatorImpl;
 
-  @Mock private GenericEntityService genericEntityService;
+  @Mock
+  private GenericEntityService genericEntityService;
 
   /**
    * Test {@link EntityDuplicatorImpl#copy(Class, Long)} with {@code entityClass}, {@code id}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorImpl#copy(Class, Long)}
+   * <p>
+   * Method under test: {@link EntityDuplicatorImpl#copy(Class, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object EntityDuplicatorImpl.copy(Class, Long)"})
   public void testCopyWithEntityClassId_thenThrowIllegalArgumentException() {
     // Arrange
-    when(genericEntityService.readGenericEntity(
-            Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(genericEntityService.readGenericEntity(Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(BLCFieldUtils.NULL_FIELD);
     doNothing().when(genericEntityService).clear();
     doNothing().when(genericEntityService).flush();
@@ -76,25 +74,22 @@ public class EntityDuplicatorImplDiffblueTest {
 
   /**
    * Test {@link EntityDuplicatorImpl#copy(Class, Long)} with {@code entityClass}, {@code id}.
-   *
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorImpl#copy(Class, Long)}
+   * <p>
+   * Method under test: {@link EntityDuplicatorImpl#copy(Class, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object EntityDuplicatorImpl.copy(Class, Long)"})
-  public void testCopyWithEntityClassId_thenThrowUnsupportedOperationException() {
+  public void testCopyWithEntityClassId_thenThrowRuntimeException() {
     // Arrange
-    doThrow(new UnsupportedOperationException()).when(genericEntityService).flush();
+    doThrow(new RuntimeException("Entity not valid for duplication - %s:%s")).when(genericEntityService).flush();
     Class<Object> entityClass = Object.class;
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class, () -> entityDuplicatorImpl.copy(entityClass, 1L));
+    assertThrows(RuntimeException.class, () -> entityDuplicatorImpl.copy(entityClass, 1L));
     verify(genericEntityService).flush();
   }
 }

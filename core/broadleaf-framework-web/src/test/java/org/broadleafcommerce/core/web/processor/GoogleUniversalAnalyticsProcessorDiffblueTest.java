@@ -25,7 +25,6 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -40,7 +39,6 @@ import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
@@ -57,20 +55,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @ExtendWith(MockitoExtension.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class GoogleUniversalAnalyticsProcessorDiffblueTest {
-  @InjectMocks private GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
+  @InjectMocks
+  private GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor;
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}.
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
    */
   @Test
   @DisplayName("Test shouldShowMasterTracker()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean GoogleUniversalAnalyticsProcessor.shouldShowMasterTracker()"})
   void testShouldShowMasterTracker() {
     // Arrange
@@ -82,35 +80,15 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}.
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
-   */
-  @Test
-  @DisplayName("Test shouldShowMasterTracker()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean GoogleUniversalAnalyticsProcessor.shouldShowMasterTracker()"})
-  void testShouldShowMasterTracker2() {
-    // Arrange
-    googleUniversalAnalyticsProcessor.setMasterWebPropertyId(" ");
-
-    // Act and Assert
-    assertFalse(googleUniversalAnalyticsProcessor.shouldShowMasterTracker());
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}.
-   *
    * <ul>
-   *   <li>Given {@link GoogleUniversalAnalyticsProcessor}.
+   *   <li>Given {@link GoogleUniversalAnalyticsProcessor}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
    */
   @Test
   @DisplayName("Test shouldShowMasterTracker(); given GoogleUniversalAnalyticsProcessor")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean GoogleUniversalAnalyticsProcessor.shouldShowMasterTracker()"})
   void testShouldShowMasterTracker_givenGoogleUniversalAnalyticsProcessor() {
     // Arrange, Act and Assert
@@ -119,21 +97,19 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#shouldShowMasterTracker()}
    */
   @Test
   @DisplayName("Test shouldShowMasterTracker(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean GoogleUniversalAnalyticsProcessor.shouldShowMasterTracker()"})
   void testShouldShowMasterTracker_thenReturnTrue() {
     // Arrange
-    googleUniversalAnalyticsProcessor.setMasterWebPropertyId("not blank");
+    googleUniversalAnalyticsProcessor.setMasterWebPropertyId("foo");
 
     // Act and Assert
     assertTrue(googleUniversalAnalyticsProcessor.shouldShowMasterTracker());
@@ -141,118 +117,53 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getLinkAttributionJs(String)}.
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getLinkAttributionJs(String)}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getLinkAttributionJs(String)}
    */
   @Test
   @DisplayName("Test getLinkAttributionJs(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getLinkAttributionJs(String)"})
   void testGetLinkAttributionJs() {
     // Arrange, Act and Assert
-    assertEquals(
-        "ga('Tracker Prefixrequire', 'linkid', 'linkid.js');",
+    assertEquals("ga('Tracker Prefixrequire', 'linkid', 'linkid.js');",
         googleUniversalAnalyticsProcessor.getLinkAttributionJs("Tracker Prefix"));
   }
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}.
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getDisplayAdvertisingJs(String)}
    */
   @Test
   @DisplayName("Test getDisplayAdvertisingJs(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getDisplayAdvertisingJs(String)"})
   void testGetDisplayAdvertisingJs() {
     // Arrange, Act and Assert
-    assertEquals(
-        "ga('Tracker Prefixrequire', 'displayfeatures');",
+    assertEquals("ga('Tracker Prefixrequire', 'displayfeatures');",
         googleUniversalAnalyticsProcessor.getDisplayAdvertisingJs("Tracker Prefix"));
   }
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}.
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
-   */
-  @Test
-  @DisplayName("Test getItemJs(Order, String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getItemJs(Order, String)"})
-  void testGetItemJs() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
-    fulfillmentGroups.add(fulfillmentGroupImpl);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(fulfillmentGroups);
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(new OrderStatus("Type", "Friendly Type"));
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-
-    // Act and Assert
-    assertEquals("", googleUniversalAnalyticsProcessor.getItemJs(order, "Tracker Prefix"));
-  }
-
-  /**
-   * Test {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default
-   *       constructor).
-   *   <li>Then return empty string.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
    */
   @Test
-  @DisplayName(
-      "Test getItemJs(Order, String); given ArrayList() add FulfillmentGroupImpl (default constructor); then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getItemJs(Order, String); given ArrayList() add FulfillmentGroupImpl (default constructor); then return empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getItemJs(Order, String)"})
   void testGetItemJs_givenArrayListAddFulfillmentGroupImpl_thenReturnEmptyString() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
@@ -276,11 +187,11 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(new OrderStatus("Type", "Friendly Type"));
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
@@ -289,28 +200,23 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}.
-   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
-   *   <li>Then return empty string.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getItemJs(Order, String)}
    */
   @Test
-  @DisplayName(
-      "Test getItemJs(Order, String); given Auditable (default constructor) CreatedBy is one; then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getItemJs(Order, String); given Auditable (default constructor) CreatedBy is one; then return empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getItemJs(Order, String)"})
   void testGetItemJs_givenAuditableCreatedByIsOne_thenReturnEmptyString() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -331,11 +237,11 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(new OrderStatus("Type", "Friendly Type"));
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
@@ -344,17 +250,15 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).
+   *   <li>Given {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
    */
   @Test
   @DisplayName("Test getVariation(OrderItem); given CategoryImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getVariation(OrderItem)"})
   void testGetVariation_givenCategoryImpl() {
     // Arrange
@@ -373,25 +277,21 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getName()} return {@code Name}.
-   *   <li>Then return {@code Name}.
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getName()} return {@code Name}.</li>
+   *   <li>Then return {@code Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
    */
   @Test
-  @DisplayName(
-      "Test getVariation(OrderItem); given CategoryImpl getName() return 'Name'; then return 'Name'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVariation(OrderItem); given CategoryImpl getName() return 'Name'; then return 'Name'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getVariation(OrderItem)"})
   void testGetVariation_givenCategoryImplGetNameReturnName_thenReturnName() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getName()).thenReturn("Name");
-
     BundleOrderItemImpl item = mock(BundleOrderItemImpl.class);
     when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
     when(item.getCategory()).thenReturn(categoryImpl);
@@ -408,26 +308,21 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code name} is {@link OrderItemAttributeImpl} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link HashMap#HashMap()} {@code name} is {@link OrderItemAttributeImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
    */
   @Test
-  @DisplayName(
-      "Test getVariation(OrderItem); given HashMap() 'name' is OrderItemAttributeImpl (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVariation(OrderItem); given HashMap() 'name' is OrderItemAttributeImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getVariation(OrderItem)"})
   void testGetVariation_givenHashMapNameIsOrderItemAttributeImpl_thenReturnNull() {
     // Arrange
     HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
     stringOrderItemAttributeMap.put("name", new OrderItemAttributeImpl());
-
     BundleOrderItemImpl item = mock(BundleOrderItemImpl.class);
     when(item.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
 
@@ -441,19 +336,16 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}.
-   *
    * <ul>
-   *   <li>When {@link BundleOrderItemImpl} (default constructor).
-   *   <li>Then return empty string.
+   *   <li>When {@link BundleOrderItemImpl} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
+   * <p>
+   * Method under test: {@link GoogleUniversalAnalyticsProcessor#getVariation(OrderItem)}
    */
   @Test
-  @DisplayName(
-      "Test getVariation(OrderItem); when BundleOrderItemImpl (default constructor); then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVariation(OrderItem); when BundleOrderItemImpl (default constructor); then return empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getVariation(OrderItem)"})
   void testGetVariation_whenBundleOrderItemImpl_thenReturnEmptyString() {
     // Arrange, Act and Assert
@@ -462,9 +354,8 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link GoogleUniversalAnalyticsProcessor#setMasterWebPropertyId(String)}
    *   <li>{@link GoogleUniversalAnalyticsProcessor#getMasterWebPropertyId()}
@@ -474,18 +365,13 @@ class GoogleUniversalAnalyticsProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String GoogleUniversalAnalyticsProcessor.getMasterWebPropertyId()",
-    "String GoogleUniversalAnalyticsProcessor.getName()",
-    "int GoogleUniversalAnalyticsProcessor.getPrecedence()",
-    "void GoogleUniversalAnalyticsProcessor.setMasterWebPropertyId(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleUniversalAnalyticsProcessor.getMasterWebPropertyId()",
+      "String GoogleUniversalAnalyticsProcessor.getName()", "int GoogleUniversalAnalyticsProcessor.getPrecedence()",
+      "void GoogleUniversalAnalyticsProcessor.setMasterWebPropertyId(String)"})
   void testGettersAndSetters() {
     // Arrange
-    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor =
-        new GoogleUniversalAnalyticsProcessor();
+    GoogleUniversalAnalyticsProcessor googleUniversalAnalyticsProcessor = new GoogleUniversalAnalyticsProcessor();
 
     // Act
     googleUniversalAnalyticsProcessor.setMasterWebPropertyId("42");

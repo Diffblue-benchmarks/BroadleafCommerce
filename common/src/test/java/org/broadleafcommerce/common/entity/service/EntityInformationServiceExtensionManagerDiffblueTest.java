@@ -19,12 +19,12 @@ package org.broadleafcommerce.common.entity.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,10 +34,10 @@ import org.broadleafcommerce.common.entity.dto.EntityInformationDto;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.site.domain.Catalog;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
+import org.broadleafcommerce.common.util.dao.DynamicDaoHelperImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -49,115 +49,32 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {EntityInformationServiceExtensionManager.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class EntityInformationServiceExtensionManagerDiffblueTest {
   @Autowired
   private EntityInformationServiceExtensionManager entityInformationServiceExtensionManager;
 
   /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
+   * Test {@link EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto, Object)}.
+   * <ul>
+   *   <li>Then calls {@link EntityInformationDto#setCatalogId(Long)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateEntityInformationDto() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"})
+  public void testUpdateEntityInformationDto_thenCallsSetCatalogId() {
     // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateEntityInformationDto2() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateEntityInformationDto3() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.updateEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
+    EntityInformationDto dto = mock(EntityInformationDto.class);
+    doNothing().when(dto).setCatalogId(Mockito.<Long>any());
+    doNothing().when(dto).setCatalogOwner(Mockito.<Long>any());
+    doNothing().when(dto).setOwnerToCatalogRelationshipActive(Mockito.<Boolean>any());
+    doNothing().when(dto).setOwningSiteId(Mockito.<Long>any());
+    doNothing().when(dto).setProfileId(Mockito.<Long>any());
     dto.setCatalogId(1L);
     dto.setCatalogOwner(1L);
     dto.setOwnerToCatalogRelationshipActive(true);
@@ -165,130 +82,31 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     dto.setProfileId(1L);
 
     // Act
-    ExtensionResultStatusType actualUpdateEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualUpdateEntityInformationDtoResult = entityInformationServiceExtensionManager
+        .updateEntityInformationDto(dto, BLCFieldUtils.NULL_FIELD);
 
     // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .updateEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualUpdateEntityInformationDtoResult);
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateEntityInformationDto4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.updateEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act
-    ExtensionResultStatusType actualUpdateEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .updateEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualUpdateEntityInformationDtoResult);
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateEntityInformationDto5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act
-    ExtensionResultStatusType actualUpdateEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
+    verify(dto).setCatalogId(eq(1L));
+    verify(dto).setCatalogOwner(eq(1L));
+    verify(dto).setOwnerToCatalogRelationshipActive(eq(true));
+    verify(dto).setOwningSiteId(eq(1L));
+    verify(dto).setProfileId(eq(1L));
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualUpdateEntityInformationDtoResult);
   }
 
   /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto, Object)}.
    * <ul>
-   *   <li>Given {@link EntityInformationServiceExtensionManager}.
+   *   <li>When {@link EntityInformationDto} (default constructor) CatalogId is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateEntityInformationDto_givenEntityInformationServiceExtensionManager() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"})
+  public void testUpdateEntityInformationDto_whenEntityInformationDtoCatalogIdIsOne() {
     // Arrange
     EntityInformationDto dto = new EntityInformationDto();
     dto.setCatalogId(1L);
@@ -298,52 +116,30 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     dto.setProfileId(1L);
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.updateEntityInformationDto(dto, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto, Object)}.
    * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
+   *   <li>Then calls {@link EntityInformationDto#setCatalogId(Long)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateEntityInformationDto_thenCallsGetPriority() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"})
+  public void testUpdateBasicEntityInformationDto_thenCallsSetCatalogId() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.updateEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
+    EntityInformationDto dto = mock(EntityInformationDto.class);
+    doNothing().when(dto).setCatalogId(Mockito.<Long>any());
+    doNothing().when(dto).setCatalogOwner(Mockito.<Long>any());
+    doNothing().when(dto).setOwnerToCatalogRelationshipActive(Mockito.<Boolean>any());
+    doNothing().when(dto).setOwningSiteId(Mockito.<Long>any());
+    doNothing().when(dto).setProfileId(Mockito.<Long>any());
     dto.setCatalogId(1L);
     dto.setCatalogOwner(1L);
     dto.setOwnerToCatalogRelationshipActive(true);
@@ -351,94 +147,31 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     dto.setProfileId(1L);
 
     // Act
-    ExtensionResultStatusType actualUpdateEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualUpdateBasicEntityInformationDtoResult = entityInformationServiceExtensionManager
+        .updateBasicEntityInformationDto(dto, BLCFieldUtils.NULL_FIELD);
 
     // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .updateEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualUpdateEntityInformationDtoResult);
+    verify(dto).setCatalogId(eq(1L));
+    verify(dto).setCatalogOwner(eq(1L));
+    verify(dto).setOwnerToCatalogRelationshipActive(eq(true));
+    verify(dto).setOwningSiteId(eq(1L));
+    verify(dto).setProfileId(eq(1L));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualUpdateBasicEntityInformationDtoResult);
   }
 
   /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto, Object)}.
    * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
+   *   <li>When {@link EntityInformationDto} (default constructor) CatalogId is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateEntityInformationDto_thenCallsGetPriority2() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.updateEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act
-    ExtensionResultStatusType actualUpdateEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .updateEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualUpdateEntityInformationDtoResult);
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateBasicEntityInformationDto() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"})
+  public void testUpdateBasicEntityInformationDto_whenEntityInformationDtoCatalogIdIsOne() {
     // Arrange
     EntityInformationDto dto = new EntityInformationDto();
     dto.setCatalogId(1L);
@@ -448,379 +181,60 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     dto.setProfileId(1L);
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateBasicEntityInformationDto2() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateBasicEntityInformationDto3() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateBasicEntityInformationDto4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.updateBasicEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act
-    ExtensionResultStatusType actualUpdateBasicEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .updateBasicEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualUpdateBasicEntityInformationDtoResult);
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateBasicEntityInformationDto5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.updateBasicEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act
-    ExtensionResultStatusType actualUpdateBasicEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .updateBasicEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualUpdateBasicEntityInformationDtoResult);
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateBasicEntityInformationDto6() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act
-    ExtensionResultStatusType actualUpdateBasicEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED, actualUpdateBasicEntityInformationDtoResult);
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateBasicEntityInformationDto_thenCallsGetPriority() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.updateBasicEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act
-    ExtensionResultStatusType actualUpdateBasicEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .updateBasicEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualUpdateBasicEntityInformationDtoResult);
-  }
-
-  /**
-   * Test {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
-  public void testUpdateBasicEntityInformationDto_thenCallsGetPriority2() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.updateBasicEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    EntityInformationDto dto = new EntityInformationDto();
-    dto.setCatalogId(1L);
-    dto.setCatalogOwner(1L);
-    dto.setOwnerToCatalogRelationshipActive(true);
-    dto.setOwningSiteId(1L);
-    dto.setProfileId(1L);
-
-    // Act
-    ExtensionResultStatusType actualUpdateBasicEntityInformationDtoResult =
-        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .updateBasicEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualUpdateBasicEntityInformationDtoResult);
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.updateBasicEntityInformationDto(dto, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
    * Test {@link EntityInformationServiceExtensionManager#isEnabled()}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#isEnabled()}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#isEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean EntityInformationServiceExtensionManager.isEnabled()"})
   public void testIsEnabled() {
     // Arrange, Act and Assert
-    assertTrue(new EntityInformationServiceExtensionManager().isEnabled());
+    assertTrue((new EntityInformationServiceExtensionManager()).isEnabled());
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
+   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetBaseProfileIdForSite() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"})
+  public void testGetBaseProfileIdForSite_whenNull() {
     // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
+    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
+    erh.setResult(1L);
+    erh.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.getBaseProfileIdForSite(null, erh));
+  }
+
+  /**
+   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}.
+   * <ul>
+   *   <li>When {@link SiteImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"})
+  public void testGetBaseProfileIdForSite_whenSiteImpl() {
+    // Arrange
     SiteImpl site = new SiteImpl();
 
     ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
@@ -828,328 +242,47 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityInformationServiceExtensionManager.getBaseProfileIdForSite(site, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
+   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetBaseProfileIdForSite2() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"})
+  public void testGetParentSiteForProfile_whenNull() {
     // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
+    ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
+    erh.setResult(new SiteImpl());
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getBaseProfileIdForSite(site, erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.getParentSiteForProfile(null, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetBaseProfileIdForSite3() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getBaseProfileIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualBaseProfileIdForSite =
-        entityInformationServiceExtensionManager.getBaseProfileIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getBaseProfileIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualBaseProfileIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetBaseProfileIdForSite4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getBaseProfileIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualBaseProfileIdForSite =
-        entityInformationServiceExtensionManager.getBaseProfileIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getBaseProfileIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualBaseProfileIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetBaseProfileIdForSite5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualBaseProfileIdForSite =
-        entityInformationServiceExtensionManager.getBaseProfileIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualBaseProfileIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link EntityInformationServiceExtensionManager}.
+   *   <li>When {@link SiteImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetBaseProfileIdForSite_givenEntityInformationServiceExtensionManager() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"})
+  public void testGetParentSiteForProfile_whenSiteImpl() {
     // Arrange
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getBaseProfileIdForSite(site, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetBaseProfileIdForSite_thenCallsGetPriority() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getBaseProfileIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualBaseProfileIdForSite =
-        entityInformationServiceExtensionManager.getBaseProfileIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getBaseProfileIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualBaseProfileIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetBaseProfileIdForSite_thenCallsGetPriority2() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getBaseProfileIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualBaseProfileIdForSite =
-        entityInformationServiceExtensionManager.getBaseProfileIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getBaseProfileIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualBaseProfileIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetParentSiteForProfile() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
     SiteImpl profile = new SiteImpl();
 
     ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
@@ -1157,1009 +290,145 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityInformationServiceExtensionManager.getParentSiteForProfile(profile, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetParentSiteForProfile2() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
-    erh.setResult(new SiteImpl());
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getParentSiteForProfile(profile, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetParentSiteForProfile3() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getParentSiteForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Site>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
-    erh.setResult(new SiteImpl());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualParentSiteForProfile =
-        entityInformationServiceExtensionManager.getParentSiteForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getParentSiteForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualParentSiteForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetParentSiteForProfile4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getParentSiteForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Site>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
-    erh.setResult(new SiteImpl());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualParentSiteForProfile =
-        entityInformationServiceExtensionManager.getParentSiteForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getParentSiteForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualParentSiteForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetParentSiteForProfile5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
-    erh.setResult(new SiteImpl());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualParentSiteForProfile =
-        entityInformationServiceExtensionManager.getParentSiteForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualParentSiteForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link EntityInformationServiceExtensionManager}.
+   *   <li>When {@link DynamicDaoHelperImpl#LOCK_OBJECT}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetParentSiteForProfile_givenEntityInformationServiceExtensionManager() {
-    // Arrange
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
-    erh.setResult(new SiteImpl());
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getParentSiteForProfile(profile, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetParentSiteForProfile_thenCallsGetPriority() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getParentSiteForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Site>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
-    erh.setResult(new SiteImpl());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualParentSiteForProfile =
-        entityInformationServiceExtensionManager.getParentSiteForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getParentSiteForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualParentSiteForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getParentSiteForProfile(Site, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetParentSiteForProfile_thenCallsGetPriority2() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getParentSiteForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Site>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
-    erh.setResult(new SiteImpl());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualParentSiteForProfile =
-        entityInformationServiceExtensionManager.getParentSiteForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getParentSiteForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualParentSiteForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
-  public void testGetOkayToUseSiteDiscriminator() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
-
-    ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
-    erh.setResult(true);
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
-  public void testGetOkayToUseSiteDiscriminator2() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-
-    ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
-    erh.setResult(true);
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
-  public void testGetOkayToUseSiteDiscriminator3() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getOkayToUseSiteDiscriminator(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
-    erh.setResult(true);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualOkayToUseSiteDiscriminator =
-        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getOkayToUseSiteDiscriminator(isA(Object.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualOkayToUseSiteDiscriminator);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
-  public void testGetOkayToUseSiteDiscriminator4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getOkayToUseSiteDiscriminator(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
-    erh.setResult(true);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualOkayToUseSiteDiscriminator =
-        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getOkayToUseSiteDiscriminator(isA(Object.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualOkayToUseSiteDiscriminator);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
-  public void testGetOkayToUseSiteDiscriminator5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
-    erh.setResult(true);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualOkayToUseSiteDiscriminator =
-        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualOkayToUseSiteDiscriminator);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityInformationServiceExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
-  public void testGetOkayToUseSiteDiscriminator_givenEntityInformationServiceExtensionManager() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"})
+  public void testGetOkayToUseSiteDiscriminator_whenLock_object() {
     // Arrange
     ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
     erh.setResult(true);
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(DynamicDaoHelperImpl.LOCK_OBJECT, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
+   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
-  public void testGetOkayToUseSiteDiscriminator_thenCallsGetPriority() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"})
+  public void testGetOkayToUseSiteDiscriminator_whenNull_field() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getOkayToUseSiteDiscriminator(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
     ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
     erh.setResult(true);
     erh.setThrowable(new Throwable());
 
-    // Act
-    ExtensionResultStatusType actualOkayToUseSiteDiscriminator =
-        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getOkayToUseSiteDiscriminator(isA(Object.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualOkayToUseSiteDiscriminator);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
-  public void testGetOkayToUseSiteDiscriminator_thenCallsGetPriority2() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getOkayToUseSiteDiscriminator(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
-    erh.setResult(true);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualOkayToUseSiteDiscriminator =
-        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getOkayToUseSiteDiscriminator(isA(Object.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualOkayToUseSiteDiscriminator);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(BLCFieldUtils.NULL_FIELD, erh));
   }
 
   /**
    * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
+   * <ul>
+   *   <li>Then calls {@link ExtensionResultHolder#setResult(Object)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"})
+  public void testFindAllCatalogs_thenCallsSetResult() {
     // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
-
-    ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new ArrayList<>());
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.findAllCatalogs(erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs2() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-
-    ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new ArrayList<>());
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.findAllCatalogs(erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs3() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.findAllCatalogs(
-            Mockito.<ExtensionResultHolder<List<Catalog>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
+    ExtensionResultHolder<List<Catalog>> erh = mock(ExtensionResultHolder.class);
+    doNothing().when(erh).setResult(Mockito.<List<Catalog>>any());
+    doNothing().when(erh).setThrowable(Mockito.<Throwable>any());
     erh.setResult(new ArrayList<>());
     erh.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualFindAllCatalogsResult =
-        entityInformationServiceExtensionManager.findAllCatalogs(erh);
+    ExtensionResultStatusType actualFindAllCatalogsResult = entityInformationServiceExtensionManager
+        .findAllCatalogs(erh);
 
     // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .findAllCatalogs(isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualFindAllCatalogsResult);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.findAllCatalogs(
-            Mockito.<ExtensionResultHolder<List<Catalog>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new ArrayList<>());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualFindAllCatalogsResult =
-        entityInformationServiceExtensionManager.findAllCatalogs(erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .findAllCatalogs(isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualFindAllCatalogsResult);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new ArrayList<>());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualFindAllCatalogsResult =
-        entityInformationServiceExtensionManager.findAllCatalogs(erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
+    verify(erh).setResult(isA(List.class));
+    verify(erh).setThrowable(isA(Throwable.class));
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualFindAllCatalogsResult);
   }
 
   /**
    * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CatalogImpl} (default constructor).
-   *   <li>Then return {@code NOT_HANDLED}.
+   *   <li>When {@link ExtensionResultHolder} (default constructor) Result is {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs_givenArrayListAddCatalogImpl_thenReturnNotHandled() {
-    // Arrange
-    ArrayList<Catalog> catalogList = new ArrayList<>();
-    catalogList.add(new CatalogImpl());
-
-    ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
-    erh.setResult(catalogList);
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.findAllCatalogs(erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityInformationServiceExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs_givenEntityInformationServiceExtensionManager() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"})
+  public void testFindAllCatalogs_whenExtensionResultHolderResultIsArrayList() {
     // Arrange
     ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
     erh.setResult(new ArrayList<>());
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.findAllCatalogs(erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, entityInformationServiceExtensionManager.findAllCatalogs(erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs_thenCallsGetPriority() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"})
+  public void testGetDefaultCatalogIdForSite_whenNull() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.findAllCatalogs(
-            Mockito.<ExtensionResultHolder<List<Catalog>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new ArrayList<>());
+    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
+    erh.setResult(1L);
     erh.setThrowable(new Throwable());
 
-    // Act
-    ExtensionResultStatusType actualFindAllCatalogsResult =
-        entityInformationServiceExtensionManager.findAllCatalogs(erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .findAllCatalogs(isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualFindAllCatalogsResult);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(null, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
+   *   <li>When {@link SiteImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#findAllCatalogs(ExtensionResultHolder)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.findAllCatalogs(ExtensionResultHolder)"
-  })
-  public void testFindAllCatalogs_thenCallsGetPriority2() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"})
+  public void testGetDefaultCatalogIdForSite_whenSiteImpl() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.findAllCatalogs(
-            Mockito.<ExtensionResultHolder<List<Catalog>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-
-    ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new ArrayList<>());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualFindAllCatalogsResult =
-        entityInformationServiceExtensionManager.findAllCatalogs(erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .findAllCatalogs(isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualFindAllCatalogsResult);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetDefaultCatalogIdForSite() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
     SiteImpl site = new SiteImpl();
 
     ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
@@ -2167,336 +436,47 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(site, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
+   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site, ExtensionResultHolder)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetDefaultCatalogIdForSite2() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"})
+  public void testGetChildSiteIdsForProfile_whenNull() {
     // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
+    ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
+    erh.setResult(new HashSet<>());
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(site, erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.getChildSiteIdsForProfile(null, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetDefaultCatalogIdForSite3() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getDefaultCatalogIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualDefaultCatalogIdForSite =
-        entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getDefaultCatalogIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualDefaultCatalogIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetDefaultCatalogIdForSite4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getDefaultCatalogIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualDefaultCatalogIdForSite =
-        entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getDefaultCatalogIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualDefaultCatalogIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetDefaultCatalogIdForSite5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualDefaultCatalogIdForSite =
-        entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualDefaultCatalogIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link EntityInformationServiceExtensionManager}.
+   *   <li>When {@link SiteImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetDefaultCatalogIdForSite_givenEntityInformationServiceExtensionManager() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"})
+  public void testGetChildSiteIdsForProfile_whenSiteImpl() {
     // Arrange
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(site, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetDefaultCatalogIdForSite_thenCallsGetPriority() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getDefaultCatalogIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualDefaultCatalogIdForSite =
-        entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getDefaultCatalogIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualDefaultCatalogIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetDefaultCatalogIdForSite_thenCallsGetPriority2() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getDefaultCatalogIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
-    erh.setResult(1L);
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualDefaultCatalogIdForSite =
-        entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getDefaultCatalogIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualDefaultCatalogIdForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetChildSiteIdsForProfile() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
     SiteImpl profile = new SiteImpl();
 
     ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
@@ -2504,335 +484,47 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityInformationServiceExtensionManager.getChildSiteIdsForProfile(profile, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
+   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site, ExtensionResultHolder)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetChildSiteIdsForProfile2() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"})
+  public void testGetTypeForSite_whenNull() {
     // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new HashSet<>());
+    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
+    erh.setResult("Result");
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getChildSiteIdsForProfile(profile, erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityInformationServiceExtensionManager.getTypeForSite(null, erh));
   }
 
   /**
-   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetChildSiteIdsForProfile3() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getChildSiteIdsForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Set<Long>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new HashSet<>());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualChildSiteIdsForProfile =
-        entityInformationServiceExtensionManager.getChildSiteIdsForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getChildSiteIdsForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualChildSiteIdsForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetChildSiteIdsForProfile4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getChildSiteIdsForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Set<Long>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new HashSet<>());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualChildSiteIdsForProfile =
-        entityInformationServiceExtensionManager.getChildSiteIdsForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getChildSiteIdsForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualChildSiteIdsForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetChildSiteIdsForProfile5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new HashSet<>());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualChildSiteIdsForProfile =
-        entityInformationServiceExtensionManager.getChildSiteIdsForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualChildSiteIdsForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
+   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site, ExtensionResultHolder)}.
    * <ul>
-   *   <li>Given {@link EntityInformationServiceExtensionManager}.
+   *   <li>When {@link SiteImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetChildSiteIdsForProfile_givenEntityInformationServiceExtensionManager() {
+      "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"})
+  public void testGetTypeForSite_whenSiteImpl() {
     // Arrange
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new HashSet<>());
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getChildSiteIdsForProfile(profile, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetChildSiteIdsForProfile_thenCallsGetPriority() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getChildSiteIdsForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Set<Long>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new HashSet<>());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualChildSiteIdsForProfile =
-        entityInformationServiceExtensionManager.getChildSiteIdsForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getChildSiteIdsForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualChildSiteIdsForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceExtensionManager#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
-  public void testGetChildSiteIdsForProfile_thenCallsGetPriority2() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getChildSiteIdsForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Set<Long>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl profile = new SiteImpl();
-
-    ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
-    erh.setResult(new HashSet<>());
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualChildSiteIdsForProfile =
-        entityInformationServiceExtensionManager.getChildSiteIdsForProfile(profile, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getChildSiteIdsForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualChildSiteIdsForProfile);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetTypeForSite() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new AbstractEntityInformationServiceExtensionHandler());
     SiteImpl site = new SiteImpl();
 
     ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
@@ -2840,306 +532,7 @@ public class EntityInformationServiceExtensionManagerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityInformationServiceExtensionManager.getTypeForSite(site, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetTypeForSite2() {
-    // Arrange
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        new EntityInformationServiceExtensionManager());
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
-    erh.setResult("Result");
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getTypeForSite(site, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetTypeForSite3() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getTypeForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<String>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
-    erh.setResult("Result");
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualTypeForSite =
-        entityInformationServiceExtensionManager.getTypeForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getTypeForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualTypeForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetTypeForSite4() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getTypeForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<String>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
-    erh.setResult("Result");
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualTypeForSite =
-        entityInformationServiceExtensionManager.getTypeForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getTypeForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualTypeForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetTypeForSite5() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
-    erh.setResult("Result");
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualTypeForSite =
-        entityInformationServiceExtensionManager.getTypeForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualTypeForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityInformationServiceExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetTypeForSite_givenEntityInformationServiceExtensionManager() {
-    // Arrange
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
-    erh.setResult("Result");
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityInformationServiceExtensionManager.getTypeForSite(site, erh));
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetTypeForSite_thenCallsGetPriority() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getTypeForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<String>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
-    erh.setResult("Result");
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualTypeForSite =
-        entityInformationServiceExtensionManager.getTypeForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getTypeForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualTypeForSite);
-  }
-
-  /**
-   * Test {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link AbstractEntityInformationServiceExtensionHandler#getPriority()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityInformationServiceExtensionManager#getTypeForSite(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityInformationServiceExtensionManager.getTypeForSite(Site, ExtensionResultHolder)"
-  })
-  public void testGetTypeForSite_thenCallsGetPriority2() {
-    // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            mock(AbstractEntityInformationServiceExtensionHandler.class);
-    when(abstractEntityInformationServiceExtensionHandler.getPriority()).thenReturn(1);
-    when(abstractEntityInformationServiceExtensionHandler.getTypeForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<String>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(abstractEntityInformationServiceExtensionHandler.isEnabled()).thenReturn(true);
-
-    ArrayList<EntityInformationServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-    handlers.add(new AbstractEntityInformationServiceExtensionHandler());
-
-    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager =
-        new EntityInformationServiceExtensionManager();
-    entityInformationServiceExtensionManager.setHandlers(handlers);
-    entityInformationServiceExtensionManager.registerHandler(
-        abstractEntityInformationServiceExtensionHandler);
-    SiteImpl site = new SiteImpl();
-
-    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
-    erh.setResult("Result");
-    erh.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualTypeForSite =
-        entityInformationServiceExtensionManager.getTypeForSite(site, erh);
-
-    // Assert
-    verify(abstractEntityInformationServiceExtensionHandler)
-        .getTypeForSite(isA(Site.class), isA(ExtensionResultHolder.class));
-    verify(abstractEntityInformationServiceExtensionHandler).getPriority();
-    verify(abstractEntityInformationServiceExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.HANDLED, actualTypeForSite);
   }
 }

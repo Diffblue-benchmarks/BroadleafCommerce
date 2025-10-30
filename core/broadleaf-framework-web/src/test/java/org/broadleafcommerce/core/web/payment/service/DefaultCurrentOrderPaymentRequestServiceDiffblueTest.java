@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.core.order.domain.Order;
@@ -40,30 +39,26 @@ class DefaultCurrentOrderPaymentRequestServiceDiffblueTest {
   @InjectMocks
   private DefaultCurrentOrderPaymentRequestService defaultCurrentOrderPaymentRequestService;
 
-  @Mock private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
+  @Mock
+  private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
 
   /**
    * Test {@link DefaultCurrentOrderPaymentRequestService#getPaymentRequestFromCurrentOrder()}.
-   *
-   * <p>Method under test: {@link
-   * DefaultCurrentOrderPaymentRequestService#getPaymentRequestFromCurrentOrder()}
+   * <p>
+   * Method under test: {@link DefaultCurrentOrderPaymentRequestService#getPaymentRequestFromCurrentOrder()}
    */
   @Test
   @DisplayName("Test getPaymentRequestFromCurrentOrder()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentRequestDTO DefaultCurrentOrderPaymentRequestService.getPaymentRequestFromCurrentOrder()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"PaymentRequestDTO DefaultCurrentOrderPaymentRequestService.getPaymentRequestFromCurrentOrder()"})
   void testGetPaymentRequestFromCurrentOrder() {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
-    when(orderToPaymentRequestDTOService.translateOrder(Mockito.<Order>any()))
-        .thenReturn(paymentRequestDTO);
+    when(orderToPaymentRequestDTOService.translateOrder(Mockito.<Order>any())).thenReturn(paymentRequestDTO);
 
     // Act
-    PaymentRequestDTO actualPaymentRequestFromCurrentOrder =
-        defaultCurrentOrderPaymentRequestService.getPaymentRequestFromCurrentOrder();
+    PaymentRequestDTO actualPaymentRequestFromCurrentOrder = defaultCurrentOrderPaymentRequestService
+        .getPaymentRequestFromCurrentOrder();
 
     // Assert
     verify(orderToPaymentRequestDTOService).translateOrder(isNull());

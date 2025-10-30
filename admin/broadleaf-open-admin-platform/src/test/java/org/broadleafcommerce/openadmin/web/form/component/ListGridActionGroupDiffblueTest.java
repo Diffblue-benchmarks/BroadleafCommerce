@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,19 +35,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ListGridActionGroup.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ListGridActionGroupDiffblueTest {
-  @Autowired private ListGridActionGroup listGridActionGroup;
+  @Autowired
+  private ListGridActionGroup listGridActionGroup;
 
   /**
    * Test {@link ListGridActionGroup#withName(String)}.
-   *
-   * <p>Method under test: {@link ListGridActionGroup#withName(String)}
+   * <p>
+   * Method under test: {@link ListGridActionGroup#withName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ListGridActionGroup ListGridActionGroup.withName(String)"})
   public void testWithName() {
     // Arrange and Act
@@ -61,17 +60,16 @@ public class ListGridActionGroupDiffblueTest {
 
   /**
    * Test {@link ListGridActionGroup#withActionGroupClass(String)}.
-   *
-   * <p>Method under test: {@link ListGridActionGroup#withActionGroupClass(String)}
+   * <p>
+   * Method under test: {@link ListGridActionGroup#withActionGroupClass(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ListGridActionGroup ListGridActionGroup.withActionGroupClass(String)"})
   public void testWithActionGroupClass() {
     // Arrange and Act
-    ListGridActionGroup actualWithActionGroupClassResult =
-        listGridActionGroup.withActionGroupClass("Action Group Class");
+    ListGridActionGroup actualWithActionGroupClassResult = listGridActionGroup
+        .withActionGroupClass("Action Group Class");
 
     // Assert
     assertEquals("Action Group Class", listGridActionGroup.getActionGroupClass());
@@ -80,18 +78,15 @@ public class ListGridActionGroupDiffblueTest {
 
   /**
    * Test {@link ListGridActionGroup#getActiveActions(boolean)}.
-   *
    * <ul>
-   *   <li>Given {@link ListGridActionGroup} (default constructor) addAction {@link
-   *       DefaultListGridActions#ADD_EMPTY}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link ListGridActionGroup} (default constructor) addAction {@link DefaultListGridActions#ADD_EMPTY}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ListGridActionGroup#getActiveActions(boolean)}
+   * <p>
+   * Method under test: {@link ListGridActionGroup#getActiveActions(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List ListGridActionGroup.getActiveActions(boolean)"})
   public void testGetActiveActions_givenListGridActionGroupAddActionAdd_empty_thenReturnEmpty() {
     // Arrange
@@ -104,98 +99,41 @@ public class ListGridActionGroupDiffblueTest {
 
   /**
    * Test {@link ListGridActionGroup#getActiveActions(boolean)}.
-   *
    * <ul>
-   *   <li>Given {@link ListGridActionGroup} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link ListGridActionGroup} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ListGridActionGroup#getActiveActions(boolean)}
+   * <p>
+   * Method under test: {@link ListGridActionGroup#getActiveActions(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List ListGridActionGroup.getActiveActions(boolean)"})
   public void testGetActiveActions_givenListGridActionGroup_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(new ListGridActionGroup().getActiveActions(true).isEmpty());
+    assertTrue((new ListGridActionGroup()).getActiveActions(true).isEmpty());
   }
 
   /**
    * Test {@link ListGridActionGroup#findAction(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link DefaultListGridActions#ADD}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridActionGroup#findAction(String)}
+   * <p>
+   * Method under test: {@link ListGridActionGroup#findAction(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ListGridAction ListGridActionGroup.findAction(String)"})
-  public void testFindAction_givenArrayListAddAdd_thenReturnNull() {
-    // Arrange
-    ArrayList<ListGridAction> listGridActions = new ArrayList<>();
-    listGridActions.add(DefaultListGridActions.ADD);
-    listGridActionGroup.setListGridActions(listGridActions);
-
-    // Act and Assert
-    assertNull(listGridActionGroup.findAction("42"));
-  }
-
-  /**
-   * Test {@link ListGridActionGroup#findAction(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridActionGroup}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridActionGroup#findAction(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridActionGroup.findAction(String)"})
-  public void testFindAction_givenListGridActionGroup_thenReturnNull() {
+  public void testFindAction() {
     // Arrange, Act and Assert
     assertNull(listGridActionGroup.findAction("42"));
-  }
-
-  /**
-   * Test {@link ListGridActionGroup#findAction(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@link ListGridAction#ListGridAction(String)} with actionId is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridActionGroup#findAction(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridActionGroup.findAction(String)"})
-  public void testFindAction_thenReturnListGridActionWithActionIdIs42() {
-    // Arrange
-    ArrayList<ListGridAction> listGridActions = new ArrayList<>();
-    ListGridAction listGridAction = new ListGridAction("42");
-    listGridActions.add(listGridAction);
-    listGridActionGroup.setListGridActions(listGridActions);
-
-    // Act and Assert
-    assertSame(listGridAction, listGridActionGroup.findAction("42"));
   }
 
   /**
    * Test {@link ListGridActionGroup#addAction(ListGridAction)}.
-   *
-   * <p>Method under test: {@link ListGridActionGroup#addAction(ListGridAction)}
+   * <p>
+   * Method under test: {@link ListGridActionGroup#addAction(ListGridAction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ListGridActionGroup.addAction(ListGridAction)"})
   public void testAddAction() {
     // Arrange
@@ -213,16 +151,15 @@ public class ListGridActionGroupDiffblueTest {
 
   /**
    * Test {@link ListGridActionGroup#clone()}.
-   *
-   * <p>Method under test: {@link ListGridActionGroup#clone()}
+   * <p>
+   * Method under test: {@link ListGridActionGroup#clone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ListGridActionGroup ListGridActionGroup.clone()"})
   public void testClone() {
     // Arrange and Act
-    ListGridActionGroup actualCloneResult = new ListGridActionGroup().clone();
+    ListGridActionGroup actualCloneResult = (new ListGridActionGroup()).clone();
 
     // Assert
     assertEquals("", actualCloneResult.getActionGroupClass());
@@ -232,9 +169,8 @@ public class ListGridActionGroupDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ListGridActionGroup}
    *   <li>{@link ListGridActionGroup#setActionGroupClass(String)}
@@ -246,17 +182,11 @@ public class ListGridActionGroupDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ListGridActionGroup.<init>()",
-    "String ListGridActionGroup.getActionGroupClass()",
-    "List ListGridActionGroup.getListGridActions()",
-    "String ListGridActionGroup.getName()",
-    "void ListGridActionGroup.setActionGroupClass(String)",
-    "void ListGridActionGroup.setListGridActions(List)",
-    "void ListGridActionGroup.setName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ListGridActionGroup.<init>()", "String ListGridActionGroup.getActionGroupClass()",
+      "List ListGridActionGroup.getListGridActions()", "String ListGridActionGroup.getName()",
+      "void ListGridActionGroup.setActionGroupClass(String)", "void ListGridActionGroup.setListGridActions(List)",
+      "void ListGridActionGroup.setName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ListGridActionGroup actualListGridActionGroup = new ListGridActionGroup();

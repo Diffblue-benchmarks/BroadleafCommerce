@@ -18,13 +18,7 @@
 package org.broadleafcommerce.openadmin.web.controller.entity;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,457 +54,226 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminBasicOperationsControllerDiffblueTest {
-  @Mock private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-
-  @InjectMocks private AdminBasicOperationsController adminBasicOperationsController;
+  @InjectMocks
+  private AdminBasicOperationsController adminBasicOperationsController;
 
   @Mock
-  private AdminBasicOperationsControllerExtensionManager
-      adminBasicOperationsControllerExtensionManager;
+  private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
 
-  @Mock private AdminEntityService adminEntityService;
+  @Mock
+  private AdminBasicOperationsControllerExtensionManager adminBasicOperationsControllerExtensionManager;
 
-  @Mock private AdminNavigationService adminNavigationService;
+  @Mock
+  private AdminEntityService adminEntityService;
 
-  @Mock private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+  @Mock
+  private AdminNavigationService adminNavigationService;
 
-  @Mock private ClassNameRequestParamValidationService classNameRequestParamValidationService;
+  @Mock
+  private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
 
-  @Mock private ExploitProtectionService exploitProtectionService;
+  @Mock
+  private ClassNameRequestParamValidationService classNameRequestParamValidationService;
 
-  @Mock private FormBuilderService formBuilderService;
+  @Mock
+  private ExploitProtectionService exploitProtectionService;
+
+  @Mock
+  private FormBuilderService formBuilderService;
 
   /**
-   * Test {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}.
-   *
-   * <p>Method under test: {@link
-   * AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}
+   * Test {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}.
+   * <p>
+   * Method under test: {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "String AdminBasicOperationsController.showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)"
-  })
+      "String AdminBasicOperationsController.showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)"})
   public void testShowSelectCollectionItem() throws Exception {
     // Arrange
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
-        .thenReturn(new AdminSectionImpl());
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
-            Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
     when(exploitProtectionService.cleanString(Mockito.<String>any())).thenReturn("Clean String");
     when(adminAbstractControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
-    when(formBuilderService.buildMainListGrid(
-            Mockito.<DynamicResultSet>any(),
-            Mockito.<ClassMetadata>any(),
-            Mockito.<String>any(),
-            Mockito.<List<SectionCrumb>>any()))
-        .thenReturn(new ListGrid());
+    when(formBuilderService.buildMainListGrid(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any(),
+        Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(new ListGrid());
 
     ClassMetadata classMetaData = new ClassMetadata();
     classMetaData.setCeilingType("?");
     classMetaData.setCurrencyCode("GBP");
     classMetaData.setPolymorphicEntities(new ClassTree());
-    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setProperties(new Property[]{new Property()});
     classMetaData.setSecurityCeilingType("?");
     classMetaData.setTabAndGroupMetadata(new HashMap<>());
-    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(persistenceResponse);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
     when(adminBasicOperationsControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminBasicOperationsControllerExtensionHandler());
-
-    MockHttpServletRequestBuilder getResult =
-        MockMvcRequestBuilders.get("/{owningClass:.*}/{collectionField:.*}/select", "U", "U");
-
-    MockHttpServletRequestBuilder requestBuilder =
-        getResult.param("dynamicField", String.valueOf(true));
+    MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders
+        .get("/{owningClass:.*}/{collectionField:.*}/select", "U", "U");
+    MockHttpServletRequestBuilder requestBuilder = getResult.param("dynamicField", String.valueOf(true));
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
         .build()
         .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(model().size(9))
-        .andExpect(
-            model()
-                .attributeExists(
-                    "collectionProperty",
-                    "currentAdminSection",
-                    "currentUrl",
-                    "listGrid",
-                    "modalHeaderType",
-                    "sectionKey",
-                    "viewType"))
-        .andExpect(view().name("modules/modalContainer"))
-        .andExpect(forwardedUrl("modules/modalContainer"));
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(9))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("collectionProperty", "currentAdminSection", "currentUrl", "listGrid", "modalHeaderType",
+                "sectionKey", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name("modules/modalContainer"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/modalContainer"));
   }
 
   /**
-   * Test {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}.
-   *
-   * <p>Method under test: {@link
-   * AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}
+   * Test {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}.
+   * <p>
+   * Method under test: {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "String AdminBasicOperationsController.showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)"
-  })
+      "String AdminBasicOperationsController.showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)"})
   public void testShowSelectCollectionItem2() throws Exception {
     // Arrange
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
-        .thenReturn(new AdminSectionImpl());
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
-            Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[] {});
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{});
     when(exploitProtectionService.cleanString(Mockito.<String>any())).thenReturn("Clean String");
     when(adminAbstractControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
-    when(formBuilderService.buildMainListGrid(
-            Mockito.<DynamicResultSet>any(),
-            Mockito.<ClassMetadata>any(),
-            Mockito.<String>any(),
-            Mockito.<List<SectionCrumb>>any()))
-        .thenReturn(new ListGrid());
+    when(formBuilderService.buildMainListGrid(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any(),
+        Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(new ListGrid());
 
     ClassMetadata classMetaData = new ClassMetadata();
     classMetaData.setCeilingType("?");
     classMetaData.setCurrencyCode("GBP");
     classMetaData.setPolymorphicEntities(new ClassTree());
-    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setProperties(new Property[]{new Property()});
     classMetaData.setSecurityCeilingType("?");
     classMetaData.setTabAndGroupMetadata(new HashMap<>());
-    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(persistenceResponse);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
     when(adminBasicOperationsControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminBasicOperationsControllerExtensionHandler());
-
-    MockHttpServletRequestBuilder getResult =
-        MockMvcRequestBuilders.get("/{owningClass:.*}/{collectionField:.*}/select", "U", "U");
-
-    MockHttpServletRequestBuilder requestBuilder =
-        getResult.param("dynamicField", String.valueOf(true));
+    MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders
+        .get("/{owningClass:.*}/{collectionField:.*}/select", "U", "U");
+    MockHttpServletRequestBuilder requestBuilder = getResult.param("dynamicField", String.valueOf(true));
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
         .build()
         .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(model().size(9))
-        .andExpect(
-            model()
-                .attributeExists(
-                    "collectionProperty",
-                    "currentAdminSection",
-                    "currentUrl",
-                    "listGrid",
-                    "modalHeaderType",
-                    "sectionKey",
-                    "viewType"))
-        .andExpect(view().name("modules/modalContainer"))
-        .andExpect(forwardedUrl("modules/modalContainer"));
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(9))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("collectionProperty", "currentAdminSection", "currentUrl", "listGrid", "modalHeaderType",
+                "sectionKey", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name("modules/modalContainer"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/modalContainer"));
   }
 
   /**
-   * Test {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}.
-   *
+   * Test {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}.
    * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) FriendlyName is {@code ?}.
+   *   <li>Given {@link ListGrid} (default constructor) FriendlyName is {@code ?}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}
+   * <p>
+   * Method under test: {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "String AdminBasicOperationsController.showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)"
-  })
-  public void testShowSelectCollectionItem_givenListGridFriendlyNameIsQuestionMark()
-      throws Exception {
+      "String AdminBasicOperationsController.showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)"})
+  public void testShowSelectCollectionItem_givenListGridFriendlyNameIsQuestionMark() throws Exception {
     // Arrange
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
-        .thenReturn(new AdminSectionImpl());
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
-            Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[]{"Merge Section Custom Criteria"});
     when(exploitProtectionService.cleanString(Mockito.<String>any())).thenReturn("Clean String");
     when(adminAbstractControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
 
     ListGrid listGrid = new ListGrid();
     listGrid.setFriendlyName("?");
-    when(formBuilderService.buildMainListGrid(
-            Mockito.<DynamicResultSet>any(),
-            Mockito.<ClassMetadata>any(),
-            Mockito.<String>any(),
-            Mockito.<List<SectionCrumb>>any()))
-        .thenReturn(listGrid);
+    when(formBuilderService.buildMainListGrid(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any(),
+        Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(listGrid);
 
     ClassMetadata classMetaData = new ClassMetadata();
     classMetaData.setCeilingType("?");
     classMetaData.setCurrencyCode("GBP");
     classMetaData.setPolymorphicEntities(new ClassTree());
-    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setProperties(new Property[]{new Property()});
     classMetaData.setSecurityCeilingType("?");
     classMetaData.setTabAndGroupMetadata(new HashMap<>());
-    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(persistenceResponse);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
     when(adminBasicOperationsControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminBasicOperationsControllerExtensionHandler());
-
-    MockHttpServletRequestBuilder getResult =
-        MockMvcRequestBuilders.get("/{owningClass:.*}/{collectionField:.*}/select", "U", "U");
-
-    MockHttpServletRequestBuilder requestBuilder =
-        getResult.param("dynamicField", String.valueOf(true));
+    MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders
+        .get("/{owningClass:.*}/{collectionField:.*}/select", "U", "U");
+    MockHttpServletRequestBuilder requestBuilder = getResult.param("dynamicField", String.valueOf(true));
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
         .build()
         .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(model().size(9))
-        .andExpect(
-            model()
-                .attributeExists(
-                    "collectionProperty",
-                    "currentAdminSection",
-                    "currentUrl",
-                    "listGrid",
-                    "modalHeaderType",
-                    "sectionKey",
-                    "viewType"))
-        .andExpect(view().name("modules/modalContainer"))
-        .andExpect(forwardedUrl("modules/modalContainer"));
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(9))
+        .andExpect(MockMvcResultMatchers.model()
+            .attributeExists("collectionProperty", "currentAdminSection", "currentUrl", "listGrid", "modalHeaderType",
+                "sectionKey", "viewType"))
+        .andExpect(MockMvcResultMatchers.view().name("modules/modalContainer"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/modalContainer"));
   }
 
   /**
-   * Test {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}.
-   *
-   * <ul>
-   *   <li>Given {@code U}.
-   *   <li>When array of {@link Object} with {@code U} and {@code U}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}
+   * Test {@link AdminBasicOperationsController#sessionTimerReset(HttpServletRequest, HttpServletResponse)}.
+   * <p>
+   * Method under test: {@link AdminBasicOperationsController#sessionTimerReset(HttpServletRequest, HttpServletResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "String AdminBasicOperationsController.showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)"
-  })
-  public void testShowSelectCollectionItem_givenU_whenArrayOfObjectWithUAndU() throws Exception {
-    // Arrange
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
-        .thenReturn(new AdminSectionImpl());
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
-            Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[] {"Merge Section Custom Criteria"});
-    when(exploitProtectionService.cleanString(Mockito.<String>any())).thenReturn("Clean String");
-    when(adminAbstractControllerExtensionManager.getProxy())
-        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
-    when(formBuilderService.buildMainListGrid(
-            Mockito.<DynamicResultSet>any(),
-            Mockito.<ClassMetadata>any(),
-            Mockito.<String>any(),
-            Mockito.<List<SectionCrumb>>any()))
-        .thenReturn(new ListGrid());
-
-    ClassMetadata classMetaData = new ClassMetadata();
-    classMetaData.setCeilingType("?");
-    classMetaData.setCurrencyCode("GBP");
-    classMetaData.setPolymorphicEntities(new ClassTree());
-    classMetaData.setProperties(new Property[] {new Property()});
-    classMetaData.setSecurityCeilingType("?");
-    classMetaData.setTabAndGroupMetadata(new HashMap<>());
-    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
-
-    PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(dynamicResultSet);
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(persistenceResponse);
-    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
-        .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
-    when(adminBasicOperationsControllerExtensionManager.getProxy())
-        .thenReturn(new AbstractAdminBasicOperationsControllerExtensionHandler());
-
-    MockHttpServletRequestBuilder getResult =
-        MockMvcRequestBuilders.get("/{owningClass:.*}/{collectionField:.*}/select", "U", "|");
-
-    MockHttpServletRequestBuilder requestBuilder =
-        getResult.param("dynamicField", String.valueOf(true));
-
-    // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
-        .build()
-        .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(model().size(9))
-        .andExpect(
-            model()
-                .attributeExists(
-                    "collectionProperty",
-                    "currentAdminSection",
-                    "currentUrl",
-                    "listGrid",
-                    "modalHeaderType",
-                    "sectionKey",
-                    "viewType"))
-        .andExpect(view().name("modules/modalContainer"))
-        .andExpect(forwardedUrl("modules/modalContainer"));
-  }
-
-  /**
-   * Test {@link AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}.
-   *
-   * <ul>
-   *   <li>When {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminBasicOperationsController#showSelectCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String AdminBasicOperationsController.showSelectCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, String, boolean, MultiValueMap)"
-  })
-  public void testShowSelectCollectionItem_whenFoo() throws Exception {
-    // Arrange
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
-        .thenReturn(new AdminSectionImpl());
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
-            Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[] {"Merge Section Custom Criteria"});
-    when(exploitProtectionService.cleanString(Mockito.<String>any())).thenReturn("Clean String");
-    when(adminAbstractControllerExtensionManager.getProxy())
-        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
-    when(formBuilderService.buildMainListGrid(
-            Mockito.<DynamicResultSet>any(),
-            Mockito.<ClassMetadata>any(),
-            Mockito.<String>any(),
-            Mockito.<List<SectionCrumb>>any()))
-        .thenReturn(new ListGrid());
-
-    ClassMetadata classMetaData = new ClassMetadata();
-    classMetaData.setCeilingType("?");
-    classMetaData.setCurrencyCode("GBP");
-    classMetaData.setPolymorphicEntities(new ClassTree());
-    classMetaData.setProperties(new Property[] {new Property()});
-    classMetaData.setSecurityCeilingType("?");
-    classMetaData.setTabAndGroupMetadata(new HashMap<>());
-    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
-
-    PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(dynamicResultSet);
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
-        .thenReturn(persistenceResponse);
-    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
-        .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
-    when(adminBasicOperationsControllerExtensionManager.getProxy())
-        .thenReturn(new AbstractAdminBasicOperationsControllerExtensionHandler());
-
-    MockHttpServletRequestBuilder getResult =
-        MockMvcRequestBuilders.get("/{owningClass:.*}/{collectionField:.*}/select", "U", "U");
-
-    MockHttpServletRequestBuilder requestBuilder =
-        getResult.param("dynamicField", String.valueOf(true)).param("requestingEntityId", "foo");
-
-    // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
-        .build()
-        .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(model().size(9))
-        .andExpect(
-            model()
-                .attributeExists(
-                    "collectionProperty",
-                    "currentAdminSection",
-                    "currentUrl",
-                    "listGrid",
-                    "modalHeaderType",
-                    "sectionKey",
-                    "viewType"))
-        .andExpect(view().name("modules/modalContainer"))
-        .andExpect(forwardedUrl("modules/modalContainer"));
-  }
-
-  /**
-   * Test {@link AdminBasicOperationsController#sessionTimerReset(HttpServletRequest,
-   * HttpServletResponse)}.
-   *
-   * <p>Method under test: {@link
-   * AdminBasicOperationsController#sessionTimerReset(HttpServletRequest, HttpServletResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String AdminBasicOperationsController.sessionTimerReset(HttpServletRequest, HttpServletResponse)"
-  })
+      "String AdminBasicOperationsController.sessionTimerReset(HttpServletRequest, HttpServletResponse)"})
   public void testSessionTimerReset() throws Exception {
     // Arrange
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sessionTimerReset");
@@ -519,53 +282,42 @@ public class AdminBasicOperationsControllerDiffblueTest {
     MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
         .build()
         .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(content().contentType("application/json"))
-        .andExpect(content().string("{\"serverSessionTimeoutInterval\":0}"));
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+        .andExpect(MockMvcResultMatchers.content().string("{\"serverSessionTimeoutInterval\":0}"));
   }
 
   /**
-   * Test {@link AdminBasicOperationsController#logJavaScriptError(HttpServletRequest,
-   * HttpServletResponse, MultiValueMap)}.
-   *
-   * <p>Method under test: {@link
-   * AdminBasicOperationsController#logJavaScriptError(HttpServletRequest, HttpServletResponse,
-   * MultiValueMap)}
+   * Test {@link AdminBasicOperationsController#logJavaScriptError(HttpServletRequest, HttpServletResponse, MultiValueMap)}.
+   * <p>
+   * Method under test: {@link AdminBasicOperationsController#logJavaScriptError(HttpServletRequest, HttpServletResponse, MultiValueMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "String AdminBasicOperationsController.logJavaScriptError(HttpServletRequest, HttpServletResponse, MultiValueMap)"
-  })
+      "String AdminBasicOperationsController.logJavaScriptError(HttpServletRequest, HttpServletResponse, MultiValueMap)"})
   public void testLogJavaScriptError() throws Exception {
     // Arrange
-    MockHttpServletRequestBuilder requestBuilder =
-        MockMvcRequestBuilders.post("/logJavaScriptError");
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/logJavaScriptError");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
         .build()
         .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(content().contentType("application/json"))
-        .andExpect(content().string("{\"errorLogged\":true}"));
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+        .andExpect(MockMvcResultMatchers.content().string("{\"errorLogged\":true}"));
   }
 
   /**
-   * Test {@link AdminBasicOperationsController#updateAdminNavigation(HttpServletRequest,
-   * HttpServletResponse, Model, Map)}.
-   *
-   * <p>Method under test: {@link
-   * AdminBasicOperationsController#updateAdminNavigation(HttpServletRequest, HttpServletResponse,
-   * Model, Map)}
+   * Test {@link AdminBasicOperationsController#updateAdminNavigation(HttpServletRequest, HttpServletResponse, Model, Map)}.
+   * <p>
+   * Method under test: {@link AdminBasicOperationsController#updateAdminNavigation(HttpServletRequest, HttpServletResponse, Model, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "String AdminBasicOperationsController.updateAdminNavigation(HttpServletRequest, HttpServletResponse, Model, Map)"
-  })
+      "String AdminBasicOperationsController.updateAdminNavigation(HttpServletRequest, HttpServletResponse, Model, Map)"})
   public void testUpdateAdminNavigation() throws Exception {
     // Arrange
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/update-navigation");
@@ -574,9 +326,9 @@ public class AdminBasicOperationsControllerDiffblueTest {
     MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
         .build()
         .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(model().size(0))
-        .andExpect(view().name("layout/partials/secondLeftNav"))
-        .andExpect(forwardedUrl("layout/partials/secondLeftNav"));
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.model().size(0))
+        .andExpect(MockMvcResultMatchers.view().name("layout/partials/secondLeftNav"))
+        .andExpect(MockMvcResultMatchers.forwardedUrl("layout/partials/secondLeftNav"));
   }
 }

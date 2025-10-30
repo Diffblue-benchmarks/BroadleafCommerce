@@ -18,13 +18,13 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,21 +40,23 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ContextConfiguration(classes = {GoogleTagManagerProcessor.class})
 @ExtendWith(SpringExtension.class)
 class GoogleTagManagerProcessorDiffblueTest {
-  @MockBean private Environment environment;
+  @MockBean
+  private Environment environment;
 
-  @Autowired private GoogleTagManagerProcessor googleTagManagerProcessor;
+  @Autowired
+  private GoogleTagManagerProcessor googleTagManagerProcessor;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link GoogleTagManagerProcessor#getName()}
    *   <li>{@link GoogleTagManagerProcessor#getPrecedence()}
@@ -62,12 +64,8 @@ class GoogleTagManagerProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String GoogleTagManagerProcessor.getName()",
-    "int GoogleTagManagerProcessor.getPrecedence()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleTagManagerProcessor.getName()", "int GoogleTagManagerProcessor.getPrecedence()"})
   void testGettersAndSetters() {
     // Arrange
     GoogleTagManagerProcessor googleTagManagerProcessor = new GoogleTagManagerProcessor();
@@ -81,29 +79,22 @@ class GoogleTagManagerProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link GoogleTagManagerProcessor#getReplacementModel(String, Map,
-   * BroadleafTemplateContext)}.
-   *
+   * Test {@link GoogleTagManagerProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}.
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String)} return empty string.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String)} return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleTagManagerProcessor#getReplacementModel(String, Map,
-   * BroadleafTemplateContext)}
+   * <p>
+   * Method under test: {@link GoogleTagManagerProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName(
-      "Test getReplacementModel(String, Map, BroadleafTemplateContext); given Environment getProperty(String) return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext); given Environment getProperty(String) return empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "BroadleafTemplateModel GoogleTagManagerProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"
-  })
+      "BroadleafTemplateModel GoogleTagManagerProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"})
   void testGetReplacementModel_givenEnvironmentGetPropertyReturnEmptyString() {
     // Arrange
     when(environment.getProperty(Mockito.<String>any())).thenReturn("");
     HashMap<String, String> tagAttributes = new HashMap<>();
-
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.createModel()).thenReturn(mock(BroadleafTemplateModel.class));
 
@@ -112,60 +103,45 @@ class GoogleTagManagerProcessorDiffblueTest {
 
     // Assert
     verify(context).createModel();
-    verify(environment).getProperty("googleTagManager.accountId");
+    verify(environment).getProperty(eq("googleTagManager.accountId"));
   }
 
   /**
-   * Test {@link GoogleTagManagerProcessor#getReplacementModel(String, Map,
-   * BroadleafTemplateContext)}.
-   *
+   * Test {@link GoogleTagManagerProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}.
    * <ul>
-   *   <li>Then calls {@link BroadleafTemplateContext#createNonVoidElement(String)}.
+   *   <li>Then calls {@link BroadleafTemplateContext#createNonVoidElement(String)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleTagManagerProcessor#getReplacementModel(String, Map,
-   * BroadleafTemplateContext)}
+   * <p>
+   * Method under test: {@link GoogleTagManagerProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName(
-      "Test getReplacementModel(String, Map, BroadleafTemplateContext); then calls createNonVoidElement(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext); then calls createNonVoidElement(String)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "BroadleafTemplateModel GoogleTagManagerProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"
-  })
+      "BroadleafTemplateModel GoogleTagManagerProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"})
   void testGetReplacementModel_thenCallsCreateNonVoidElement() {
     // Arrange
     when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
     HashMap<String, String> tagAttributes = new HashMap<>();
-
     BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
     doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
-
-    BroadleafTemplateNonVoidElement broadleafTemplateNonVoidElement =
-        mock(BroadleafTemplateNonVoidElement.class);
-    doNothing()
-        .when(broadleafTemplateNonVoidElement)
-        .addChild(Mockito.<BroadleafTemplateElement>any());
-
+    BroadleafTemplateNonVoidElement broadleafTemplateNonVoidElement = mock(BroadleafTemplateNonVoidElement.class);
+    doNothing().when(broadleafTemplateNonVoidElement).addChild(Mockito.<BroadleafTemplateElement>any());
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.createTextElement(Mockito.<String>any()))
-        .thenReturn(mock(BroadleafTemplateElement.class));
-    when(context.createNonVoidElement(Mockito.<String>any()))
-        .thenReturn(broadleafTemplateNonVoidElement);
+    when(context.createTextElement(Mockito.<String>any())).thenReturn(mock(BroadleafTemplateElement.class));
     when(context.createModel()).thenReturn(broadleafTemplateModel);
+    when(context.createNonVoidElement(Mockito.<String>any())).thenReturn(broadleafTemplateNonVoidElement);
 
     // Act
     googleTagManagerProcessor.getReplacementModel("Tag Name", tagAttributes, context);
 
     // Assert
     verify(context).createModel();
-    verify(context).createNonVoidElement("script");
-    verify(context)
-        .createTextElement(
-            "dataLayer = [];(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','Property');");
+    verify(context).createNonVoidElement(eq("script"));
+    verify(context).createTextElement(eq(
+        "dataLayer = [];(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','Property');"));
     verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
     verify(broadleafTemplateNonVoidElement).addChild(isA(BroadleafTemplateElement.class));
-    verify(environment, atLeast(1)).getProperty("googleTagManager.accountId");
+    verify(environment, atLeast(1)).getProperty(eq("googleTagManager.accountId"));
   }
 }

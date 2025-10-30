@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.extension;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
@@ -30,9 +29,8 @@ import org.junit.experimental.categories.Category;
 public class ExtensionResultHolderDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ExtensionResultHolder}
    *   <li>{@link ExtensionResultHolder#setResult(Object)}
@@ -43,16 +41,10 @@ public class ExtensionResultHolderDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ExtensionResultHolder.<init>()",
-    "Map ExtensionResultHolder.getContextMap()",
-    "Object ExtensionResultHolder.getResult()",
-    "Throwable ExtensionResultHolder.getThrowable()",
-    "void ExtensionResultHolder.setResult(Object)",
-    "void ExtensionResultHolder.setThrowable(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ExtensionResultHolder.<init>()", "Map ExtensionResultHolder.getContextMap()",
+      "Object ExtensionResultHolder.getResult()", "Throwable ExtensionResultHolder.getThrowable()",
+      "void ExtensionResultHolder.setResult(Object)", "void ExtensionResultHolder.setThrowable(Throwable)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ExtensionResultHolder<Object> actualExtensionResultHolder = new ExtensionResultHolder<>();

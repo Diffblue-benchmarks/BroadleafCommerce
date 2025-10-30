@@ -23,8 +23,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.MultiTenantCloneable;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
@@ -47,23 +46,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {OfferDuplicateModifier.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OfferDuplicateModifierDiffblueTest {
-  @MockBean private Environment environment;
+  @Autowired
+  private OfferDuplicateModifier offerDuplicateModifier;
 
-  @Autowired private OfferDuplicateModifier offerDuplicateModifier;
+  @MockBean
+  private Environment environment;
 
   /**
    * Test {@link OfferDuplicateModifier#canHandle(MultiTenantCloneable)}.
-   *
    * <ul>
-   *   <li>When {@link MultiTenantCloneable}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link MultiTenantCloneable}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferDuplicateModifier#canHandle(MultiTenantCloneable)}
+   * <p>
+   * Method under test: {@link OfferDuplicateModifier#canHandle(MultiTenantCloneable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferDuplicateModifier.canHandle(MultiTenantCloneable)"})
   public void testCanHandle_whenMultiTenantCloneable_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -71,22 +70,16 @@ public class OfferDuplicateModifierDiffblueTest {
   }
 
   /**
-   * Test {@link OfferDuplicateModifier#modifyInitialDuplicateState(Offer, Offer,
-   * MultiTenantCopyContext)} with {@code Offer}, {@code Offer}, {@code MultiTenantCopyContext}.
-   *
-   * <p>Method under test: {@link OfferDuplicateModifier#modifyInitialDuplicateState(Offer, Offer,
-   * MultiTenantCopyContext)}
+   * Test {@link OfferDuplicateModifier#modifyInitialDuplicateState(Offer, Offer, MultiTenantCopyContext)} with {@code Offer}, {@code Offer}, {@code MultiTenantCopyContext}.
+   * <p>
+   * Method under test: {@link OfferDuplicateModifier#modifyInitialDuplicateState(Offer, Offer, MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OfferDuplicateModifier.modifyInitialDuplicateState(Offer, Offer, MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferDuplicateModifier.modifyInitialDuplicateState(Offer, Offer, MultiTenantCopyContext)"})
   public void testModifyInitialDuplicateStateWithOfferOfferMultiTenantCopyContext() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
         .thenReturn("Property");
     OfferImpl original = new OfferImpl();
     OfferImpl copy = new OfferImpl();
@@ -96,21 +89,11 @@ public class OfferDuplicateModifierDiffblueTest {
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
     // Act
-    offerDuplicateModifier.modifyInitialDuplicateState(original, copy, context);
+    offerDuplicateModifier.modifyInitialDuplicateState(original, copy, new MultiTenantCopyContext(fromCatalog,
+        toCatalog, fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(environment)
-        .getProperty(
-            eq("admin.entity.duplication.suffix.default"), isA(Class.class), eq(" - Copy"));
+    verify(environment).getProperty(eq("admin.entity.duplication.suffix.default"), isA(Class.class), eq(" - Copy"));
   }
 }

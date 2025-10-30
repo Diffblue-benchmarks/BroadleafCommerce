@@ -19,8 +19,7 @@ package org.broadleafcommerce.openadmin.security;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -35,45 +34,33 @@ public class BroadleafAdminAuthenticationSuccessHandlerDiffblueTest {
 
   /**
    * Test {@link BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}
+   * <p>
+   * Method under test: {@link BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafAdminAuthenticationSuccessHandler.removeLoginSegment(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAdminAuthenticationSuccessHandler.removeLoginSegment(String)"})
   public void testRemoveLoginSegment_thenReturnHttpsExampleOrgExample() {
     // Arrange, Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        broadleafAdminAuthenticationSuccessHandler.removeLoginSegment(
-            "https://example.org/example"));
+    assertEquals("https://example.org/example",
+        broadleafAdminAuthenticationSuccessHandler.removeLoginSegment("https://example.org/example"));
   }
 
   /**
    * Test {@link BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}.
-   *
    * <ul>
-   *   <li>When {@code /login}.
-   *   <li>Then return empty string.
+   *   <li>When {@code /login}.</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}
+   * <p>
+   * Method under test: {@link BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafAdminAuthenticationSuccessHandler.removeLoginSegment(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAdminAuthenticationSuccessHandler.removeLoginSegment(String)"})
   public void testRemoveLoginSegment_whenLogin_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", broadleafAdminAuthenticationSuccessHandler.removeLoginSegment("/login"));
@@ -81,21 +68,16 @@ public class BroadleafAdminAuthenticationSuccessHandlerDiffblueTest {
 
   /**
    * Test {@link BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code /}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code /}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}
+   * <p>
+   * Method under test: {@link BroadleafAdminAuthenticationSuccessHandler#removeLoginSegment(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafAdminAuthenticationSuccessHandler.removeLoginSegment(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAdminAuthenticationSuccessHandler.removeLoginSegment(String)"})
   public void testRemoveLoginSegment_whenNull_thenReturnSlash() {
     // Arrange, Act and Assert
     assertEquals("/", broadleafAdminAuthenticationSuccessHandler.removeLoginSegment(null));
@@ -103,25 +85,20 @@ public class BroadleafAdminAuthenticationSuccessHandlerDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BroadleafAdminAuthenticationSuccessHandler#setLoginUri(String)}
    *   <li>{@link BroadleafAdminAuthenticationSuccessHandler#getLoginUri()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafAdminAuthenticationSuccessHandler.getLoginUri()",
-    "void BroadleafAdminAuthenticationSuccessHandler.setLoginUri(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String BroadleafAdminAuthenticationSuccessHandler.getLoginUri()",
+      "void BroadleafAdminAuthenticationSuccessHandler.setLoginUri(String)"})
   public void testGettersAndSetters() {
     // Arrange
-    BroadleafAdminAuthenticationSuccessHandler broadleafAdminAuthenticationSuccessHandler =
-        new BroadleafAdminAuthenticationSuccessHandler();
+    BroadleafAdminAuthenticationSuccessHandler broadleafAdminAuthenticationSuccessHandler = new BroadleafAdminAuthenticationSuccessHandler();
 
     // Act
     broadleafAdminAuthenticationSuccessHandler.setLoginUri("Login Uri");
@@ -132,18 +109,15 @@ public class BroadleafAdminAuthenticationSuccessHandlerDiffblueTest {
 
   /**
    * Test new {@link BroadleafAdminAuthenticationSuccessHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BroadleafAdminAuthenticationSuccessHandler}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link BroadleafAdminAuthenticationSuccessHandler}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BroadleafAdminAuthenticationSuccessHandler.<init>()"})
   public void testNewBroadleafAdminAuthenticationSuccessHandler() {
     // Arrange and Act
-    BroadleafAdminAuthenticationSuccessHandler actualBroadleafAdminAuthenticationSuccessHandler =
-        new BroadleafAdminAuthenticationSuccessHandler();
+    BroadleafAdminAuthenticationSuccessHandler actualBroadleafAdminAuthenticationSuccessHandler = new BroadleafAdminAuthenticationSuccessHandler();
 
     // Assert
     assertEquals("/login", actualBroadleafAdminAuthenticationSuccessHandler.getLoginUri());

@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.payment;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,38 +27,32 @@ import org.junit.experimental.categories.Category;
 public class CreditCardTypeCheckDiffblueTest {
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code (2014)?(2149)?[0-9]{11}}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>When {@code (2014)?(2149)?[0-9]{11}}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when201421490911_thenThrowRuntimeException() {
     // Arrange, Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> CreditCardTypeCheck.getCreditCardType("(2014)?(2149)?[0-9]{11}"));
+    assertThrows(RuntimeException.class, () -> CreditCardTypeCheck.getCreditCardType("(2014)?(2149)?[0-9]{11}"));
   }
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 4999999999999}.
-   *   <li>Then return Type is {@code VISA}.
+   *   <li>When {@code 4999999999999}.</li>
+   *   <li>Then return Type is {@code VISA}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when4999999999999_thenReturnTypeIsVisa() {
     // Arrange and Act
@@ -72,16 +65,14 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 3638999999999999}.
+   *   <li>When {@code 3638999999999999}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when3638999999999999() {
     // Arrange and Act
@@ -94,17 +85,15 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 3999999999999999}.
-   *   <li>Then return FriendlyType is {@code JCB}.
+   *   <li>When {@code 3999999999999999}.</li>
+   *   <li>Then return FriendlyType is {@code JCB}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when3999999999999999_thenReturnFriendlyTypeIsJcb() {
     // Arrange and Act
@@ -117,17 +106,15 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 4999999999999999}.
-   *   <li>Then return Type is {@code VISA}.
+   *   <li>When {@code 4999999999999999}.</li>
+   *   <li>Then return Type is {@code VISA}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when4999999999999999_thenReturnTypeIsVisa() {
     // Arrange and Act
@@ -140,17 +127,15 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 6011999999999999}.
-   *   <li>Then return Type is {@code DISCOVER}.
+   *   <li>When {@code 6011999999999999}.</li>
+   *   <li>Then return Type is {@code DISCOVER}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when6011999999999999_thenReturnTypeIsDiscover() {
     // Arrange and Act
@@ -163,22 +148,19 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 34379999999999999}.
-   *   <li>Then return Type is {@code AMEX}.
+   *   <li>When {@code 34379999999999999}.</li>
+   *   <li>Then return Type is {@code AMEX}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when34379999999999999_thenReturnTypeIsAmex() {
     // Arrange and Act
-    CreditCardType actualCreditCardType =
-        CreditCardTypeCheck.getCreditCardType("34379999999999999");
+    CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("34379999999999999");
 
     // Assert
     assertEquals("AMEX", actualCreditCardType.getType());
@@ -187,22 +169,19 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 2014214999999999999}.
-   *   <li>Then return Type is {@code ENROUTE}.
+   *   <li>When {@code 2014214999999999999}.</li>
+   *   <li>Then return Type is {@code ENROUTE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when2014214999999999999_thenReturnTypeIsEnroute() {
     // Arrange and Act
-    CreditCardType actualCreditCardType =
-        CreditCardTypeCheck.getCreditCardType("2014214999999999999");
+    CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("2014214999999999999");
 
     // Assert
     assertEquals("ENROUTE", actualCreditCardType.getType());
@@ -211,22 +190,19 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 2131180099999999999}.
-   *   <li>Then return FriendlyType is {@code JCB}.
+   *   <li>When {@code 2131180099999999999}.</li>
+   *   <li>Then return FriendlyType is {@code JCB}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when2131180099999999999_thenReturnFriendlyTypeIsJcb() {
     // Arrange and Act
-    CreditCardType actualCreditCardType =
-        CreditCardTypeCheck.getCreditCardType("2131180099999999999");
+    CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("2131180099999999999");
 
     // Assert
     assertEquals("JCB", actualCreditCardType.getFriendlyType());
@@ -235,22 +211,19 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 515253545599999999999999}.
-   *   <li>Then return Type is {@code MASTERCARD}.
+   *   <li>When {@code 515253545599999999999999}.</li>
+   *   <li>Then return Type is {@code MASTERCARD}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when515253545599999999999999_thenReturnTypeIsMastercard() {
     // Arrange and Act
-    CreditCardType actualCreditCardType =
-        CreditCardTypeCheck.getCreditCardType("515253545599999999999999");
+    CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("515253545599999999999999");
 
     // Assert
     assertEquals("MASTERCARD", actualCreditCardType.getType());
@@ -259,21 +232,18 @@ public class CreditCardTypeCheckDiffblueTest {
 
   /**
    * Test {@link CreditCardTypeCheck#getCreditCardType(String)}.
-   *
    * <ul>
-   *   <li>When {@code 30030130230330430599999999999}.
+   *   <li>When {@code 30030130230330430599999999999}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
+   * <p>
+   * Method under test: {@link CreditCardTypeCheck#getCreditCardType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardType CreditCardTypeCheck.getCreditCardType(String)"})
   public void testGetCreditCardType_when30030130230330430599999999999() {
     // Arrange and Act
-    CreditCardType actualCreditCardType =
-        CreditCardTypeCheck.getCreditCardType("30030130230330430599999999999");
+    CreditCardType actualCreditCardType = CreditCardTypeCheck.getCreditCardType("30030130230330430599999999999");
 
     // Assert
     assertEquals("DINERSCLUB_CARTEBLANCHE", actualCreditCardType.getType());

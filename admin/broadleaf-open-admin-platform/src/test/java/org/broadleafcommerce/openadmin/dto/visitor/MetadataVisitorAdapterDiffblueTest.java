@@ -18,8 +18,7 @@
 package org.broadleafcommerce.openadmin.dto.visitor;
 
 import static org.junit.Assert.assertThrows;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata;
@@ -32,115 +31,99 @@ import org.junit.experimental.categories.Category;
 
 public class MetadataVisitorAdapterDiffblueTest {
   /**
-   * Test {@link MetadataVisitorAdapter#visit(AdornedTargetCollectionMetadata)} with {@code
-   * AdornedTargetCollectionMetadata}.
-   *
-   * <p>Method under test: {@link MetadataVisitorAdapter#visit(AdornedTargetCollectionMetadata)}
+   * Test {@link MetadataVisitorAdapter#visit(AdornedTargetCollectionMetadata)} with {@code AdornedTargetCollectionMetadata}.
+   * <p>
+   * Method under test: {@link MetadataVisitorAdapter#visit(AdornedTargetCollectionMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MetadataVisitorAdapter.visit(AdornedTargetCollectionMetadata)"})
   public void testVisitWithAdornedTargetCollectionMetadata() {
     // Arrange
     MetadataVisitorAdapter metadataVisitorAdapter = new MetadataVisitorAdapter();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
+    assertThrows(IllegalArgumentException.class,
         () -> metadataVisitorAdapter.visit(new AdornedTargetCollectionMetadata()));
   }
 
   /**
-   * Test {@link MetadataVisitorAdapter#visit(BasicCollectionMetadata)} with {@code
-   * BasicCollectionMetadata}.
-   *
-   * <p>Method under test: {@link MetadataVisitorAdapter#visit(BasicCollectionMetadata)}
+   * Test {@link MetadataVisitorAdapter#visit(BasicCollectionMetadata)} with {@code BasicCollectionMetadata}.
+   * <p>
+   * Method under test: {@link MetadataVisitorAdapter#visit(BasicCollectionMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MetadataVisitorAdapter.visit(BasicCollectionMetadata)"})
   public void testVisitWithBasicCollectionMetadata() {
     // Arrange
     MetadataVisitorAdapter metadataVisitorAdapter = new MetadataVisitorAdapter();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> metadataVisitorAdapter.visit(new BasicCollectionMetadata()));
+    assertThrows(IllegalArgumentException.class, () -> metadataVisitorAdapter.visit(new BasicCollectionMetadata()));
   }
 
   /**
    * Test {@link MetadataVisitorAdapter#visit(BasicFieldMetadata)} with {@code BasicFieldMetadata}.
-   *
-   * <p>Method under test: {@link MetadataVisitorAdapter#visit(BasicFieldMetadata)}
+   * <p>
+   * Method under test: {@link MetadataVisitorAdapter#visit(BasicFieldMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MetadataVisitorAdapter.visit(BasicFieldMetadata)"})
   public void testVisitWithBasicFieldMetadata() {
     // Arrange
     MetadataVisitorAdapter metadataVisitorAdapter = new MetadataVisitorAdapter();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> metadataVisitorAdapter.visit(new BasicFieldMetadata()));
+    assertThrows(IllegalArgumentException.class, () -> metadataVisitorAdapter.visit(new BasicFieldMetadata()));
   }
 
   /**
    * Test {@link MetadataVisitorAdapter#visit(GroupMetadata)} with {@code GroupMetadata}.
-   *
-   * <p>Method under test: {@link MetadataVisitorAdapter#visit(GroupMetadata)}
+   * <p>
+   * Method under test: {@link MetadataVisitorAdapter#visit(GroupMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MetadataVisitorAdapter.visit(GroupMetadata)"})
   public void testVisitWithGroupMetadata() {
     // Arrange
     MetadataVisitorAdapter metadataVisitorAdapter = new MetadataVisitorAdapter();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> metadataVisitorAdapter.visit(new GroupMetadata()));
+    assertThrows(IllegalArgumentException.class, () -> metadataVisitorAdapter.visit(new GroupMetadata()));
   }
 
   /**
    * Test {@link MetadataVisitorAdapter#visit(MapMetadata)} with {@code MapMetadata}.
-   *
-   * <p>Method under test: {@link MetadataVisitorAdapter#visit(MapMetadata)}
+   * <p>
+   * Method under test: {@link MetadataVisitorAdapter#visit(MapMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MetadataVisitorAdapter.visit(MapMetadata)"})
   public void testVisitWithMapMetadata() {
     // Arrange
     MetadataVisitorAdapter metadataVisitorAdapter = new MetadataVisitorAdapter();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> metadataVisitorAdapter.visit(new MapMetadata()));
+    assertThrows(IllegalArgumentException.class, () -> metadataVisitorAdapter.visit(new MapMetadata()));
   }
 
   /**
    * Test {@link MetadataVisitorAdapter#visit(TabMetadata)} with {@code TabMetadata}.
-   *
-   * <p>Method under test: {@link MetadataVisitorAdapter#visit(TabMetadata)}
+   * <p>
+   * Method under test: {@link MetadataVisitorAdapter#visit(TabMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MetadataVisitorAdapter.visit(TabMetadata)"})
   public void testVisitWithTabMetadata() {
     // Arrange
     MetadataVisitorAdapter metadataVisitorAdapter = new MetadataVisitorAdapter();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> metadataVisitorAdapter.visit(new TabMetadata()));
+    assertThrows(IllegalArgumentException.class, () -> metadataVisitorAdapter.visit(new TabMetadata()));
   }
 }

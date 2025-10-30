@@ -25,8 +25,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,18 +44,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OfferAuditServiceImplDiffblueTest {
-  @Mock private OfferAuditDao offerAuditDao;
+  @Mock
+  private OfferAuditDao offerAuditDao;
 
-  @InjectMocks private OfferAuditServiceImpl offerAuditServiceImpl;
+  @InjectMocks
+  private OfferAuditServiceImpl offerAuditServiceImpl;
 
   /**
    * Test {@link OfferAuditServiceImpl#readAuditById(Long)}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#readAuditById(Long)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#readAuditById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OfferAudit OfferAuditServiceImpl.readAuditById(Long)"})
   public void testReadAuditById() {
     // Arrange
@@ -67,18 +67,17 @@ public class OfferAuditServiceImplDiffblueTest {
     OfferAudit actualReadAuditByIdResult = offerAuditServiceImpl.readAuditById(1L);
 
     // Assert
-    verify(offerAuditDao).readAuditById(1L);
+    verify(offerAuditDao).readAuditById(eq(1L));
     assertSame(offerAuditImpl, actualReadAuditByIdResult);
   }
 
   /**
    * Test {@link OfferAuditServiceImpl#save(OfferAudit)}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#save(OfferAudit)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#save(OfferAudit)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OfferAudit OfferAuditServiceImpl.save(OfferAudit)"})
   public void testSave() {
     // Arrange
@@ -95,12 +94,11 @@ public class OfferAuditServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferAuditServiceImpl#delete(OfferAudit)}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#delete(OfferAudit)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#delete(OfferAudit)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OfferAuditServiceImpl.delete(OfferAudit)"})
   public void testDelete() {
     // Arrange
@@ -115,12 +113,11 @@ public class OfferAuditServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferAuditServiceImpl#create()}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#create()}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OfferAudit OfferAuditServiceImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -136,132 +133,112 @@ public class OfferAuditServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId},
-   * {@code offerId}.
-   *
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId}, {@code offerId}.
    * <ul>
-   *   <li>When four.
+   *   <li>When four.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Long, Long)"})
   public void testCountUsesByCustomerWithCustomerIdOfferId_whenFour() {
     // Arrange
-    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any()))
-        .thenReturn(3L);
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
 
     // Act
     Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(4L, 1L);
 
     // Assert
-    verify(offerAuditDao).countUsesByCustomer(4L, 1L);
+    verify(offerAuditDao).countUsesByCustomer(eq(4L), eq(1L));
     assertEquals(3L, actualCountUsesByCustomerResult.longValue());
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId},
-   * {@code offerId}.
-   *
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId}, {@code offerId}.
    * <ul>
-   *   <li>When one.
+   *   <li>When one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Long, Long)"})
   public void testCountUsesByCustomerWithCustomerIdOfferId_whenOne() {
     // Arrange
-    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any()))
-        .thenReturn(3L);
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
 
     // Act
     Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(1L, 1L);
 
     // Assert
-    verify(offerAuditDao).countUsesByCustomer(1L, 1L);
+    verify(offerAuditDao).countUsesByCustomer(eq(1L), eq(1L));
     assertEquals(3L, actualCountUsesByCustomerResult.longValue());
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId},
-   * {@code offerId}.
-   *
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId}, {@code offerId}.
    * <ul>
-   *   <li>When three.
+   *   <li>When three.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Long, Long)"})
   public void testCountUsesByCustomerWithCustomerIdOfferId_whenThree() {
     // Arrange
-    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any()))
-        .thenReturn(3L);
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
 
     // Act
     Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(3L, 1L);
 
     // Assert
-    verify(offerAuditDao).countUsesByCustomer(3L, 1L);
+    verify(offerAuditDao).countUsesByCustomer(eq(3L), eq(1L));
     assertEquals(3L, actualCountUsesByCustomerResult.longValue());
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId},
-   * {@code offerId}.
-   *
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)} with {@code customerId}, {@code offerId}.
    * <ul>
-   *   <li>When two.
+   *   <li>When two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Long, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Long, Long)"})
   public void testCountUsesByCustomerWithCustomerIdOfferId_whenTwo() {
     // Arrange
-    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any()))
-        .thenReturn(3L);
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
 
     // Act
     Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(2L, 1L);
 
     // Assert
-    verify(offerAuditDao).countUsesByCustomer(2L, 1L);
+    verify(offerAuditDao).countUsesByCustomer(eq(2L), eq(1L));
     assertEquals(3L, actualCountUsesByCustomerResult.longValue());
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long)} with {@code order},
-   * {@code customerId}, {@code offerId}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long)}
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long)} with {@code order}, {@code customerId}, {@code offerId}.
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Order, Long, Long)"})
   public void testCountUsesByCustomerWithOrderCustomerIdOfferId() {
     // Arrange
-    when(offerAuditDao.countUsesByCustomer(
-            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any()))
         .thenReturn(3L);
 
     // Act
-    Long actualCountUsesByCustomerResult =
-        offerAuditServiceImpl.countUsesByCustomer(new NullOrderImpl(), 1L, 1L);
+    Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(new NullOrderImpl(), 1L, 1L);
 
     // Assert
     verify(offerAuditDao).countUsesByCustomer(isA(Order.class), eq(1L), eq(1L));
@@ -269,25 +246,20 @@ public class OfferAuditServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long, Long)} with {@code
-   * order}, {@code customerId}, {@code offerId}, {@code minimumDaysPerUsage}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long,
-   * Long)}
+   * Test {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long, Long)} with {@code order}, {@code customerId}, {@code offerId}, {@code minimumDaysPerUsage}.
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByCustomer(Order, Long, Long, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByCustomer(Order, Long, Long, Long)"})
   public void testCountUsesByCustomerWithOrderCustomerIdOfferIdMinimumDaysPerUsage() {
     // Arrange
-    when(offerAuditDao.countUsesByCustomer(
-            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
-        .thenReturn(3L);
+    when(offerAuditDao.countUsesByCustomer(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
 
     // Act
-    Long actualCountUsesByCustomerResult =
-        offerAuditServiceImpl.countUsesByCustomer(new NullOrderImpl(), 1L, 1L, 3L);
+    Long actualCountUsesByCustomerResult = offerAuditServiceImpl.countUsesByCustomer(new NullOrderImpl(), 1L, 1L, 3L);
 
     // Assert
     verify(offerAuditDao).countUsesByCustomer(isA(Order.class), eq(1L), eq(1L), eq(3L));
@@ -296,22 +268,19 @@ public class OfferAuditServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferAuditServiceImpl#countUsesByAccount(Order, Long, Long, Long)}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countUsesByAccount(Order, Long, Long, Long)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countUsesByAccount(Order, Long, Long, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countUsesByAccount(Order, Long, Long, Long)"})
   public void testCountUsesByAccount() {
     // Arrange
-    when(offerAuditDao.countUsesByAccount(
-            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
-        .thenReturn(3L);
+    when(offerAuditDao.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
+        Mockito.<Long>any())).thenReturn(3L);
 
     // Act
-    Long actualCountUsesByAccountResult =
-        offerAuditServiceImpl.countUsesByAccount(new NullOrderImpl(), 1L, 1L, 3L);
+    Long actualCountUsesByAccountResult = offerAuditServiceImpl.countUsesByAccount(new NullOrderImpl(), 1L, 1L, 3L);
 
     // Assert
     verify(offerAuditDao).countUsesByAccount(isA(Order.class), eq(1L), eq(1L), eq(3L));
@@ -320,12 +289,11 @@ public class OfferAuditServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferAuditServiceImpl#countOfferCodeUses(Long)} with {@code offerCodeId}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countOfferCodeUses(Long)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countOfferCodeUses(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countOfferCodeUses(Long)"})
   public void testCountOfferCodeUsesWithOfferCodeId() {
     // Arrange
@@ -335,28 +303,24 @@ public class OfferAuditServiceImplDiffblueTest {
     Long actualCountOfferCodeUsesResult = offerAuditServiceImpl.countOfferCodeUses(1L);
 
     // Assert
-    verify(offerAuditDao).countOfferCodeUses(1L);
+    verify(offerAuditDao).countOfferCodeUses(eq(1L));
     assertEquals(3L, actualCountOfferCodeUsesResult.longValue());
   }
 
   /**
-   * Test {@link OfferAuditServiceImpl#countOfferCodeUses(Order, Long)} with {@code order}, {@code
-   * offerCodeId}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#countOfferCodeUses(Order, Long)}
+   * Test {@link OfferAuditServiceImpl#countOfferCodeUses(Order, Long)} with {@code order}, {@code offerCodeId}.
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#countOfferCodeUses(Order, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditServiceImpl.countOfferCodeUses(Order, Long)"})
   public void testCountOfferCodeUsesWithOrderOfferCodeId() {
     // Arrange
-    when(offerAuditDao.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any()))
-        .thenReturn(3L);
+    when(offerAuditDao.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(3L);
 
     // Act
-    Long actualCountOfferCodeUsesResult =
-        offerAuditServiceImpl.countOfferCodeUses(new NullOrderImpl(), 1L);
+    Long actualCountOfferCodeUsesResult = offerAuditServiceImpl.countOfferCodeUses(new NullOrderImpl(), 1L);
 
     // Assert
     verify(offerAuditDao).countOfferCodeUses(isA(Order.class), eq(1L));
@@ -365,23 +329,21 @@ public class OfferAuditServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferAuditServiceImpl#readOfferAuditsByOrderId(Long)}.
-   *
-   * <p>Method under test: {@link OfferAuditServiceImpl#readOfferAuditsByOrderId(Long)}
+   * <p>
+   * Method under test: {@link OfferAuditServiceImpl#readOfferAuditsByOrderId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OfferAuditServiceImpl.readOfferAuditsByOrderId(Long)"})
   public void testReadOfferAuditsByOrderId() {
     // Arrange
     when(offerAuditDao.readOfferAuditsByOrderId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<OfferAudit> actualReadOfferAuditsByOrderIdResult =
-        offerAuditServiceImpl.readOfferAuditsByOrderId(1L);
+    List<OfferAudit> actualReadOfferAuditsByOrderIdResult = offerAuditServiceImpl.readOfferAuditsByOrderId(1L);
 
     // Assert
-    verify(offerAuditDao).readOfferAuditsByOrderId(1L);
+    verify(offerAuditDao).readOfferAuditsByOrderId(eq(1L));
     assertTrue(actualReadOfferAuditsByOrderIdResult.isEmpty());
   }
 }

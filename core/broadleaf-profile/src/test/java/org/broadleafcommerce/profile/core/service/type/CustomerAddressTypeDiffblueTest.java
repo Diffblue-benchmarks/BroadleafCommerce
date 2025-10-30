@@ -20,8 +20,7 @@ package org.broadleafcommerce.profile.core.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,12 +28,11 @@ import org.junit.experimental.categories.Category;
 public class CustomerAddressTypeDiffblueTest {
   /**
    * Test {@link CustomerAddressType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link CustomerAddressType#getInstance(String)}
+   * <p>
+   * Method under test: {@link CustomerAddressType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerAddressType CustomerAddressType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -47,9 +45,8 @@ public class CustomerAddressTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAddressType#CustomerAddressType()}
    *   <li>{@link CustomerAddressType#getFriendlyType()}
@@ -57,13 +54,9 @@ public class CustomerAddressTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CustomerAddressType.<init>()",
-    "String CustomerAddressType.getFriendlyType()",
-    "String CustomerAddressType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerAddressType.<init>()", "String CustomerAddressType.getFriendlyType()",
+      "String CustomerAddressType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CustomerAddressType actualCustomerAddressType = new CustomerAddressType();
@@ -76,17 +69,40 @@ public class CustomerAddressTypeDiffblueTest {
 
   /**
    * Test {@link CustomerAddressType#CustomerAddressType(String, String)}.
-   *
-   * <p>Method under test: {@link CustomerAddressType#CustomerAddressType(String, String)}
+   * <ul>
+   *   <li>When {@code Other}.</li>
+   *   <li>Then return Type is {@code Other}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerAddressType#CustomerAddressType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CustomerAddressType.<init>(String, String)"})
-  public void testNewCustomerAddressType() {
+  public void testNewCustomerAddressType_whenOther_thenReturnTypeIsOther() {
     // Arrange and Act
-    CustomerAddressType actualCustomerAddressType =
-        new CustomerAddressType("Type", "Friendly Type");
+    CustomerAddressType actualCustomerAddressType = new CustomerAddressType("Other", "Friendly Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualCustomerAddressType.getFriendlyType());
+    assertEquals("Other", actualCustomerAddressType.getType());
+  }
+
+  /**
+   * Test {@link CustomerAddressType#CustomerAddressType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   *   <li>Then return {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerAddressType#CustomerAddressType(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerAddressType.<init>(String, String)"})
+  public void testNewCustomerAddressType_whenType_thenReturnType() {
+    // Arrange and Act
+    CustomerAddressType actualCustomerAddressType = new CustomerAddressType("Type", "Friendly Type");
 
     // Assert
     assertEquals("Friendly Type", actualCustomerAddressType.getFriendlyType());
@@ -95,26 +111,20 @@ public class CustomerAddressTypeDiffblueTest {
 
   /**
    * Test {@link CustomerAddressType#equals(Object)}, and {@link CustomerAddressType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAddressType#equals(Object)}
    *   <li>{@link CustomerAddressType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAddressType.equals(Object)",
-    "int CustomerAddressType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressType.equals(Object)", "int CustomerAddressType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CustomerAddressType customerAddressType = CustomerAddressType.BILLING;
@@ -122,95 +132,80 @@ public class CustomerAddressTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(customerAddressType, customerAddressType2);
-    assertEquals(customerAddressType.hashCode(), customerAddressType2.hashCode());
+    int expectedHashCodeResult = customerAddressType.hashCode();
+    assertEquals(expectedHashCodeResult, customerAddressType2.hashCode());
   }
 
   /**
    * Test {@link CustomerAddressType#equals(Object)}, and {@link CustomerAddressType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAddressType#equals(Object)}
    *   <li>{@link CustomerAddressType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAddressType.equals(Object)",
-    "int CustomerAddressType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressType.equals(Object)", "int CustomerAddressType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    CustomerAddressType customerAddressType = CustomerAddressType.OTHER;
-    CustomerAddressType customerAddressType2 = new CustomerAddressType("OTHER", "OTHER");
-
-    // Act and Assert
-    assertEquals(customerAddressType, customerAddressType2);
-    assertEquals(customerAddressType.hashCode(), customerAddressType2.hashCode());
-  }
-
-  /**
-   * Test {@link CustomerAddressType#equals(Object)}, and {@link CustomerAddressType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link CustomerAddressType#equals(Object)}
-   *   <li>{@link CustomerAddressType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAddressType.equals(Object)",
-    "int CustomerAddressType.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CustomerAddressType customerAddressType = new CustomerAddressType();
     CustomerAddressType customerAddressType2 = new CustomerAddressType();
 
     // Act and Assert
     assertEquals(customerAddressType, customerAddressType2);
-    assertEquals(customerAddressType.hashCode(), customerAddressType2.hashCode());
+    int expectedHashCodeResult = customerAddressType.hashCode();
+    assertEquals(expectedHashCodeResult, customerAddressType2.hashCode());
   }
 
   /**
    * Test {@link CustomerAddressType#equals(Object)}, and {@link CustomerAddressType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAddressType#equals(Object)}
    *   <li>{@link CustomerAddressType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAddressType.equals(Object)",
-    "int CustomerAddressType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressType.equals(Object)", "int CustomerAddressType.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    CustomerAddressType customerAddressType = new CustomerAddressType("BILLING", "Friendly Type");
+    CustomerAddressType customerAddressType2 = CustomerAddressType.BILLING;
+
+    // Act and Assert
+    assertEquals(customerAddressType, customerAddressType2);
+    int expectedHashCodeResult = customerAddressType.hashCode();
+    assertEquals(expectedHashCodeResult, customerAddressType2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerAddressType#equals(Object)}, and {@link CustomerAddressType#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link CustomerAddressType#equals(Object)}
+   *   <li>{@link CustomerAddressType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressType.equals(Object)", "int CustomerAddressType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CustomerAddressType customerAddressType = CustomerAddressType.BILLING;
@@ -223,21 +218,16 @@ public class CustomerAddressTypeDiffblueTest {
 
   /**
    * Test {@link CustomerAddressType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerAddressType#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerAddressType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAddressType.equals(Object)",
-    "int CustomerAddressType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressType.equals(Object)", "int CustomerAddressType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CustomerAddressType.OTHER, CustomerAddressType.BILLING);
@@ -245,21 +235,16 @@ public class CustomerAddressTypeDiffblueTest {
 
   /**
    * Test {@link CustomerAddressType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerAddressType#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerAddressType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAddressType.equals(Object)",
-    "int CustomerAddressType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressType.equals(Object)", "int CustomerAddressType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new CustomerAddressType(), CustomerAddressType.BILLING);
@@ -267,21 +252,16 @@ public class CustomerAddressTypeDiffblueTest {
 
   /**
    * Test {@link CustomerAddressType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerAddressType#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerAddressType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAddressType.equals(Object)",
-    "int CustomerAddressType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressType.equals(Object)", "int CustomerAddressType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CustomerAddressType.BILLING, null);
@@ -289,21 +269,16 @@ public class CustomerAddressTypeDiffblueTest {
 
   /**
    * Test {@link CustomerAddressType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerAddressType#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerAddressType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAddressType.equals(Object)",
-    "int CustomerAddressType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerAddressType.equals(Object)", "int CustomerAddressType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CustomerAddressType.BILLING, "Different type to CustomerAddressType");

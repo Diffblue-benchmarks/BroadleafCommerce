@@ -19,8 +19,7 @@ package org.broadleafcommerce.core.order.service.manipulation;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +32,8 @@ import org.junit.experimental.categories.Category;
 public class OrderItemSplitContainerDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link OrderItemSplitContainer}
    *   <li>{@link OrderItemSplitContainer#setKey(OrderItem)}
@@ -45,15 +43,10 @@ public class OrderItemSplitContainerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemSplitContainer.<init>()",
-    "OrderItem OrderItemSplitContainer.getKey()",
-    "List OrderItemSplitContainer.getSplitItems()",
-    "void OrderItemSplitContainer.setKey(OrderItem)",
-    "void OrderItemSplitContainer.setSplitItems(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemSplitContainer.<init>()", "OrderItem OrderItemSplitContainer.getKey()",
+      "List OrderItemSplitContainer.getSplitItems()", "void OrderItemSplitContainer.setKey(OrderItem)",
+      "void OrderItemSplitContainer.setSplitItems(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemSplitContainer actualOrderItemSplitContainer = new OrderItemSplitContainer();

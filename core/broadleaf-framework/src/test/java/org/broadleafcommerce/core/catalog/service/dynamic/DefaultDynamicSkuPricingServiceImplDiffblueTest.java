@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.catalog.service.dynamic;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import org.broadleafcommerce.common.money.Money;
@@ -42,31 +41,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DefaultDynamicSkuPricingServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DefaultDynamicSkuPricingServiceImplDiffblueTest {
-  @Autowired private DefaultDynamicSkuPricingServiceImpl defaultDynamicSkuPricingServiceImpl;
+  @Autowired
+  private DefaultDynamicSkuPricingServiceImpl defaultDynamicSkuPricingServiceImpl;
 
   /**
-   * Test {@link DefaultDynamicSkuPricingServiceImpl#getSkuPrices(Sku, HashMap)} with {@code sku},
-   * {@code skuPricingConsiderations}.
-   *
+   * Test {@link DefaultDynamicSkuPricingServiceImpl#getSkuPrices(Sku, HashMap)} with {@code sku}, {@code skuPricingConsiderations}.
    * <ul>
-   *   <li>Then return {@link DynamicSkuPrices#didOverride} is {@code null}.
+   *   <li>Then return {@link DynamicSkuPrices#didOverride} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DefaultDynamicSkuPricingServiceImpl#getSkuPrices(Sku, HashMap)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingServiceImpl#getSkuPrices(Sku, HashMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicSkuPrices DefaultDynamicSkuPricingServiceImpl.getSkuPrices(Sku, HashMap)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicSkuPrices DefaultDynamicSkuPricingServiceImpl.getSkuPrices(Sku, HashMap)"})
   public void testGetSkuPricesWithSkuSkuPricingConsiderations_thenReturnDidOverrideIsNull() {
     // Arrange
     SkuImpl sku = new SkuImpl();
 
     // Act
-    DynamicSkuPrices actualSkuPrices =
-        defaultDynamicSkuPricingServiceImpl.getSkuPrices(sku, new HashMap());
+    DynamicSkuPrices actualSkuPrices = defaultDynamicSkuPricingServiceImpl.getSkuPrices(sku, new HashMap());
 
     // Assert
     assertNull(actualSkuPrices.didOverride);
@@ -78,25 +72,19 @@ public class DefaultDynamicSkuPricingServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link DefaultDynamicSkuPricingServiceImpl#getSkuPrices(SkuPriceWrapper, HashMap)} with
-   * {@code skuWrapper}, {@code skuPricingConsiderations}.
-   *
-   * <p>Method under test: {@link DefaultDynamicSkuPricingServiceImpl#getSkuPrices(SkuPriceWrapper,
-   * HashMap)}
+   * Test {@link DefaultDynamicSkuPricingServiceImpl#getSkuPrices(SkuPriceWrapper, HashMap)} with {@code skuWrapper}, {@code skuPricingConsiderations}.
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingServiceImpl#getSkuPrices(SkuPriceWrapper, HashMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicSkuPrices DefaultDynamicSkuPricingServiceImpl.getSkuPrices(SkuPriceWrapper, HashMap)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicSkuPrices DefaultDynamicSkuPricingServiceImpl.getSkuPrices(SkuPriceWrapper, HashMap)"})
   public void testGetSkuPricesWithSkuWrapperSkuPricingConsiderations() {
     // Arrange
     SkuPriceWrapper skuWrapper = new SkuPriceWrapper();
 
     // Act
-    DynamicSkuPrices actualSkuPrices =
-        defaultDynamicSkuPricingServiceImpl.getSkuPrices(skuWrapper, new HashMap());
+    DynamicSkuPrices actualSkuPrices = defaultDynamicSkuPricingServiceImpl.getSkuPrices(skuWrapper, new HashMap());
 
     // Assert
     assertNull(actualSkuPrices.didOverride);
@@ -109,29 +97,25 @@ public class DefaultDynamicSkuPricingServiceImplDiffblueTest {
 
   /**
    * Test {@link DefaultDynamicSkuPricingServiceImpl#getSkuBundleItemPrice(SkuBundleItem, HashMap)}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).
-   *   <li>Then return {@link DynamicSkuPrices#didOverride} is {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@link DynamicSkuPrices#didOverride} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingServiceImpl#getSkuBundleItemPrice(SkuBundleItem, HashMap)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingServiceImpl#getSkuBundleItemPrice(SkuBundleItem, HashMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "DynamicSkuPrices DefaultDynamicSkuPricingServiceImpl.getSkuBundleItemPrice(SkuBundleItem, HashMap)"
-  })
+      "DynamicSkuPrices DefaultDynamicSkuPricingServiceImpl.getSkuBundleItemPrice(SkuBundleItem, HashMap)"})
   public void testGetSkuBundleItemPrice_givenSkuImpl_thenReturnDidOverrideIsNull() {
     // Arrange
     SkuBundleItemImpl skuBundleItem = new SkuBundleItemImpl();
     skuBundleItem.setSku(new SkuImpl());
 
     // Act
-    DynamicSkuPrices actualSkuBundleItemPrice =
-        defaultDynamicSkuPricingServiceImpl.getSkuBundleItemPrice(skuBundleItem, new HashMap());
+    DynamicSkuPrices actualSkuBundleItemPrice = defaultDynamicSkuPricingServiceImpl.getSkuBundleItemPrice(skuBundleItem,
+        new HashMap());
 
     // Assert
     assertNull(actualSkuBundleItemPrice.didOverride);
@@ -143,18 +127,14 @@ public class DefaultDynamicSkuPricingServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link DefaultDynamicSkuPricingServiceImpl#getPriceAdjustment(ProductOptionValueImpl,
-   * Money, HashMap)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingServiceImpl#getPriceAdjustment(ProductOptionValueImpl, Money, HashMap)}
+   * Test {@link DefaultDynamicSkuPricingServiceImpl#getPriceAdjustment(ProductOptionValueImpl, Money, HashMap)}.
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingServiceImpl#getPriceAdjustment(ProductOptionValueImpl, Money, HashMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "DynamicSkuPrices DefaultDynamicSkuPricingServiceImpl.getPriceAdjustment(ProductOptionValueImpl, Money, HashMap)"
-  })
+      "DynamicSkuPrices DefaultDynamicSkuPricingServiceImpl.getPriceAdjustment(ProductOptionValueImpl, Money, HashMap)"})
   public void testGetPriceAdjustment() {
     // Arrange
     ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
@@ -166,9 +146,8 @@ public class DefaultDynamicSkuPricingServiceImplDiffblueTest {
     Money priceAdjustment = new Money();
 
     // Act
-    DynamicSkuPrices actualPriceAdjustment =
-        defaultDynamicSkuPricingServiceImpl.getPriceAdjustment(
-            productOptionValueImpl, priceAdjustment, new HashMap());
+    DynamicSkuPrices actualPriceAdjustment = defaultDynamicSkuPricingServiceImpl
+        .getPriceAdjustment(productOptionValueImpl, priceAdjustment, new HashMap());
 
     // Assert
     assertNull(actualPriceAdjustment.didOverride);

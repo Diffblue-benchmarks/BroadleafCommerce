@@ -22,10 +22,11 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.extension.ExtensionManager;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.domain.Offer;
@@ -49,7 +51,6 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
@@ -62,31 +63,33 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OfferActivityDiffblueTest {
-  @InjectMocks private OfferActivity offerActivity;
+  @InjectMocks
+  private OfferActivity offerActivity;
 
-  @Mock private OfferService offerService;
+  @Mock
+  private OfferService offerService;
 
-  @Mock private OfferValueModifierExtensionManager offerValueModifierExtensionManager;
+  @Mock
+  private OfferValueModifierExtensionManager offerValueModifierExtensionManager;
 
-  @Mock private OrderService orderService;
+  @Mock
+  private OrderService orderService;
 
   /**
    * Test {@link OfferActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link OrderService#addOfferCodes(Order, List, boolean)}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferCodeImpl} (default constructor).</li>
+   *   <li>Then calls {@link OrderService#addOfferCodes(Order, List, boolean)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link OfferActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext OfferActivity.execute(ProcessContext)"})
-  public void testExecute_thenCallsAddOfferCodes() throws Exception {
+  public void testExecute_givenArrayListAddOfferCodeImpl_thenCallsAddOfferCodes() throws Exception {
     // Arrange
-    when(offerValueModifierExtensionManager.getProxy())
-        .thenReturn(new AbstractOfferValueModifierExtensionHandler());
+    when(offerValueModifierExtensionManager.getProxy()).thenReturn(new AbstractOfferValueModifierExtensionHandler());
 
     ArrayList<OfferCode> offerCodeList = new ArrayList<>();
     offerCodeList.add(new OfferCodeImpl());
@@ -96,18 +99,14 @@ public class OfferActivityDiffblueTest {
     when(offerService.buildOfferListForOrder(Mockito.<Order>any())).thenReturn(offerList);
     when(offerService.applyAndSaveOffersToOrder(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
         .thenReturn(new NullOrderImpl());
-    when(offerService.buildOfferCodeListForCustomer(Mockito.<Order>any()))
-        .thenReturn(offerCodeList);
-    when(orderService.addOfferCodes(
-            Mockito.<Order>any(), Mockito.<List<OfferCode>>any(), anyBoolean()))
+    when(offerService.buildOfferCodeListForCustomer(Mockito.<Order>any())).thenReturn(offerCodeList);
+    when(orderService.addOfferCodes(Mockito.<Order>any(), Mockito.<List<OfferCode>>any(), anyBoolean()))
         .thenReturn(new NullOrderImpl());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl orderImpl = new OrderImpl();
@@ -128,15 +127,15 @@ public class OfferActivityDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
-
-    DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
-    context.setSeedData(orderImpl);
+    ProcessContext<Order> context = mock(ProcessContext.class);
+    doNothing().when(context).setSeedData(Mockito.<Order>any());
+    when(context.getSeedData()).thenReturn(orderImpl);
 
     // Act
     ProcessContext<Order> actualExecuteResult = offerActivity.execute(context);
@@ -147,41 +146,37 @@ public class OfferActivityDiffblueTest {
     verify(offerService).buildOfferCodeListForCustomer(isA(Order.class));
     verify(offerService).buildOfferListForOrder(isA(Order.class));
     verify(orderService).addOfferCodes(isA(Order.class), isA(List.class), eq(false));
+    verify(context).getSeedData();
+    verify(context).setSeedData(isA(Order.class));
     assertSame(context, actualExecuteResult);
   }
 
   /**
    * Test {@link OfferActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link OfferValueModifierExtensionManager#getProxy()}.
+   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link OfferActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext OfferActivity.execute(ProcessContext)"})
   public void testExecute_thenCallsGetProxy() throws Exception {
     // Arrange
-    when(offerValueModifierExtensionManager.getProxy())
-        .thenReturn(new AbstractOfferValueModifierExtensionHandler());
+    when(offerValueModifierExtensionManager.getProxy()).thenReturn(new AbstractOfferValueModifierExtensionHandler());
 
     ArrayList<Offer> offerList = new ArrayList<>();
     offerList.add(new OfferImpl());
     when(offerService.buildOfferListForOrder(Mockito.<Order>any())).thenReturn(offerList);
     when(offerService.applyAndSaveOffersToOrder(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
         .thenReturn(new NullOrderImpl());
-    when(offerService.buildOfferCodeListForCustomer(Mockito.<Order>any()))
-        .thenReturn(new ArrayList<>());
+    when(offerService.buildOfferCodeListForCustomer(Mockito.<Order>any())).thenReturn(new ArrayList<>());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl orderImpl = new OrderImpl();
@@ -202,15 +197,15 @@ public class OfferActivityDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
-
-    DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
-    context.setSeedData(orderImpl);
+    ProcessContext<Order> context = mock(ProcessContext.class);
+    doNothing().when(context).setSeedData(Mockito.<Order>any());
+    when(context.getSeedData()).thenReturn(orderImpl);
 
     // Act
     ProcessContext<Order> actualExecuteResult = offerActivity.execute(context);
@@ -220,36 +215,33 @@ public class OfferActivityDiffblueTest {
     verify(offerService).applyAndSaveOffersToOrder(isA(List.class), isA(Order.class));
     verify(offerService).buildOfferCodeListForCustomer(isA(Order.class));
     verify(offerService).buildOfferListForOrder(isA(Order.class));
+    verify(context).getSeedData();
+    verify(context).setSeedData(isA(Order.class));
     assertSame(context, actualExecuteResult);
   }
 
   /**
    * Test {@link OfferActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).
+   *   <li>Then return {@link ProcessContext}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link OfferActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext OfferActivity.execute(ProcessContext)"})
-  public void testExecute_thenReturnDefaultProcessContextImpl() throws Exception {
+  public void testExecute_thenReturnProcessContext() throws Exception {
     // Arrange
     when(offerService.buildOfferListForOrder(Mockito.<Order>any())).thenReturn(new ArrayList<>());
     when(offerService.applyAndSaveOffersToOrder(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
         .thenReturn(new NullOrderImpl());
-    when(offerService.buildOfferCodeListForCustomer(Mockito.<Order>any()))
-        .thenReturn(new ArrayList<>());
+    when(offerService.buildOfferCodeListForCustomer(Mockito.<Order>any())).thenReturn(new ArrayList<>());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl orderImpl = new OrderImpl();
@@ -270,15 +262,15 @@ public class OfferActivityDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
-
-    DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
-    context.setSeedData(orderImpl);
+    ProcessContext<Order> context = mock(ProcessContext.class);
+    doNothing().when(context).setSeedData(Mockito.<Order>any());
+    when(context.getSeedData()).thenReturn(orderImpl);
 
     // Act
     ProcessContext<Order> actualExecuteResult = offerActivity.execute(context);
@@ -287,34 +279,31 @@ public class OfferActivityDiffblueTest {
     verify(offerService).applyAndSaveOffersToOrder(isA(List.class), isA(Order.class));
     verify(offerService).buildOfferCodeListForCustomer(isA(Order.class));
     verify(offerService).buildOfferListForOrder(isA(Order.class));
+    verify(context).getSeedData();
+    verify(context).setSeedData(isA(Order.class));
     assertSame(context, actualExecuteResult);
   }
 
   /**
    * Test {@link OfferActivity#getNewOfferCodesFromCustomer(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
-   *   <li>Then return Empty.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferActivity#getNewOfferCodesFromCustomer(Order)}
+   * <p>
+   * Method under test: {@link OfferActivity#getNewOfferCodesFromCustomer(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OfferActivity.getNewOfferCodesFromCustomer(Order)"})
   public void testGetNewOfferCodesFromCustomer_givenAuditableCreatedByIsOne_thenReturnEmpty() {
     // Arrange
-    when(offerService.buildOfferCodeListForCustomer(Mockito.<Order>any()))
-        .thenReturn(new ArrayList<>());
+    when(offerService.buildOfferCodeListForCustomer(Mockito.<Order>any())).thenReturn(new ArrayList<>());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -335,16 +324,15 @@ public class OfferActivityDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act
-    List<OfferCode> actualNewOfferCodesFromCustomer =
-        offerActivity.getNewOfferCodesFromCustomer(order);
+    List<OfferCode> actualNewOfferCodesFromCustomer = offerActivity.getNewOfferCodesFromCustomer(order);
 
     // Assert
     verify(offerService).buildOfferCodeListForCustomer(isA(Order.class));

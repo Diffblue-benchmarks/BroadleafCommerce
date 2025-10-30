@@ -19,20 +19,17 @@ package org.broadleafcommerce.common.web.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.net.MalformedURLException;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -42,31 +39,30 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.mock.web.MockServletContext;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PrecompressedArtifactFilterDiffblueTest {
-  @Mock private List<String> list;
+  @InjectMocks
+  private PrecompressedArtifactFilter precompressedArtifactFilter;
 
-  @InjectMocks private PrecompressedArtifactFilter precompressedArtifactFilter;
+  @Mock
+  private List<String> list;
 
   /**
    * Test {@link PrecompressedArtifactFilter#getResourcePath(HttpServletRequest)}.
-   *
    * <ul>
-   *   <li>Given {@code Request}.
-   *   <li>Then return {@code Request}.
+   *   <li>Given {@code Request}.</li>
+   *   <li>Then return {@code Request}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#getResourcePath(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link PrecompressedArtifactFilter#getResourcePath(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PrecompressedArtifactFilter.getResourcePath(HttpServletRequest)"})
   public void testGetResourcePath_givenRequest_thenReturnRequest() {
     // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    MockHttpServletRequest request = new MockHttpServletRequest();
     request.setPathInfo("Request");
 
     // Act and Assert
@@ -75,231 +71,54 @@ public class PrecompressedArtifactFilterDiffblueTest {
 
   /**
    * Test {@link PrecompressedArtifactFilter#getResourcePath(HttpServletRequest)}.
-   *
    * <ul>
-   *   <li>Then return empty string.
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#getResourcePath(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link PrecompressedArtifactFilter#getResourcePath(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PrecompressedArtifactFilter.getResourcePath(HttpServletRequest)"})
   public void testGetResourcePath_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals(
-        "",
-        precompressedArtifactFilter.getResourcePath(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
+    assertEquals("", precompressedArtifactFilter
+        .getResourcePath(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
   }
 
   /**
-   * Test {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code .}.
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}
+   * Test {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest, HttpServletResponse, String, String)}.
+   * <p>
+   * Method under test: {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest, HttpServletResponse, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean PrecompressedArtifactFilter.useGzipCompression(HttpServletRequest, HttpServletResponse, String, String)"
-  })
-  public void testUseGzipCompression_givenArrayListAddDot_thenThrowIllegalStateException()
-      throws MalformedURLException {
+      "boolean PrecompressedArtifactFilter.useGzipCompression(HttpServletRequest, HttpServletResponse, String, String)"})
+  public void testUseGzipCompression() throws IOException {
     // Arrange
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add(".");
-    when(list.iterator()).thenReturn(stringList.iterator());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            precompressedArtifactFilter.useGzipCompression(
-                request,
-                new HttpServletResponseWrapper(
-                    new StatusExposingServletResponse(new MockHttpServletResponse())),
-                ".",
-                "Gzip Path"));
-    verify(list).iterator();
-  }
-
-  /**
-   * Test {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PrecompressedArtifactFilter.useGzipCompression(HttpServletRequest, HttpServletResponse, String, String)"
-  })
-  public void testUseGzipCompression_givenArrayListAddFoo_thenThrowIllegalStateException()
-      throws MalformedURLException {
-    // Arrange
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("foo");
-    stringList.add(".");
-    when(list.iterator()).thenReturn(stringList.iterator());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            precompressedArtifactFilter.useGzipCompression(
-                request,
-                new HttpServletResponseWrapper(
-                    new StatusExposingServletResponse(new MockHttpServletResponse())),
-                ".",
-                "Gzip Path"));
-    verify(list).iterator();
-  }
-
-  /**
-   * Test {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code .}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PrecompressedArtifactFilter.useGzipCompression(HttpServletRequest, HttpServletResponse, String, String)"
-  })
-  public void testUseGzipCompression_whenDot_thenReturnFalse() throws MalformedURLException {
-    // Arrange
-    ArrayList<String> stringList = new ArrayList<>();
-    when(list.iterator()).thenReturn(stringList.iterator());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act
-    boolean actualUseGzipCompressionResult =
-        precompressedArtifactFilter.useGzipCompression(
-            request,
-            new HttpServletResponseWrapper(
-                new StatusExposingServletResponse(new MockHttpServletResponse())),
-            ".",
-            "Gzip Path");
-
-    // Assert
-    verify(list).iterator();
-    assertFalse(actualUseGzipCompressionResult);
-  }
-
-  /**
-   * Test {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Path}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PrecompressedArtifactFilter.useGzipCompression(HttpServletRequest, HttpServletResponse, String, String)"
-  })
-  public void testUseGzipCompression_whenPath_thenReturnFalse() throws MalformedURLException {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act and Assert
-    assertFalse(
-        precompressedArtifactFilter.useGzipCompression(
-            request,
-            new HttpServletResponseWrapper(
-                new StatusExposingServletResponse(new MockHttpServletResponse())),
-            "Path",
-            "Gzip Path"));
-  }
-
-  /**
-   * Test {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Path}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#useGzipCompression(HttpServletRequest,
-   * HttpServletResponse, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PrecompressedArtifactFilter.useGzipCompression(HttpServletRequest, HttpServletResponse, String, String)"
-  })
-  public void testUseGzipCompression_whenPath_thenReturnFalse2() throws MalformedURLException {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act and Assert
-    assertFalse(
-        precompressedArtifactFilter.useGzipCompression(
-            request,
-            new HttpServletResponseWrapper(
-                new StatusExposingServletResponse(new MockHttpServletResponse())),
-            "Path",
-            null));
+    assertFalse(precompressedArtifactFilter.useGzipCompression(request, new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())),
+        "Path", "Gzip Path"));
   }
 
   /**
    * Test {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code .}.
-   *   <li>When {@code .}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code .}.</li>
+   *   <li>When {@code .}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
+   * <p>
+   * Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PrecompressedArtifactFilter.fileExtensionInWhitelist(String)"})
   public void testFileExtensionInWhitelist_givenArrayListAddDot_whenDot_thenReturnTrue() {
     // Arrange
@@ -308,8 +127,7 @@ public class PrecompressedArtifactFilterDiffblueTest {
     when(list.iterator()).thenReturn(stringList.iterator());
 
     // Act
-    boolean actualFileExtensionInWhitelistResult =
-        precompressedArtifactFilter.fileExtensionInWhitelist(".");
+    boolean actualFileExtensionInWhitelistResult = precompressedArtifactFilter.fileExtensionInWhitelist(".");
 
     // Assert
     verify(list).iterator();
@@ -318,18 +136,16 @@ public class PrecompressedArtifactFilterDiffblueTest {
 
   /**
    * Test {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
-   *   <li>When {@code .}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
+   *   <li>When {@code .}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
+   * <p>
+   * Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PrecompressedArtifactFilter.fileExtensionInWhitelist(String)"})
   public void testFileExtensionInWhitelist_givenArrayListAddFoo_whenDot_thenReturnTrue() {
     // Arrange
@@ -339,8 +155,7 @@ public class PrecompressedArtifactFilterDiffblueTest {
     when(list.iterator()).thenReturn(stringList.iterator());
 
     // Act
-    boolean actualFileExtensionInWhitelistResult =
-        precompressedArtifactFilter.fileExtensionInWhitelist(".");
+    boolean actualFileExtensionInWhitelistResult = precompressedArtifactFilter.fileExtensionInWhitelist(".");
 
     // Assert
     verify(list).iterator();
@@ -349,16 +164,14 @@ public class PrecompressedArtifactFilterDiffblueTest {
 
   /**
    * Test {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
+   * <p>
+   * Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PrecompressedArtifactFilter.fileExtensionInWhitelist(String)"})
   public void testFileExtensionInWhitelist_thenReturnFalse() {
     // Arrange
@@ -366,8 +179,7 @@ public class PrecompressedArtifactFilterDiffblueTest {
     when(list.iterator()).thenReturn(stringList.iterator());
 
     // Act
-    boolean actualFileExtensionInWhitelistResult =
-        precompressedArtifactFilter.fileExtensionInWhitelist(".");
+    boolean actualFileExtensionInWhitelistResult = precompressedArtifactFilter.fileExtensionInWhitelist(".");
 
     // Assert
     verify(list).iterator();
@@ -376,17 +188,15 @@ public class PrecompressedArtifactFilterDiffblueTest {
 
   /**
    * Test {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
+   * <p>
+   * Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PrecompressedArtifactFilter.fileExtensionInWhitelist(String)"})
   public void testFileExtensionInWhitelist_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -395,17 +205,15 @@ public class PrecompressedArtifactFilterDiffblueTest {
 
   /**
    * Test {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}.
-   *
    * <ul>
-   *   <li>When {@code Path}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Path}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
+   * <p>
+   * Method under test: {@link PrecompressedArtifactFilter#fileExtensionInWhitelist(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PrecompressedArtifactFilter.fileExtensionInWhitelist(String)"})
   public void testFileExtensionInWhitelist_whenPath_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -413,19 +221,26 @@ public class PrecompressedArtifactFilterDiffblueTest {
   }
 
   /**
-   * Test {@link PrecompressedArtifactFilter#isUseWhileInDefaultEnvironment()}.
-   *
-   * <p>Method under test: {@link PrecompressedArtifactFilter#isUseWhileInDefaultEnvironment()}
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PrecompressedArtifactFilter#setUseWhileInDefaultEnvironment(boolean)}
+   *   <li>{@link PrecompressedArtifactFilter#isUseWhileInDefaultEnvironment()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PrecompressedArtifactFilter.isUseWhileInDefaultEnvironment()",
-    "void PrecompressedArtifactFilter.setUseWhileInDefaultEnvironment(boolean)"
-  })
-  public void testIsUseWhileInDefaultEnvironment() {
-    // Arrange, Act and Assert
-    assertTrue(new PrecompressedArtifactFilter().isUseWhileInDefaultEnvironment());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PrecompressedArtifactFilter.isUseWhileInDefaultEnvironment()",
+      "void PrecompressedArtifactFilter.setUseWhileInDefaultEnvironment(boolean)"})
+  public void testGettersAndSetters() {
+    // Arrange
+    PrecompressedArtifactFilter precompressedArtifactFilter = new PrecompressedArtifactFilter();
+
+    // Act
+    precompressedArtifactFilter.setUseWhileInDefaultEnvironment(true);
+
+    // Assert
+    assertTrue(precompressedArtifactFilter.isUseWhileInDefaultEnvironment());
   }
 }

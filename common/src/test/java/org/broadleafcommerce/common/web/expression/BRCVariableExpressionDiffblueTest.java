@@ -24,8 +24,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.crossapp.service.CrossAppAuthService;
 import org.junit.Test;
@@ -37,35 +36,33 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BRCVariableExpressionDiffblueTest {
-  @InjectMocks private BRCVariableExpression bRCVariableExpression;
+  @InjectMocks
+  private BRCVariableExpression bRCVariableExpression;
 
-  @Mock private CrossAppAuthService crossAppAuthService;
+  @Mock
+  private CrossAppAuthService crossAppAuthService;
 
   /**
    * Test {@link BRCVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link BRCVariableExpression#getName()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BRCVariableExpression.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("brc", new BRCVariableExpression().getName());
+    assertEquals("brc", (new BRCVariableExpression()).getName());
   }
 
   /**
    * Test {@link BRCVariableExpression#getSandbox()}.
-   *
-   * <p>Method under test: {@link BRCVariableExpression#getSandbox()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#getSandbox()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.sandbox.domain.SandBox BRCVariableExpression.getSandbox()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.sandbox.domain.SandBox BRCVariableExpression.getSandbox()"})
   public void testGetSandbox() {
     // Arrange, Act and Assert
     assertNull(bRCVariableExpression.getSandbox());
@@ -73,15 +70,12 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#getSite()}.
-   *
-   * <p>Method under test: {@link BRCVariableExpression#getSite()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#getSite()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Site BRCVariableExpression.getSite()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.site.domain.Site BRCVariableExpression.getSite()"})
   public void testGetSite() {
     // Arrange, Act and Assert
     assertNull(bRCVariableExpression.getSite());
@@ -89,15 +83,12 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#getCurrentProfile()}.
-   *
-   * <p>Method under test: {@link BRCVariableExpression#getCurrentProfile()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#getCurrentProfile()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Site BRCVariableExpression.getCurrentProfile()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.site.domain.Site BRCVariableExpression.getCurrentProfile()"})
   public void testGetCurrentProfile() {
     // Arrange, Act and Assert
     assertNull(bRCVariableExpression.getCurrentProfile());
@@ -105,15 +96,12 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#getCurrentCatalog()}.
-   *
-   * <p>Method under test: {@link BRCVariableExpression#getCurrentCatalog()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#getCurrentCatalog()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Catalog BRCVariableExpression.getCurrentCatalog()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.site.domain.Catalog BRCVariableExpression.getCurrentCatalog()"})
   public void testGetCurrentCatalog() {
     // Arrange, Act and Assert
     assertNull(bRCVariableExpression.getCurrentCatalog());
@@ -121,34 +109,14 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#get(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#get(String)}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#get(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Object BRCVariableExpression.get(String)"})
-  public void testGet_when42() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> bRCVariableExpression.get("42"));
-  }
-
-  /**
-   * Test {@link BRCVariableExpression#get(String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#get(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Object BRCVariableExpression.get(String)"})
   public void testGet_whenNull() {
     // Arrange, Act and Assert
@@ -157,16 +125,14 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#get(String)}.
-   *
    * <ul>
-   *   <li>When {@code Property Name}.
+   *   <li>When {@code Property Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#get(String)}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#get(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Object BRCVariableExpression.get(String)"})
   public void testGet_whenPropertyName() {
     // Arrange, Act and Assert
@@ -174,39 +140,33 @@ public class BRCVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link BRCVariableExpression#isCsrMode()}.
-   *
+   * Test {@link BRCVariableExpression#get(String)}.
    * <ul>
-   *   <li>Given {@link BRCVariableExpression} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>When {@code ThreadLocalManager.notify.orphans}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isCsrMode()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#get(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BRCVariableExpression.isCsrMode()"})
-  public void testIsCsrMode_givenBRCVariableExpression_thenReturnFalse() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Object BRCVariableExpression.get(String)"})
+  public void testGet_whenThreadLocalManagerNotifyOrphans() {
     // Arrange, Act and Assert
-    assertFalse(new BRCVariableExpression().isCsrMode());
+    assertThrows(RuntimeException.class, () -> bRCVariableExpression.get("ThreadLocalManager.notify.orphans"));
   }
 
   /**
    * Test {@link BRCVariableExpression#isCsrMode()}.
-   *
    * <ul>
-   *   <li>Given Bean Name{blCrossAppAuthService} {@link CrossAppAuthService#hasCsrPermission()}
-   *       return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isCsrMode()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#isCsrMode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BRCVariableExpression.isCsrMode()"})
-  public void testIsCsrMode_givenBeanNameBlCrossAppAuthServiceHasCsrPermissionReturnFalse() {
+  public void testIsCsrMode_thenReturnFalse() {
     // Arrange
     when(crossAppAuthService.hasCsrPermission()).thenReturn(false);
 
@@ -220,16 +180,14 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#isCsrMode()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isCsrMode()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#isCsrMode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BRCVariableExpression.isCsrMode()"})
   public void testIsCsrMode_thenReturnTrue() {
     // Arrange
@@ -245,20 +203,18 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#isCsrMode()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isCsrMode()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#isCsrMode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BRCVariableExpression.isCsrMode()"})
   public void testIsCsrMode_thenThrowRuntimeException() {
     // Arrange
-    when(crossAppAuthService.hasCsrPermission()).thenThrow(new RuntimeException());
+    when(crossAppAuthService.hasCsrPermission()).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> bRCVariableExpression.isCsrMode());
@@ -267,38 +223,16 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#isQuoteMode()}.
-   *
    * <ul>
-   *   <li>Given {@link BRCVariableExpression} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isQuoteMode()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#isQuoteMode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BRCVariableExpression.isQuoteMode()"})
-  public void testIsQuoteMode_givenBRCVariableExpression_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new BRCVariableExpression().isQuoteMode());
-  }
-
-  /**
-   * Test {@link BRCVariableExpression#isQuoteMode()}.
-   *
-   * <ul>
-   *   <li>Given Bean Name{blCrossAppAuthService} {@link CrossAppAuthService#hasQuotePermission()}
-   *       return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isQuoteMode()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BRCVariableExpression.isQuoteMode()"})
-  public void testIsQuoteMode_givenBeanNameBlCrossAppAuthServiceHasQuotePermissionReturnFalse() {
+  public void testIsQuoteMode_thenReturnFalse() {
     // Arrange
     when(crossAppAuthService.hasQuotePermission()).thenReturn(false);
 
@@ -312,16 +246,14 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#isQuoteMode()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isQuoteMode()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#isQuoteMode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BRCVariableExpression.isQuoteMode()"})
   public void testIsQuoteMode_thenReturnTrue() {
     // Arrange
@@ -337,20 +269,18 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#isQuoteMode()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isQuoteMode()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#isQuoteMode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BRCVariableExpression.isQuoteMode()"})
   public void testIsQuoteMode_thenThrowRuntimeException() {
     // Arrange
-    when(crossAppAuthService.hasQuotePermission()).thenThrow(new RuntimeException());
+    when(crossAppAuthService.hasQuotePermission()).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> bRCVariableExpression.isQuoteMode());
@@ -359,12 +289,11 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#isSandboxMode()}.
-   *
-   * <p>Method under test: {@link BRCVariableExpression#isSandboxMode()}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#isSandboxMode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BRCVariableExpression.isSandboxMode()"})
   public void testIsSandboxMode() {
     // Arrange, Act and Assert
@@ -373,12 +302,11 @@ public class BRCVariableExpressionDiffblueTest {
 
   /**
    * Test {@link BRCVariableExpression#getAdditionalProperty(String)}.
-   *
-   * <p>Method under test: {@link BRCVariableExpression#getAdditionalProperty(String)}
+   * <p>
+   * Method under test: {@link BRCVariableExpression#getAdditionalProperty(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Object BRCVariableExpression.getAdditionalProperty(String)"})
   public void testGetAdditionalProperty() {
     // Arrange, Act and Assert

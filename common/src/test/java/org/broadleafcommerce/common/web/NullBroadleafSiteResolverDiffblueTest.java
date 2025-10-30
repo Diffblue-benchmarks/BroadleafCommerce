@@ -18,11 +18,9 @@
 package org.broadleafcommerce.common.web;
 
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.exception.SiteNotFoundException;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
@@ -38,72 +36,53 @@ import org.springframework.web.context.request.WebRequest;
 @ContextConfiguration(classes = {NullBroadleafSiteResolver.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NullBroadleafSiteResolverDiffblueTest {
-  @Autowired private NullBroadleafSiteResolver nullBroadleafSiteResolver;
+  @Autowired
+  private NullBroadleafSiteResolver nullBroadleafSiteResolver;
 
   /**
-   * Test {@link NullBroadleafSiteResolver#resolveSite(HttpServletRequest)} with {@code
-   * HttpServletRequest}.
-   *
+   * Test {@link NullBroadleafSiteResolver#resolveSite(HttpServletRequest)} with {@code HttpServletRequest}.
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NullBroadleafSiteResolver#resolveSite(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link NullBroadleafSiteResolver#resolveSite(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(HttpServletRequest)"
-  })
+      "org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(HttpServletRequest)"})
   public void testResolveSiteWithHttpServletRequest_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(
-        nullBroadleafSiteResolver.resolveSite(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
+        nullBroadleafSiteResolver.resolveSite(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
   }
 
   /**
    * Test {@link NullBroadleafSiteResolver#resolveSite(WebRequest)} with {@code WebRequest}.
-   *
-   * <p>Method under test: {@link NullBroadleafSiteResolver#resolveSite(WebRequest)}
+   * <p>
+   * Method under test: {@link NullBroadleafSiteResolver#resolveSite(WebRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(WebRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(WebRequest)"})
   public void testResolveSiteWithWebRequest() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act and Assert
-    assertNull(nullBroadleafSiteResolver.resolveSite(new ServletWebRequest(request)));
+    // Arrange, Act and Assert
+    assertNull(nullBroadleafSiteResolver
+        .resolveSite(new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
   }
 
   /**
-   * Test {@link NullBroadleafSiteResolver#resolveSite(WebRequest, boolean)} with {@code
-   * WebRequest}, {@code boolean}.
-   *
-   * <p>Method under test: {@link NullBroadleafSiteResolver#resolveSite(WebRequest, boolean)}
+   * Test {@link NullBroadleafSiteResolver#resolveSite(WebRequest, boolean)} with {@code WebRequest}, {@code boolean}.
+   * <p>
+   * Method under test: {@link NullBroadleafSiteResolver#resolveSite(WebRequest, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(WebRequest, boolean)"
-  })
+      "org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(WebRequest, boolean)"})
   public void testResolveSiteWithWebRequestBoolean() throws SiteNotFoundException {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act and Assert
-    assertNull(nullBroadleafSiteResolver.resolveSite(new ServletWebRequest(request), true));
+    // Arrange, Act and Assert
+    assertNull(nullBroadleafSiteResolver.resolveSite(
+        new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())), true));
   }
 }

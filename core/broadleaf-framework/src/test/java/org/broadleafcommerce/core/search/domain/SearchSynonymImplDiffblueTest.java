@@ -19,8 +19,7 @@ package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -32,166 +31,148 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SearchSynonymImplDiffblueTest {
-  @Autowired private SearchSynonymImpl searchSynonymImpl;
+  @Autowired
+  private SearchSynonymImpl searchSynonymImpl;
 
   /**
    * Test {@link SearchSynonymImpl#getSynonyms()}.
-   *
    * <ul>
-   *   <li>Then return array of {@link String} with {@code \}.
+   *   <li>Then return array of {@link String} with {@code Synonyms}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchSynonymImpl#getSynonyms()}
+   * <p>
+   * Method under test: {@link SearchSynonymImpl#getSynonyms()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String[] SearchSynonymImpl.getSynonyms()"})
-  public void testGetSynonyms_thenReturnArrayOfStringWithBackslash() {
+  public void testGetSynonyms_thenReturnArrayOfStringWithSynonyms() {
     // Arrange
-    SearchSynonymImpl searchSynonymImpl = new SearchSynonymImpl();
-    searchSynonymImpl.setSynonyms(new String[] {"\\|"});
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
+    searchSynonymImpl2.setId(1L);
+    searchSynonymImpl2.setSynonyms(new String[]{"Synonyms"});
+    searchSynonymImpl2.setTerm("Term");
 
     // Act and Assert
-    assertArrayEquals(new String[] {"\\"}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{"Synonyms"}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
-   *
    * <ul>
-   *   <li>Then {@link SearchSynonymImpl} Synonyms is array of {@link String} with empty string and
-   *       {@code 42}.
+   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of {@link String} with empty string and {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
+   * <p>
+   * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_thenSearchSynonymImplSynonymsIsArrayOfStringWithEmptyStringAnd42() {
-    // Arrange and Act
-    searchSynonymImpl.setSynonyms(new String[] {"", "42"});
+    // Arrange
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
+
+    // Act
+    searchSynonymImpl2.setSynonyms(new String[]{"", "42"});
 
     // Assert
-    assertArrayEquals(new String[] {"", "42"}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{"", "42"}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
-   *
    * <ul>
-   *   <li>Then {@link SearchSynonymImpl} Synonyms is array of {@link String} with {@code Synonyms}.
+   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of {@link String} with {@code Synonyms}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
+   * <p>
+   * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_thenSearchSynonymImplSynonymsIsArrayOfStringWithSynonyms() {
-    // Arrange and Act
-    searchSynonymImpl.setSynonyms(new String[] {"Synonyms"});
+    // Arrange
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
+
+    // Act
+    searchSynonymImpl2.setSynonyms(new String[]{"Synonyms"});
 
     // Assert
-    assertArrayEquals(new String[] {"Synonyms"}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{"Synonyms"}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
-   *
    * <ul>
-   *   <li>Then {@link SearchSynonymImpl} Synonyms is array of {@link String} with {@code Synonyms}
-   *       and {@code 42}.
+   *   <li>Then {@link SearchSynonymImpl} (default constructor) Synonyms is array of {@link String} with {@code Synonyms} and {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
+   * <p>
+   * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_thenSearchSynonymImplSynonymsIsArrayOfStringWithSynonymsAnd42() {
-    // Arrange and Act
-    searchSynonymImpl.setSynonyms(new String[] {"Synonyms", "42"});
+    // Arrange
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
+
+    // Act
+    searchSynonymImpl2.setSynonyms(new String[]{"Synonyms", "42"});
 
     // Assert
-    assertArrayEquals(new String[] {"Synonyms", "42"}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{"Synonyms", "42"}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
-   *
    * <ul>
-   *   <li>When array of {@link String} with empty string.
+   *   <li>When array of {@link String} with empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
+   * <p>
+   * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_whenArrayOfStringWithEmptyString() {
-    // Arrange and Act
-    searchSynonymImpl.setSynonyms(new String[] {""});
+    // Arrange
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
+
+    // Act
+    searchSynonymImpl2.setSynonyms(new String[]{""});
 
     // Assert
-    assertArrayEquals(new String[] {""}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{""}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
-   *
    * <ul>
-   *   <li>When array of {@link String} with {@code null}.
+   *   <li>When empty array of {@link String}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
+   * <p>
+   * Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
-  public void testSetSynonyms_whenArrayOfStringWithNull() {
-    // Arrange and Act
-    searchSynonymImpl.setSynonyms(new String[] {null});
-
-    // Assert
-    assertArrayEquals(new String[] {""}, searchSynonymImpl.getSynonyms());
-  }
-
-  /**
-   * Test {@link SearchSynonymImpl#setSynonyms(String[])}.
-   *
-   * <ul>
-   *   <li>When empty array of {@link String}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchSynonymImpl#setSynonyms(String[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SearchSynonymImpl.setSynonyms(String[])"})
   public void testSetSynonyms_whenEmptyArrayOfString() {
-    // Arrange and Act
-    searchSynonymImpl.setSynonyms(new String[] {});
+    // Arrange
+    SearchSynonymImpl searchSynonymImpl2 = new SearchSynonymImpl();
+
+    // Act
+    searchSynonymImpl2.setSynonyms(new String[]{});
 
     // Assert
-    assertArrayEquals(new String[] {""}, searchSynonymImpl.getSynonyms());
+    assertArrayEquals(new String[]{""}, searchSynonymImpl2.getSynonyms());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SearchSynonymImpl}
    *   <li>{@link SearchSynonymImpl#setId(Long)}
@@ -201,15 +182,10 @@ public class SearchSynonymImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchSynonymImpl.<init>()",
-    "Long SearchSynonymImpl.getId()",
-    "String SearchSynonymImpl.getTerm()",
-    "void SearchSynonymImpl.setId(Long)",
-    "void SearchSynonymImpl.setTerm(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchSynonymImpl.<init>()", "Long SearchSynonymImpl.getId()",
+      "String SearchSynonymImpl.getTerm()", "void SearchSynonymImpl.setId(Long)",
+      "void SearchSynonymImpl.setTerm(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchSynonymImpl actualSearchSynonymImpl = new SearchSynonymImpl();

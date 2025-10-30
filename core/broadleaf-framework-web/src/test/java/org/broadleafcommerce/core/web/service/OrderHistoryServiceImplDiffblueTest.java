@@ -27,7 +27,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
@@ -44,56 +43,55 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 
 @ExtendWith(MockitoExtension.class)
 class OrderHistoryServiceImplDiffblueTest {
-  @Mock private Environment environment;
+  @Mock
+  private Environment environment;
 
-  @InjectMocks private OrderHistoryServiceImpl orderHistoryServiceImpl;
+  @InjectMocks
+  private OrderHistoryServiceImpl orderHistoryServiceImpl;
 
-  @Mock private OrderService orderService;
+  @Mock
+  private OrderService orderService;
 
   /**
    * Test {@link OrderHistoryServiceImpl#getOrderDetails(String)}.
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
    */
   @Test
   @DisplayName("Test getOrderDetails(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Order OrderHistoryServiceImpl.getOrderDetails(String)"})
   void testGetOrderDetails() {
     // Arrange
-    when(orderService.findOrderByOrderNumber(Mockito.<String>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenThrow(new IllegalArgumentException("validate.customer.owned.data"));
+    when(orderService.findOrderByOrderNumber(Mockito.<String>any())).thenReturn(new NullOrderImpl());
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> orderHistoryServiceImpl.getOrderDetails("42"));
-    verify(orderService).findOrderByOrderNumber("42");
+    assertThrows(IllegalArgumentException.class, () -> orderHistoryServiceImpl.getOrderDetails("42"));
+    verify(orderService).findOrderByOrderNumber(eq("42"));
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
   }
 
   /**
    * Test {@link OrderHistoryServiceImpl#getOrderDetails(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
    */
   @Test
-  @DisplayName(
-      "Test getOrderDetails(String); given Environment getProperty(String, Class, Object) return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getOrderDetails(String); given Environment getProperty(String, Class, Object) return 'false'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Order OrderHistoryServiceImpl.getOrderDetails(String)"})
   void testGetOrderDetails_givenEnvironmentGetPropertyReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
     NullOrderImpl nullOrderImpl = new NullOrderImpl();
     when(orderService.findOrderByOrderNumber(Mockito.<String>any())).thenReturn(nullOrderImpl);
@@ -102,126 +100,47 @@ class OrderHistoryServiceImplDiffblueTest {
     Order actualOrderDetails = orderHistoryServiceImpl.getOrderDetails("42");
 
     // Assert
-    verify(orderService).findOrderByOrderNumber("42");
-    verify(environment)
-        .getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+    verify(orderService).findOrderByOrderNumber(eq("42"));
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
     assertSame(nullOrderImpl, actualOrderDetails);
   }
 
   /**
    * Test {@link OrderHistoryServiceImpl#getOrderDetails(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} throw
-   *       {@link IllegalArgumentException#IllegalArgumentException()}.
+   *   <li>Given {@link OrderService} {@link OrderService#findOrderByOrderNumber(String)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
    */
   @Test
-  @DisplayName(
-      "Test getOrderDetails(String); given Environment getProperty(String, Class, Object) throw IllegalArgumentException()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order OrderHistoryServiceImpl.getOrderDetails(String)"})
-  void testGetOrderDetails_givenEnvironmentGetPropertyThrowIllegalArgumentException() {
-    // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new IllegalArgumentException());
-    when(orderService.findOrderByOrderNumber(Mockito.<String>any()))
-        .thenReturn(new NullOrderImpl());
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> orderHistoryServiceImpl.getOrderDetails("42"));
-    verify(orderService).findOrderByOrderNumber("42");
-    verify(environment)
-        .getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
-  }
-
-  /**
-   * Test {@link OrderHistoryServiceImpl#getOrderDetails(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getCustomer()} throw {@link
-   *       IllegalArgumentException#IllegalArgumentException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
-   */
-  @Test
-  @DisplayName(
-      "Test getOrderDetails(String); given NullOrderImpl getCustomer() throw IllegalArgumentException()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order OrderHistoryServiceImpl.getOrderDetails(String)"})
-  void testGetOrderDetails_givenNullOrderImplGetCustomerThrowIllegalArgumentException() {
-    // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(true);
-
-    NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
-    when(nullOrderImpl.getCustomer()).thenThrow(new IllegalArgumentException());
-    doNothing().when(nullOrderImpl).addOrderItem(Mockito.<OrderItem>any());
-    nullOrderImpl.addOrderItem(new BundleOrderItemImpl());
-    when(orderService.findOrderByOrderNumber(Mockito.<String>any())).thenReturn(nullOrderImpl);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> orderHistoryServiceImpl.getOrderDetails("42"));
-    verify(nullOrderImpl).addOrderItem(isA(OrderItem.class));
-    verify(nullOrderImpl).getCustomer();
-    verify(orderService).findOrderByOrderNumber("42");
-    verify(environment)
-        .getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
-  }
-
-  /**
-   * Test {@link OrderHistoryServiceImpl#getOrderDetails(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderService} {@link OrderService#findOrderByOrderNumber(String)} return
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
-   */
-  @Test
-  @DisplayName(
-      "Test getOrderDetails(String); given OrderService findOrderByOrderNumber(String) return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getOrderDetails(String); given OrderService findOrderByOrderNumber(String) return 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Order OrderHistoryServiceImpl.getOrderDetails(String)"})
   void testGetOrderDetails_givenOrderServiceFindOrderByOrderNumberReturnNull() {
     // Arrange
     when(orderService.findOrderByOrderNumber(Mockito.<String>any())).thenReturn(null);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> orderHistoryServiceImpl.getOrderDetails("42"));
-    verify(orderService).findOrderByOrderNumber("42");
+    assertThrows(IllegalArgumentException.class, () -> orderHistoryServiceImpl.getOrderDetails("42"));
+    verify(orderService).findOrderByOrderNumber(eq("42"));
   }
 
   /**
    * Test {@link OrderHistoryServiceImpl#getOrderDetails(String)}.
-   *
    * <ul>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).
+   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
    */
   @Test
   @DisplayName("Test getOrderDetails(String); then return NullOrderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Order OrderHistoryServiceImpl.getOrderDetails(String)"})
   void testGetOrderDetails_thenReturnNullOrderImpl() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     NullOrderImpl nullOrderImpl = new NullOrderImpl();
     when(orderService.findOrderByOrderNumber(Mockito.<String>any())).thenReturn(nullOrderImpl);
@@ -230,32 +149,27 @@ class OrderHistoryServiceImplDiffblueTest {
     Order actualOrderDetails = orderHistoryServiceImpl.getOrderDetails("42");
 
     // Assert
-    verify(orderService).findOrderByOrderNumber("42");
-    verify(environment)
-        .getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+    verify(orderService).findOrderByOrderNumber(eq("42"));
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
     assertSame(nullOrderImpl, actualOrderDetails);
   }
 
   /**
    * Test {@link OrderHistoryServiceImpl#getOrderDetails(String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link SecurityException}.
+   *   <li>Then throw {@link SecurityException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#getOrderDetails(String)}
    */
   @Test
   @DisplayName("Test getOrderDetails(String); then throw SecurityException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Order OrderHistoryServiceImpl.getOrderDetails(String)"})
   void testGetOrderDetails_thenThrowSecurityException() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
-
     NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
     when(nullOrderImpl.getCustomer()).thenReturn(new CustomerImpl());
     doNothing().when(nullOrderImpl).addOrderItem(Mockito.<OrderItem>any());
@@ -266,96 +180,155 @@ class OrderHistoryServiceImplDiffblueTest {
     assertThrows(SecurityException.class, () -> orderHistoryServiceImpl.getOrderDetails("42"));
     verify(nullOrderImpl).addOrderItem(isA(OrderItem.class));
     verify(nullOrderImpl).getCustomer();
-    verify(orderService).findOrderByOrderNumber("42");
-    verify(environment)
-        .getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+    verify(orderService).findOrderByOrderNumber(eq("42"));
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+  }
+
+  /**
+   * Test {@link OrderHistoryServiceImpl#validateCustomerOwnedData(Order)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#validateCustomerOwnedData(Order)}
+   */
+  @Test
+  @DisplayName("Test validateCustomerOwnedData(Order); given Environment getProperty(String, Class, Object) return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderHistoryServiceImpl.validateCustomerOwnedData(Order)"})
+  void testValidateCustomerOwnedData_givenEnvironmentGetPropertyReturnFalse() throws SecurityException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
+
+    // Act
+    orderHistoryServiceImpl.validateCustomerOwnedData(new NullOrderImpl());
+
+    // Assert
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+  }
+
+  /**
+   * Test {@link OrderHistoryServiceImpl#validateCustomerOwnedData(Order)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#validateCustomerOwnedData(Order)}
+   */
+  @Test
+  @DisplayName("Test validateCustomerOwnedData(Order); given Environment getProperty(String, Class, Object) return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderHistoryServiceImpl.validateCustomerOwnedData(Order)"})
+  void testValidateCustomerOwnedData_givenEnvironmentGetPropertyReturnTrue() throws SecurityException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+
+    // Act
+    orderHistoryServiceImpl.validateCustomerOwnedData(new NullOrderImpl());
+
+    // Assert
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+  }
+
+  /**
+   * Test {@link OrderHistoryServiceImpl#validateCustomerOwnedData(Order)}.
+   * <ul>
+   *   <li>Then throw {@link SecurityException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#validateCustomerOwnedData(Order)}
+   */
+  @Test
+  @DisplayName("Test validateCustomerOwnedData(Order); then throw SecurityException")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void OrderHistoryServiceImpl.validateCustomerOwnedData(Order)"})
+  void testValidateCustomerOwnedData_thenThrowSecurityException() throws SecurityException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+    NullOrderImpl order = mock(NullOrderImpl.class);
+    when(order.getCustomer()).thenReturn(new CustomerImpl());
+    doNothing().when(order).addOrderItem(Mockito.<OrderItem>any());
+    order.addOrderItem(new BundleOrderItemImpl());
+
+    // Act and Assert
+    assertThrows(SecurityException.class, () -> orderHistoryServiceImpl.validateCustomerOwnedData(order));
+    verify(order).addOrderItem(isA(OrderItem.class));
+    verify(order).getCustomer();
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
   }
 
   /**
    * Test {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}
    */
   @Test
   @DisplayName("Test shouldValidateCustomerOwnedData(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean OrderHistoryServiceImpl.shouldValidateCustomerOwnedData()"})
   void testShouldValidateCustomerOwnedData_thenReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
 
     // Act
-    boolean actualShouldValidateCustomerOwnedDataResult =
-        orderHistoryServiceImpl.shouldValidateCustomerOwnedData();
+    boolean actualShouldValidateCustomerOwnedDataResult = orderHistoryServiceImpl.shouldValidateCustomerOwnedData();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
     assertFalse(actualShouldValidateCustomerOwnedDataResult);
   }
 
   /**
    * Test {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}
    */
   @Test
   @DisplayName("Test shouldValidateCustomerOwnedData(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean OrderHistoryServiceImpl.shouldValidateCustomerOwnedData()"})
   void testShouldValidateCustomerOwnedData_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
 
     // Act
-    boolean actualShouldValidateCustomerOwnedDataResult =
-        orderHistoryServiceImpl.shouldValidateCustomerOwnedData();
+    boolean actualShouldValidateCustomerOwnedDataResult = orderHistoryServiceImpl.shouldValidateCustomerOwnedData();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
     assertTrue(actualShouldValidateCustomerOwnedDataResult);
   }
 
   /**
    * Test {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}
+   * <p>
+   * Method under test: {@link OrderHistoryServiceImpl#shouldValidateCustomerOwnedData()}
    */
   @Test
   @DisplayName("Test shouldValidateCustomerOwnedData(); then throw IllegalArgumentException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean OrderHistoryServiceImpl.shouldValidateCustomerOwnedData()"})
   void testShouldValidateCustomerOwnedData_thenThrowIllegalArgumentException() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenThrow(new IllegalArgumentException("validate.customer.owned.data"));
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> orderHistoryServiceImpl.shouldValidateCustomerOwnedData());
-    verify(environment)
-        .getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
+    assertThrows(IllegalArgumentException.class, () -> orderHistoryServiceImpl.shouldValidateCustomerOwnedData());
+    verify(environment).getProperty(eq("validate.customer.owned.data"), isA(Class.class), isA(Object.class));
   }
 }

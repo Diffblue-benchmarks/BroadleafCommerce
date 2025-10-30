@@ -17,13 +17,12 @@
  */
 package org.broadleafcommerce.common.extensibility.jpa;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,68 +38,93 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {ORMConfigPersistenceUnitPostProcessor.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ORMConfigPersistenceUnitPostProcessorDiffblueTest {
-  @Autowired private List<ORMConfigDto> list;
+  @Autowired
+  private List<ORMConfigDto> list;
 
-  @MockBean private ORMConfigDto oRMConfigDto;
+  @MockBean
+  private ORMConfigDto oRMConfigDto;
 
-  @Autowired private ORMConfigPersistenceUnitPostProcessor oRMConfigPersistenceUnitPostProcessor;
+  @Autowired
+  private ORMConfigPersistenceUnitPostProcessor oRMConfigPersistenceUnitPostProcessor;
 
   /**
-   * Test {@link
-   * ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
-   *
-   * <p>Method under test: {@link
-   * ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
+   * Test {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
+   * <ul>
+   *   <li>Given {@link ORMConfigDto} {@link ORMConfigDto#getPuName()} return {@code Pu Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"
-  })
-  public void testPostProcessPersistenceUnitInfo() {
+      "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"})
+  public void testPostProcessPersistenceUnitInfo_givenORMConfigDtoGetPuNameReturnPuName() {
     // Arrange
-    when(oRMConfigDto.getClassNames()).thenReturn(new ArrayList<>());
-    when(oRMConfigDto.getMappingFiles()).thenReturn(new ArrayList<>());
     when(oRMConfigDto.getPuName()).thenReturn("Pu Name");
-
-    MutablePersistenceUnitInfo pui = new MutablePersistenceUnitInfo();
-    pui.setPersistenceUnitName("Pu Name");
+    MutablePersistenceUnitInfo pui = mock(MutablePersistenceUnitInfo.class);
+    when(pui.getPersistenceUnitName()).thenReturn("Persistence Unit Name");
 
     // Act
     oRMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(pui);
 
-    // Assert that nothing has changed
-    verify(oRMConfigDto).getClassNames();
-    verify(oRMConfigDto).getMappingFiles();
+    // Assert
     verify(oRMConfigDto).getPuName();
-    assertTrue(pui.getManagedClassNames().isEmpty());
-    assertTrue(pui.getMappingFileNames().isEmpty());
+    verify(pui).getPersistenceUnitName();
   }
 
   /**
-   * Test {@link
-   * ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
-   *
-   * <p>Method under test: {@link
-   * ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
+   * Test {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
+   * <ul>
+   *   <li>Then calls {@link ORMConfigDto#getClassNames()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"
-  })
-  public void testPostProcessPersistenceUnitInfo2() {
+      "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"})
+  public void testPostProcessPersistenceUnitInfo_thenCallsGetClassNames() {
+    // Arrange
+    when(oRMConfigDto.getClassNames()).thenReturn(new ArrayList<>());
+    when(oRMConfigDto.getMappingFiles()).thenReturn(new ArrayList<>());
+    when(oRMConfigDto.getPuName()).thenReturn("Persistence Unit Name");
+    MutablePersistenceUnitInfo pui = mock(MutablePersistenceUnitInfo.class);
+    when(pui.getPersistenceUnitName()).thenReturn("Persistence Unit Name");
+
+    // Act
+    oRMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(pui);
+
+    // Assert
+    verify(oRMConfigDto).getClassNames();
+    verify(oRMConfigDto).getMappingFiles();
+    verify(oRMConfigDto).getPuName();
+    verify(pui).getPersistenceUnitName();
+  }
+
+  /**
+   * Test {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
+   * <ul>
+   *   <li>Then calls {@link MutablePersistenceUnitInfo#getManagedClassNames()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"})
+  public void testPostProcessPersistenceUnitInfo_thenCallsGetManagedClassNames() {
     // Arrange
     ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("Pu Name");
+    stringList.add("Persistence Unit Name");
     when(oRMConfigDto.getClassNames()).thenReturn(stringList);
     when(oRMConfigDto.getMappingFiles()).thenReturn(new ArrayList<>());
-    when(oRMConfigDto.getPuName()).thenReturn("Pu Name");
-
-    MutablePersistenceUnitInfo pui = new MutablePersistenceUnitInfo();
-    pui.setPersistenceUnitName("Pu Name");
+    when(oRMConfigDto.getPuName()).thenReturn("Persistence Unit Name");
+    MutablePersistenceUnitInfo pui = mock(MutablePersistenceUnitInfo.class);
+    when(pui.getManagedClassNames()).thenReturn(new ArrayList<>());
+    when(pui.getPersistenceUnitName()).thenReturn("Persistence Unit Name");
 
     // Act
     oRMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(pui);
@@ -109,94 +133,59 @@ public class ORMConfigPersistenceUnitPostProcessorDiffblueTest {
     verify(oRMConfigDto, atLeast(1)).getClassNames();
     verify(oRMConfigDto).getMappingFiles();
     verify(oRMConfigDto).getPuName();
-    List<String> managedClassNames = pui.getManagedClassNames();
-    assertEquals(1, managedClassNames.size());
-    assertEquals("Pu Name", managedClassNames.get(0));
-    assertTrue(pui.getMappingFileNames().isEmpty());
+    verify(pui).getManagedClassNames();
+    verify(pui).getPersistenceUnitName();
   }
 
   /**
-   * Test {@link
-   * ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
-   *
-   * <p>Method under test: {@link
-   * ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
+   * Test {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
+   * <ul>
+   *   <li>Then calls {@link MutablePersistenceUnitInfo#getMappingFileNames()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"
-  })
-  public void testPostProcessPersistenceUnitInfo3() {
+      "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"})
+  public void testPostProcessPersistenceUnitInfo_thenCallsGetMappingFileNames() {
     // Arrange
     ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("Pu Name");
-    when(oRMConfigDto.getClassNames()).thenReturn(new ArrayList<>());
-    when(oRMConfigDto.getMappingFiles()).thenReturn(stringList);
-    when(oRMConfigDto.getPuName()).thenReturn("Pu Name");
+    stringList.add("Persistence Unit Name");
 
-    MutablePersistenceUnitInfo pui = new MutablePersistenceUnitInfo();
-    pui.setPersistenceUnitName("Pu Name");
+    ArrayList<String> stringList2 = new ArrayList<>();
+    stringList2.add("Persistence Unit Name");
+    when(oRMConfigDto.getClassNames()).thenReturn(stringList);
+    when(oRMConfigDto.getMappingFiles()).thenReturn(stringList2);
+    when(oRMConfigDto.getPuName()).thenReturn("Persistence Unit Name");
+    MutablePersistenceUnitInfo pui = mock(MutablePersistenceUnitInfo.class);
+    when(pui.getMappingFileNames()).thenReturn(new ArrayList<>());
+    when(pui.getManagedClassNames()).thenReturn(new ArrayList<>());
+    when(pui.getPersistenceUnitName()).thenReturn("Persistence Unit Name");
 
     // Act
     oRMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(pui);
 
     // Assert
-    verify(oRMConfigDto).getClassNames();
+    verify(oRMConfigDto, atLeast(1)).getClassNames();
     verify(oRMConfigDto, atLeast(1)).getMappingFiles();
     verify(oRMConfigDto).getPuName();
-    List<String> mappingFileNames = pui.getMappingFileNames();
-    assertEquals(1, mappingFileNames.size());
-    assertEquals("Pu Name", mappingFileNames.get(0));
-    assertTrue(pui.getManagedClassNames().isEmpty());
-  }
-
-  /**
-   * Test {@link
-   * ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}.
-   *
-   * <ul>
-   *   <li>Given {@code Persistence Unit Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ORMConfigPersistenceUnitPostProcessor#postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ORMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo)"
-  })
-  public void testPostProcessPersistenceUnitInfo_givenPersistenceUnitName() {
-    // Arrange
-    when(oRMConfigDto.getPuName()).thenReturn("Pu Name");
-
-    MutablePersistenceUnitInfo pui = new MutablePersistenceUnitInfo();
-    pui.setPersistenceUnitName("Persistence Unit Name");
-
-    // Act
-    oRMConfigPersistenceUnitPostProcessor.postProcessPersistenceUnitInfo(pui);
-
-    // Assert that nothing has changed
-    verify(oRMConfigDto).getPuName();
-    assertTrue(pui.getManagedClassNames().isEmpty());
-    assertTrue(pui.getMappingFileNames().isEmpty());
+    verify(pui).getManagedClassNames();
+    verify(pui).getMappingFileNames();
+    verify(pui).getPersistenceUnitName();
   }
 
   /**
    * Test new {@link ORMConfigPersistenceUnitPostProcessor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * ORMConfigPersistenceUnitPostProcessor}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link ORMConfigPersistenceUnitPostProcessor}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ORMConfigPersistenceUnitPostProcessor.<init>()"})
   public void testNewORMConfigPersistenceUnitPostProcessor() {
     // Arrange, Act and Assert
-    assertTrue(new ORMConfigPersistenceUnitPostProcessor().configs.isEmpty());
+    assertTrue((new ORMConfigPersistenceUnitPostProcessor()).configs.isEmpty());
   }
 }

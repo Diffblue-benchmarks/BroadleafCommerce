@@ -18,8 +18,7 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,17 +30,15 @@ import org.junit.experimental.categories.Category;
 public class ValidationUtilDiffblueTest {
   /**
    * Test {@link ValidationUtil#buildErrorMessage(Map, List)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code The entity has failed validation - ;}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code The entity has failed validation - ;}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ValidationUtil#buildErrorMessage(Map, List)}
+   * <p>
+   * Method under test: {@link ValidationUtil#buildErrorMessage(Map, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String ValidationUtil.buildErrorMessage(Map, List)"})
   public void testBuildErrorMessage_givenArrayList_thenReturnTheEntityHasFailedValidation() {
     // Arrange
@@ -49,32 +46,28 @@ public class ValidationUtilDiffblueTest {
     propertyErrors.put("The entity has failed validation -\n", new ArrayList<>());
 
     // Act and Assert
-    assertEquals(
-        "The entity has failed validation -\n;\n",
+    assertEquals("The entity has failed validation -\n;\n",
         ValidationUtil.buildErrorMessage(propertyErrors, new ArrayList<>()));
   }
 
   /**
    * Test {@link ValidationUtil#buildErrorMessage(Map, List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code The entity has failed validation -}.
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>Then return {@code The entity has failed validation -}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ValidationUtil#buildErrorMessage(Map, List)}
+   * <p>
+   * Method under test: {@link ValidationUtil#buildErrorMessage(Map, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String ValidationUtil.buildErrorMessage(Map, List)"})
-  public void testBuildErrorMessage_whenArrayList_thenReturnTheEntityHasFailedValidation() {
+  public void testBuildErrorMessage_whenHashMap_thenReturnTheEntityHasFailedValidation() {
     // Arrange
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
 
     // Act and Assert
-    assertEquals(
-        "The entity has failed validation -\n",
+    assertEquals("The entity has failed validation -\n",
         ValidationUtil.buildErrorMessage(propertyErrors, new ArrayList<>()));
   }
 }

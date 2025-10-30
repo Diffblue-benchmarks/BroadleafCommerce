@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
@@ -34,70 +34,71 @@ import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class SeoElementVariableExpressionDiffblueTest {
+  @InjectMocks
+  private SeoElementVariableExpression seoElementVariableExpression;
+
   /**
    * Test {@link SeoElementVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getName()}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("seoElement", new SeoElementVariableExpression().getName());
+    assertEquals("seoElement", (new SeoElementVariableExpression()).getName());
   }
 
   /**
    * Test {@link SeoElementVariableExpression#getTitle(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>Given {@code Dr}.
-   *   <li>When {@link CategoryImpl} (default constructor) MetaTitle is {@code Dr}.
-   *   <li>Then return {@code Dr}.
+   *   <li>Given {@code Dr}.</li>
+   *   <li>When {@link Category} {@link Category#getMetaTitle()} return {@code Dr}.</li>
+   *   <li>Then return {@code Dr}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getTitle(Category)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Category)}
    */
   @Test
-  @DisplayName(
-      "Test getTitle(Category) with 'category'; given 'Dr'; when CategoryImpl (default constructor) MetaTitle is 'Dr'; then return 'Dr'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getTitle(Category) with 'category'; given 'Dr'; when Category getMetaTitle() return 'Dr'; then return 'Dr'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getTitle(Category)"})
-  void testGetTitleWithCategory_givenDr_whenCategoryImplMetaTitleIsDr_thenReturnDr() {
+  void testGetTitleWithCategory_givenDr_whenCategoryGetMetaTitleReturnDr_thenReturnDr() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
+    Category category = mock(Category.class);
+    when(category.getMetaTitle()).thenReturn("Dr");
 
-    CategoryImpl category = new CategoryImpl();
-    category.setMetaTitle("Dr");
+    // Act
+    String actualTitle = seoElementVariableExpression.getTitle(category);
 
-    // Act and Assert
-    assertEquals("Dr", seoElementVariableExpression.getTitle(category));
+    // Assert
+    verify(category).getMetaTitle();
+    assertEquals("Dr", actualTitle);
   }
 
   /**
    * Test {@link SeoElementVariableExpression#getTitle(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>Given empty string.
-   *   <li>Then return {@code Name}.
+   *   <li>Given empty string.</li>
+   *   <li>Then return {@code Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getTitle(Category)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Category)}
    */
   @Test
   @DisplayName("Test getTitle(Category) with 'category'; given empty string; then return 'Name'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getTitle(Category)"})
   void testGetTitleWithCategory_givenEmptyString_thenReturnName() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     Category category = mock(Category.class);
     when(category.getMetaTitle()).thenReturn("");
     when(category.getName()).thenReturn("Name");
@@ -113,47 +114,37 @@ class SeoElementVariableExpressionDiffblueTest {
 
   /**
    * Test {@link SeoElementVariableExpression#getTitle(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>When {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getTitle(Category)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Category)}
    */
   @Test
-  @DisplayName(
-      "Test getTitle(Category) with 'category'; when CategoryImpl (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getTitle(Category) with 'category'; when CategoryImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getTitle(Category)"})
   void testGetTitleWithCategory_whenCategoryImpl_thenReturnNull() {
-    // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(seoElementVariableExpression.getTitle(new CategoryImpl()));
   }
 
   /**
    * Test {@link SeoElementVariableExpression#getTitle(Product)} with {@code product}.
-   *
    * <ul>
-   *   <li>Given {@code Dr}.
-   *   <li>Then return {@code Dr}.
+   *   <li>Given {@code Dr}.</li>
+   *   <li>Then return {@code Dr}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getTitle(Product)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Product)}
    */
   @Test
   @DisplayName("Test getTitle(Product) with 'product'; given 'Dr'; then return 'Dr'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getTitle(Product)"})
   void testGetTitleWithProduct_givenDr_thenReturnDr() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getMetaTitle()).thenReturn("Dr");
 
@@ -167,23 +158,19 @@ class SeoElementVariableExpressionDiffblueTest {
 
   /**
    * Test {@link SeoElementVariableExpression#getTitle(Product)} with {@code product}.
-   *
    * <ul>
-   *   <li>Given empty string.
-   *   <li>Then return {@code Name}.
+   *   <li>Given empty string.</li>
+   *   <li>Then return {@code Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getTitle(Product)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Product)}
    */
   @Test
   @DisplayName("Test getTitle(Product) with 'product'; given empty string; then return 'Name'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getTitle(Product)"})
   void testGetTitleWithProduct_givenEmptyString_thenReturnName() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getMetaTitle()).thenReturn("");
     when(product.getName()).thenReturn("Name");
@@ -199,24 +186,44 @@ class SeoElementVariableExpressionDiffblueTest {
 
   /**
    * Test {@link SeoElementVariableExpression#getTitle(Product)} with {@code product}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getTitle(Product)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Product)}
    */
   @Test
-  @DisplayName(
-      "Test getTitle(Product) with 'product'; given SkuImpl (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getTitle(Product) with 'product'; given SkuImpl (default constructor) SalePrice is Money(); then return 'null'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String SeoElementVariableExpression.getTitle(Product)"})
+  void testGetTitleWithProduct_givenSkuImplSalePriceIsMoney_thenReturnNull() {
+    // Arrange
+    SkuImpl defaultSku = new SkuImpl();
+    defaultSku.setSalePrice(new Money());
+
+    ProductBundleImpl product = new ProductBundleImpl();
+    product.setDefaultSku(defaultSku);
+
+    // Act and Assert
+    assertNull(seoElementVariableExpression.getTitle(product));
+  }
+
+  /**
+   * Test {@link SeoElementVariableExpression#getTitle(Product)} with {@code product}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Product)}
+   */
+  @Test
+  @DisplayName("Test getTitle(Product) with 'product'; given SkuImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getTitle(Product)"})
   void testGetTitleWithProduct_givenSkuImpl_thenReturnNull() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ProductBundleImpl product = new ProductBundleImpl();
     product.setDefaultSku(new SkuImpl());
 
@@ -226,24 +233,21 @@ class SeoElementVariableExpressionDiffblueTest {
 
   /**
    * Test {@link SeoElementVariableExpression#getDescription(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>Given empty string.
+   *   <li>Given empty string.</li>
+   *   <li>Then return {@code Long Description}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Category)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getDescription(Category)}
    */
   @Test
-  @DisplayName("Test getDescription(Category) with 'category'; given empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getDescription(Category) with 'category'; given empty string; then return 'Long Description'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Category)"})
-  void testGetDescriptionWithCategory_givenEmptyString() {
+  void testGetDescriptionWithCategory_givenEmptyString_thenReturnLongDescription() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     Category category = mock(Category.class);
-    when(category.getLongDescription()).thenReturn("");
+    when(category.getLongDescription()).thenReturn("Long Description");
     when(category.getMetaDescription()).thenReturn("");
 
     // Act
@@ -252,32 +256,27 @@ class SeoElementVariableExpressionDiffblueTest {
     // Assert
     verify(category).getLongDescription();
     verify(category).getMetaDescription();
-    assertEquals("", actualDescription);
+    assertEquals("Long Description", actualDescription);
   }
 
   /**
    * Test {@link SeoElementVariableExpression#getDescription(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>Given {@code not empty}.
-   *   <li>Then return {@code not empty}.
+   *   <li>Given {@code Meta Description}.</li>
+   *   <li>Then return {@code Meta Description}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Category)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getDescription(Category)}
    */
   @Test
-  @DisplayName(
-      "Test getDescription(Category) with 'category'; given 'not empty'; then return 'not empty'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getDescription(Category) with 'category'; given 'Meta Description'; then return 'Meta Description'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Category)"})
-  void testGetDescriptionWithCategory_givenNotEmpty_thenReturnNotEmpty() {
+  void testGetDescriptionWithCategory_givenMetaDescription_thenReturnMetaDescription() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     Category category = mock(Category.class);
-    when(category.getLongDescription()).thenReturn("not empty");
-    when(category.getMetaDescription()).thenReturn("not empty");
+    when(category.getLongDescription()).thenReturn("Long Description");
+    when(category.getMetaDescription()).thenReturn("Meta Description");
 
     // Act
     String actualDescription = seoElementVariableExpression.getDescription(category);
@@ -285,101 +284,38 @@ class SeoElementVariableExpressionDiffblueTest {
     // Assert
     verify(category).getLongDescription();
     verify(category).getMetaDescription();
-    assertEquals("not empty", actualDescription);
+    assertEquals("Meta Description", actualDescription);
   }
 
   /**
    * Test {@link SeoElementVariableExpression#getDescription(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor) LongDescription is {@code
-   *       longDescription}.
+   *   <li>When {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Category)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getDescription(Category)}
    */
   @Test
-  @DisplayName(
-      "Test getDescription(Category) with 'category'; when CategoryImpl (default constructor) LongDescription is 'longDescription'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Category)"})
-  void testGetDescriptionWithCategory_whenCategoryImplLongDescriptionIsLongDescription() {
-    // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
-    CategoryImpl category = new CategoryImpl();
-    category.setLongDescription("longDescription");
-
-    // Act and Assert
-    assertEquals("longDescription", seoElementVariableExpression.getDescription(category));
-  }
-
-  /**
-   * Test {@link SeoElementVariableExpression#getDescription(Category)} with {@code category}.
-   *
-   * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor) MetaDescription is {@code
-   *       longDescription}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Category)}
-   */
-  @Test
-  @DisplayName(
-      "Test getDescription(Category) with 'category'; when CategoryImpl (default constructor) MetaDescription is 'longDescription'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Category)"})
-  void testGetDescriptionWithCategory_whenCategoryImplMetaDescriptionIsLongDescription() {
-    // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
-    CategoryImpl category = new CategoryImpl();
-    category.setMetaDescription("longDescription");
-
-    // Act and Assert
-    assertEquals("longDescription", seoElementVariableExpression.getDescription(category));
-  }
-
-  /**
-   * Test {@link SeoElementVariableExpression#getDescription(Category)} with {@code category}.
-   *
-   * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Category)}
-   */
-  @Test
-  @DisplayName(
-      "Test getDescription(Category) with 'category'; when CategoryImpl (default constructor); then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getDescription(Category) with 'category'; when CategoryImpl (default constructor); then return empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Category)"})
   void testGetDescriptionWithCategory_whenCategoryImpl_thenReturnEmptyString() {
-    // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("", seoElementVariableExpression.getDescription(new CategoryImpl()));
   }
 
   /**
    * Test {@link SeoElementVariableExpression#getDescription(Product)} with {@code product}.
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
    */
   @Test
   @DisplayName("Test getDescription(Product) with 'product'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Product)"})
   void testGetDescriptionWithProduct() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getLongDescription()).thenReturn("");
     when(product.getMetaDescription()).thenReturn("");
@@ -395,24 +331,19 @@ class SeoElementVariableExpressionDiffblueTest {
 
   /**
    * Test {@link SeoElementVariableExpression#getDescription(Product)} with {@code product}.
-   *
    * <ul>
-   *   <li>Given {@code Long Description}.
-   *   <li>Then return {@code Long Description}.
+   *   <li>Given {@code Long Description}.</li>
+   *   <li>Then return {@code Long Description}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
    */
   @Test
-  @DisplayName(
-      "Test getDescription(Product) with 'product'; given 'Long Description'; then return 'Long Description'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getDescription(Product) with 'product'; given 'Long Description'; then return 'Long Description'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Product)"})
   void testGetDescriptionWithProduct_givenLongDescription_thenReturnLongDescription() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getLongDescription()).thenReturn("Long Description");
     when(product.getMetaDescription()).thenReturn("");
@@ -428,24 +359,19 @@ class SeoElementVariableExpressionDiffblueTest {
 
   /**
    * Test {@link SeoElementVariableExpression#getDescription(Product)} with {@code product}.
-   *
    * <ul>
-   *   <li>Given {@code Meta Description}.
-   *   <li>Then return {@code Meta Description}.
+   *   <li>Given {@code Meta Description}.</li>
+   *   <li>Then return {@code Meta Description}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
    */
   @Test
-  @DisplayName(
-      "Test getDescription(Product) with 'product'; given 'Meta Description'; then return 'Meta Description'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getDescription(Product) with 'product'; given 'Meta Description'; then return 'Meta Description'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Product)"})
   void testGetDescriptionWithProduct_givenMetaDescription_thenReturnMetaDescription() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getLongDescription()).thenReturn("Long Description");
     when(product.getMetaDescription()).thenReturn("Meta Description");
@@ -461,22 +387,18 @@ class SeoElementVariableExpressionDiffblueTest {
 
   /**
    * Test {@link SeoElementVariableExpression#getDescription(Product)} with {@code product}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
    */
   @Test
   @DisplayName("Test getDescription(Product) with 'product'; given SkuImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Product)"})
   void testGetDescriptionWithProduct_givenSkuImpl() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ProductBundleImpl product = new ProductBundleImpl();
     product.setDefaultSku(new SkuImpl());
 
@@ -485,61 +407,73 @@ class SeoElementVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link SeoElementVariableExpression#buildTitleString(List, String)}.
-   *
+   * Test {@link SeoElementVariableExpression#getDescription(Product)} with {@code product}.
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then return {@code fooElement Delimiterseo.site.simple.url}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#buildTitleString(List, String)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getDescription(Product)}
    */
   @Test
-  @DisplayName(
-      "Test buildTitleString(List, String); given 'foo'; then return 'fooElement Delimiterseo.site.simple.url'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getDescription(Product) with 'product'; given SkuImpl (default constructor) SalePrice is Money()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String SeoElementVariableExpression.getDescription(Product)"})
+  void testGetDescriptionWithProduct_givenSkuImplSalePriceIsMoney() {
+    // Arrange
+    SkuImpl defaultSku = new SkuImpl();
+    defaultSku.setSalePrice(new Money());
+
+    ProductBundleImpl product = new ProductBundleImpl();
+    product.setDefaultSku(defaultSku);
+
+    // Act and Assert
+    assertEquals("", seoElementVariableExpression.getDescription(product));
+  }
+
+  /**
+   * Test {@link SeoElementVariableExpression#buildTitleString(List, String)}.
+   * <ul>
+   *   <li>Given {@code foo}.</li>
+   *   <li>Then return {@code fooElement Delimiterseo.site.simple.url}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#buildTitleString(List, String)}
+   */
+  @Test
+  @DisplayName("Test buildTitleString(List, String); given 'foo'; then return 'fooElement Delimiterseo.site.simple.url'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.buildTitleString(List, String)"})
   void testBuildTitleString_givenFoo_thenReturnFooElementDelimiterseoSiteSimpleUrl() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ArrayList<String> titleElements = new ArrayList<>();
     titleElements.add("foo");
     titleElements.add("seo.site.simple.url");
 
     // Act and Assert
-    assertEquals(
-        "fooElement Delimiterseo.site.simple.url",
+    assertEquals("fooElement Delimiterseo.site.simple.url",
         seoElementVariableExpression.buildTitleString(titleElements, "Element Delimiter"));
   }
 
   /**
    * Test {@link SeoElementVariableExpression#buildTitleString(List, String)}.
-   *
    * <ul>
-   *   <li>Given {@code seo.site.simple.url}.
-   *   <li>Then return {@code seo.site.simple.url}.
+   *   <li>Given {@code seo.site.simple.url}.</li>
+   *   <li>Then return {@code seo.site.simple.url}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoElementVariableExpression#buildTitleString(List, String)}
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#buildTitleString(List, String)}
    */
   @Test
-  @DisplayName(
-      "Test buildTitleString(List, String); given 'seo.site.simple.url'; then return 'seo.site.simple.url'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test buildTitleString(List, String); given 'seo.site.simple.url'; then return 'seo.site.simple.url'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String SeoElementVariableExpression.buildTitleString(List, String)"})
   void testBuildTitleString_givenSeoSiteSimpleUrl_thenReturnSeoSiteSimpleUrl() {
     // Arrange
-    SeoElementVariableExpression seoElementVariableExpression = new SeoElementVariableExpression();
-
     ArrayList<String> titleElements = new ArrayList<>();
     titleElements.add("seo.site.simple.url");
 
     // Act and Assert
-    assertEquals(
-        "seo.site.simple.url",
+    assertEquals("seo.site.simple.url",
         seoElementVariableExpression.buildTitleString(titleElements, "Element Delimiter"));
   }
 }

@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
@@ -29,9 +30,10 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import org.apache.xerces.dom.DocumentFragmentImpl;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.persistence.TargetModeType;
 import org.broadleafcommerce.common.persistence.transaction.LifecycleAwareJpaTransactionManager;
@@ -59,809 +61,755 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DynamicEntityRemoteServiceDiffblueTest {
-  @InjectMocks private DynamicEntityRemoteService dynamicEntityRemoteService;
+  @InjectMocks
+  private DynamicEntityRemoteService dynamicEntityRemoteService;
 
-  @Mock private ExploitProtectionService exploitProtectionService;
+  @Mock
+  private PersistenceService persistenceService;
 
-  @Mock private PersistenceService persistenceService;
+  @Mock
+  private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
 
-  @Mock private PersistenceThreadManager persistenceThreadManager;
+  @Mock
+  private ExploitProtectionService exploitProtectionService;
 
-  @Mock private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
+  @Mock
+  private PersistenceThreadManager persistenceThreadManager;
 
   /**
-   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException,
-   * String, Throwable)}.
-   *
+   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
    * <ul>
-   *   <li>Then return Cause is {@link Throwable#Throwable()}.
+   *   <li>Then return Cause is {@link Throwable#Throwable()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String,
-   * Throwable)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"
-  })
+      "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"})
   public void testRecreateSpecificServiceException_thenReturnCauseIsThrowable() {
     // Arrange
     ServiceException e = new ServiceException("An error occurred");
     Throwable cause = new Throwable();
 
     // Act and Assert
-    assertSame(
-        cause,
-        dynamicEntityRemoteService
-            .recreateSpecificServiceException(e, "An error occurred", cause)
-            .getCause());
+    assertSame(cause,
+        dynamicEntityRemoteService.recreateSpecificServiceException(e, "An error occurred", cause).getCause());
   }
 
   /**
-   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException,
-   * String, Throwable)}.
-   *
+   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
    * <ul>
-   *   <li>Then return LocalizedMessage is {@code An error occurred}.
+   *   <li>Then return LocalizedMessage is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String,
-   * Throwable)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"
-  })
+      "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"})
   public void testRecreateSpecificServiceException_thenReturnLocalizedMessageIsAnErrorOccurred() {
     // Arrange and Act
-    ServiceException actualRecreateSpecificServiceExceptionResult =
-        dynamicEntityRemoteService.recreateSpecificServiceException(
-            new ServiceException("An error occurred"), "An error occurred", null);
+    ServiceException actualRecreateSpecificServiceExceptionResult = dynamicEntityRemoteService
+        .recreateSpecificServiceException(new ServiceException("An error occurred"), "An error occurred", null);
 
     // Assert
-    assertEquals(
-        "An error occurred", actualRecreateSpecificServiceExceptionResult.getLocalizedMessage());
+    assertEquals("An error occurred", actualRecreateSpecificServiceExceptionResult.getLocalizedMessage());
     assertEquals("An error occurred", actualRecreateSpecificServiceExceptionResult.getMessage());
     assertNull(actualRecreateSpecificServiceExceptionResult.getCause());
     assertEquals(0, actualRecreateSpecificServiceExceptionResult.getSuppressed().length);
   }
 
   /**
-   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException,
-   * String, Throwable)}.
-   *
+   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String,
-   * Throwable)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"
-  })
+      "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"})
   public void testRecreateSpecificServiceException_thenThrowRuntimeException() {
     // Arrange
     ValidationException e = new ValidationException(new Entity());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            dynamicEntityRemoteService.recreateSpecificServiceException(
-                e, "An error occurred", new Throwable()));
+    assertThrows(RuntimeException.class,
+        () -> dynamicEntityRemoteService.recreateSpecificServiceException(e, "An error occurred", new Throwable()));
   }
 
   /**
-   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException,
-   * String, Throwable)}.
-   *
+   * Test {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}.
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String,
-   * Throwable)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#recreateSpecificServiceException(ServiceException, String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"
-  })
+      "ServiceException DynamicEntityRemoteService.recreateSpecificServiceException(ServiceException, String, Throwable)"})
   public void testRecreateSpecificServiceException_thenThrowRuntimeException2() {
     // Arrange, Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            dynamicEntityRemoteService.recreateSpecificServiceException(
-                new ValidationException(new Entity()), "An error occurred", null));
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService
+        .recreateSpecificServiceException(new ValidationException(new Entity()), "An error occurred", null));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistenceResponse} (default constructor).
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalInspect(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalInspect(PersistencePackage)"})
   public void testNonTransactionalInspect_thenReturnPersistenceResponse() throws Throwable {
     // Arrange
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
-        .thenReturn(persistenceResponse);
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
 
     // Act
-    PersistenceResponse actualNonTransactionalInspectResult =
-        dynamicEntityRemoteService.nonTransactionalInspect(new PersistencePackage());
+    PersistenceResponse actualNonTransactionalInspectResult = dynamicEntityRemoteService
+        .nonTransactionalInspect(new PersistencePackage());
 
     // Assert
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
     assertSame(persistenceResponse, actualNonTransactionalInspectResult);
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalInspect(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalInspect(PersistencePackage)"})
   public void testNonTransactionalInspect_thenThrowServiceException() throws Throwable {
     // Arrange
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
         .thenThrow(new ServiceException("An error occurred"));
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> dynamicEntityRemoteService.nonTransactionalInspect(new PersistencePackage()));
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
   }
 
   /**
-   * Test {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage,
-   * CriteriaTransferObject)}.
-   *
+   * Test {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}.
    * <ul>
-   *   <li>Then return {@link PersistenceResponse} (default constructor).
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)"
-  })
+      "PersistenceResponse DynamicEntityRemoteService.nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)"})
   public void testNonTransactionalFetch_thenReturnPersistenceResponse() throws Throwable {
     // Arrange
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
-        .thenReturn(persistenceResponse);
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
     PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act
-    PersistenceResponse actualNonTransactionalFetchResult =
-        dynamicEntityRemoteService.nonTransactionalFetch(
-            persistencePackage, new CriteriaTransferObject());
+    PersistenceResponse actualNonTransactionalFetchResult = dynamicEntityRemoteService
+        .nonTransactionalFetch(persistencePackage, new CriteriaTransferObject());
 
     // Assert
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
     assertSame(persistenceResponse, actualNonTransactionalFetchResult);
   }
 
   /**
-   * Test {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage,
-   * CriteriaTransferObject)}.
-   *
+   * Test {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}.
    * <ul>
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)"
-  })
+      "PersistenceResponse DynamicEntityRemoteService.nonTransactionalFetch(PersistencePackage, CriteriaTransferObject)"})
   public void testNonTransactionalFetch_thenThrowServiceException() throws Throwable {
     // Arrange
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
         .thenThrow(new ServiceException("An error occurred"));
     PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            dynamicEntityRemoteService.nonTransactionalFetch(
-                persistencePackage, new CriteriaTransferObject()));
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    assertThrows(ServiceException.class,
+        () -> dynamicEntityRemoteService.nonTransactionalFetch(persistencePackage, new CriteriaTransferObject()));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
   public void testCleanEntity() throws ServiceException {
     // Arrange
     when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
         .thenReturn("Clean String With Results");
-
     Entity entity = mock(Entity.class);
-    when(entity.getProperties()).thenReturn(new Property[] {new Property()});
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
 
     // Act
     dynamicEntityRemoteService.cleanEntity(entity);
 
     // Assert
-    verify(exploitProtectionService).cleanStringWithResults(null);
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
     verify(entity).getProperties();
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
-   *
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
+   *   <li>Then calls {@link Entity#addValidationError(String, String)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
-  public void testCleanEntity_givenRuntimeException_thenThrowRuntimeException()
-      throws ServiceException {
+  public void testCleanEntity_givenArrayListAddFoo_thenCallsAddValidationError() throws ServiceException {
     // Arrange
+    ArrayList<String> errorMessages = new ArrayList<>();
+    errorMessages.add("foo");
     when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
-        .thenThrow(new CleanStringException(new CleanResults()));
-
+        .thenThrow(new CleanStringException(new CleanResults(1L,
+            "\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness.",
+            new DocumentFragmentImpl(), errorMessages)));
     Entity entity = mock(Entity.class);
-    doThrow(new RuntimeException())
-        .when(entity)
-        .addValidationError(Mockito.<String>any(), Mockito.<String>any());
-    when(entity.getProperties()).thenReturn(new Property[] {new Property()});
+    doNothing().when(entity).addValidationError(Mockito.<String>any(), Mockito.<String>any());
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
 
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.cleanEntity(entity));
-    verify(exploitProtectionService).cleanStringWithResults(null);
-    verify(entity)
-        .addValidationError(
-            null,
-            "\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness.");
+    // Act
+    dynamicEntityRemoteService.cleanEntity(entity);
+
+    // Assert
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
+    verify(entity).addValidationError(isNull(), eq(
+        "\n1) foo\n\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness."));
     verify(entity).getProperties();
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
-   *
    * <ul>
-   *   <li>Then calls {@link Entity#addValidationError(String, String)}.
+   *   <li>Then calls {@link Entity#addValidationError(String, String)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
   public void testCleanEntity_thenCallsAddValidationError() throws ServiceException {
     // Arrange
     when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
         .thenThrow(new CleanStringException(new CleanResults()));
-
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addValidationError(Mockito.<String>any(), Mockito.<String>any());
-    when(entity.getProperties()).thenReturn(new Property[] {new Property()});
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
 
     // Act
     dynamicEntityRemoteService.cleanEntity(entity);
 
     // Assert
-    verify(exploitProtectionService).cleanStringWithResults(null);
-    verify(entity)
-        .addValidationError(
-            null,
-            "\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness.");
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
+    verify(entity).addValidationError(isNull(),
+        eq("\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness."));
     verify(entity).getProperties();
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
-   *
    * <ul>
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
+  public void testCleanEntity_thenThrowRuntimeException() throws ServiceException {
+    // Arrange
+    when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
+        .thenThrow(new CleanStringException(new CleanResults()));
+    Entity entity = mock(Entity.class);
+    doThrow(new RuntimeException(
+        "\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness."))
+        .when(entity)
+        .addValidationError(Mockito.<String>any(), Mockito.<String>any());
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.cleanEntity(entity));
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
+    verify(entity).addValidationError(isNull(),
+        eq("\nNote - Antisamy policy in effect. Set a new policy file to modify validation behavior/strictness."));
+    verify(entity).getProperties();
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#cleanEntity(Entity)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#cleanEntity(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DynamicEntityRemoteService.cleanEntity(Entity)"})
   public void testCleanEntity_thenThrowServiceException() throws ServiceException {
     // Arrange
     when(exploitProtectionService.cleanStringWithResults(Mockito.<String>any()))
         .thenThrow(new ServiceException("An error occurred"));
-
     Entity entity = mock(Entity.class);
-    when(entity.getProperties()).thenReturn(new Property[] {new Property()});
+    when(entity.getProperties()).thenReturn(new Property[]{new Property()});
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> dynamicEntityRemoteService.cleanEntity(entity));
-    verify(exploitProtectionService).cleanStringWithResults(null);
+    verify(exploitProtectionService).cleanStringWithResults(isNull());
     verify(entity).getProperties();
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#add(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#add(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#add(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.add(PersistencePackage)"})
   public void testAdd_thenReturnNull() throws Throwable {
     // Arrange
-    when(persistenceService.identifyTransactionManager(
-            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
         .thenReturn(new LifecycleAwareJpaTransactionManager());
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any(),
-            Mockito.<PlatformTransactionManager>any());
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act
     PersistenceResponse actualAddResult = dynamicEntityRemoteService.add(new PersistencePackage());
 
     // Assert
     verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class),
-            isA(Class.class),
-            isA(PlatformTransactionManager.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
     assertNull(actualAddResult);
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#add(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#add(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#add(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.add(PersistencePackage)"})
-  public void testAdd_thenThrowRuntimeException() throws ServiceException {
+  public void testAdd_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    when(persistenceService.identifyTransactionManager(
-            Mockito.<String>any(), Mockito.<TargetModeType>any()))
-        .thenThrow(new RuntimeException());
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> dynamicEntityRemoteService.add(new PersistencePackage()));
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.add(new PersistencePackage()));
     verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#add(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#add(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.add(PersistencePackage)"})
+  public void testAdd_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new ServiceException("An error occurred")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> dynamicEntityRemoteService.add(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#update(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#update(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#update(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.update(PersistencePackage)"})
   public void testUpdate_thenReturnNull() throws Throwable {
     // Arrange
-    when(persistenceService.identifyTransactionManager(
-            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
         .thenReturn(new LifecycleAwareJpaTransactionManager());
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any(),
-            Mockito.<PlatformTransactionManager>any());
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act
-    PersistenceResponse actualUpdateResult =
-        dynamicEntityRemoteService.update(new PersistencePackage());
+    PersistenceResponse actualUpdateResult = dynamicEntityRemoteService.update(new PersistencePackage());
 
     // Assert
     verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class),
-            isA(Class.class),
-            isA(PlatformTransactionManager.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
     assertNull(actualUpdateResult);
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#update(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#update(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#update(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.update(PersistencePackage)"})
-  public void testUpdate_thenThrowRuntimeException() throws ServiceException {
+  public void testUpdate_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    when(persistenceService.identifyTransactionManager(
-            Mockito.<String>any(), Mockito.<TargetModeType>any()))
-        .thenThrow(new RuntimeException());
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> dynamicEntityRemoteService.update(new PersistencePackage()));
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.update(new PersistencePackage()));
     verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#update(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#update(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.update(PersistencePackage)"})
+  public void testUpdate_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new ServiceException("An error occurred")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> dynamicEntityRemoteService.update(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#remove(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#remove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#remove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.remove(PersistencePackage)"})
   public void testRemove_thenReturnNull() throws Throwable {
     // Arrange
-    when(persistenceService.identifyTransactionManager(
-            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
         .thenReturn(new LifecycleAwareJpaTransactionManager());
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any(),
-            Mockito.<PlatformTransactionManager>any());
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act
-    PersistenceResponse actualRemoveResult =
-        dynamicEntityRemoteService.remove(new PersistencePackage());
+    PersistenceResponse actualRemoveResult = dynamicEntityRemoteService.remove(new PersistencePackage());
 
     // Assert
     verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class),
-            isA(Class.class),
-            isA(PlatformTransactionManager.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
     assertNull(actualRemoveResult);
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#remove(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#remove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#remove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.remove(PersistencePackage)"})
-  public void testRemove_thenThrowRuntimeException() throws ServiceException {
+  public void testRemove_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    when(persistenceService.identifyTransactionManager(
-            Mockito.<String>any(), Mockito.<TargetModeType>any()))
-        .thenThrow(new RuntimeException());
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> dynamicEntityRemoteService.remove(new PersistencePackage()));
+    assertThrows(RuntimeException.class, () -> dynamicEntityRemoteService.remove(new PersistencePackage()));
     verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#remove(PersistencePackage)}.
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#remove(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.remove(PersistencePackage)"})
+  public void testRemove_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(new LifecycleAwareJpaTransactionManager());
+    doThrow(new ServiceException("An error occurred")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any(), Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> dynamicEntityRemoteService.remove(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class), isA(PlatformTransactionManager.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistenceResponse} (default constructor).
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalAdd(PersistencePackage)"})
   public void testNonTransactionalAdd_thenReturnPersistenceResponse() throws Throwable {
     // Arrange
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
-        .thenReturn(persistenceResponse);
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
 
     // Act
-    PersistenceResponse actualNonTransactionalAddResult =
-        dynamicEntityRemoteService.nonTransactionalAdd(new PersistencePackage());
+    PersistenceResponse actualNonTransactionalAddResult = dynamicEntityRemoteService
+        .nonTransactionalAdd(new PersistencePackage());
 
     // Assert
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
     assertSame(persistenceResponse, actualNonTransactionalAddResult);
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalAdd(PersistencePackage)"})
   public void testNonTransactionalAdd_thenThrowServiceException() throws Throwable {
     // Arrange
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
         .thenThrow(new ServiceException("An error occurred"));
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> dynamicEntityRemoteService.nonTransactionalAdd(new PersistencePackage()));
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistenceResponse} (default constructor).
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalUpdate(PersistencePackage)"})
   public void testNonTransactionalUpdate_thenReturnPersistenceResponse() throws Throwable {
     // Arrange
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
-        .thenReturn(persistenceResponse);
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
 
     // Act
-    PersistenceResponse actualNonTransactionalUpdateResult =
-        dynamicEntityRemoteService.nonTransactionalUpdate(new PersistencePackage());
+    PersistenceResponse actualNonTransactionalUpdateResult = dynamicEntityRemoteService
+        .nonTransactionalUpdate(new PersistencePackage());
 
     // Assert
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
     assertSame(persistenceResponse, actualNonTransactionalUpdateResult);
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalUpdate(PersistencePackage)"})
   public void testNonTransactionalUpdate_thenThrowServiceException() throws Throwable {
     // Arrange
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
         .thenThrow(new ServiceException("An error occurred"));
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> dynamicEntityRemoteService.nonTransactionalUpdate(new PersistencePackage()));
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistenceResponse} (default constructor).
+   *   <li>Then return {@link PersistenceResponse} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalRemove(PersistencePackage)"})
   public void testNonTransactionalRemove_thenReturnPersistenceResponse() throws Throwable {
     // Arrange
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
-        .thenReturn(persistenceResponse);
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any())).thenReturn(persistenceResponse);
 
     // Act
-    PersistenceResponse actualNonTransactionalRemoveResult =
-        dynamicEntityRemoteService.nonTransactionalRemove(new PersistencePackage());
+    PersistenceResponse actualNonTransactionalRemoveResult = dynamicEntityRemoteService
+        .nonTransactionalRemove(new PersistencePackage());
 
     // Assert
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
     assertSame(persistenceResponse, actualNonTransactionalRemoveResult);
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#nonTransactionalRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse DynamicEntityRemoteService.nonTransactionalRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.nonTransactionalRemove(PersistencePackage)"})
   public void testNonTransactionalRemove_thenThrowServiceException() throws Throwable {
     // Arrange
-    when(persistenceThreadManager.operation(
-            Mockito.<TargetModeType>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
+    when(persistenceThreadManager.operation(Mockito.<TargetModeType>any(), Mockito.<PersistencePackage>any(),
+        Mockito.<Persistable<PersistenceResponse, ServiceException>>any()))
         .thenThrow(new ServiceException("An error occurred"));
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
+    assertThrows(ServiceException.class,
         () -> dynamicEntityRemoteService.nonTransactionalRemove(new PersistencePackage()));
-    verify(persistenceThreadManager)
-        .operation(
-            isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+    verify(persistenceThreadManager).operation(isA(TargetModeType.class), isA(PersistencePackage.class),
+        isA(Persistable.class));
   }
 
   /**
    * Test {@link DynamicEntityRemoteService#isShouldClean()}.
-   *
-   * <p>Method under test: {@link DynamicEntityRemoteService#isShouldClean()}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#isShouldClean()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DynamicEntityRemoteService.isShouldClean()"})
   public void testIsShouldClean() {
     // Arrange, Act and Assert
@@ -870,32 +818,25 @@ public class DynamicEntityRemoteServiceDiffblueTest {
 
   /**
    * Test {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@link LifecycleAwareJpaTransactionManager} (default constructor).
+   *   <li>Then return {@link LifecycleAwareJpaTransactionManager} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PlatformTransactionManager DynamicEntityRemoteService.identifyTransactionManager(PersistencePackage)"
-  })
-  public void testIdentifyTransactionManager_thenReturnLifecycleAwareJpaTransactionManager()
-      throws ServiceException {
+      "PlatformTransactionManager DynamicEntityRemoteService.identifyTransactionManager(PersistencePackage)"})
+  public void testIdentifyTransactionManager_thenReturnLifecycleAwareJpaTransactionManager() throws ServiceException {
     // Arrange
-    LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager =
-        new LifecycleAwareJpaTransactionManager();
-    when(persistenceService.identifyTransactionManager(
-            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+    LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager = new LifecycleAwareJpaTransactionManager();
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
         .thenReturn(lifecycleAwareJpaTransactionManager);
 
     // Act
-    PlatformTransactionManager actualIdentifyTransactionManagerResult =
-        dynamicEntityRemoteService.identifyTransactionManager(new PersistencePackage());
+    PlatformTransactionManager actualIdentifyTransactionManagerResult = dynamicEntityRemoteService
+        .identifyTransactionManager(new PersistencePackage());
 
     // Assert
     verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
@@ -904,29 +845,23 @@ public class DynamicEntityRemoteServiceDiffblueTest {
 
   /**
    * Test {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}
+   * <p>
+   * Method under test: {@link DynamicEntityRemoteService#identifyTransactionManager(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PlatformTransactionManager DynamicEntityRemoteService.identifyTransactionManager(PersistencePackage)"
-  })
+      "PlatformTransactionManager DynamicEntityRemoteService.identifyTransactionManager(PersistencePackage)"})
   public void testIdentifyTransactionManager_thenThrowRuntimeException() throws ServiceException {
     // Arrange
-    when(persistenceService.identifyTransactionManager(
-            Mockito.<String>any(), Mockito.<TargetModeType>any()))
-        .thenThrow(new RuntimeException());
+    when(persistenceService.identifyTransactionManager(Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
+    assertThrows(RuntimeException.class,
         () -> dynamicEntityRemoteService.identifyTransactionManager(new PersistencePackage()));
     verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
   }

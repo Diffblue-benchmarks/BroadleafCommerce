@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.order.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,26 +28,19 @@ import org.junit.experimental.categories.Category;
 public class RemoveFromCartExceptionDiffblueTest {
   /**
    * Test {@link RemoveFromCartException#RemoveFromCartException(String)}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RemoveFromCartException#RemoveFromCartException(String)}
+   * <p>
+   * Method under test: {@link RemoveFromCartException#RemoveFromCartException(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RemoveFromCartException.<init>()",
-    "void RemoveFromCartException.<init>(String)",
-    "void RemoveFromCartException.<init>(String, Throwable)",
-    "void RemoveFromCartException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RemoveFromCartException.<init>()", "void RemoveFromCartException.<init>(String)",
+      "void RemoveFromCartException.<init>(String, Throwable)", "void RemoveFromCartException.<init>(Throwable)"})
   public void testNewRemoveFromCartException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
-    RemoveFromCartException actualRemoveFromCartException =
-        new RemoveFromCartException("An error occurred");
+    RemoveFromCartException actualRemoveFromCartException = new RemoveFromCartException("An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualRemoveFromCartException.getMessage());
@@ -58,30 +50,22 @@ public class RemoveFromCartExceptionDiffblueTest {
 
   /**
    * Test {@link RemoveFromCartException#RemoveFromCartException(String, Throwable)}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RemoveFromCartException#RemoveFromCartException(String,
-   * Throwable)}
+   * <p>
+   * Method under test: {@link RemoveFromCartException#RemoveFromCartException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RemoveFromCartException.<init>()",
-    "void RemoveFromCartException.<init>(String)",
-    "void RemoveFromCartException.<init>(String, Throwable)",
-    "void RemoveFromCartException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RemoveFromCartException.<init>()", "void RemoveFromCartException.<init>(String)",
+      "void RemoveFromCartException.<init>(String, Throwable)", "void RemoveFromCartException.<init>(Throwable)"})
   public void testNewRemoveFromCartException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    RemoveFromCartException actualRemoveFromCartException =
-        new RemoveFromCartException("An error occurred", cause);
+    RemoveFromCartException actualRemoveFromCartException = new RemoveFromCartException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualRemoveFromCartException.getMessage());
@@ -91,22 +75,16 @@ public class RemoveFromCartExceptionDiffblueTest {
 
   /**
    * Test {@link RemoveFromCartException#RemoveFromCartException(Throwable)}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code Throwable}.
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RemoveFromCartException#RemoveFromCartException(Throwable)}
+   * <p>
+   * Method under test: {@link RemoveFromCartException#RemoveFromCartException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RemoveFromCartException.<init>()",
-    "void RemoveFromCartException.<init>(String)",
-    "void RemoveFromCartException.<init>(String, Throwable)",
-    "void RemoveFromCartException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RemoveFromCartException.<init>()", "void RemoveFromCartException.<init>(String)",
+      "void RemoveFromCartException.<init>(String, Throwable)", "void RemoveFromCartException.<init>(Throwable)"})
   public void testNewRemoveFromCartException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -122,22 +100,16 @@ public class RemoveFromCartExceptionDiffblueTest {
 
   /**
    * Test {@link RemoveFromCartException#RemoveFromCartException()}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code null}.
+   *   <li>Then return Message is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RemoveFromCartException#RemoveFromCartException()}
+   * <p>
+   * Method under test: {@link RemoveFromCartException#RemoveFromCartException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RemoveFromCartException.<init>()",
-    "void RemoveFromCartException.<init>(String)",
-    "void RemoveFromCartException.<init>(String, Throwable)",
-    "void RemoveFromCartException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RemoveFromCartException.<init>()", "void RemoveFromCartException.<init>(String)",
+      "void RemoveFromCartException.<init>(String, Throwable)", "void RemoveFromCartException.<init>(Throwable)"})
   public void testNewRemoveFromCartException_thenReturnMessageIsNull() {
     // Arrange and Act
     RemoveFromCartException actualRemoveFromCartException = new RemoveFromCartException();

@@ -22,8 +22,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,28 +36,21 @@ import org.junit.experimental.categories.Category;
 
 public class BundleOrderItemRequestDiffblueTest {
   /**
-   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link
-   * BundleOrderItemRequest#hashCode()}.
-   *
+   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link BundleOrderItemRequest#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BundleOrderItemRequest#equals(Object)}
    *   <li>{@link BundleOrderItemRequest#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -83,32 +75,26 @@ public class BundleOrderItemRequestDiffblueTest {
 
     // Act and Assert
     assertEquals(bundleOrderItemRequest, bundleOrderItemRequest2);
-    assertEquals(bundleOrderItemRequest.hashCode(), bundleOrderItemRequest2.hashCode());
+    int expectedHashCodeResult = bundleOrderItemRequest.hashCode();
+    assertEquals(expectedHashCodeResult, bundleOrderItemRequest2.hashCode());
   }
 
   /**
-   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link
-   * BundleOrderItemRequest#hashCode()}.
-   *
+   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link BundleOrderItemRequest#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BundleOrderItemRequest#equals(Object)}
    *   <li>{@link BundleOrderItemRequest#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -133,32 +119,26 @@ public class BundleOrderItemRequestDiffblueTest {
 
     // Act and Assert
     assertEquals(bundleOrderItemRequest, bundleOrderItemRequest2);
-    assertEquals(bundleOrderItemRequest.hashCode(), bundleOrderItemRequest2.hashCode());
+    int expectedHashCodeResult = bundleOrderItemRequest.hashCode();
+    assertEquals(expectedHashCodeResult, bundleOrderItemRequest2.hashCode());
   }
 
   /**
-   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link
-   * BundleOrderItemRequest#hashCode()}.
-   *
+   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link BundleOrderItemRequest#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BundleOrderItemRequest#equals(Object)}
    *   <li>{@link BundleOrderItemRequest#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -183,32 +163,26 @@ public class BundleOrderItemRequestDiffblueTest {
 
     // Act and Assert
     assertEquals(bundleOrderItemRequest, bundleOrderItemRequest2);
-    assertEquals(bundleOrderItemRequest.hashCode(), bundleOrderItemRequest2.hashCode());
+    int expectedHashCodeResult = bundleOrderItemRequest.hashCode();
+    assertEquals(expectedHashCodeResult, bundleOrderItemRequest2.hashCode());
   }
 
   /**
-   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link
-   * BundleOrderItemRequest#hashCode()}.
-   *
+   * Test {@link BundleOrderItemRequest#equals(Object)}, and {@link BundleOrderItemRequest#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BundleOrderItemRequest#equals(Object)}
    *   <li>{@link BundleOrderItemRequest#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -229,21 +203,16 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link BundleOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BundleOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -272,21 +241,16 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link BundleOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BundleOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -315,21 +279,16 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link BundleOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BundleOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ArrayList<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<>();
@@ -361,21 +320,16 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link BundleOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BundleOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -404,21 +358,16 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link BundleOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BundleOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -447,21 +396,16 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link BundleOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BundleOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -490,21 +434,16 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link BundleOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BundleOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -523,21 +462,16 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link BundleOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BundleOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link BundleOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BundleOrderItemRequest.equals(Object)",
-    "int BundleOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BundleOrderItemRequest.equals(Object)", "int BundleOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     BundleOrderItemRequest bundleOrderItemRequest = new BundleOrderItemRequest();
@@ -556,14 +490,12 @@ public class BundleOrderItemRequestDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BundleOrderItemRequest}
    *   <li>{@link BundleOrderItemRequest#setBundleOrderItemFeePrices(List)}
-   *   <li>{@link
-   *       BundleOrderItemRequest#setCategory(org.broadleafcommerce.core.catalog.domain.Category)}
+   *   <li>{@link BundleOrderItemRequest#setCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    *   <li>{@link BundleOrderItemRequest#setDiscreteOrderItems(List)}
    *   <li>{@link BundleOrderItemRequest#setName(String)}
    *   <li>{@link BundleOrderItemRequest#setOrder(Order)}
@@ -581,27 +513,19 @@ public class BundleOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BundleOrderItemRequest.<init>()",
-    "List BundleOrderItemRequest.getBundleOrderItemFeePrices()",
-    "org.broadleafcommerce.core.catalog.domain.Category BundleOrderItemRequest.getCategory()",
-    "List BundleOrderItemRequest.getDiscreteOrderItems()",
-    "String BundleOrderItemRequest.getName()",
-    "Order BundleOrderItemRequest.getOrder()",
-    "int BundleOrderItemRequest.getQuantity()",
-    "Money BundleOrderItemRequest.getRetailPriceOverride()",
-    "Money BundleOrderItemRequest.getSalePriceOverride()",
-    "void BundleOrderItemRequest.setBundleOrderItemFeePrices(List)",
-    "void BundleOrderItemRequest.setCategory(org.broadleafcommerce.core.catalog.domain.Category)",
-    "void BundleOrderItemRequest.setDiscreteOrderItems(List)",
-    "void BundleOrderItemRequest.setName(String)",
-    "void BundleOrderItemRequest.setOrder(Order)",
-    "void BundleOrderItemRequest.setQuantity(int)",
-    "void BundleOrderItemRequest.setRetailPriceOverride(Money)",
-    "void BundleOrderItemRequest.setSalePriceOverride(Money)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BundleOrderItemRequest.<init>()",
+      "List BundleOrderItemRequest.getBundleOrderItemFeePrices()",
+      "org.broadleafcommerce.core.catalog.domain.Category BundleOrderItemRequest.getCategory()",
+      "List BundleOrderItemRequest.getDiscreteOrderItems()", "String BundleOrderItemRequest.getName()",
+      "Order BundleOrderItemRequest.getOrder()", "int BundleOrderItemRequest.getQuantity()",
+      "Money BundleOrderItemRequest.getRetailPriceOverride()", "Money BundleOrderItemRequest.getSalePriceOverride()",
+      "void BundleOrderItemRequest.setBundleOrderItemFeePrices(List)",
+      "void BundleOrderItemRequest.setCategory(org.broadleafcommerce.core.catalog.domain.Category)",
+      "void BundleOrderItemRequest.setDiscreteOrderItems(List)", "void BundleOrderItemRequest.setName(String)",
+      "void BundleOrderItemRequest.setOrder(Order)", "void BundleOrderItemRequest.setQuantity(int)",
+      "void BundleOrderItemRequest.setRetailPriceOverride(Money)",
+      "void BundleOrderItemRequest.setSalePriceOverride(Money)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BundleOrderItemRequest actualBundleOrderItemRequest = new BundleOrderItemRequest();
@@ -619,12 +543,10 @@ public class BundleOrderItemRequestDiffblueTest {
     actualBundleOrderItemRequest.setRetailPriceOverride(retailPriceOverride);
     Money salePriceOverride = new Money();
     actualBundleOrderItemRequest.setSalePriceOverride(salePriceOverride);
-    List<BundleOrderItemFeePrice> actualBundleOrderItemFeePrices =
-        actualBundleOrderItemRequest.getBundleOrderItemFeePrices();
-    org.broadleafcommerce.core.catalog.domain.Category actualCategory =
-        actualBundleOrderItemRequest.getCategory();
-    List<DiscreteOrderItemRequest> actualDiscreteOrderItems =
-        actualBundleOrderItemRequest.getDiscreteOrderItems();
+    List<BundleOrderItemFeePrice> actualBundleOrderItemFeePrices = actualBundleOrderItemRequest
+        .getBundleOrderItemFeePrices();
+    org.broadleafcommerce.core.catalog.domain.Category actualCategory = actualBundleOrderItemRequest.getCategory();
+    List<DiscreteOrderItemRequest> actualDiscreteOrderItems = actualBundleOrderItemRequest.getDiscreteOrderItems();
     String actualName = actualBundleOrderItemRequest.getName();
     Order actualOrder = actualBundleOrderItemRequest.getOrder();
     int actualQuantity = actualBundleOrderItemRequest.getQuantity();

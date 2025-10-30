@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -38,19 +37,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RegistrationServiceImplDiffblueTest {
-  @Mock private CustomerService customerService;
+  @Mock
+  private CustomerService customerService;
 
-  @InjectMocks private RegistrationServiceImpl registrationServiceImpl;
+  @InjectMocks
+  private RegistrationServiceImpl registrationServiceImpl;
 
   /**
    * Test {@link RegistrationServiceImpl#initCustomerRegistrationForm()}.
-   *
-   * <p>Method under test: {@link RegistrationServiceImpl#initCustomerRegistrationForm()}
+   * <p>
+   * Method under test: {@link RegistrationServiceImpl#initCustomerRegistrationForm()}
    */
   @Test
   @DisplayName("Test initCustomerRegistrationForm()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"RegisterCustomerForm RegistrationServiceImpl.initCustomerRegistrationForm()"})
   void testInitCustomerRegistrationForm() {
     // Arrange
@@ -58,8 +58,8 @@ class RegistrationServiceImplDiffblueTest {
     when(customerService.createCustomerWithNullId()).thenReturn(customerImpl);
 
     // Act
-    RegisterCustomerForm actualInitCustomerRegistrationFormResult =
-        registrationServiceImpl.initCustomerRegistrationForm();
+    RegisterCustomerForm actualInitCustomerRegistrationFormResult = registrationServiceImpl
+        .initCustomerRegistrationForm();
 
     // Assert
     verify(customerService).createCustomerWithNullId();

@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Collection;
 import java.util.List;
@@ -42,25 +41,18 @@ import org.springframework.core.env.PropertySource;
 
 public class BroadleafEnvironmentConfiguringApplicationListenerDiffblueTest {
   /**
-   * Test {@link
-   * BroadleafEnvironmentConfiguringApplicationListener#initialize(ConfigurableApplicationContext)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafEnvironmentConfiguringApplicationListener#initialize(ConfigurableApplicationContext)}
+   * Test {@link BroadleafEnvironmentConfiguringApplicationListener#initialize(ConfigurableApplicationContext)}.
+   * <p>
+   * Method under test: {@link BroadleafEnvironmentConfiguringApplicationListener#initialize(ConfigurableApplicationContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafEnvironmentConfiguringApplicationListener.initialize(ConfigurableApplicationContext)"
-  })
+      "void BroadleafEnvironmentConfiguringApplicationListener.initialize(ConfigurableApplicationContext)"})
   public void testInitialize() {
     // Arrange
-    BroadleafEnvironmentConfiguringApplicationListener
-        broadleafEnvironmentConfiguringApplicationListener =
-            new BroadleafEnvironmentConfiguringApplicationListener();
-    AnnotationConfigReactiveWebApplicationContext applicationContext =
-        new AnnotationConfigReactiveWebApplicationContext();
+    BroadleafEnvironmentConfiguringApplicationListener broadleafEnvironmentConfiguringApplicationListener = new BroadleafEnvironmentConfiguringApplicationListener();
+    AnnotationConfigReactiveWebApplicationContext applicationContext = new AnnotationConfigReactiveWebApplicationContext();
 
     // Act
     broadleafEnvironmentConfiguringApplicationListener.initialize(applicationContext);
@@ -72,13 +64,11 @@ public class BroadleafEnvironmentConfiguringApplicationListenerDiffblueTest {
     List<PropertySource<?>> collectResult = streamResult.limit(5).collect(Collectors.toList());
     assertEquals(4, collectResult.size());
     PropertySource<?> getResult = collectResult.get(2);
-    Collection<PropertySource<?>> propertySources2 =
-        ((CompositePropertySource) getResult).getPropertySources();
+    Collection<PropertySource<?>> propertySources2 = ((CompositePropertySource) getResult).getPropertySources();
     assertEquals(2, propertySources2.size());
     assertTrue(propertySources2 instanceof Set);
     PropertySource<?> getResult2 = collectResult.get(3);
-    Collection<PropertySource<?>> propertySources3 =
-        ((CompositePropertySource) getResult2).getPropertySources();
+    Collection<PropertySource<?>> propertySources3 = ((CompositePropertySource) getResult2).getPropertySources();
     assertEquals(2, propertySources3.size());
     assertTrue(propertySources3 instanceof Set);
     assertTrue(environment instanceof StandardReactiveWebEnvironment);
@@ -97,28 +87,24 @@ public class BroadleafEnvironmentConfiguringApplicationListenerDiffblueTest {
 
   /**
    * Test new {@link BroadleafEnvironmentConfiguringApplicationListener} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BroadleafEnvironmentConfiguringApplicationListener}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link BroadleafEnvironmentConfiguringApplicationListener}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BroadleafEnvironmentConfiguringApplicationListener.<init>()"})
   public void testNewBroadleafEnvironmentConfiguringApplicationListener() {
     // Arrange and Act
-    BroadleafEnvironmentConfiguringApplicationListener
-        actualBroadleafEnvironmentConfiguringApplicationListener =
-            new BroadleafEnvironmentConfiguringApplicationListener();
+    BroadleafEnvironmentConfiguringApplicationListener actualBroadleafEnvironmentConfiguringApplicationListener = new BroadleafEnvironmentConfiguringApplicationListener();
 
     // Assert
-    List<FrameworkCommonClasspathPropertySource> frameworkSources =
-        actualBroadleafEnvironmentConfiguringApplicationListener.getFrameworkSources();
+    List<FrameworkCommonClasspathPropertySource> frameworkSources = actualBroadleafEnvironmentConfiguringApplicationListener
+        .getFrameworkSources();
     assertEquals(2, frameworkSources.size());
     FrameworkCommonClasspathPropertySource getResult = frameworkSources.get(0);
     assertTrue(getResult instanceof BroadleafCommonPropertySource);
-    List<BroadleafSharedOverrideProfileAwarePropertySource> profileAwareSources =
-        actualBroadleafEnvironmentConfiguringApplicationListener.getProfileAwareSources();
+    List<BroadleafSharedOverrideProfileAwarePropertySource> profileAwareSources = actualBroadleafEnvironmentConfiguringApplicationListener
+        .getProfileAwareSources();
     assertEquals(3, profileAwareSources.size());
     BroadleafSharedOverrideProfileAwarePropertySource getResult2 = profileAwareSources.get(0);
     assertTrue(getResult2 instanceof DefaultRuntimeEnvironmentProfileAwarePropertySource);
@@ -129,17 +115,13 @@ public class BroadleafEnvironmentConfiguringApplicationListenerDiffblueTest {
     BroadleafSharedOverrideProfileAwarePropertySource getResult5 = profileAwareSources.get(2);
     assertTrue(getResult5 instanceof ProfileAwareSharedProperties);
     assertEquals("common-test-properties", getResult3.getClasspathFolder());
-    assertEquals(
-        "common-test-properties/profile-aware-properties", getResult4.getClasspathFolder());
-    assertEquals(
-        "common-test-properties/profile-aware-shared-properties", getResult5.getClasspathFolder());
+    assertEquals("common-test-properties/profile-aware-properties", getResult4.getClasspathFolder());
+    assertEquals("common-test-properties/profile-aware-shared-properties", getResult5.getClasspathFolder());
     assertEquals("config/bc/", getResult.getClasspathFolder());
-    assertEquals(
-        "development",
+    assertEquals("development",
         actualBroadleafEnvironmentConfiguringApplicationListener.getDeprecatedDefaultProfileKey());
     assertEquals("runtime-properties", getResult2.getClasspathFolder());
-    assertEquals(
-        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         ((CommonFrameworkTestProperties) getResult3).getOrder());
   }
 }

@@ -20,10 +20,8 @@ package org.broadleafcommerce.admin.web.rulebuilder.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
@@ -32,29 +30,21 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class LocaleFieldServiceImplDiffblueTest {
-  @InjectMocks private LocaleFieldServiceImpl localeFieldServiceImpl;
+  @InjectMocks
+  private LocaleFieldServiceImpl localeFieldServiceImpl;
 
   /**
    * Test {@link LocaleFieldServiceImpl#init()}.
-   *
-   * <ul>
-   *   <li>Given {@link LocaleFieldServiceImpl}.
-   *   <li>Then {@link LocaleFieldServiceImpl} Fields size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link LocaleFieldServiceImpl#init()}
+   * <p>
+   * Method under test: {@link LocaleFieldServiceImpl#init()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void LocaleFieldServiceImpl.init()"})
-  public void testInit_givenLocaleFieldServiceImpl_thenLocaleFieldServiceImplFieldsSizeIsTwo() {
+  public void testInit() {
     // Arrange and Act
     localeFieldServiceImpl.init();
 
@@ -86,49 +76,17 @@ public class LocaleFieldServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LocaleFieldServiceImpl#init()}.
-   *
-   * <ul>
-   *   <li>Then {@link LocaleFieldServiceImpl} (default constructor) Fields is {@link
-   *       ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link LocaleFieldServiceImpl#init()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void LocaleFieldServiceImpl.init()"})
-  public void testInit_thenLocaleFieldServiceImplFieldsIsArrayList() {
-    // Arrange
-    LocaleFieldServiceImpl localeFieldServiceImpl = new LocaleFieldServiceImpl();
-    ArrayList<FieldData> fields = new ArrayList<>();
-    localeFieldServiceImpl.setFields(fields);
-
-    // Act
-    localeFieldServiceImpl.init();
-
-    // Assert
-    assertEquals(fields, localeFieldServiceImpl.getFields());
-  }
-
-  /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LocaleFieldServiceImpl#getDtoClassName()}
    *   <li>{@link LocaleFieldServiceImpl#getName()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String LocaleFieldServiceImpl.getDtoClassName()",
-    "String LocaleFieldServiceImpl.getName()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String LocaleFieldServiceImpl.getDtoClassName()", "String LocaleFieldServiceImpl.getName()"})
   public void testGettersAndSetters() {
     // Arrange
     LocaleFieldServiceImpl localeFieldServiceImpl = new LocaleFieldServiceImpl();

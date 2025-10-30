@@ -19,33 +19,34 @@ package org.broadleafcommerce.common.web.resource.resolver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.resource.ContentVersionStrategy;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BLVersionResourceResolverDefaultStrategyMapDiffblueTest {
+  @InjectMocks
+  private BLVersionResourceResolverDefaultStrategyMap<Object, Object> bLVersionResourceResolverDefaultStrategyMap;
+
   /**
    * Test {@link BLVersionResourceResolverDefaultStrategyMap#initIt()}.
-   *
-   * <p>Method under test: {@link BLVersionResourceResolverDefaultStrategyMap#initIt()}
+   * <p>
+   * Method under test: {@link BLVersionResourceResolverDefaultStrategyMap#initIt()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BLVersionResourceResolverDefaultStrategyMap.initIt()"})
   public void testInitIt() throws Exception {
-    // Arrange
-    BLVersionResourceResolverDefaultStrategyMap<Object, Object> objectObjectMap =
-        new BLVersionResourceResolverDefaultStrategyMap<>();
-
-    // Act
-    objectObjectMap.initIt();
+    // Arrange and Act
+    bLVersionResourceResolverDefaultStrategyMap.initIt();
 
     // Assert
-    assertEquals(1, objectObjectMap.size());
-    assertTrue(objectObjectMap.get("/**") instanceof ContentVersionStrategy);
+    assertEquals(1, bLVersionResourceResolverDefaultStrategyMap.size());
+    assertTrue(bLVersionResourceResolverDefaultStrategyMap.get("/**") instanceof ContentVersionStrategy);
   }
 }

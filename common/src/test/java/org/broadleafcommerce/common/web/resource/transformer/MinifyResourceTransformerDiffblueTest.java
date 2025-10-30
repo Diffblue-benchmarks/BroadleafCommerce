@@ -24,12 +24,10 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.resource.GeneratedResource;
 import org.broadleafcommerce.common.resource.service.ResourceMinificationService;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
@@ -46,79 +44,64 @@ import org.springframework.web.servlet.resource.ResourceTransformerChain;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MinifyResourceTransformerDiffblueTest {
-  @InjectMocks private MinifyResourceTransformer minifyResourceTransformer;
+  @InjectMocks
+  private MinifyResourceTransformer minifyResourceTransformer;
 
-  @Mock private ResourceMinificationService resourceMinificationService;
+  @Mock
+  private ResourceMinificationService resourceMinificationService;
 
   /**
-   * Test {@link MinifyResourceTransformer#transform(HttpServletRequest, Resource,
-   * ResourceTransformerChain)}.
-   *
+   * Test {@link MinifyResourceTransformer#transform(HttpServletRequest, Resource, ResourceTransformerChain)}.
    * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
+   *   <li>Given {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link IOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MinifyResourceTransformer#transform(HttpServletRequest, Resource,
-   * ResourceTransformerChain)}
+   * <p>
+   * Method under test: {@link MinifyResourceTransformer#transform(HttpServletRequest, Resource, ResourceTransformerChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Resource MinifyResourceTransformer.transform(HttpServletRequest, Resource, ResourceTransformerChain)"
-  })
-  public void testTransform_givenIOException_thenThrowIOException() throws IOException {
+      "Resource MinifyResourceTransformer.transform(HttpServletRequest, Resource, ResourceTransformerChain)"})
+  public void testTransform_givenIOExceptionWithFoo_thenThrowIOException() throws IOException {
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
     GeneratedResource resource = new GeneratedResource();
-
     ResourceTransformerChain transformerChain = mock(ResourceTransformerChain.class);
     when(transformerChain.transform(Mockito.<HttpServletRequest>any(), Mockito.<Resource>any()))
-        .thenThrow(new IOException());
+        .thenThrow(new IOException("foo"));
 
     // Act and Assert
-    assertThrows(
-        IOException.class,
-        () -> minifyResourceTransformer.transform(request, resource, transformerChain));
+    assertThrows(IOException.class, () -> minifyResourceTransformer.transform(request, resource, transformerChain));
     verify(transformerChain).transform(isA(HttpServletRequest.class), isA(Resource.class));
   }
 
   /**
-   * Test {@link MinifyResourceTransformer#transform(HttpServletRequest, Resource,
-   * ResourceTransformerChain)}.
-   *
+   * Test {@link MinifyResourceTransformer#transform(HttpServletRequest, Resource, ResourceTransformerChain)}.
    * <ul>
-   *   <li>Then return {@link GeneratedResource#GeneratedResource()}.
+   *   <li>Then return {@link GeneratedResource#GeneratedResource()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MinifyResourceTransformer#transform(HttpServletRequest, Resource,
-   * ResourceTransformerChain)}
+   * <p>
+   * Method under test: {@link MinifyResourceTransformer#transform(HttpServletRequest, Resource, ResourceTransformerChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Resource MinifyResourceTransformer.transform(HttpServletRequest, Resource, ResourceTransformerChain)"
-  })
+      "Resource MinifyResourceTransformer.transform(HttpServletRequest, Resource, ResourceTransformerChain)"})
   public void testTransform_thenReturnGeneratedResource() throws IOException {
     // Arrange
     GeneratedResource generatedResource = new GeneratedResource();
     when(resourceMinificationService.minify(Mockito.<Resource>any())).thenReturn(generatedResource);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
     GeneratedResource resource = new GeneratedResource();
-
     ResourceTransformerChain transformerChain = mock(ResourceTransformerChain.class);
     when(transformerChain.transform(Mockito.<HttpServletRequest>any(), Mockito.<Resource>any()))
         .thenReturn(new GeneratedResource());
 
     // Act
-    Resource actualTransformResult =
-        minifyResourceTransformer.transform(request, resource, transformerChain);
+    Resource actualTransformResult = minifyResourceTransformer.transform(request, resource, transformerChain);
 
     // Assert
     verify(resourceMinificationService).minify(isA(Resource.class));
@@ -128,21 +111,16 @@ public class MinifyResourceTransformerDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MinifyResourceTransformer#setOrder(int)}
    *   <li>{@link MinifyResourceTransformer#getOrder()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "int MinifyResourceTransformer.getOrder()",
-    "void MinifyResourceTransformer.setOrder(int)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int MinifyResourceTransformer.getOrder()", "void MinifyResourceTransformer.setOrder(int)"})
   public void testGettersAndSetters() {
     // Arrange
     MinifyResourceTransformer minifyResourceTransformer = new MinifyResourceTransformer();

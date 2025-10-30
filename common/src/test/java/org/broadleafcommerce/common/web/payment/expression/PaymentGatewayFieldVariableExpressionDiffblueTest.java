@@ -24,8 +24,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
@@ -39,28 +38,27 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentGatewayFieldVariableExpressionDiffblueTest {
-  @Mock private PaymentGatewayFieldExtensionManager paymentGatewayFieldExtensionManager;
+  @Mock
+  private PaymentGatewayFieldExtensionManager paymentGatewayFieldExtensionManager;
 
-  @InjectMocks private PaymentGatewayFieldVariableExpression paymentGatewayFieldVariableExpression;
+  @InjectMocks
+  private PaymentGatewayFieldVariableExpression paymentGatewayFieldVariableExpression;
 
   /**
    * Test {@link PaymentGatewayFieldVariableExpression#mapName(String)}.
-   *
-   * <p>Method under test: {@link PaymentGatewayFieldVariableExpression#mapName(String)}
+   * <p>
+   * Method under test: {@link PaymentGatewayFieldVariableExpression#mapName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PaymentGatewayFieldVariableExpression.mapName(String)"})
   public void testMapName() {
     // Arrange
-    PaymentGatewayFieldExtensionHandler paymentGatewayFieldExtensionHandler =
-        mock(PaymentGatewayFieldExtensionHandler.class);
-    when(paymentGatewayFieldExtensionHandler.mapFieldName(
-            Mockito.<String>any(), Mockito.<Map<String, String>>any()))
+    PaymentGatewayFieldExtensionHandler paymentGatewayFieldExtensionHandler = mock(
+        PaymentGatewayFieldExtensionHandler.class);
+    when(paymentGatewayFieldExtensionHandler.mapFieldName(Mockito.<String>any(), Mockito.<Map<String, String>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(paymentGatewayFieldExtensionManager.getProxy())
-        .thenReturn(paymentGatewayFieldExtensionHandler);
+    when(paymentGatewayFieldExtensionManager.getProxy()).thenReturn(paymentGatewayFieldExtensionHandler);
 
     // Act
     String actualMapNameResult = paymentGatewayFieldVariableExpression.mapName("Field Name");
@@ -73,35 +71,28 @@ public class PaymentGatewayFieldVariableExpressionDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link
-   *       PaymentGatewayFieldVariableExpression#setExtensionManager(PaymentGatewayFieldExtensionManager)}
+   *   <li>{@link PaymentGatewayFieldVariableExpression#setExtensionManager(PaymentGatewayFieldExtensionManager)}
    *   <li>{@link PaymentGatewayFieldVariableExpression#getExtensionManager()}
    *   <li>{@link PaymentGatewayFieldVariableExpression#getName()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentGatewayFieldExtensionManager PaymentGatewayFieldVariableExpression.getExtensionManager()",
-    "String PaymentGatewayFieldVariableExpression.getName()",
-    "void PaymentGatewayFieldVariableExpression.setExtensionManager(PaymentGatewayFieldExtensionManager)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentGatewayFieldExtensionManager PaymentGatewayFieldVariableExpression.getExtensionManager()",
+      "String PaymentGatewayFieldVariableExpression.getName()",
+      "void PaymentGatewayFieldVariableExpression.setExtensionManager(PaymentGatewayFieldExtensionManager)"})
   public void testGettersAndSetters() {
     // Arrange
-    PaymentGatewayFieldVariableExpression paymentGatewayFieldVariableExpression =
-        new PaymentGatewayFieldVariableExpression();
-    PaymentGatewayFieldExtensionManager extensionManager =
-        new PaymentGatewayFieldExtensionManager();
+    PaymentGatewayFieldVariableExpression paymentGatewayFieldVariableExpression = new PaymentGatewayFieldVariableExpression();
+    PaymentGatewayFieldExtensionManager extensionManager = new PaymentGatewayFieldExtensionManager();
 
     // Act
     paymentGatewayFieldVariableExpression.setExtensionManager(extensionManager);
-    PaymentGatewayFieldExtensionManager actualExtensionManager =
-        paymentGatewayFieldVariableExpression.getExtensionManager();
+    PaymentGatewayFieldExtensionManager actualExtensionManager = paymentGatewayFieldVariableExpression
+        .getExtensionManager();
 
     // Assert
     assertEquals("paymentGatewayField", paymentGatewayFieldVariableExpression.getName());

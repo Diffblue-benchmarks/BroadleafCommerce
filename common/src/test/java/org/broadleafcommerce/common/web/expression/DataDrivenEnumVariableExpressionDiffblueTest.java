@@ -20,11 +20,11 @@ package org.broadleafcommerce.common.web.expression;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumeration;
@@ -41,329 +41,257 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DataDrivenEnumVariableExpressionDiffblueTest {
-  @InjectMocks private DataDrivenEnumVariableExpression dataDrivenEnumVariableExpression;
+  @InjectMocks
+  private DataDrivenEnumVariableExpression dataDrivenEnumVariableExpression;
 
-  @Mock private DataDrivenEnumerationService dataDrivenEnumerationService;
+  @Mock
+  private DataDrivenEnumerationService dataDrivenEnumerationService;
 
   /**
    * Test {@link DataDrivenEnumVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getName()}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String DataDrivenEnumVariableExpression.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("enumeration", new DataDrivenEnumVariableExpression().getName());
+    assertEquals("enumeration", (new DataDrivenEnumVariableExpression()).getName());
   }
 
   /**
    * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String)} with {@code key}.
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String)"})
   public void testGetEnumValuesWithKey() {
     // Arrange
-    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any()))
-        .thenThrow(new IllegalArgumentException());
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> dataDrivenEnumVariableExpression.getEnumValues("Key"));
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
-  }
-
-  /**
-   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String)} with {@code key}.
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String)"})
-  public void testGetEnumValuesWithKey2() {
-    // Arrange
     when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any())).thenReturn(null);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> dataDrivenEnumVariableExpression.getEnumValues("Key"));
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues("Key"));
+    verify(dataDrivenEnumerationService).findEnumByKey(eq("Key"));
   }
 
   /**
-   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key},
-   * {@code sort}.
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
+   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key}, {@code sort}.
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String, String)"})
   public void testGetEnumValuesWithKeySort() {
     // Arrange
-    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any()))
-        .thenThrow(new IllegalArgumentException());
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> dataDrivenEnumVariableExpression.getEnumValues("Key", "Sort"));
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
-  }
-
-  /**
-   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key},
-   * {@code sort}.
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String, String)"})
-  public void testGetEnumValuesWithKeySort2() {
-    // Arrange
     when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any())).thenReturn(null);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> dataDrivenEnumVariableExpression.getEnumValues("Key", "Sort"));
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues("Key", "Sort"));
+    verify(dataDrivenEnumerationService).findEnumByKey(eq("Key"));
   }
 
   /**
-   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key},
-   * {@code sort}.
-   *
-   * <ul>
-   *   <li>Then calls {@link DataDrivenEnumeration#getEnumValues()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
+   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key}, {@code sort}.
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String, String)"})
+  public void testGetEnumValuesWithKeySort2() {
+    // Arrange
+    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any()))
+        .thenThrow(new IllegalArgumentException("Could not find a data driven enumeration keyed by "));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues("Key", null));
+    verify(dataDrivenEnumerationService).findEnumByKey(eq("Key"));
+  }
+
+  /**
+   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key}, {@code sort}.
+   * <ul>
+   *   <li>Then calls {@link DataDrivenEnumeration#getEnumValues()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String, String)"})
   public void testGetEnumValuesWithKeySort_thenCallsGetEnumValues() {
     // Arrange
     DataDrivenEnumeration dataDrivenEnumeration = mock(DataDrivenEnumeration.class);
-    when(dataDrivenEnumeration.getEnumValues()).thenThrow(new IllegalArgumentException());
-    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any()))
-        .thenReturn(dataDrivenEnumeration);
+    when(dataDrivenEnumeration.getEnumValues()).thenThrow(new IllegalArgumentException("foo"));
+    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any())).thenReturn(dataDrivenEnumeration);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> dataDrivenEnumVariableExpression.getEnumValues("Key", "Sort"));
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues("Key", "Sort"));
     verify(dataDrivenEnumeration).getEnumValues();
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
+    verify(dataDrivenEnumerationService).findEnumByKey(eq("Key"));
   }
 
   /**
-   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key},
-   * {@code sort}.
-   *
+   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key}, {@code sort}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String, String)"})
   public void testGetEnumValuesWithKeySort_thenReturnEmpty() {
     // Arrange
-    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any()))
-        .thenReturn(new DataDrivenEnumerationImpl());
+    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any())).thenReturn(new DataDrivenEnumerationImpl());
 
     // Act
-    List<DataDrivenEnumerationValue> actualEnumValues =
-        dataDrivenEnumVariableExpression.getEnumValues("Key", "Sort");
+    List<DataDrivenEnumerationValue> actualEnumValues = dataDrivenEnumVariableExpression.getEnumValues("Key", "Sort");
 
     // Assert
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
+    verify(dataDrivenEnumerationService).findEnumByKey(eq("Key"));
     assertTrue(actualEnumValues.isEmpty());
   }
 
   /**
-   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key},
-   * {@code sort}.
-   *
+   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key}, {@code sort}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String, String)"})
   public void testGetEnumValuesWithKeySort_thenReturnEmpty2() {
     // Arrange
-    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any()))
-        .thenReturn(new DataDrivenEnumerationImpl());
+    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any())).thenReturn(new DataDrivenEnumerationImpl());
 
     // Act
-    List<DataDrivenEnumerationValue> actualEnumValues =
-        dataDrivenEnumVariableExpression.getEnumValues("Key", null);
+    List<DataDrivenEnumerationValue> actualEnumValues = dataDrivenEnumVariableExpression.getEnumValues("Key", null);
 
     // Assert
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
+    verify(dataDrivenEnumerationService).findEnumByKey(eq("Key"));
     assertTrue(actualEnumValues.isEmpty());
   }
 
   /**
-   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key},
-   * {@code sort}.
-   *
+   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key}, {@code sort}.
    * <ul>
-   *   <li>When empty string.
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>When empty string.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String, String)"})
   public void testGetEnumValuesWithKeySort_whenEmptyString_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> dataDrivenEnumVariableExpression.getEnumValues("", "not empty"));
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues("", "Sort"));
   }
 
   /**
-   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key},
-   * {@code sort}.
-   *
+   * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)} with {@code key}, {@code sort}.
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String, String)"})
   public void testGetEnumValuesWithKeySort_whenNull_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> dataDrivenEnumVariableExpression.getEnumValues(null, "not empty"));
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues(null, null));
   }
 
   /**
    * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String)} with {@code key}.
-   *
    * <ul>
-   *   <li>Then calls {@link DataDrivenEnumeration#getEnumValues()}.
+   *   <li>Then calls {@link DataDrivenEnumeration#getEnumValues()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String)"})
   public void testGetEnumValuesWithKey_thenCallsGetEnumValues() {
     // Arrange
     DataDrivenEnumeration dataDrivenEnumeration = mock(DataDrivenEnumeration.class);
-    when(dataDrivenEnumeration.getEnumValues()).thenThrow(new IllegalArgumentException());
-    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any()))
-        .thenReturn(dataDrivenEnumeration);
+    when(dataDrivenEnumeration.getEnumValues()).thenThrow(new IllegalArgumentException("foo"));
+    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any())).thenReturn(dataDrivenEnumeration);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> dataDrivenEnumVariableExpression.getEnumValues("Key"));
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues("Key"));
     verify(dataDrivenEnumeration).getEnumValues();
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
+    verify(dataDrivenEnumerationService).findEnumByKey(eq("Key"));
   }
 
   /**
    * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String)} with {@code key}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String)"})
   public void testGetEnumValuesWithKey_thenReturnEmpty() {
     // Arrange
-    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any()))
-        .thenReturn(new DataDrivenEnumerationImpl());
+    when(dataDrivenEnumerationService.findEnumByKey(Mockito.<String>any())).thenReturn(new DataDrivenEnumerationImpl());
 
     // Act
-    List<DataDrivenEnumerationValue> actualEnumValues =
-        dataDrivenEnumVariableExpression.getEnumValues("Key");
+    List<DataDrivenEnumerationValue> actualEnumValues = dataDrivenEnumVariableExpression.getEnumValues("Key");
 
     // Assert
-    verify(dataDrivenEnumerationService).findEnumByKey("Key");
+    verify(dataDrivenEnumerationService).findEnumByKey(eq("Key"));
     assertTrue(actualEnumValues.isEmpty());
   }
 
   /**
    * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String)} with {@code key}.
-   *
    * <ul>
-   *   <li>When empty string.
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>When empty string.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String)"})
   public void testGetEnumValuesWithKey_whenEmptyString_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues(""));
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues(""));
   }
 
   /**
    * Test {@link DataDrivenEnumVariableExpression#getEnumValues(String)} with {@code key}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
+   * <p>
+   * Method under test: {@link DataDrivenEnumVariableExpression#getEnumValues(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DataDrivenEnumVariableExpression.getEnumValues(String)"})
   public void testGetEnumValuesWithKey_whenNull_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues(null));
+    assertThrows(IllegalArgumentException.class, () -> dataDrivenEnumVariableExpression.getEnumValues(null));
   }
 }

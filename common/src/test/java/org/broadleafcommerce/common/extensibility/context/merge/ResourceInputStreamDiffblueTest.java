@@ -22,16 +22,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -43,12 +44,11 @@ import org.junit.experimental.categories.Category;
 public class ResourceInputStreamDiffblueTest {
   /**
    * Test {@link ResourceInputStream#ResourceInputStream(InputStream, String)}.
-   *
-   * <p>Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String)}
+   * <p>
+   * Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourceInputStream.<init>(InputStream, String)"})
   public void testNewResourceInputStream() throws IOException {
     // Arrange
@@ -56,27 +56,43 @@ public class ResourceInputStreamDiffblueTest {
 
     // Act and Assert
     byte[] bytes = new byte[8];
-    int actualReadResult = new ResourceInputStream(is, "Name").read(bytes);
-    int actualReadResult2 = is.read(new byte[] {});
-    assertEquals(-1, actualReadResult2);
+    int actualReadResult = (new ResourceInputStream(is, "Name")).read(bytes);
+    assertEquals(-1, is.read(new byte[]{}));
     assertEquals(8, actualReadResult);
     assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
   }
 
   /**
    * Test {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String,
-   * List)}
+   * <p>
+   * Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourceInputStream.<init>(InputStream, String, List)"})
+  public void testNewResourceInputStream2() throws IOException {
+    // Arrange
+    ByteArrayInputStream is = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
+
+    // Act and Assert
+    byte[] bytes = new byte[8];
+    int actualReadResult = (new ResourceInputStream(is, "Name", new ArrayList<>())).read(bytes);
+    assertEquals(-1, is.read(new byte[]{}));
+    assertEquals(8, actualReadResult);
+    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
+  }
+
+  /**
+   * Test {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}.
+   * <ul>
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourceInputStream.<init>(InputStream, String, List)"})
   public void testNewResourceInputStream_given42_whenArrayListAdd42() throws IOException {
     // Arrange
@@ -86,33 +102,25 @@ public class ResourceInputStreamDiffblueTest {
     previousNames.add("42");
     previousNames.add("foo");
 
-    // Act
-    ResourceInputStream actualResourceInputStream =
-        new ResourceInputStream(is, "Name", previousNames);
-
-    // Assert
+    // Act and Assert
     byte[] bytes = new byte[8];
-    int actualReadResult = actualResourceInputStream.read(bytes);
-    int actualReadResult2 = is.read(new byte[] {});
-    assertEquals(-1, actualReadResult2);
+    int actualReadResult = (new ResourceInputStream(is, "Name", previousNames)).read(bytes);
+    assertEquals(-1, is.read(new byte[]{}));
     assertEquals(8, actualReadResult);
     assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
   }
 
   /**
    * Test {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
+   *   <li>Given {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String,
-   * List)}
+   * <p>
+   * Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourceInputStream.<init>(InputStream, String, List)"})
   public void testNewResourceInputStream_givenFoo_whenArrayListAddFoo() throws IOException {
     // Arrange
@@ -121,126 +129,49 @@ public class ResourceInputStreamDiffblueTest {
     ArrayList<String> previousNames = new ArrayList<>();
     previousNames.add("foo");
 
-    // Act
-    ResourceInputStream actualResourceInputStream =
-        new ResourceInputStream(is, "Name", previousNames);
-
-    // Assert
+    // Act and Assert
     byte[] bytes = new byte[8];
-    int actualReadResult = actualResourceInputStream.read(bytes);
-    int actualReadResult2 = is.read(new byte[] {});
-    assertEquals(-1, actualReadResult2);
+    int actualReadResult = (new ResourceInputStream(is, "Name", previousNames)).read(bytes);
+    assertEquals(-1, is.read(new byte[]{}));
     assertEquals(8, actualReadResult);
     assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
   }
 
   /**
    * Test {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}.
-   *
    * <ul>
-   *   <li>When empty string.
+   *   <li>When empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String,
-   * List)}
+   * <p>
+   * Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourceInputStream.<init>(InputStream, String, List)"})
   public void testNewResourceInputStream_whenEmptyString() throws IOException {
     // Arrange
     ByteArrayInputStream is = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
 
-    // Act
-    ResourceInputStream actualResourceInputStream =
-        new ResourceInputStream(is, "", new ArrayList<>());
-
-    // Assert
+    // Act and Assert
     byte[] bytes = new byte[8];
-    int actualReadResult = actualResourceInputStream.read(bytes);
-    int actualReadResult2 = is.read(new byte[] {});
-    assertEquals(-1, actualReadResult2);
-    assertEquals(8, actualReadResult);
-    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
-  }
-
-  /**
-   * Test {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}.
-   *
-   * <ul>
-   *   <li>When {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ResourceInputStream.<init>(InputStream, String, List)"})
-  public void testNewResourceInputStream_whenName() throws IOException {
-    // Arrange
-    ByteArrayInputStream is = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
-
-    // Act
-    ResourceInputStream actualResourceInputStream =
-        new ResourceInputStream(is, "Name", new ArrayList<>());
-
-    // Assert
-    byte[] bytes = new byte[8];
-    int actualReadResult = actualResourceInputStream.read(bytes);
-    int actualReadResult2 = is.read(new byte[] {});
-    assertEquals(-1, actualReadResult2);
-    assertEquals(8, actualReadResult);
-    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
-  }
-
-  /**
-   * Test {@link ResourceInputStream#ResourceInputStream(InputStream, String, List)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#ResourceInputStream(InputStream, String,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ResourceInputStream.<init>(InputStream, String, List)"})
-  public void testNewResourceInputStream_whenNull() throws IOException {
-    // Arrange
-    ByteArrayInputStream is = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
-
-    // Act
-    ResourceInputStream actualResourceInputStream =
-        new ResourceInputStream(is, null, new ArrayList<>());
-
-    // Assert
-    byte[] bytes = new byte[8];
-    int actualReadResult = actualResourceInputStream.read(bytes);
-    int actualReadResult2 = is.read(new byte[] {});
-    assertEquals(-1, actualReadResult2);
+    int actualReadResult = (new ResourceInputStream(is, "", new ArrayList<>())).read(bytes);
+    assertEquals(-1, is.read(new byte[]{}));
     assertEquals(8, actualReadResult);
     assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
   }
 
   /**
    * Test {@link ResourceInputStream#getNames()}.
-   *
-   * <p>Method under test: {@link ResourceInputStream#getNames()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#getNames()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List ResourceInputStream.getNames()"})
   public void testGetNames() throws UnsupportedEncodingException {
     // Arrange and Act
-    List<String> actualNames =
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")
-            .getNames();
+    List<String> actualNames = (new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name"))
+        .getNames();
 
     // Assert
     assertEquals(1, actualNames.size());
@@ -249,157 +180,124 @@ public class ResourceInputStreamDiffblueTest {
 
   /**
    * Test {@link ResourceInputStream#getName()}.
-   *
-   * <p>Method under test: {@link ResourceInputStream#getName()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String ResourceInputStream.getName()"})
   public void testGetName() throws UnsupportedEncodingException {
     // Arrange, Act and Assert
-    assertEquals(
-        "Name",
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")
-            .getName());
+    assertEquals("Name",
+        (new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")).getName());
   }
 
   /**
    * Test {@link ResourceInputStream#toString()}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
-   *   <li>Then return {@code foo : Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#toString()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#toString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String ResourceInputStream.toString()"})
-  public void testToString_givenArrayListAddFoo_thenReturnFooName()
-      throws UnsupportedEncodingException {
+  public void testToString() throws UnsupportedEncodingException {
+    // Arrange, Act and Assert
+    assertEquals("Name",
+        (new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")).toString());
+  }
+
+  /**
+   * Test {@link ResourceInputStream#available()}.
+   * <ul>
+   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   *   <li>Then return eight.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceInputStream#available()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int ResourceInputStream.available()"})
+  public void testAvailable_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnEight() throws IOException {
+    // Arrange, Act and Assert
+    assertEquals(8,
+        (new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")).available());
+  }
+
+  /**
+   * Test {@link ResourceInputStream#available()}.
+   * <ul>
+   *   <li>Given {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Then return minus one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourceInputStream#available()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int ResourceInputStream.available()"})
+  public void testAvailable_givenIOExceptionWithFoo_thenReturnMinusOne() throws IOException {
     // Arrange
-    ArrayList<String> previousNames = new ArrayList<>();
-    previousNames.add("foo");
-    ResourceInputStream resourceInputStream =
-        new ResourceInputStream(
-            new ByteArrayInputStream("AdAdAdAd".getBytes("UTF-8")), "Name", previousNames);
+    new IOException("foo");
 
     // Act and Assert
-    assertEquals("foo : Name", resourceInputStream.toString());
-  }
-
-  /**
-   * Test {@link ResourceInputStream#toString()}.
-   *
-   * <ul>
-   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX}
-   *       Bytes is {@code UTF-8}.
-   *   <li>Then return {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#toString()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ResourceInputStream.toString()"})
-  public void testToString_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnName()
-      throws UnsupportedEncodingException {
-    // Arrange, Act and Assert
-    assertEquals(
-        "Name",
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")
-            .toString());
+    assertEquals(-1, (new ResourceInputStream(null, "Name", new ArrayList<>())).available());
   }
 
   /**
    * Test {@link ResourceInputStream#available()}.
-   *
    * <ul>
-   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX}
-   *       Bytes is {@code UTF-8}.
-   *   <li>Then return eight.
+   *   <li>Then throw {@link IOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#available()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#available()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int ResourceInputStream.available()"})
-  public void testAvailable_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnEight()
-      throws IOException {
-    // Arrange, Act and Assert
-    assertEquals(
-        8,
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")
-            .available());
-  }
-
-  /**
-   * Test {@link ResourceInputStream#available()}.
-   *
-   * <ul>
-   *   <li>Given {@link DataInputStream} {@link DataInputStream#available()} throw {@link
-   *       IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#available()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ResourceInputStream.available()"})
-  public void testAvailable_givenDataInputStreamAvailableThrowIOException_thenThrowIOException()
-      throws IOException {
+  public void testAvailable_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream is = mock(DataInputStream.class);
-    when(is.available()).thenThrow(new IOException());
+    when(is.available()).thenThrow(new IOException("foo"));
 
     // Act and Assert
-    assertThrows(IOException.class, () -> new ResourceInputStream(is, "Name").available());
+    assertThrows(IOException.class, () -> (new ResourceInputStream(is, "Name")).available());
     verify(is).available();
   }
 
   /**
-   * Test {@link ResourceInputStream#available()}.
-   *
+   * Test {@link ResourceInputStream#close()}.
    * <ul>
-   *   <li>Given {@link ResourceInputStream#ResourceInputStream(InputStream, String)} with is is
-   *       {@code null} and {@code Name}.
-   *   <li>Then return minus one.
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#close()} throw {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link IOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#available()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#close()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ResourceInputStream.available()"})
-  public void testAvailable_givenResourceInputStreamWithIsIsNullAndName_thenReturnMinusOne()
-      throws IOException {
-    // Arrange, Act and Assert
-    assertEquals(-1, new ResourceInputStream(null, "Name").available());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ResourceInputStream.close()"})
+  public void testClose_givenDataInputStreamCloseThrowIOExceptionWithFoo_thenThrowIOException() throws IOException {
+    // Arrange
+    DataInputStream is = mock(DataInputStream.class);
+    doThrow(new IOException("foo")).when(is).close();
+
+    // Act and Assert
+    assertThrows(IOException.class, () -> (new ResourceInputStream(is, "Name")).close());
+    verify(is).close();
   }
 
   /**
    * Test {@link ResourceInputStream#markSupported()}.
-   *
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link DataInputStream#markSupported()} return {@code
-   *       false}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#markSupported()} return {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#markSupported()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#markSupported()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ResourceInputStream.markSupported()"})
   public void testMarkSupported_givenDataInputStreamMarkSupportedReturnFalse_thenReturnFalse() {
     // Arrange
@@ -407,7 +305,7 @@ public class ResourceInputStreamDiffblueTest {
     when(is.markSupported()).thenReturn(false);
 
     // Act
-    boolean actualMarkSupportedResult = new ResourceInputStream(is, "Name").markSupported();
+    boolean actualMarkSupportedResult = (new ResourceInputStream(is, "Name")).markSupported();
 
     // Assert
     verify(is).markSupported();
@@ -416,65 +314,57 @@ public class ResourceInputStreamDiffblueTest {
 
   /**
    * Test {@link ResourceInputStream#markSupported()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#markSupported()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#markSupported()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ResourceInputStream.markSupported()"})
   public void testMarkSupported_thenReturnTrue() throws UnsupportedEncodingException {
     // Arrange, Act and Assert
     assertTrue(
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")
-            .markSupported());
+        (new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")).markSupported());
   }
 
   /**
    * Test {@link ResourceInputStream#read(byte[])} with {@code bytes}.
-   *
-   * <p>Method under test: {@link ResourceInputStream#read(byte[])}
+   * <p>
+   * Method under test: {@link ResourceInputStream#read(byte[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int ResourceInputStream.read(byte[])"})
   public void testReadWithBytes() throws IOException {
     // Arrange
-    ResourceInputStream resourceInputStream =
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
+    ResourceInputStream resourceInputStream = new ResourceInputStream(
+        new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
 
     // Act
     int actualReadResult = resourceInputStream.read("AXAXAXAX".getBytes("UTF-8"));
 
     // Assert
-    int actualReadResult2 = resourceInputStream.read(new byte[] {});
-    assertEquals(-1, actualReadResult2);
+    assertEquals(-1, resourceInputStream.read(new byte[]{}));
     assertEquals(8, actualReadResult);
   }
 
   /**
-   * Test {@link ResourceInputStream#read(byte[], int, int)} with {@code bytes}, {@code i}, {@code
-   * i1}.
-   *
+   * Test {@link ResourceInputStream#read(byte[], int, int)} with {@code bytes}, {@code i}, {@code i1}.
    * <ul>
-   *   <li>Then return one.
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#read(byte[], int, int)}
+   * <p>
+   * Method under test: {@link ResourceInputStream#read(byte[], int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int ResourceInputStream.read(byte[], int, int)"})
   public void testReadWithBytesII1_thenReturnOne() throws IOException {
     // Arrange
-    ResourceInputStream resourceInputStream =
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
+    ResourceInputStream resourceInputStream = new ResourceInputStream(
+        new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
     byte[] bytes = "AXAXAXAX".getBytes("UTF-8");
 
     // Act and Assert
@@ -487,24 +377,20 @@ public class ResourceInputStreamDiffblueTest {
 
   /**
    * Test {@link ResourceInputStream#read()}.
-   *
    * <ul>
-   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX}
-   *       Bytes is {@code UTF-8}.
-   *   <li>Then return sixty-five.
+   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   *   <li>Then return sixty-five.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#read()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#read()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int ResourceInputStream.read()"})
-  public void testRead_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnSixtyFive()
-      throws IOException {
+  public void testRead_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnSixtyFive() throws IOException {
     // Arrange
-    ResourceInputStream resourceInputStream =
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
+    ResourceInputStream resourceInputStream = new ResourceInputStream(
+        new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
 
     // Act and Assert
     assertEquals(65, resourceInputStream.read());
@@ -515,76 +401,64 @@ public class ResourceInputStreamDiffblueTest {
 
   /**
    * Test {@link ResourceInputStream#read()}.
-   *
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link DataInputStream#read()} throw {@link
-   *       IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#read()} throw {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link IOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#read()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#read()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int ResourceInputStream.read()"})
-  public void testRead_givenDataInputStreamReadThrowIOException_thenThrowIOException()
-      throws IOException {
+  public void testRead_givenDataInputStreamReadThrowIOExceptionWithFoo_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream is = mock(DataInputStream.class);
-    when(is.read()).thenThrow(new IOException());
+    when(is.read()).thenThrow(new IOException("foo"));
 
     // Act and Assert
-    assertThrows(IOException.class, () -> new ResourceInputStream(is, "Name").read());
+    assertThrows(IOException.class, () -> (new ResourceInputStream(is, "Name")).read());
     verify(is).read();
   }
 
   /**
    * Test {@link ResourceInputStream#reset()}.
-   *
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link DataInputStream#reset()} throw {@link
-   *       IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#reset()} throw {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link IOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#reset()}
+   * <p>
+   * Method under test: {@link ResourceInputStream#reset()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ResourceInputStream.reset()"})
-  public void testReset_givenDataInputStreamResetThrowIOException_thenThrowIOException()
-      throws IOException {
+  public void testReset_givenDataInputStreamResetThrowIOExceptionWithFoo_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream is = mock(DataInputStream.class);
-    doThrow(new IOException()).when(is).reset();
+    doThrow(new IOException("foo")).when(is).reset();
 
     // Act and Assert
-    assertThrows(IOException.class, () -> new ResourceInputStream(is, "Name").reset());
+    assertThrows(IOException.class, () -> (new ResourceInputStream(is, "Name")).reset());
     verify(is).reset();
   }
 
   /**
    * Test {@link ResourceInputStream#skip(long)}.
-   *
    * <ul>
-   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX}
-   *       Bytes is {@code UTF-8}.
-   *   <li>Then return one.
+   *   <li>Given {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#skip(long)}
+   * <p>
+   * Method under test: {@link ResourceInputStream#skip(long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long ResourceInputStream.skip(long)"})
-  public void testSkip_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnOne()
-      throws IOException {
+  public void testSkip_givenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnOne() throws IOException {
     // Arrange
-    ResourceInputStream resourceInputStream =
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
+    ResourceInputStream resourceInputStream = new ResourceInputStream(
+        new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
 
     // Act and Assert
     assertEquals(1L, resourceInputStream.skip(1L));
@@ -595,27 +469,23 @@ public class ResourceInputStreamDiffblueTest {
 
   /**
    * Test {@link ResourceInputStream#skip(long)}.
-   *
    * <ul>
-   *   <li>Given {@link DataInputStream} {@link DataInputStream#skip(long)} throw {@link
-   *       IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
+   *   <li>Given {@link DataInputStream} {@link FilterInputStream#skip(long)} throw {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link IOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ResourceInputStream#skip(long)}
+   * <p>
+   * Method under test: {@link ResourceInputStream#skip(long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long ResourceInputStream.skip(long)"})
-  public void testSkip_givenDataInputStreamSkipThrowIOException_thenThrowIOException()
-      throws IOException {
+  public void testSkip_givenDataInputStreamSkipThrowIOExceptionWithFoo_thenThrowIOException() throws IOException {
     // Arrange
     DataInputStream is = mock(DataInputStream.class);
-    when(is.skip(anyLong())).thenThrow(new IOException());
+    when(is.skip(anyLong())).thenThrow(new IOException("foo"));
 
     // Act and Assert
-    assertThrows(IOException.class, () -> new ResourceInputStream(is, "Name").skip(1L));
-    verify(is).skip(1L);
+    assertThrows(IOException.class, () -> (new ResourceInputStream(is, "Name")).skip(1L));
+    verify(is).skip(eq(1L));
   }
 }

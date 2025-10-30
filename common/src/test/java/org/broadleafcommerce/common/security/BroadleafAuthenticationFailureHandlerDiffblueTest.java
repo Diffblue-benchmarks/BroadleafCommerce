@@ -17,30 +17,31 @@
  */
 package org.broadleafcommerce.common.security;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import javax.servlet.http.HttpSession;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
+import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.owasp.esapi.filters.SecurityWrapperResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.test.context.ContextConfiguration;
@@ -49,35 +50,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {BroadleafAuthenticationFailureHandler.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafAuthenticationFailureHandlerDiffblueTest {
-  @Autowired private BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler;
+  @Autowired
+  private BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler;
 
   /**
    * Test {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler()}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler()}
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BroadleafAuthenticationFailureHandler.<init>()"})
   public void testNewBroadleafAuthenticationFailureHandler() {
     // Arrange, Act and Assert
-    assertNull(
-        new BroadleafAuthenticationFailureHandler()
-            .validateUrlParam("https://example.org/example"));
+    assertNull((new BroadleafAuthenticationFailureHandler()).validateUrlParam("https://example.org/example"));
   }
 
   /**
-   * Test {@link
-   * BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}
+   * Test {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}.
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BroadleafAuthenticationFailureHandler.<init>(String)"})
   public void testNewBroadleafAuthenticationFailureHandler2() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
@@ -85,285 +80,99 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
     //   a non-Spring test was created.
 
     // Arrange, Act and Assert
-    assertNull(
-        new BroadleafAuthenticationFailureHandler("https://example.org/example")
-            .validateUrlParam("https://example.org/example"));
+    assertNull((new BroadleafAuthenticationFailureHandler("https://example.org/example"))
+        .validateUrlParam("https://example.org/example"));
   }
 
   /**
-   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}
+   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"
-  })
+      "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"})
   public void testOnAuthenticationFailure() throws IOException, ServletException {
     // Arrange
-    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler =
-        new BroadleafAuthenticationFailureHandler();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
+    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler = new BroadleafAuthenticationFailureHandler();
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
-    broadleafAuthenticationFailureHandler.onAuthenticationFailure(
-        request, response, new AccountExpiredException("Msg"));
+    broadleafAuthenticationFailureHandler.onAuthenticationFailure(request, response2,
+        new AccountExpiredException("Msg"));
 
     // Assert
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals("Unauthorized", ((MockHttpServletResponse) response3).getErrorMessage());
-    assertEquals(401, response.getStatus());
-    assertEquals(401, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(401, ((MockHttpServletResponse) response3).getStatus());
+    Collection<String> headerNames = response2.getHeaderNames();
+    assertTrue(headerNames instanceof Set);
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals("Unauthorized", ((MockHttpServletResponse) response4).getErrorMessage());
+    assertNull(((MockHttpServletResponse) response4).getRedirectedUrl());
+    assertEquals(401, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(401, response2.getStatus());
+    assertEquals(401, ((MockHttpServletResponse) response4).getStatus());
+    assertTrue(headerNames.isEmpty());
   }
 
   /**
-   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}
+   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}.
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"
-  })
+      "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"})
   public void testOnAuthenticationFailure2() throws IOException, ServletException {
     // Arrange
-    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler =
-        new BroadleafAuthenticationFailureHandler("https://example.org/example");
-    broadleafAuthenticationFailureHandler.setUseForward(false);
-    broadleafAuthenticationFailureHandler.setAllowSessionCreation(false);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
+    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler = new BroadleafAuthenticationFailureHandler(
+        "https://example.org/example");
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
-    broadleafAuthenticationFailureHandler.onAuthenticationFailure(
-        request, response, new AccountExpiredException("Msg"));
+    broadleafAuthenticationFailureHandler.onAuthenticationFailure(request, response2,
+        new AccountExpiredException("Msg"));
 
     // Assert
-    Collection<String> headerNames = response.getHeaderNames();
+    Collection<String> headerNames = response2.getHeaderNames();
     assertEquals(1, headerNames.size());
     assertTrue(headerNames instanceof Set);
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals(
-        "https://example.org/example", ((MockHttpServletResponse) response3).getRedirectedUrl());
-    assertEquals(302, ((MockHttpServletResponse) response3).getStatus());
-    assertTrue(headerNames.contains("Location"));
-  }
-
-  /**
-   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"
-  })
-  public void testOnAuthenticationFailure3() throws IOException, ServletException {
-    // Arrange
-    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler =
-        new BroadleafAuthenticationFailureHandler();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    SessionlessHttpServletRequestWrapper request2 =
-        new SessionlessHttpServletRequestWrapper(request);
-    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    SecurityWrapperResponse response2 = new SecurityWrapperResponse(response, "Mode");
-
-    // Act
-    broadleafAuthenticationFailureHandler.onAuthenticationFailure(
-        request3, response2, new AccountExpiredException("Msg"));
-
-    // Assert
     ServletResponse response3 = response2.getResponse();
-    assertTrue(response3 instanceof HttpServletResponseWrapper);
-    ServletResponse response4 = ((HttpServletResponseWrapper) response3).getResponse();
-    assertTrue(response4 instanceof StatusExposingServletResponse);
-    ServletResponse response5 = ((StatusExposingServletResponse) response4).getResponse();
-    assertTrue(response5 instanceof MockHttpServletResponse);
-    assertEquals("Unauthorized", ((MockHttpServletResponse) response5).getErrorMessage());
-    assertTrue(response4.isCommitted());
-    assertTrue(response5.isCommitted());
-    assertTrue(response2.isCommitted());
-  }
-
-  /**
-   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"
-  })
-  public void testOnAuthenticationFailure4() throws IOException, ServletException {
-    // Arrange
-    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler =
-        new BroadleafAuthenticationFailureHandler();
-
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.addParameter("successUrl", "failureUrl");
-    HttpServletRequestWrapper request2 =
-        new HttpServletRequestWrapper(new SessionlessHttpServletRequestWrapper(request));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
-    // Act
-    broadleafAuthenticationFailureHandler.onAuthenticationFailure(
-        request2, response, new AccountExpiredException("Msg"));
-
-    // Assert
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals("Unauthorized", ((MockHttpServletResponse) response3).getErrorMessage());
-    assertEquals(401, response.getStatus());
-    assertEquals(401, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(401, ((MockHttpServletResponse) response3).getStatus());
-  }
-
-  /**
-   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"
-  })
-  public void testOnAuthenticationFailure5() throws IOException, ServletException {
-    // Arrange
-    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler =
-        new BroadleafAuthenticationFailureHandler();
-
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.addParameter("successUrl", "https://example.org/example");
-    HttpServletRequestWrapper request2 =
-        new HttpServletRequestWrapper(new SessionlessHttpServletRequestWrapper(request));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
-    // Act
-    broadleafAuthenticationFailureHandler.onAuthenticationFailure(
-        request2, response, new AccountExpiredException("Msg"));
-
-    // Assert
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals("Unauthorized", ((MockHttpServletResponse) response3).getErrorMessage());
-    assertEquals(401, response.getStatus());
-    assertEquals(401, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(401, ((MockHttpServletResponse) response3).getStatus());
-  }
-
-  /**
-   * Test {@link BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationFailureHandler#onAuthenticationFailure(HttpServletRequest,
-   * HttpServletResponse, AuthenticationException)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafAuthenticationFailureHandler.onAuthenticationFailure(HttpServletRequest, HttpServletResponse, AuthenticationException)"
-  })
-  public void testOnAuthenticationFailure6() throws IOException, ServletException {
-    // Arrange
-    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler =
-        new BroadleafAuthenticationFailureHandler("https://example.org/example");
-    broadleafAuthenticationFailureHandler.setRedirectStrategy(new LocalRedirectStrategy());
-    broadleafAuthenticationFailureHandler.setUseForward(false);
-    broadleafAuthenticationFailureHandler.setAllowSessionCreation(false);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
-    // Act
-    broadleafAuthenticationFailureHandler.onAuthenticationFailure(
-        request, response, new AccountExpiredException("Msg"));
-
-    // Assert
-    Collection<String> headerNames = response.getHeaderNames();
-    assertEquals(1, headerNames.size());
-    assertTrue(headerNames instanceof Set);
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals(
-        "https://example.org/example", ((MockHttpServletResponse) response3).getRedirectedUrl());
-    assertEquals(302, ((MockHttpServletResponse) response3).getStatus());
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    HttpSession session = request.getSession();
+    assertTrue(session instanceof MockHttpSession);
+    assertEquals("https://example.org/example", ((MockHttpServletResponse) response4).getRedirectedUrl());
+    assertNull(((MockHttpServletResponse) response4).getErrorMessage());
+    assertEquals(200, response2.getStatus());
+    assertEquals(302, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(302, ((MockHttpServletResponse) response4).getStatus());
     assertTrue(headerNames.contains("Location"));
+    assertArrayEquals(new String[]{"SPRING_SECURITY_LAST_EXCEPTION"}, session.getValueNames());
   }
 
   /**
    * Test {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}.
-   *
    * <ul>
-   *   <li>When {@code .}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code .}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenDot_thenReturnNull() {
     // Arrange, Act and Assert
@@ -372,37 +181,32 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
 
   /**
    * Test {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}.
-   *
    * <ul>
-   *   <li>When {@code https://example.org/example}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code https://example.org/example}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenHttpsExampleOrgExample_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(
-        broadleafAuthenticationFailureHandler.validateUrlParam("https://example.org/example"));
+    assertNull(broadleafAuthenticationFailureHandler.validateUrlParam("https://example.org/example"));
   }
 
   /**
    * Test {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -411,17 +215,15 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
 
   /**
    * Test {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}.
-   *
    * <ul>
-   *   <li>When {@code Url}.
-   *   <li>Then return {@code Url}.
+   *   <li>When {@code Url}.</li>
+   *   <li>Then return {@code Url}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenUrl_thenReturnUrl() {
     // Arrange, Act and Assert
@@ -430,17 +232,15 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
 
   /**
    * Test {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}.
-   *
    * <ul>
-   *   <li>When {@code www}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code www}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationFailureHandler#validateUrlParam(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BroadleafAuthenticationFailureHandler.validateUrlParam(String)"})
   public void testValidateUrlParam_whenWww_thenReturnNull() {
     // Arrange, Act and Assert

@@ -18,7 +18,6 @@
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -27,9 +26,8 @@ import org.junit.jupiter.api.Test;
 class ResetPasswordFormDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ResetPasswordForm}
    *   <li>{@link ResetPasswordForm#setPassword(String)}
@@ -44,19 +42,12 @@ class ResetPasswordFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ResetPasswordForm.<init>()",
-    "String ResetPasswordForm.getPassword()",
-    "String ResetPasswordForm.getPasswordConfirm()",
-    "String ResetPasswordForm.getToken()",
-    "String ResetPasswordForm.getUsername()",
-    "void ResetPasswordForm.setPassword(String)",
-    "void ResetPasswordForm.setPasswordConfirm(String)",
-    "void ResetPasswordForm.setToken(String)",
-    "void ResetPasswordForm.setUsername(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ResetPasswordForm.<init>()", "String ResetPasswordForm.getPassword()",
+      "String ResetPasswordForm.getPasswordConfirm()", "String ResetPasswordForm.getToken()",
+      "String ResetPasswordForm.getUsername()", "void ResetPasswordForm.setPassword(String)",
+      "void ResetPasswordForm.setPasswordConfirm(String)", "void ResetPasswordForm.setToken(String)",
+      "void ResetPasswordForm.setUsername(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     ResetPasswordForm actualResetPasswordForm = new ResetPasswordForm();

@@ -18,14 +18,14 @@
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -33,35 +33,29 @@ import org.springframework.ui.Model;
 class BroadleafChangePasswordControllerDiffblueTest {
   /**
    * Test {@link BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}
+   * <p>
+   * Method under test: {@link BroadleafChangePasswordController#viewChangePassword(HttpServletRequest, Model)}
    */
   @Test
   @DisplayName("Test viewChangePassword(HttpServletRequest, Model)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafChangePasswordController.viewChangePassword(HttpServletRequest, Model)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafChangePasswordController.viewChangePassword(HttpServletRequest, Model)"})
   void testViewChangePassword() {
     // Arrange
-    BroadleafChangePasswordController broadleafChangePasswordController =
-        new BroadleafChangePasswordController();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    BroadleafChangePasswordController broadleafChangePasswordController = new BroadleafChangePasswordController();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act and Assert
-    assertEquals(
-        "account/changePassword",
+    assertEquals("account/changePassword",
         broadleafChangePasswordController.viewChangePassword(request, new ConcurrentModel()));
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafChangePasswordController}
    *   <li>{@link BroadleafChangePasswordController#getChangePasswordRedirect()}
@@ -71,27 +65,19 @@ class BroadleafChangePasswordControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafChangePasswordController.<init>()",
-    "String BroadleafChangePasswordController.getChangePasswordRedirect()",
-    "String BroadleafChangePasswordController.getChangePasswordView()",
-    "String BroadleafChangePasswordController.getPasswordChangedMessage()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafChangePasswordController.<init>()",
+      "String BroadleafChangePasswordController.getChangePasswordRedirect()",
+      "String BroadleafChangePasswordController.getChangePasswordView()",
+      "String BroadleafChangePasswordController.getPasswordChangedMessage()"})
   void testGettersAndSetters() {
     // Arrange and Act
-    BroadleafChangePasswordController actualBroadleafChangePasswordController =
-        new BroadleafChangePasswordController();
-    String actualChangePasswordRedirect =
-        actualBroadleafChangePasswordController.getChangePasswordRedirect();
-    String actualChangePasswordView =
-        actualBroadleafChangePasswordController.getChangePasswordView();
+    BroadleafChangePasswordController actualBroadleafChangePasswordController = new BroadleafChangePasswordController();
+    String actualChangePasswordRedirect = actualBroadleafChangePasswordController.getChangePasswordRedirect();
+    String actualChangePasswordView = actualBroadleafChangePasswordController.getChangePasswordView();
 
     // Assert
-    assertEquals(
-        "Password successfully changed",
-        actualBroadleafChangePasswordController.getPasswordChangedMessage());
+    assertEquals("Password successfully changed", actualBroadleafChangePasswordController.getPasswordChangedMessage());
     assertEquals("account/changePassword", actualChangePasswordView);
     assertEquals("redirect:/account/password", actualChangePasswordRedirect);
   }

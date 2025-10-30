@@ -18,8 +18,7 @@
 package org.broadleafcommerce.core.checkout.service.workflow;
 
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,9 +30,8 @@ import org.junit.experimental.categories.Category;
 public class CheckoutSeedDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CheckoutSeed#CheckoutSeed(Order, Map)}
    *   <li>{@link CheckoutSeed#setOrder(Order)}
@@ -42,14 +40,9 @@ public class CheckoutSeedDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CheckoutSeed.<init>(Order, Map)",
-    "Order CheckoutSeed.getOrder()",
-    "Map CheckoutSeed.getUserDefinedFields()",
-    "void CheckoutSeed.setOrder(Order)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CheckoutSeed.<init>(Order, Map)", "Order CheckoutSeed.getOrder()",
+      "Map CheckoutSeed.getUserDefinedFields()", "void CheckoutSeed.setOrder(Order)"})
   public void testGettersAndSetters() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();

@@ -18,57 +18,54 @@
 package org.broadleafcommerce.cms.structure.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class StructuredContentItemCriteriaImplDiffblueTest {
   /**
-   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link
-   * StructuredContentItemCriteriaImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link StructuredContentItemCriteriaImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentItemCriteriaImpl#equals(Object)}
    *   <li>{@link StructuredContentItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(1);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl2.setQuantity(1);
@@ -76,45 +73,36 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(structuredContentItemCriteriaImpl, structuredContentItemCriteriaImpl2);
-    assertEquals(
-        structuredContentItemCriteriaImpl.hashCode(),
-        structuredContentItemCriteriaImpl2.hashCode());
+    int expectedHashCodeResult = structuredContentItemCriteriaImpl.hashCode();
+    assertEquals(expectedHashCodeResult, structuredContentItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link
-   * StructuredContentItemCriteriaImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link StructuredContentItemCriteriaImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentItemCriteriaImpl#equals(Object)}
    *   <li>{@link StructuredContentItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(null);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(1);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl2.setQuantity(1);
@@ -122,45 +110,36 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(structuredContentItemCriteriaImpl, structuredContentItemCriteriaImpl2);
-    assertNotEquals(
-        structuredContentItemCriteriaImpl.hashCode(),
-        structuredContentItemCriteriaImpl2.hashCode());
+    int notExpectedHashCodeResult = structuredContentItemCriteriaImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, structuredContentItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link
-   * StructuredContentItemCriteriaImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link StructuredContentItemCriteriaImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentItemCriteriaImpl#equals(Object)}
    *   <li>{@link StructuredContentItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(1);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl2.setId(null);
     structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl2.setQuantity(1);
@@ -168,45 +147,73 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(structuredContentItemCriteriaImpl, structuredContentItemCriteriaImpl2);
-    assertNotEquals(
-        structuredContentItemCriteriaImpl.hashCode(),
-        structuredContentItemCriteriaImpl2.hashCode());
+    int notExpectedHashCodeResult = structuredContentItemCriteriaImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, structuredContentItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link
-   * StructuredContentItemCriteriaImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link StructuredContentItemCriteriaImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentItemCriteriaImpl#equals(Object)}
    *   <li>{@link StructuredContentItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
+    structuredContentItemCriteriaImpl.setId(null);
+    structuredContentItemCriteriaImpl.setMatchRule(null);
+    structuredContentItemCriteriaImpl.setQuantity(1);
+    structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
+
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
+    structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentItemCriteriaImpl2.setMatchRule(null);
+    structuredContentItemCriteriaImpl2.setQuantity(1);
+    structuredContentItemCriteriaImpl2.setStructuredContent(new StructuredContentImpl());
+
+    // Act and Assert
+    assertEquals(structuredContentItemCriteriaImpl, structuredContentItemCriteriaImpl2);
+    int notExpectedHashCodeResult = structuredContentItemCriteriaImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, structuredContentItemCriteriaImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link StructuredContentItemCriteriaImpl#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link StructuredContentItemCriteriaImpl#equals(Object)}
+   *   <li>{@link StructuredContentItemCriteriaImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(null);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(null);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl2.setQuantity(null);
@@ -214,38 +221,30 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(structuredContentItemCriteriaImpl, structuredContentItemCriteriaImpl2);
-    assertNotEquals(
-        structuredContentItemCriteriaImpl.hashCode(),
-        structuredContentItemCriteriaImpl2.hashCode());
+    int notExpectedHashCodeResult = structuredContentItemCriteriaImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, structuredContentItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link
-   * StructuredContentItemCriteriaImpl#hashCode()}.
-   *
+   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}, and {@link StructuredContentItemCriteriaImpl#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link StructuredContentItemCriteriaImpl#equals(Object)}
    *   <li>{@link StructuredContentItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(1);
@@ -259,32 +258,26 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(2L);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(1);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl2.setQuantity(1);
@@ -296,32 +289,57 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
+    structuredContentItemCriteriaImpl.setId(null);
+    structuredContentItemCriteriaImpl.setMatchRule(null);
+    structuredContentItemCriteriaImpl.setQuantity(1);
+    structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
+
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
+    structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
+    structuredContentItemCriteriaImpl2.setQuantity(1);
+    structuredContentItemCriteriaImpl2.setStructuredContent(new StructuredContentImpl());
+
+    // Act and Assert
+    assertNotEquals(structuredContentItemCriteriaImpl, structuredContentItemCriteriaImpl2);
+  }
+
+  /**
+   * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(null);
     structuredContentItemCriteriaImpl.setMatchRule("42");
     structuredContentItemCriteriaImpl.setQuantity(1);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl2.setQuantity(1);
@@ -333,32 +351,26 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(null);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(0);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl2.setQuantity(1);
@@ -370,32 +382,26 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(null);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(null);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl2.setQuantity(1);
@@ -407,25 +413,20 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(1);
@@ -437,54 +438,43 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link StructuredContentItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentItemCriteriaImpl.equals(Object)",
-    "int StructuredContentItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentItemCriteriaImpl.equals(Object)",
+      "int StructuredContentItemCriteriaImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     structuredContentItemCriteriaImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     structuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     structuredContentItemCriteriaImpl.setQuantity(1);
     structuredContentItemCriteriaImpl.setStructuredContent(new StructuredContentImpl());
 
     // Act and Assert
-    assertNotEquals(
-        structuredContentItemCriteriaImpl, "Different type to StructuredContentItemCriteriaImpl");
+    assertNotEquals(structuredContentItemCriteriaImpl, "Different type to StructuredContentItemCriteriaImpl");
   }
 
   /**
    * Test {@link StructuredContentItemCriteriaImpl#cloneEntity()}.
-   *
-   * <p>Method under test: {@link StructuredContentItemCriteriaImpl#cloneEntity()}
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#cloneEntity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "StructuredContentItemCriteria StructuredContentItemCriteriaImpl.cloneEntity()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StructuredContentItemCriteria StructuredContentItemCriteriaImpl.cloneEntity()"})
   public void testCloneEntity() {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
 
     // Act
-    StructuredContentItemCriteria actualCloneEntityResult =
-        structuredContentItemCriteriaImpl.cloneEntity();
+    StructuredContentItemCriteria actualCloneEntityResult = structuredContentItemCriteriaImpl.cloneEntity();
 
     // Assert
     assertTrue(actualCloneEntityResult instanceof StructuredContentItemCriteriaImpl);
@@ -492,132 +482,71 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CreateResponse StructuredContentItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+      "CreateResponse StructuredContentItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(new StructuredContentItemCriteriaImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<StructuredContentItemCriteria> actualCreateOrRetrieveCopyInstanceResult =
-        structuredContentItemCriteriaImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<StructuredContentItemCriteria> actualCreateOrRetrieveCopyInstanceResult = structuredContentItemCriteriaImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService)
+        .getCeilingImplClass(eq("org.broadleafcommerce.cms.structure.domain.StructuredContentItemCriteriaImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    StructuredContentItemCriteria clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof StructuredContentItemCriteriaImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(structuredContentItemCriteriaImpl, clone);
   }
 
   /**
-   * Test {@link
-   * StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test: {@link StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CreateResponse StructuredContentItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+      "CreateResponse StructuredContentItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
-
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
-    structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
-    structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
-    structuredContentItemCriteriaImpl2.setQuantity(1);
-    structuredContentItemCriteriaImpl2.setStructuredContent(new StructuredContentImpl());
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(structuredContentItemCriteriaImpl2, false);
-
+    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<StructuredContentItemCriteria> actualCreateOrRetrieveCopyInstanceResult =
-        structuredContentItemCriteriaImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<StructuredContentItemCriteria> actualCreateOrRetrieveCopyInstanceResult = structuredContentItemCriteriaImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link
-   * StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link
-   *       StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * StructuredContentItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StructuredContentItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_thenCallsCreateOrRetrieveCopyInstance()
-      throws CloneNotSupportedException {
-    // Arrange
-    StructuredContentImpl structuredContent = mock(StructuredContentImpl.class);
-    when(structuredContent.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new StructuredContentImpl(), true));
-
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
-    structuredContentItemCriteriaImpl.setStructuredContent(structuredContent);
-
-    StructuredContentItemCriteriaImpl structuredContentItemCriteriaImpl2 =
-        new StructuredContentItemCriteriaImpl();
-    structuredContentItemCriteriaImpl2.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
-    structuredContentItemCriteriaImpl2.setMatchRule("Match Rule");
-    structuredContentItemCriteriaImpl2.setQuantity(1);
-    structuredContentItemCriteriaImpl2.setStructuredContent(new StructuredContentImpl());
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(structuredContentItemCriteriaImpl2, false);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<StructuredContentItemCriteria> actualCreateOrRetrieveCopyInstanceResult =
-        structuredContentItemCriteriaImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(structuredContent).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link StructuredContentItemCriteriaImpl}
    *   <li>{@link StructuredContentItemCriteriaImpl#setId(Long)}
@@ -631,25 +560,19 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StructuredContentItemCriteriaImpl.<init>()",
-    "Long StructuredContentItemCriteriaImpl.getId()",
-    "String StructuredContentItemCriteriaImpl.getMatchRule()",
-    "Integer StructuredContentItemCriteriaImpl.getQuantity()",
-    "StructuredContent StructuredContentItemCriteriaImpl.getStructuredContent()",
-    "void StructuredContentItemCriteriaImpl.setId(Long)",
-    "void StructuredContentItemCriteriaImpl.setMatchRule(String)",
-    "void StructuredContentItemCriteriaImpl.setQuantity(Integer)",
-    "void StructuredContentItemCriteriaImpl.setStructuredContent(StructuredContent)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StructuredContentItemCriteriaImpl.<init>()",
+      "Long StructuredContentItemCriteriaImpl.getId()", "String StructuredContentItemCriteriaImpl.getMatchRule()",
+      "Integer StructuredContentItemCriteriaImpl.getQuantity()",
+      "StructuredContent StructuredContentItemCriteriaImpl.getStructuredContent()",
+      "void StructuredContentItemCriteriaImpl.setId(Long)",
+      "void StructuredContentItemCriteriaImpl.setMatchRule(String)",
+      "void StructuredContentItemCriteriaImpl.setQuantity(Integer)",
+      "void StructuredContentItemCriteriaImpl.setStructuredContent(StructuredContent)"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    StructuredContentItemCriteriaImpl actualStructuredContentItemCriteriaImpl =
-        new StructuredContentItemCriteriaImpl();
-    actualStructuredContentItemCriteriaImpl.setId(
-        StructuredContentItemCriteriaImpl.serialVersionUID);
+    StructuredContentItemCriteriaImpl actualStructuredContentItemCriteriaImpl = new StructuredContentItemCriteriaImpl();
+    actualStructuredContentItemCriteriaImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
     actualStructuredContentItemCriteriaImpl.setMatchRule("Match Rule");
     actualStructuredContentItemCriteriaImpl.setQuantity(1);
     StructuredContentImpl structuredContent = new StructuredContentImpl();
@@ -657,8 +580,7 @@ public class StructuredContentItemCriteriaImplDiffblueTest {
     Long actualId = actualStructuredContentItemCriteriaImpl.getId();
     String actualMatchRule = actualStructuredContentItemCriteriaImpl.getMatchRule();
     Integer actualQuantity = actualStructuredContentItemCriteriaImpl.getQuantity();
-    StructuredContent actualStructuredContent =
-        actualStructuredContentItemCriteriaImpl.getStructuredContent();
+    StructuredContent actualStructuredContent = actualStructuredContentItemCriteriaImpl.getStructuredContent();
 
     // Assert
     assertEquals("Match Rule", actualMatchRule);

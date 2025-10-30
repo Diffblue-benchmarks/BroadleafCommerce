@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.order.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,26 +28,19 @@ import org.junit.experimental.categories.Category;
 public class OrderServiceExceptionDiffblueTest {
   /**
    * Test {@link OrderServiceException#OrderServiceException(String)}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderServiceException#OrderServiceException(String)}
+   * <p>
+   * Method under test: {@link OrderServiceException#OrderServiceException(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderServiceException.<init>()",
-    "void OrderServiceException.<init>(String)",
-    "void OrderServiceException.<init>(String, Throwable)",
-    "void OrderServiceException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderServiceException.<init>()", "void OrderServiceException.<init>(String)",
+      "void OrderServiceException.<init>(String, Throwable)", "void OrderServiceException.<init>(Throwable)"})
   public void testNewOrderServiceException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
-    OrderServiceException actualOrderServiceException =
-        new OrderServiceException("An error occurred");
+    OrderServiceException actualOrderServiceException = new OrderServiceException("An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualOrderServiceException.getMessage());
@@ -58,29 +50,22 @@ public class OrderServiceExceptionDiffblueTest {
 
   /**
    * Test {@link OrderServiceException#OrderServiceException(String, Throwable)}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderServiceException#OrderServiceException(String, Throwable)}
+   * <p>
+   * Method under test: {@link OrderServiceException#OrderServiceException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderServiceException.<init>()",
-    "void OrderServiceException.<init>(String)",
-    "void OrderServiceException.<init>(String, Throwable)",
-    "void OrderServiceException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderServiceException.<init>()", "void OrderServiceException.<init>(String)",
+      "void OrderServiceException.<init>(String, Throwable)", "void OrderServiceException.<init>(Throwable)"})
   public void testNewOrderServiceException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    OrderServiceException actualOrderServiceException =
-        new OrderServiceException("An error occurred", cause);
+    OrderServiceException actualOrderServiceException = new OrderServiceException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualOrderServiceException.getMessage());
@@ -90,22 +75,16 @@ public class OrderServiceExceptionDiffblueTest {
 
   /**
    * Test {@link OrderServiceException#OrderServiceException()}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code null}.
+   *   <li>Then return Message is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderServiceException#OrderServiceException()}
+   * <p>
+   * Method under test: {@link OrderServiceException#OrderServiceException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderServiceException.<init>()",
-    "void OrderServiceException.<init>(String)",
-    "void OrderServiceException.<init>(String, Throwable)",
-    "void OrderServiceException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderServiceException.<init>()", "void OrderServiceException.<init>(String)",
+      "void OrderServiceException.<init>(String, Throwable)", "void OrderServiceException.<init>(Throwable)"})
   public void testNewOrderServiceException_thenReturnMessageIsNull() {
     // Arrange and Act
     OrderServiceException actualOrderServiceException = new OrderServiceException();
@@ -118,23 +97,17 @@ public class OrderServiceExceptionDiffblueTest {
 
   /**
    * Test {@link OrderServiceException#OrderServiceException(Throwable)}.
-   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.
-   *   <li>Then return Message is {@code Throwable}.
+   *   <li>When {@link Throwable#Throwable()}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderServiceException#OrderServiceException(Throwable)}
+   * <p>
+   * Method under test: {@link OrderServiceException#OrderServiceException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderServiceException.<init>()",
-    "void OrderServiceException.<init>(String)",
-    "void OrderServiceException.<init>(String, Throwable)",
-    "void OrderServiceException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderServiceException.<init>()", "void OrderServiceException.<init>(String)",
+      "void OrderServiceException.<init>(String, Throwable)", "void OrderServiceException.<init>(Throwable)"})
   public void testNewOrderServiceException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

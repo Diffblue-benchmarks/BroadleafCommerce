@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.rating.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -31,9 +30,8 @@ import org.junit.experimental.categories.Category;
 public class ReviewFeedbackImplDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ReviewFeedbackImpl}
    *   <li>{@link ReviewFeedbackImpl#setCustomer(Customer)}
@@ -47,19 +45,12 @@ public class ReviewFeedbackImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ReviewFeedbackImpl.<init>()",
-    "Customer ReviewFeedbackImpl.getCustomer()",
-    "Long ReviewFeedbackImpl.getId()",
-    "Boolean ReviewFeedbackImpl.getIsHelpful()",
-    "ReviewDetail ReviewFeedbackImpl.getReviewDetail()",
-    "void ReviewFeedbackImpl.setCustomer(Customer)",
-    "void ReviewFeedbackImpl.setId(Long)",
-    "void ReviewFeedbackImpl.setIsHelpful(Boolean)",
-    "void ReviewFeedbackImpl.setReviewDetail(ReviewDetail)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReviewFeedbackImpl.<init>()", "Customer ReviewFeedbackImpl.getCustomer()",
+      "Long ReviewFeedbackImpl.getId()", "Boolean ReviewFeedbackImpl.getIsHelpful()",
+      "ReviewDetail ReviewFeedbackImpl.getReviewDetail()", "void ReviewFeedbackImpl.setCustomer(Customer)",
+      "void ReviewFeedbackImpl.setId(Long)", "void ReviewFeedbackImpl.setIsHelpful(Boolean)",
+      "void ReviewFeedbackImpl.setReviewDetail(ReviewDetail)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ReviewFeedbackImpl actualReviewFeedbackImpl = new ReviewFeedbackImpl();

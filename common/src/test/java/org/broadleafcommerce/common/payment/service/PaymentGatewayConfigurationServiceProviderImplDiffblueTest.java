@@ -23,8 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,57 +34,42 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentGatewayConfigurationServiceProviderImplDiffblueTest {
-  @Mock private List<PaymentGatewayConfigurationService> list;
+  @Mock
+  private List<PaymentGatewayConfigurationService> list;
 
   @InjectMocks
-  private PaymentGatewayConfigurationServiceProviderImpl
-      paymentGatewayConfigurationServiceProviderImpl;
+  private PaymentGatewayConfigurationServiceProviderImpl paymentGatewayConfigurationServiceProviderImpl;
 
   /**
-   * Test {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
-   *
-   * <p>Method under test: {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
+   * Test {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
+   * <p>
+   * Method under test: {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"
-  })
+      "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"})
   public void testGetGatewayConfigurationService() {
     // Arrange
-    AbstractPaymentGatewayConfiguration abstractPaymentGatewayConfiguration =
-        mock(AbstractPaymentGatewayConfiguration.class);
-    when(abstractPaymentGatewayConfiguration.getGatewayType())
-        .thenReturn(PaymentGatewayType.PASSTHROUGH);
+    AbstractPaymentGatewayConfiguration abstractPaymentGatewayConfiguration = mock(
+        AbstractPaymentGatewayConfiguration.class);
+    when(abstractPaymentGatewayConfiguration.getGatewayType()).thenReturn(PaymentGatewayType.PASSTHROUGH);
+    AbstractPaymentGatewayConfigurationService abstractPaymentGatewayConfigurationService = mock(
+        AbstractPaymentGatewayConfigurationService.class);
+    when(abstractPaymentGatewayConfigurationService.getConfiguration()).thenReturn(abstractPaymentGatewayConfiguration);
 
-    AbstractPaymentGatewayConfigurationService abstractPaymentGatewayConfigurationService =
-        mock(AbstractPaymentGatewayConfigurationService.class);
-    when(abstractPaymentGatewayConfigurationService.getConfiguration())
-        .thenReturn(abstractPaymentGatewayConfiguration);
-
-    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList =
-        new ArrayList<>();
+    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList = new ArrayList<>();
     paymentGatewayConfigurationServiceList.add(abstractPaymentGatewayConfigurationService);
     when(list.iterator()).thenReturn(paymentGatewayConfigurationServiceList.iterator());
-
     PaymentGatewayType gatewayType = mock(PaymentGatewayType.class);
     when(gatewayType.getFriendlyType()).thenReturn("Friendly Type");
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(
-                gatewayType));
+    assertThrows(IllegalArgumentException.class,
+        () -> paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(gatewayType));
     verify(list).iterator();
     verify(gatewayType).getFriendlyType();
     verify(abstractPaymentGatewayConfiguration).getGatewayType();
@@ -93,37 +77,29 @@ public class PaymentGatewayConfigurationServiceProviderImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
-   *
-   * <p>Method under test: {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
+   * Test {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
+   * <p>
+   * Method under test: {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"
-  })
+      "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"})
   public void testGetGatewayConfigurationService2() {
     // Arrange
-    AbstractPaymentGatewayConfiguration abstractPaymentGatewayConfiguration =
-        mock(AbstractPaymentGatewayConfiguration.class);
+    AbstractPaymentGatewayConfiguration abstractPaymentGatewayConfiguration = mock(
+        AbstractPaymentGatewayConfiguration.class);
     when(abstractPaymentGatewayConfiguration.getGatewayType()).thenReturn(new PaymentGatewayType());
+    AbstractPaymentGatewayConfigurationService abstractPaymentGatewayConfigurationService = mock(
+        AbstractPaymentGatewayConfigurationService.class);
+    when(abstractPaymentGatewayConfigurationService.getConfiguration()).thenReturn(abstractPaymentGatewayConfiguration);
 
-    AbstractPaymentGatewayConfigurationService abstractPaymentGatewayConfigurationService =
-        mock(AbstractPaymentGatewayConfigurationService.class);
-    when(abstractPaymentGatewayConfigurationService.getConfiguration())
-        .thenReturn(abstractPaymentGatewayConfiguration);
-
-    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList =
-        new ArrayList<>();
+    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList = new ArrayList<>();
     paymentGatewayConfigurationServiceList.add(abstractPaymentGatewayConfigurationService);
     when(list.iterator()).thenReturn(paymentGatewayConfigurationServiceList.iterator());
 
     // Act
-    paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(
-        mock(PaymentGatewayType.class));
+    paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(mock(PaymentGatewayType.class));
 
     // Assert
     verify(list).iterator();
@@ -132,44 +108,32 @@ public class PaymentGatewayConfigurationServiceProviderImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
-   *
-   * <p>Method under test: {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
+   * Test {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
+   * <p>
+   * Method under test: {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"
-  })
+      "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"})
   public void testGetGatewayConfigurationService3() {
     // Arrange
-    AbstractPaymentGatewayConfiguration abstractPaymentGatewayConfiguration =
-        mock(AbstractPaymentGatewayConfiguration.class);
-    when(abstractPaymentGatewayConfiguration.getGatewayType())
-        .thenReturn(mock(PaymentGatewayType.class));
+    AbstractPaymentGatewayConfiguration abstractPaymentGatewayConfiguration = mock(
+        AbstractPaymentGatewayConfiguration.class);
+    when(abstractPaymentGatewayConfiguration.getGatewayType()).thenReturn(mock(PaymentGatewayType.class));
+    AbstractPaymentGatewayConfigurationService abstractPaymentGatewayConfigurationService = mock(
+        AbstractPaymentGatewayConfigurationService.class);
+    when(abstractPaymentGatewayConfigurationService.getConfiguration()).thenReturn(abstractPaymentGatewayConfiguration);
 
-    AbstractPaymentGatewayConfigurationService abstractPaymentGatewayConfigurationService =
-        mock(AbstractPaymentGatewayConfigurationService.class);
-    when(abstractPaymentGatewayConfigurationService.getConfiguration())
-        .thenReturn(abstractPaymentGatewayConfiguration);
-
-    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList =
-        new ArrayList<>();
+    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList = new ArrayList<>();
     paymentGatewayConfigurationServiceList.add(abstractPaymentGatewayConfigurationService);
     when(list.iterator()).thenReturn(paymentGatewayConfigurationServiceList.iterator());
-
     PaymentGatewayType gatewayType = mock(PaymentGatewayType.class);
     when(gatewayType.getFriendlyType()).thenReturn("Friendly Type");
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(
-                gatewayType));
+    assertThrows(IllegalArgumentException.class,
+        () -> paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(gatewayType));
     verify(list).iterator();
     verify(gatewayType).getFriendlyType();
     verify(abstractPaymentGatewayConfiguration).getGatewayType();
@@ -177,133 +141,96 @@ public class PaymentGatewayConfigurationServiceProviderImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
-   *
+   * Test {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
    * <ul>
-   *   <li>Given {@code Friendly Type}.
-   *   <li>Then calls {@link PaymentGatewayType#getFriendlyType()}.
+   *   <li>Given {@code Friendly Type}.</li>
+   *   <li>Then calls {@link PaymentGatewayType#getFriendlyType()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
+   * <p>
+   * Method under test: {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"
-  })
+      "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"})
   public void testGetGatewayConfigurationService_givenFriendlyType_thenCallsGetFriendlyType() {
     // Arrange
-    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList =
-        new ArrayList<>();
+    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList = new ArrayList<>();
     when(list.iterator()).thenReturn(paymentGatewayConfigurationServiceList.iterator());
-
     PaymentGatewayType gatewayType = mock(PaymentGatewayType.class);
     when(gatewayType.getFriendlyType()).thenReturn("Friendly Type");
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(
-                gatewayType));
+    assertThrows(IllegalArgumentException.class,
+        () -> paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(gatewayType));
     verify(list).iterator();
     verify(gatewayType).getFriendlyType();
   }
 
   /**
-   * Test {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
-   *
+   * Test {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
+   * <p>
+   * Method under test: {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"
-  })
-  public void testGetGatewayConfigurationService_whenNull() {
-    // Arrange
-    ArrayList<PaymentGatewayConfigurationService> gatewayConfigurationServices = new ArrayList<>();
-    gatewayConfigurationServices.add(new AbstractPaymentGatewayConfigurationService());
-    paymentGatewayConfigurationServiceProviderImpl.setGatewayConfigurationServices(
-        gatewayConfigurationServices);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
+      "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"})
+  public void testGetGatewayConfigurationService_whenNull_thenThrowIllegalArgumentException() {
+    // Arrange, Act and Assert
+    assertThrows(IllegalArgumentException.class,
         () -> paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(null));
   }
 
   /**
-   * Test {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
-   *
+   * Test {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}.
    * <ul>
-   *   <li>When {@link PaymentGatewayType#PASSTHROUGH}.
+   *   <li>When {@link PaymentGatewayType#PASSTHROUGH}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
+   * <p>
+   * Method under test: {@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationService(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"
-  })
+      "PaymentGatewayConfigurationService PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(PaymentGatewayType)"})
   public void testGetGatewayConfigurationService_whenPassthrough() {
     // Arrange
-    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList =
-        new ArrayList<>();
+    ArrayList<PaymentGatewayConfigurationService> paymentGatewayConfigurationServiceList = new ArrayList<>();
     when(list.iterator()).thenReturn(paymentGatewayConfigurationServiceList.iterator());
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationService(
-                PaymentGatewayType.PASSTHROUGH));
+    assertThrows(IllegalArgumentException.class, () -> paymentGatewayConfigurationServiceProviderImpl
+        .getGatewayConfigurationService(PaymentGatewayType.PASSTHROUGH));
     verify(list).iterator();
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link
-   *       PaymentGatewayConfigurationServiceProviderImpl#setGatewayConfigurationServices(List)}
+   *   <li>{@link PaymentGatewayConfigurationServiceProviderImpl#setGatewayConfigurationServices(List)}
    *   <li>{@link PaymentGatewayConfigurationServiceProviderImpl#getGatewayConfigurationServices()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationServices()",
-    "void PaymentGatewayConfigurationServiceProviderImpl.setGatewayConfigurationServices(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List PaymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationServices()",
+      "void PaymentGatewayConfigurationServiceProviderImpl.setGatewayConfigurationServices(List)"})
   public void testGettersAndSetters() {
     // Arrange
-    PaymentGatewayConfigurationServiceProviderImpl paymentGatewayConfigurationServiceProviderImpl =
-        new PaymentGatewayConfigurationServiceProviderImpl();
+    PaymentGatewayConfigurationServiceProviderImpl paymentGatewayConfigurationServiceProviderImpl = new PaymentGatewayConfigurationServiceProviderImpl();
     ArrayList<PaymentGatewayConfigurationService> gatewayConfigurationServices = new ArrayList<>();
 
     // Act
-    paymentGatewayConfigurationServiceProviderImpl.setGatewayConfigurationServices(
-        gatewayConfigurationServices);
-    List<PaymentGatewayConfigurationService> actualGatewayConfigurationServices =
-        paymentGatewayConfigurationServiceProviderImpl.getGatewayConfigurationServices();
+    paymentGatewayConfigurationServiceProviderImpl.setGatewayConfigurationServices(gatewayConfigurationServices);
+    List<PaymentGatewayConfigurationService> actualGatewayConfigurationServices = paymentGatewayConfigurationServiceProviderImpl
+        .getGatewayConfigurationServices();
 
     // Assert
     assertTrue(actualGatewayConfigurationServices.isEmpty());

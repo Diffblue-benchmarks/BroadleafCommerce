@@ -20,18 +20,14 @@ package org.broadleafcommerce.core.web.processor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionXref;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionXrefImpl;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
 import org.junit.jupiter.api.DisplayName;
@@ -44,32 +40,31 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ProductOptionDisplayProcessorDiffblueTest {
-  @InjectMocks private ProductOptionDisplayProcessor productOptionDisplayProcessor;
+  @InjectMocks
+  private ProductOptionDisplayProcessor productOptionDisplayProcessor;
 
   /**
    * Test {@link ProductOptionDisplayProcessor#getName()}.
-   *
-   * <p>Method under test: {@link ProductOptionDisplayProcessor#getName()}
+   * <p>
+   * Method under test: {@link ProductOptionDisplayProcessor#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String ProductOptionDisplayProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("product_option_display", new ProductOptionDisplayProcessor().getName());
+    assertEquals("product_option_display", (new ProductOptionDisplayProcessor()).getName());
   }
 
   /**
    * Test {@link ProductOptionDisplayProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link ProductOptionDisplayProcessor#getPrecedence()}
+   * <p>
+   * Method under test: {@link ProductOptionDisplayProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int ProductOptionDisplayProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert
@@ -78,13 +73,12 @@ class ProductOptionDisplayProcessorDiffblueTest {
 
   /**
    * Test {@link ProductOptionDisplayProcessor#useGlobalScope()}.
-   *
-   * <p>Method under test: {@link ProductOptionDisplayProcessor#useGlobalScope()}
+   * <p>
+   * Method under test: {@link ProductOptionDisplayProcessor#useGlobalScope()}
    */
   @Test
   @DisplayName("Test useGlobalScope()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean ProductOptionDisplayProcessor.useGlobalScope()"})
   void testUseGlobalScope() {
     // Arrange, Act and Assert
@@ -92,76 +86,29 @@ class ProductOptionDisplayProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ProductOptionDisplayProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
-  void testPopulateModelVariables() {
-    // Arrange
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    when(discreteOrderItemImpl.getProduct()).thenReturn(new ProductBundleImpl());
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn(discreteOrderItemImpl);
-
-    // Act
-    Map<String, Object> actualPopulateModelVariablesResult =
-        productOptionDisplayProcessor.populateModelVariables("Tag Name", tagAttributes, context);
-
-    // Assert
-    verify(discreteOrderItemImpl).getProduct();
-    verify(discreteOrderItemImpl).getOrderItemAttributes();
-    verify(context).parseExpression(null);
-    assertEquals(1, actualPopulateModelVariablesResult.size());
-    Object getResult = actualPopulateModelVariablesResult.get("productOptionDisplayValues");
-    assertTrue(getResult instanceof Map);
-    assertTrue(((Map<Object, Object>) getResult).isEmpty());
-  }
-
-  /**
-   * Test {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}.
-   *
+   * Test {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
    * <ul>
-   *   <li>Given {@code Parse Expression}.
+   *   <li>Given {@code Parse Expression}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
+   * <p>
+   * Method under test: {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName(
-      "Test populateModelVariables(String, Map, BroadleafTemplateContext); given 'Parse Expression'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ProductOptionDisplayProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
+  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext); given 'Parse Expression'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Map ProductOptionDisplayProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
   void testPopulateModelVariables_givenParseExpression() {
     // Arrange
     HashMap<String, String> tagAttributes = new HashMap<>();
-
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
 
     // Act
-    Map<String, Object> actualPopulateModelVariablesResult =
-        productOptionDisplayProcessor.populateModelVariables("Tag Name", tagAttributes, context);
+    Map<String, Object> actualPopulateModelVariablesResult = productOptionDisplayProcessor
+        .populateModelVariables("Tag Name", tagAttributes, context);
 
     // Assert
-    verify(context).parseExpression(null);
+    verify(context).parseExpression(isNull());
     assertEquals(1, actualPopulateModelVariablesResult.size());
     Object getResult = actualPopulateModelVariablesResult.get("productOptionDisplayValues");
     assertTrue(getResult instanceof Map);
@@ -169,50 +116,34 @@ class ProductOptionDisplayProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}.
-   *
+   * Test {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
    * <ul>
-   *   <li>Then calls {@link Product#getProductOptionXrefs()}.
+   *   <li>Then calls {@link DiscreteOrderItemImpl#getProduct()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
+   * <p>
+   * Method under test: {@link ProductOptionDisplayProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName(
-      "Test populateModelVariables(String, Map, BroadleafTemplateContext); then calls getProductOptionXrefs()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ProductOptionDisplayProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
-  void testPopulateModelVariables_thenCallsGetProductOptionXrefs() {
+  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext); then calls getProduct()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Map ProductOptionDisplayProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
+  void testPopulateModelVariables_thenCallsGetProduct() {
     // Arrange
     HashMap<String, String> tagAttributes = new HashMap<>();
-
-    ArrayList<ProductOptionXref> productOptionXrefList = new ArrayList<>();
-    productOptionXrefList.add(new ProductOptionXrefImpl());
-
-    Product product = mock(Product.class);
-    when(product.getProductOptionXrefs()).thenReturn(productOptionXrefList);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
     when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    when(discreteOrderItemImpl.getProduct()).thenReturn(product);
-
+    when(discreteOrderItemImpl.getProduct()).thenReturn(new ProductBundleImpl());
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn(discreteOrderItemImpl);
 
     // Act
-    Map<String, Object> actualPopulateModelVariablesResult =
-        productOptionDisplayProcessor.populateModelVariables("Tag Name", tagAttributes, context);
+    Map<String, Object> actualPopulateModelVariablesResult = productOptionDisplayProcessor
+        .populateModelVariables("Tag Name", tagAttributes, context);
 
     // Assert
-    verify(product).getProductOptionXrefs();
     verify(discreteOrderItemImpl).getProduct();
     verify(discreteOrderItemImpl).getOrderItemAttributes();
-    verify(context).parseExpression(null);
+    verify(context).parseExpression(isNull());
     assertEquals(1, actualPopulateModelVariablesResult.size());
     Object getResult = actualPopulateModelVariablesResult.get("productOptionDisplayValues");
     assertTrue(getResult instanceof Map);

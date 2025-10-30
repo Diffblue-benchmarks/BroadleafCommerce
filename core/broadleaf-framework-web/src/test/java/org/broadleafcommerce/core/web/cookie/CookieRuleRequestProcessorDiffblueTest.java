@@ -22,25 +22,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.security.util.CookieUtils;
 import org.broadleafcommerce.common.security.util.GenericCookieUtilsImpl;
 import org.broadleafcommerce.core.rule.RuleDTOConfig;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -48,307 +45,246 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 @ContextConfiguration(classes = {CookieRuleRequestProcessor.class})
 @ExtendWith(SpringExtension.class)
 class CookieRuleRequestProcessorDiffblueTest {
-  @Autowired private CookieRuleRequestProcessor cookieRuleRequestProcessor;
+  @Autowired
+  private CookieRuleRequestProcessor cookieRuleRequestProcessor;
 
-  @MockBean private CookieUtils cookieUtils;
+  @MockBean
+  private CookieUtils cookieUtils;
 
-  @Autowired private List<RuleDTOConfig> list;
+  @Autowired
+  private List<RuleDTOConfig> list;
 
-  @MockBean private RuleDTOConfig ruleDTOConfig;
+  @MockBean
+  private RuleDTOConfig ruleDTOConfig;
 
   /**
    * Test {@link CookieRuleRequestProcessor#CookieRuleRequestProcessor(List, CookieUtils)}.
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#CookieRuleRequestProcessor(List,
-   * CookieUtils)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#CookieRuleRequestProcessor(List, CookieUtils)}
    */
   @Test
   @DisplayName("Test new CookieRuleRequestProcessor(List, CookieUtils)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CookieRuleRequestProcessor.<init>(List, CookieUtils)"})
   void testNewCookieRuleRequestProcessor() {
     // Arrange
     ArrayList<RuleDTOConfig> configs = new ArrayList<>();
 
-    // Act
-    CookieRuleRequestProcessor actualCookieRuleRequestProcessor =
-        new CookieRuleRequestProcessor(configs, new GenericCookieUtilsImpl());
-
-    // Assert
-    assertTrue(actualCookieRuleRequestProcessor.configs.isEmpty());
+    // Act and Assert
+    assertTrue((new CookieRuleRequestProcessor(configs, new GenericCookieUtilsImpl())).configs.isEmpty());
   }
 
   /**
    * Test {@link CookieRuleRequestProcessor#process(WebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link CookieUtils} {@link CookieUtils#getCookieValue(HttpServletRequest, String)}
-   *       return empty string.
+   *   <li>Given {@link CookieUtils} {@link CookieUtils#getCookieValue(HttpServletRequest, String)} return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#process(WebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#process(WebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test process(WebRequest); given CookieUtils getCookieValue(HttpServletRequest, String) return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test process(WebRequest); given CookieUtils getCookieValue(HttpServletRequest, String) return empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CookieRuleRequestProcessor.process(WebRequest)"})
   void testProcess_givenCookieUtilsGetCookieValueReturnEmptyString() {
     // Arrange
-    RuleDTOConfig ruleDTOConfig = new RuleDTOConfig("Field Name", "Label");
-    ruleDTOConfig.setAlternateName("Configs");
-
-    ArrayList<RuleDTOConfig> configs = new ArrayList<>();
-    configs.add(ruleDTOConfig);
-
-    CookieUtils cookieUtils = mock(CookieUtils.class);
-    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any()))
-        .thenReturn("");
-
-    CookieRuleRequestProcessor cookieRuleRequestProcessor =
-        new CookieRuleRequestProcessor(configs, cookieUtils);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    when(ruleDTOConfig.getAlternateName()).thenReturn("Alternate Name");
+    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any())).thenReturn("");
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
 
     // Act
-    cookieRuleRequestProcessor.process(request2);
+    cookieRuleRequestProcessor.process(request);
 
     // Assert
-    verify(cookieUtils).getCookieValue(isA(HttpServletRequest.class), eq("Configs"));
-    Object sessionMutex = request2.getSessionMutex();
+    verify(cookieUtils).getCookieValue(isA(HttpServletRequest.class), eq("Alternate Name"));
+    verify(ruleDTOConfig, atLeast(1)).getAlternateName();
+    Object sessionMutex = request.getSessionMutex();
     assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(
-        new String[] {CookieRuleRequestProcessor.COOKIE_ATTRIBUTE_NAME},
+    assertArrayEquals(new String[]{CookieRuleRequestProcessor.COOKIE_ATTRIBUTE_NAME},
         ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
    * Test {@link CookieRuleRequestProcessor#process(WebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link RuleDTOConfig#RuleDTOConfig(String, String)} with {@code Field Name} and
-   *       {@code Label} AlternateName is {@code Configs}.
+   *   <li>Given {@link CookieUtils} {@link CookieUtils#getCookieValue(HttpServletRequest, String)} return {@code null}.</li>
+   *   <li>Then calls {@link CookieUtils#getCookieValue(HttpServletRequest, String)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#process(WebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#process(WebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test process(WebRequest); given RuleDTOConfig(String, String) with 'Field Name' and 'Label' AlternateName is 'Configs'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test process(WebRequest); given CookieUtils getCookieValue(HttpServletRequest, String) return 'null'; then calls getCookieValue(HttpServletRequest, String)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CookieRuleRequestProcessor.process(WebRequest)"})
-  void testProcess_givenRuleDTOConfigWithFieldNameAndLabelAlternateNameIsConfigs() {
+  void testProcess_givenCookieUtilsGetCookieValueReturnNull_thenCallsGetCookieValue() {
     // Arrange
-    RuleDTOConfig ruleDTOConfig = new RuleDTOConfig("Field Name", "Label");
-    ruleDTOConfig.setAlternateName("Configs");
-
-    ArrayList<RuleDTOConfig> configs = new ArrayList<>();
-    configs.add(ruleDTOConfig);
-    CookieRuleRequestProcessor cookieRuleRequestProcessor =
-        new CookieRuleRequestProcessor(configs, new GenericCookieUtilsImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    when(ruleDTOConfig.getAlternateName()).thenReturn("Alternate Name");
+    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any())).thenReturn(null);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
 
     // Act
-    cookieRuleRequestProcessor.process(request2);
+    cookieRuleRequestProcessor.process(request);
 
     // Assert
-    Object sessionMutex = request2.getSessionMutex();
+    verify(cookieUtils).getCookieValue(isA(HttpServletRequest.class), eq("Alternate Name"));
+    verify(ruleDTOConfig, atLeast(1)).getAlternateName();
+    Object sessionMutex = request.getSessionMutex();
     assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(
-        new String[] {CookieRuleRequestProcessor.COOKIE_ATTRIBUTE_NAME},
+    assertArrayEquals(new String[]{CookieRuleRequestProcessor.COOKIE_ATTRIBUTE_NAME},
         ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
    * Test {@link CookieRuleRequestProcessor#process(WebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link RuleDTOConfig#RuleDTOConfig(String, String)} with {@code Field Name} and
-   *       {@code Label} AlternateName is {@code null}.
+   *   <li>Given {@link RuleDTOConfig} {@link RuleDTOConfig#getAlternateName()} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#process(WebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#process(WebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test process(WebRequest); given RuleDTOConfig(String, String) with 'Field Name' and 'Label' AlternateName is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test process(WebRequest); given RuleDTOConfig getAlternateName() return 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CookieRuleRequestProcessor.process(WebRequest)"})
-  void testProcess_givenRuleDTOConfigWithFieldNameAndLabelAlternateNameIsNull() {
+  void testProcess_givenRuleDTOConfigGetAlternateNameReturnNull() {
     // Arrange
-    RuleDTOConfig ruleDTOConfig = new RuleDTOConfig("Field Name", "Label");
-    ruleDTOConfig.setAlternateName(null);
-
-    ArrayList<RuleDTOConfig> configs = new ArrayList<>();
-    configs.add(ruleDTOConfig);
-    CookieRuleRequestProcessor cookieRuleRequestProcessor =
-        new CookieRuleRequestProcessor(configs, new GenericCookieUtilsImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    when(ruleDTOConfig.getAlternateName()).thenReturn(null);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
 
     // Act
-    cookieRuleRequestProcessor.process(request2);
+    cookieRuleRequestProcessor.process(request);
 
     // Assert
-    Object sessionMutex = request2.getSessionMutex();
+    verify(ruleDTOConfig).getAlternateName();
+    Object sessionMutex = request.getSessionMutex();
     assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(
-        new String[] {CookieRuleRequestProcessor.COOKIE_ATTRIBUTE_NAME},
+    assertArrayEquals(new String[]{CookieRuleRequestProcessor.COOKIE_ATTRIBUTE_NAME},
         ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
    * Test {@link CookieRuleRequestProcessor#process(WebRequest)}.
-   *
    * <ul>
-   *   <li>Then calls {@link RuleDTOConfig#getAlternateName()}.
+   *   <li>Given {@link RuleDTOConfig} {@link RuleDTOConfig#getFieldName()} return {@code Field Name}.</li>
+   *   <li>Then calls {@link RuleDTOConfig#getFieldName()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#process(WebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#process(WebRequest)}
    */
   @Test
-  @DisplayName("Test process(WebRequest); then calls getAlternateName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test process(WebRequest); given RuleDTOConfig getFieldName() return 'Field Name'; then calls getFieldName()")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CookieRuleRequestProcessor.process(WebRequest)"})
-  void testProcess_thenCallsGetAlternateName() {
+  void testProcess_givenRuleDTOConfigGetFieldNameReturnFieldName_thenCallsGetFieldName() {
     // Arrange
     when(ruleDTOConfig.getFieldName()).thenReturn("Field Name");
     when(ruleDTOConfig.getAlternateName()).thenReturn("Alternate Name");
-    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any()))
-        .thenReturn("42");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any())).thenReturn("42");
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
 
     // Act
-    cookieRuleRequestProcessor.process(request2);
+    cookieRuleRequestProcessor.process(request);
 
     // Assert
     verify(cookieUtils).getCookieValue(isA(HttpServletRequest.class), eq("Alternate Name"));
     verify(ruleDTOConfig, atLeast(1)).getAlternateName();
     verify(ruleDTOConfig).getFieldName();
-    Object sessionMutex = request2.getSessionMutex();
+    Object sessionMutex = request.getSessionMutex();
     assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(
-        new String[] {CookieRuleRequestProcessor.COOKIE_ATTRIBUTE_NAME},
+    assertArrayEquals(new String[]{CookieRuleRequestProcessor.COOKIE_ATTRIBUTE_NAME},
         ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
    * Test {@link CookieRuleRequestProcessor#getRuleMapFromRequest(WebRequest)}.
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#getRuleMapFromRequest(WebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#getRuleMapFromRequest(WebRequest)}
    */
   @Test
   @DisplayName("Test getRuleMapFromRequest(WebRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map CookieRuleRequestProcessor.getRuleMapFromRequest(WebRequest)"})
   void testGetRuleMapFromRequest() {
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
     // Act and Assert
-    assertTrue(
-        cookieRuleRequestProcessor.getRuleMapFromRequest(new ServletWebRequest(request)).isEmpty());
+    assertTrue(cookieRuleRequestProcessor
+        .getRuleMapFromRequest(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))))
+        .isEmpty());
   }
 
   /**
    * Test {@link CookieRuleRequestProcessor#getRuleMapFromRequest(WebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link MockHttpSession#MockHttpSession()}.
-   *   <li>Then calls {@link MockHttpServletRequest#addParameter(String, String)}.
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then calls {@link RequestAttributes#getAttribute(String, int)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#getRuleMapFromRequest(WebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#getRuleMapFromRequest(WebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test getRuleMapFromRequest(WebRequest); given MockHttpSession(); then calls addParameter(String, String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getRuleMapFromRequest(WebRequest); given HashMap(); then calls getAttribute(String, int)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map CookieRuleRequestProcessor.getRuleMapFromRequest(WebRequest)"})
-  void testGetRuleMapFromRequest_givenMockHttpSession_thenCallsAddParameter()
-      throws UnsupportedEncodingException {
+  void testGetRuleMapFromRequest_givenHashMap_thenCallsGetAttribute() {
     // Arrange
-    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
-    when(servletRequest.getSession(anyBoolean())).thenReturn(new MockHttpSession());
-    doNothing().when(servletRequest).setCharacterEncoding(Mockito.<String>any());
-    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(new HashMap<>());
-    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
-    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
-    servletRequest.addParameter("blRuleMap", "42");
-
-    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest);
-    request.setCharacterEncoding("blRuleMap");
-    request.setAttribute("blRuleMap", "42");
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    ServletWebRequest request3 = new ServletWebRequest(request2);
-    request3.setAttribute("blRuleMap", "Value", 1);
+    WebRequest request = mock(WebRequest.class);
+    when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(new HashMap<>());
 
     // Act
-    Map<String, Object> actualRuleMapFromRequest =
-        cookieRuleRequestProcessor.getRuleMapFromRequest(request3);
+    Map<String, Object> actualRuleMapFromRequest = cookieRuleRequestProcessor.getRuleMapFromRequest(request);
 
     // Assert
-    verify(servletRequest).addParameter("blRuleMap", "42");
-    verify(servletRequest).getAttribute("blRuleMap");
-    verify(servletRequest).getSession(true);
-    verify(servletRequest).setAttribute(eq("blRuleMap"), isA(Object.class));
-    verify(servletRequest).setCharacterEncoding("blRuleMap");
+    verify(request).getAttribute(eq("blRuleMap"), eq(0));
     assertTrue(actualRuleMapFromRequest.isEmpty());
   }
 
   /**
    * Test {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link CookieUtils} {@link CookieUtils#getCookieValue(HttpServletRequest, String)}
-   *       return empty string.
-   *   <li>Then return Empty.
+   *   <li>Given {@link CookieUtils} {@link CookieUtils#getCookieValue(HttpServletRequest, String)} return empty string.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test getVals(ServletWebRequest); given CookieUtils getCookieValue(HttpServletRequest, String) return empty string; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVals(ServletWebRequest); given CookieUtils getCookieValue(HttpServletRequest, String) return empty string; then return Empty")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map CookieRuleRequestProcessor.getVals(ServletWebRequest)"})
   void testGetVals_givenCookieUtilsGetCookieValueReturnEmptyString_thenReturnEmpty() {
     // Arrange
     when(ruleDTOConfig.getAlternateName()).thenReturn("Alternate Name");
-    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any()))
-        .thenReturn("");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any())).thenReturn("");
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
     // Act
-    Map<String, String> actualVals =
-        cookieRuleRequestProcessor.getVals(new ServletWebRequest(request));
+    Map<String, String> actualVals = cookieRuleRequestProcessor
+        .getVals(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
 
     // Assert
     verify(cookieUtils).getCookieValue(isA(HttpServletRequest.class), eq("Alternate Name"));
@@ -358,32 +294,27 @@ class CookieRuleRequestProcessorDiffblueTest {
 
   /**
    * Test {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link CookieUtils} {@link CookieUtils#getCookieValue(HttpServletRequest, String)}
-   *       return {@code null}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link CookieUtils} {@link CookieUtils#getCookieValue(HttpServletRequest, String)} return {@code null}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test getVals(ServletWebRequest); given CookieUtils getCookieValue(HttpServletRequest, String) return 'null'; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVals(ServletWebRequest); given CookieUtils getCookieValue(HttpServletRequest, String) return 'null'; then return Empty")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map CookieRuleRequestProcessor.getVals(ServletWebRequest)"})
   void testGetVals_givenCookieUtilsGetCookieValueReturnNull_thenReturnEmpty() {
     // Arrange
     when(ruleDTOConfig.getAlternateName()).thenReturn("Alternate Name");
-    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any()))
-        .thenReturn(null);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any())).thenReturn(null);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
     // Act
-    Map<String, String> actualVals =
-        cookieRuleRequestProcessor.getVals(new ServletWebRequest(request));
+    Map<String, String> actualVals = cookieRuleRequestProcessor
+        .getVals(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
 
     // Assert
     verify(cookieUtils).getCookieValue(isA(HttpServletRequest.class), eq("Alternate Name"));
@@ -393,29 +324,26 @@ class CookieRuleRequestProcessorDiffblueTest {
 
   /**
    * Test {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link RuleDTOConfig} {@link RuleDTOConfig#getAlternateName()} return {@code null}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link RuleDTOConfig} {@link RuleDTOConfig#getAlternateName()} return {@code null}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test getVals(ServletWebRequest); given RuleDTOConfig getAlternateName() return 'null'; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVals(ServletWebRequest); given RuleDTOConfig getAlternateName() return 'null'; then return Empty")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map CookieRuleRequestProcessor.getVals(ServletWebRequest)"})
   void testGetVals_givenRuleDTOConfigGetAlternateNameReturnNull_thenReturnEmpty() {
     // Arrange
     when(ruleDTOConfig.getAlternateName()).thenReturn(null);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
     // Act
-    Map<String, String> actualVals =
-        cookieRuleRequestProcessor.getVals(new ServletWebRequest(request));
+    Map<String, String> actualVals = cookieRuleRequestProcessor
+        .getVals(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
 
     // Assert
     verify(ruleDTOConfig).getAlternateName();
@@ -424,33 +352,28 @@ class CookieRuleRequestProcessorDiffblueTest {
 
   /**
    * Test {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link RuleDTOConfig} {@link RuleDTOConfig#getFieldName()} return {@code Field
-   *       Name}.
-   *   <li>Then return size is one.
+   *   <li>Given {@link RuleDTOConfig} {@link RuleDTOConfig#getFieldName()} return {@code Field Name}.</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}
+   * <p>
+   * Method under test: {@link CookieRuleRequestProcessor#getVals(ServletWebRequest)}
    */
   @Test
-  @DisplayName(
-      "Test getVals(ServletWebRequest); given RuleDTOConfig getFieldName() return 'Field Name'; then return size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVals(ServletWebRequest); given RuleDTOConfig getFieldName() return 'Field Name'; then return size is one")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map CookieRuleRequestProcessor.getVals(ServletWebRequest)"})
   void testGetVals_givenRuleDTOConfigGetFieldNameReturnFieldName_thenReturnSizeIsOne() {
     // Arrange
     when(ruleDTOConfig.getFieldName()).thenReturn("Field Name");
     when(ruleDTOConfig.getAlternateName()).thenReturn("Alternate Name");
-    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any()))
-        .thenReturn("42");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    when(cookieUtils.getCookieValue(Mockito.<HttpServletRequest>any(), Mockito.<String>any())).thenReturn("42");
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
     // Act
-    Map<String, String> actualVals =
-        cookieRuleRequestProcessor.getVals(new ServletWebRequest(request));
+    Map<String, String> actualVals = cookieRuleRequestProcessor
+        .getVals(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
 
     // Assert
     verify(cookieUtils).getCookieValue(isA(HttpServletRequest.class), eq("Alternate Name"));

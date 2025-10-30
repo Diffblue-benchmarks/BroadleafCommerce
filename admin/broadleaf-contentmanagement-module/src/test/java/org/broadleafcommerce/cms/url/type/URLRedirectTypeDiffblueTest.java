@@ -20,8 +20,7 @@ package org.broadleafcommerce.cms.url.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,33 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {URLRedirectType.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class URLRedirectTypeDiffblueTest {
-  @Autowired private URLRedirectType uRLRedirectType;
+  @Autowired
+  private URLRedirectType uRLRedirectType;
+
+  /**
+   * Test {@link URLRedirectType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link URLRedirectType#getInstance(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLRedirectType URLRedirectType.getInstance(String)"})
+  public void testGetInstance() {
+    // Arrange and Act
+    URLRedirectType actualInstance = URLRedirectType.getInstance("https://example.org/example");
+
+    // Assert
+    assertEquals("https://example.org/example", actualInstance.getFriendlyType());
+    assertEquals("https://example.org/example", actualInstance.getType());
+  }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link URLRedirectType#URLRedirectType()}
    *   <li>{@link URLRedirectType#getFriendlyType()}
@@ -50,13 +66,9 @@ public class URLRedirectTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void URLRedirectType.<init>()",
-    "String URLRedirectType.getFriendlyType()",
-    "String URLRedirectType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void URLRedirectType.<init>()", "String URLRedirectType.getFriendlyType()",
+      "String URLRedirectType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     URLRedirectType actualUrlRedirectType = new URLRedirectType();
@@ -69,17 +81,16 @@ public class URLRedirectTypeDiffblueTest {
 
   /**
    * Test {@link URLRedirectType#URLRedirectType(String, String)}.
-   *
-   * <p>Method under test: {@link URLRedirectType#URLRedirectType(String, String)}
+   * <p>
+   * Method under test: {@link URLRedirectType#URLRedirectType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void URLRedirectType.<init>(String, String)"})
   public void testNewURLRedirectType() {
     // Arrange and Act
-    URLRedirectType actualUrlRedirectType =
-        new URLRedirectType("https://example.org/example", "https://example.org/example");
+    URLRedirectType actualUrlRedirectType = new URLRedirectType("https://example.org/example",
+        "https://example.org/example");
 
     // Assert
     assertEquals("https://example.org/example", actualUrlRedirectType.getFriendlyType());
@@ -88,61 +99,64 @@ public class URLRedirectTypeDiffblueTest {
 
   /**
    * Test {@link URLRedirectType#setType(String)}.
-   *
-   * <p>Method under test: {@link URLRedirectType#setType(String)}
+   * <ul>
+   *   <li>Then {@link URLRedirectType#FORWARD} Type is {@code https://example.org/examplehttps://example.org/example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLRedirectType#setType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void URLRedirectType.setType(String)"})
-  public void testSetType() {
-    // Arrange and Act
-    uRLRedirectType.setType("https://example.org/examplehttps://example.org/example");
+  public void testSetType_thenForwardTypeIsHttpsExampleOrgExamplehttpsExampleOrgExample() {
+    // Arrange
+    URLRedirectType urlRedirectType = URLRedirectType.FORWARD;
+
+    // Act
+    urlRedirectType.setType("https://example.org/examplehttps://example.org/example");
 
     // Assert
-    assertEquals(
-        "https://example.org/examplehttps://example.org/example", uRLRedirectType.getType());
+    assertEquals("https://example.org/examplehttps://example.org/example", urlRedirectType.getType());
   }
 
   /**
    * Test {@link URLRedirectType#setType(String)}.
-   *
    * <ul>
-   *   <li>Then {@link URLRedirectType} Type is {@code https://example.org/example}.
+   *   <li>When {@code https://example.org/example}.</li>
+   *   <li>Then {@link URLRedirectType#FORWARD} Type is {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLRedirectType#setType(String)}
+   * <p>
+   * Method under test: {@link URLRedirectType#setType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void URLRedirectType.setType(String)"})
-  public void testSetType_thenURLRedirectTypeTypeIsHttpsExampleOrgExample() {
-    // Arrange and Act
-    uRLRedirectType.setType("https://example.org/example");
+  public void testSetType_whenHttpsExampleOrgExample_thenForwardTypeIsHttpsExampleOrgExample() {
+    // Arrange
+    URLRedirectType urlRedirectType = URLRedirectType.FORWARD;
+
+    // Act
+    urlRedirectType.setType("https://example.org/example");
 
     // Assert
-    assertEquals("https://example.org/example", uRLRedirectType.getType());
+    assertEquals("https://example.org/example", urlRedirectType.getType());
   }
 
   /**
    * Test {@link URLRedirectType#equals(Object)}, and {@link URLRedirectType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link URLRedirectType#equals(Object)}
    *   <li>{@link URLRedirectType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean URLRedirectType.equals(Object)", "int URLRedirectType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -151,27 +165,25 @@ public class URLRedirectTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(urlRedirectType, urlRedirectType2);
-    assertEquals(urlRedirectType.hashCode(), urlRedirectType2.hashCode());
+    int expectedHashCodeResult = urlRedirectType.hashCode();
+    assertEquals(expectedHashCodeResult, urlRedirectType2.hashCode());
   }
 
   /**
    * Test {@link URLRedirectType#equals(Object)}, and {@link URLRedirectType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link URLRedirectType#equals(Object)}
    *   <li>{@link URLRedirectType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean URLRedirectType.equals(Object)", "int URLRedirectType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -180,58 +192,25 @@ public class URLRedirectTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(urlRedirectType, urlRedirectType2);
-    assertEquals(urlRedirectType.hashCode(), urlRedirectType2.hashCode());
+    int expectedHashCodeResult = urlRedirectType.hashCode();
+    assertEquals(expectedHashCodeResult, urlRedirectType2.hashCode());
   }
 
   /**
    * Test {@link URLRedirectType#equals(Object)}, and {@link URLRedirectType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link URLRedirectType#equals(Object)}
    *   <li>{@link URLRedirectType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean URLRedirectType.equals(Object)", "int URLRedirectType.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    URLRedirectType urlRedirectType =
-        new URLRedirectType("https://example.org/example", "https://example.org/example");
-    URLRedirectType urlRedirectType2 =
-        new URLRedirectType("https://example.org/example", "https://example.org/example");
-
-    // Act and Assert
-    assertEquals(urlRedirectType, urlRedirectType2);
-    assertEquals(urlRedirectType.hashCode(), urlRedirectType2.hashCode());
-  }
-
-  /**
-   * Test {@link URLRedirectType#equals(Object)}, and {@link URLRedirectType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link URLRedirectType#equals(Object)}
-   *   <li>{@link URLRedirectType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean URLRedirectType.equals(Object)", "int URLRedirectType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -245,17 +224,15 @@ public class URLRedirectTypeDiffblueTest {
 
   /**
    * Test {@link URLRedirectType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLRedirectType#equals(Object)}
+   * <p>
+   * Method under test: {@link URLRedirectType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean URLRedirectType.equals(Object)", "int URLRedirectType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -264,17 +241,15 @@ public class URLRedirectTypeDiffblueTest {
 
   /**
    * Test {@link URLRedirectType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLRedirectType#equals(Object)}
+   * <p>
+   * Method under test: {@link URLRedirectType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean URLRedirectType.equals(Object)", "int URLRedirectType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -283,17 +258,15 @@ public class URLRedirectTypeDiffblueTest {
 
   /**
    * Test {@link URLRedirectType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLRedirectType#equals(Object)}
+   * <p>
+   * Method under test: {@link URLRedirectType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean URLRedirectType.equals(Object)", "int URLRedirectType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -302,17 +275,15 @@ public class URLRedirectTypeDiffblueTest {
 
   /**
    * Test {@link URLRedirectType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLRedirectType#equals(Object)}
+   * <p>
+   * Method under test: {@link URLRedirectType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean URLRedirectType.equals(Object)", "int URLRedirectType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

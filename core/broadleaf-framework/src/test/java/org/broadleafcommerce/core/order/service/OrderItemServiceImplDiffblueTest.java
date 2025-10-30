@@ -32,34 +32,35 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.extension.ExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
+import org.broadleafcommerce.core.catalog.domain.ProductBundle;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductOption;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.catalog.domain.pricing.SkuPriceWrapper;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPrices;
 import org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService;
-import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationStrategyType;
 import org.broadleafcommerce.core.order.dao.OrderItemDao;
 import org.broadleafcommerce.core.order.domain.BundleOrderItem;
+import org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItemFeePrice;
@@ -71,6 +72,7 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItemAttribute;
 import org.broadleafcommerce.core.order.domain.OrderItemAttributeImpl;
+import org.broadleafcommerce.core.order.domain.OrderItemImpl;
 import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.call.AbstractOrderItemRequest;
@@ -96,24 +98,28 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderItemServiceImplDiffblueTest {
-  @Mock private CatalogService catalogService;
+  @Mock
+  private OrderItemServiceExtensionManager orderItemServiceExtensionManager;
 
-  @Mock private DynamicSkuPricingService dynamicSkuPricingService;
+  @InjectMocks
+  private OrderItemServiceImpl orderItemServiceImpl;
 
-  @Mock private OrderItemDao orderItemDao;
+  @Mock
+  private OrderItemDao orderItemDao;
 
-  @Mock private OrderItemServiceExtensionManager orderItemServiceExtensionManager;
+  @Mock
+  private CatalogService catalogService;
 
-  @InjectMocks private OrderItemServiceImpl orderItemServiceImpl;
+  @Mock
+  private DynamicSkuPricingService dynamicSkuPricingService;
 
   /**
    * Test {@link OrderItemServiceImpl#readOrderItemById(Long)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#readOrderItemById(Long)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#readOrderItemById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderItem OrderItemServiceImpl.readOrderItemById(Long)"})
   public void testReadOrderItemById() {
     // Arrange
@@ -124,18 +130,17 @@ public class OrderItemServiceImplDiffblueTest {
     OrderItem actualReadOrderItemByIdResult = orderItemServiceImpl.readOrderItemById(1L);
 
     // Assert
-    verify(orderItemDao).readOrderItemById(1L);
+    verify(orderItemDao).readOrderItemById(eq(1L));
     assertSame(bundleOrderItemImpl, actualReadOrderItemByIdResult);
   }
 
   /**
    * Test {@link OrderItemServiceImpl#saveOrderItem(OrderItem)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#saveOrderItem(OrderItem)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#saveOrderItem(OrderItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderItem OrderItemServiceImpl.saveOrderItem(OrderItem)"})
   public void testSaveOrderItem() {
     // Arrange
@@ -143,8 +148,7 @@ public class OrderItemServiceImplDiffblueTest {
     when(orderItemDao.saveOrderItem(Mockito.<OrderItem>any())).thenReturn(bundleOrderItemImpl);
 
     // Act
-    OrderItem actualSaveOrderItemResult =
-        orderItemServiceImpl.saveOrderItem(new BundleOrderItemImpl());
+    OrderItem actualSaveOrderItemResult = orderItemServiceImpl.saveOrderItem(new BundleOrderItemImpl());
 
     // Assert
     verify(orderItemDao).saveOrderItem(isA(OrderItem.class));
@@ -153,12 +157,11 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#delete(OrderItem)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#delete(OrderItem)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#delete(OrderItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderItemServiceImpl.delete(OrderItem)"})
   public void testDelete() {
     // Arrange
@@ -173,12 +176,11 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#createPersonalMessage()}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#createPersonalMessage()}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createPersonalMessage()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersonalMessage OrderItemServiceImpl.createPersonalMessage()"})
   public void testCreatePersonalMessage() {
     // Arrange
@@ -186,8 +188,7 @@ public class OrderItemServiceImplDiffblueTest {
     when(orderItemDao.createPersonalMessage()).thenReturn(personalMessageImpl);
 
     // Act
-    PersonalMessage actualCreatePersonalMessageResult =
-        orderItemServiceImpl.createPersonalMessage();
+    PersonalMessage actualCreatePersonalMessageResult = orderItemServiceImpl.createPersonalMessage();
 
     // Assert
     verify(orderItemDao).createPersonalMessage();
@@ -195,371 +196,57 @@ public class OrderItemServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemServiceImpl.populateDiscreteOrderItem(DiscreteOrderItem, AbstractOrderItemRequest)"
-  })
-  public void testPopulateDiscreteOrderItem() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    DiscreteOrderItemImpl item = new DiscreteOrderItemImpl();
-
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("name", "name");
-
-    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
-    when(itemRequest.getQuantity()).thenReturn(1);
-    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap);
-    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
-    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
-    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
-    when(itemRequest.getSku()).thenReturn(new SkuImpl());
-
-    // Act
-    orderItemServiceImpl.populateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(itemRequest).getCategory();
-    verify(itemRequest).getItemAttributes();
-    verify(itemRequest).getOrder();
-    verify(itemRequest).getProduct();
-    verify(itemRequest).getQuantity();
-    verify(itemRequest).getSku();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Map<String, OrderItemAttribute> orderItemAttributes = item.getOrderItemAttributes();
-    assertEquals(1, orderItemAttributes.size());
-    OrderItemAttribute getResult = orderItemAttributes.get("name");
-    assertTrue(getResult instanceof OrderItemAttributeImpl);
-    assertEquals("name", getResult.toString());
-    assertEquals("name", getResult.getName());
-    assertEquals("name", getResult.getValue());
-    assertNull(getResult.getId());
-    assertSame(item, getResult.getOrderItem());
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}.
-   *
+   * Test {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem, AbstractOrderItemRequest)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.
+   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem, AbstractOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void OrderItemServiceImpl.populateDiscreteOrderItem(DiscreteOrderItem, AbstractOrderItemRequest)"
-  })
-  public void testPopulateDiscreteOrderItem_givenHashMap() {
+      "void OrderItemServiceImpl.populateDiscreteOrderItem(DiscreteOrderItem, AbstractOrderItemRequest)"})
+  public void testPopulateDiscreteOrderItem_thenCallsGetProxy() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    DiscreteOrderItemImpl item = new DiscreteOrderItemImpl();
-
-    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
-    when(itemRequest.getQuantity()).thenReturn(1);
-    when(itemRequest.getItemAttributes()).thenReturn(new HashMap<>());
-    CategoryImpl categoryImpl = new CategoryImpl();
-    when(itemRequest.getCategory()).thenReturn(categoryImpl);
-    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
-    when(itemRequest.getProduct()).thenReturn(productBundleImpl);
-    NullOrderImpl nullOrderImpl = new NullOrderImpl();
-    when(itemRequest.getOrder()).thenReturn(nullOrderImpl);
-    SkuImpl skuImpl = new SkuImpl();
-    when(itemRequest.getSku()).thenReturn(skuImpl);
-
-    // Act
-    orderItemServiceImpl.populateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(itemRequest).getCategory();
-    verify(itemRequest).getItemAttributes();
-    verify(itemRequest).getOrder();
-    verify(itemRequest).getProduct();
-    verify(itemRequest).getQuantity();
-    verify(itemRequest).getSku();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    org.broadleafcommerce.core.catalog.domain.Category category = item.getCategory();
-    assertTrue(category instanceof CategoryImpl);
-    Product product = item.getProduct();
-    assertTrue(product instanceof ProductBundleImpl);
-    Sku sku = item.getSku();
-    assertTrue(sku instanceof SkuImpl);
-    Order order = item.getOrder();
-    assertTrue(order instanceof NullOrderImpl);
-    assertNull(item.getName());
-    assertNull(item.getCurrencyCode());
-    assertNull(item.getMainEntityName());
-    assertNull(item.getRetailPrice());
-    assertNull(item.getSalePrice());
-    assertEquals(1, item.getQuantity());
-    assertFalse(item.isSkuActive());
-    assertFalse(item.getIsOnSale());
-    assertSame(categoryImpl, category);
-    assertSame(productBundleImpl, product);
-    assertSame(skuImpl, sku);
-    assertSame(nullOrderImpl, order);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code name} is {@code name}.
-   *   <li>Then calls {@link DiscreteOrderItem#setProduct(Product)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemServiceImpl.populateDiscreteOrderItem(DiscreteOrderItem, AbstractOrderItemRequest)"
-  })
-  public void testPopulateDiscreteOrderItem_givenHashMapNameIsName_thenCallsSetProduct() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItem item = mock(DiscreteOrderItem.class);
-    doNothing().when(item).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
-    when(item.getOrderItemAttributes()).thenReturn(null);
+    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
+    doNothing().when(item).setOrder(Mockito.<Order>any());
     doNothing().when(item).setProduct(Mockito.<Product>any());
     doNothing().when(item).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(item)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(item).setOrder(Mockito.<Order>any());
+    doNothing().when(item).setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(item).setQuantity(anyInt());
 
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("name", "name");
-
-    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
-    when(itemRequest.getQuantity()).thenReturn(1);
-    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap);
-    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
-    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
-    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
-    when(itemRequest.getSku()).thenReturn(new SkuImpl());
-
     // Act
-    orderItemServiceImpl.populateDiscreteOrderItem(item, itemRequest);
+    orderItemServiceImpl.populateDiscreteOrderItem(item, new DiscreteOrderItemRequest());
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
-    verify(item).setProduct(isA(Product.class));
-    verify(item).setSku(isA(Sku.class));
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(item).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
-    verify(item).setOrder(isA(Order.class));
-    verify(item).setOrderItemAttributes(isA(Map.class));
-    verify(item).setQuantity(1);
-    verify(itemRequest).getCategory();
-    verify(itemRequest).getItemAttributes();
-    verify(itemRequest).getOrder();
-    verify(itemRequest).getProduct();
-    verify(itemRequest).getQuantity();
-    verify(itemRequest).getSku();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code name} is {@code null}.
-   *   <li>Then calls {@link DiscreteOrderItem#setProduct(Product)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemServiceImpl.populateDiscreteOrderItem(DiscreteOrderItem, AbstractOrderItemRequest)"
-  })
-  public void testPopulateDiscreteOrderItem_givenHashMapNameIsNull_thenCallsSetProduct() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItem item = mock(DiscreteOrderItem.class);
-    doNothing().when(item).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
-    when(item.getOrderItemAttributes()).thenReturn(null);
-    doNothing().when(item).setProduct(Mockito.<Product>any());
-    doNothing().when(item).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(item)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(item).setOrder(Mockito.<Order>any());
-    doNothing().when(item).setQuantity(anyInt());
-
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("name", null);
-
-    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
-    when(itemRequest.getQuantity()).thenReturn(1);
-    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap);
-    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
-    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
-    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
-    when(itemRequest.getSku()).thenReturn(new SkuImpl());
-
-    // Act
-    orderItemServiceImpl.populateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(item).setProduct(isA(Product.class));
-    verify(item).setSku(isA(Sku.class));
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(item).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
-    verify(item).setOrder(isA(Order.class));
-    verify(item).setOrderItemAttributes(isA(Map.class));
-    verify(item).setQuantity(1);
-    verify(itemRequest).getCategory();
-    verify(itemRequest).getItemAttributes();
-    verify(itemRequest).getOrder();
-    verify(itemRequest).getProduct();
-    verify(itemRequest).getQuantity();
-    verify(itemRequest).getSku();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}.
-   *
-   * <ul>
-   *   <li>Then {@link DiscreteOrderItemImpl} (default constructor) Category {@link CategoryImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateDiscreteOrderItem(DiscreteOrderItem,
-   * AbstractOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemServiceImpl.populateDiscreteOrderItem(DiscreteOrderItem, AbstractOrderItemRequest)"
-  })
-  public void testPopulateDiscreteOrderItem_thenDiscreteOrderItemImplCategoryCategoryImpl() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    DiscreteOrderItemImpl item = new DiscreteOrderItemImpl();
-
-    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
-    when(itemRequest.getItemAttributes()).thenReturn(null);
-    when(itemRequest.getQuantity()).thenReturn(1);
-    CategoryImpl categoryImpl = new CategoryImpl();
-    when(itemRequest.getCategory()).thenReturn(categoryImpl);
-    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
-    when(itemRequest.getProduct()).thenReturn(productBundleImpl);
-    NullOrderImpl nullOrderImpl = new NullOrderImpl();
-    when(itemRequest.getOrder()).thenReturn(nullOrderImpl);
-    SkuImpl skuImpl = new SkuImpl();
-    when(itemRequest.getSku()).thenReturn(skuImpl);
-
-    // Act
-    orderItemServiceImpl.populateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(itemRequest).getCategory();
-    verify(itemRequest).getItemAttributes();
-    verify(itemRequest).getOrder();
-    verify(itemRequest).getProduct();
-    verify(itemRequest).getQuantity();
-    verify(itemRequest).getSku();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    org.broadleafcommerce.core.catalog.domain.Category category = item.getCategory();
-    assertTrue(category instanceof CategoryImpl);
-    Product product = item.getProduct();
-    assertTrue(product instanceof ProductBundleImpl);
-    Sku sku = item.getSku();
-    assertTrue(sku instanceof SkuImpl);
-    Order order = item.getOrder();
-    assertTrue(order instanceof NullOrderImpl);
-    assertNull(item.getName());
-    assertNull(item.getCurrencyCode());
-    assertNull(item.getMainEntityName());
-    assertNull(item.getRetailPrice());
-    assertNull(item.getSalePrice());
-    assertEquals(1, item.getQuantity());
-    assertFalse(item.isSkuActive());
-    assertFalse(item.getIsOnSale());
-    assertSame(categoryImpl, category);
-    assertSame(productBundleImpl, product);
-    assertSame(skuImpl, sku);
-    assertSame(nullOrderImpl, order);
+    verify(item).setOrder((Order) isNull());
+    verify(item).setProduct(isNull());
+    verify(item).setSku(isNull());
+    verify(item).setCategory(isNull());
+    verify(item).setQuantity(eq(0));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem,
-   * Map)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderItemServiceImpl.populateProductOptionAttributes(OrderItem, Map)"})
   public void testPopulateProductOptionAttributes() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     BundleOrderItemImpl item = new BundleOrderItemImpl();
@@ -583,7 +270,6 @@ public class OrderItemServiceImplDiffblueTest {
     item.setOrderItemType(OrderItemType.BASIC);
     item.setParentOrderItem(new BundleOrderItemImpl());
     item.setPersonalMessage(new PersonalMessageImpl());
-    item.setPrice(new Money());
     item.setProratedOrderItemAdjustments(new ArrayList<>());
     item.setQuantity(1);
     item.setRetailPrice(new Money());
@@ -603,13 +289,11 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem,
-   * Map)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderItemServiceImpl.populateProductOptionAttributes(OrderItem, Map)"})
   public void testPopulateProductOptionAttributes2() {
     // Arrange
@@ -635,81 +319,14 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link OrderItemAttributeImpl} (default
-   *       constructor).
+   *   <li>When {@link HashMap#HashMap()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem,
-   * Map)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderItemServiceImpl.populateProductOptionAttributes(OrderItem, Map)"})
-  public void testPopulateProductOptionAttributes_givenHashMapFooIsOrderItemAttributeImpl() {
-    // Arrange
-    HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
-    stringOrderItemAttributeMap.put("foo", new OrderItemAttributeImpl());
-
-    OrderItem item = mock(OrderItem.class);
-    when(item.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
-
-    HashMap<String, String> attributes = new HashMap<>();
-    attributes.put("foo", "foo");
-
-    // Act
-    orderItemServiceImpl.populateProductOptionAttributes(item, attributes);
-
-    // Assert
-    verify(item, atLeast(1)).getOrderItemAttributes();
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link OrderItem#setOrderItemAttributes(Map)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem,
-   * Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderItemServiceImpl.populateProductOptionAttributes(OrderItem, Map)"})
-  public void testPopulateProductOptionAttributes_thenCallsSetOrderItemAttributes() {
-    // Arrange
-    OrderItem item = mock(OrderItem.class);
-    doNothing().when(item).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
-    when(item.getOrderItemAttributes()).thenReturn(null);
-
-    HashMap<String, String> attributes = new HashMap<>();
-    attributes.put("foo", "foo");
-
-    // Act
-    orderItemServiceImpl.populateProductOptionAttributes(item, attributes);
-
-    // Assert
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(item).setOrderItemAttributes(isA(Map.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem,
-   * Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderItemServiceImpl.populateProductOptionAttributes(OrderItem, Map)"})
   public void testPopulateProductOptionAttributes_whenHashMap() {
     // Arrange
@@ -724,17 +341,14 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}.
-   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@code null}.
+   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem,
-   * Map)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#populateProductOptionAttributes(OrderItem, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderItemServiceImpl.populateProductOptionAttributes(OrderItem, Map)"})
   public void testPopulateProductOptionAttributes_whenHashMapFooIsNull() {
     // Arrange
@@ -752,144 +366,34 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.createOrderItem(OrderItemRequest)"})
-  public void testCreateOrderItem() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(bundleOrderItemImpl);
-
-    OrderItemRequest itemRequest = new OrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(null);
-    itemRequest.setRetailPriceOverride(null);
-    itemRequest.setItemAttributes(null);
-
-    // Act
-    OrderItem actualCreateOrderItemResult = orderItemServiceImpl.createOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertSame(bundleOrderItemImpl, actualCreateOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.createOrderItem(OrderItemRequest)"})
-  public void testCreateOrderItem2() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(bundleOrderItemImpl);
-
-    OrderItemRequest itemRequest = new OrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(null);
-    itemRequest.setRetailPriceOverride(new Money());
-    itemRequest.setItemAttributes(null);
-
-    // Act
-    OrderItem actualCreateOrderItemResult = orderItemServiceImpl.createOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertSame(bundleOrderItemImpl, actualCreateOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.createOrderItem(OrderItemRequest)"})
-  public void testCreateOrderItem3() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(bundleOrderItemImpl);
-
-    OrderItemRequest itemRequest = new OrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(new Money());
-    itemRequest.setRetailPriceOverride(null);
-    itemRequest.setItemAttributes(null);
-
-    // Act
-    OrderItem actualCreateOrderItemResult = orderItemServiceImpl.createOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertSame(bundleOrderItemImpl, actualCreateOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.
-   *   <li>Then return {@link BundleOrderItemImpl}.
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.</li>
+   *   <li>Then return OrderItemAttributes size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderItem OrderItemServiceImpl.createOrderItem(OrderItemRequest)"})
-  public void testCreateOrderItem_givenHashMapFooIsFoo_thenReturnBundleOrderItemImpl() {
+  public void testCreateOrderItem_givenHashMapFooIsFoo_thenReturnOrderItemAttributesSizeIsOne() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(bundleOrderItemImpl);
 
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    OrderItemRequest itemRequest = new OrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(null);
-    itemRequest.setRetailPriceOverride(null);
-    itemRequest.setItemAttributes(itemAttributes);
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("foo", "foo");
+    OrderItemRequest itemRequest = mock(OrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getItemName()).thenReturn("Item Name");
+    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap);
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
 
     // Act
     OrderItem actualCreateOrderItemResult = orderItemServiceImpl.createOrderItem(itemRequest);
@@ -897,11 +401,15 @@ public class OrderItemServiceImplDiffblueTest {
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(itemRequest, atLeast(1)).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getItemName();
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertTrue(actualCreateOrderItemResult instanceof BundleOrderItemImpl);
-    Map<String, OrderItemAttribute> orderItemAttributes =
-        actualCreateOrderItemResult.getOrderItemAttributes();
+    Map<String, OrderItemAttribute> orderItemAttributes = actualCreateOrderItemResult.getOrderItemAttributes();
     assertEquals(1, orderItemAttributes.size());
     OrderItemAttribute getResult = orderItemAttributes.get("foo");
     assertTrue(getResult instanceof OrderItemAttributeImpl);
@@ -914,574 +422,196 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}.
-   *
    * <ul>
-   *   <li>When {@link OrderItemRequest#OrderItemRequest()}.
-   *   <li>Then return {@link BundleOrderItemImpl} (default constructor).
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then return Price zero abs zero abs abs is {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderItem OrderItemServiceImpl.createOrderItem(OrderItemRequest)"})
-  public void testCreateOrderItem_whenOrderItemRequest_thenReturnBundleOrderItemImpl() {
+  public void testCreateOrderItem_givenHashMap_thenReturnPriceZeroAbsZeroAbsAbsIsMoney() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(bundleOrderItemImpl);
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    OrderItemRequest itemRequest = mock(OrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getItemName()).thenReturn("Item Name");
+    when(itemRequest.getItemAttributes()).thenReturn(new HashMap<>());
+    Money money = new Money();
+    when(itemRequest.getRetailPriceOverride()).thenReturn(money);
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
 
     // Act
-    OrderItem actualCreateOrderItemResult =
-        orderItemServiceImpl.createOrderItem(new OrderItemRequest());
+    OrderItem actualCreateOrderItemResult = orderItemServiceImpl.createOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertSame(bundleOrderItemImpl, actualCreateOrderItemResult);
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getItemName();
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    assertTrue(actualCreateOrderItemResult instanceof BundleOrderItemImpl);
+    Money absResult = actualCreateOrderItemResult.getPrice().zero().abs();
+    assertEquals(money, absResult.zero().abs().abs());
+    assertEquals(money, absResult.abs().zero().zero());
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}.
+   * <ul>
+   *   <li>When {@link OrderItemRequest#OrderItemRequest()}.</li>
+   *   <li>Then return Name is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createOrderItem(OrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.createOrderItem(OrderItemRequest)"})
+  public void testCreateOrderItem_whenOrderItemRequest_thenReturnNameIsNull() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(null);
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
 
     // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(null, itemRequest);
+    OrderItem actualCreateOrderItemResult = orderItemServiceImpl.createOrderItem(new OrderItemRequest());
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isNull());
-    assertNull(itemRequest.getItemAttributes());
-    assertNull(actualUpdateDiscreteOrderItemResult);
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    assertTrue(actualCreateOrderItemResult instanceof BundleOrderItemImpl);
+    assertNull(actualCreateOrderItemResult.getName());
+    assertNull(((BundleOrderItemImpl) actualCreateOrderItemResult).getMainEntityName());
+    assertNull(actualCreateOrderItemResult.getAdjustmentValue());
+    assertNull(actualCreateOrderItemResult.getAverageAdjustmentValue());
+    assertNull(actualCreateOrderItemResult.getAveragePrice());
+    assertNull(actualCreateOrderItemResult.getPrice());
+    assertNull(actualCreateOrderItemResult.getOrder());
+    assertEquals(0, actualCreateOrderItemResult.getQuantity());
   }
 
   /**
    * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
+   * <ul>
+   *   <li>Then return {@link BundleOrderItemImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"})
+  public void testUpdateDiscreteOrderItem_thenReturnBundleOrderItemImpl() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    BundleOrderItemImpl item = mock(BundleOrderItemImpl.class);
+    when(item.getProduct()).thenReturn(new ProductBundleImpl());
 
+    // Act
+    OrderItem actualUpdateDiscreteOrderItemResult = orderItemServiceImpl.updateDiscreteOrderItem(item,
+        new DiscreteOrderItemRequest());
+
+    // Assert
+    verify(orderItemServiceExtensionManager).getProxy();
+    verify(item).getProduct();
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    assertSame(item, actualUpdateDiscreteOrderItemResult);
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
+   * <ul>
+   *   <li>Then return {@link DiscreteOrderItemImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"})
+  public void testUpdateDiscreteOrderItem_thenReturnDiscreteOrderItemImpl() {
+    // Arrange
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
     when(item.getProduct()).thenReturn(new ProductBundleImpl());
 
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(null);
-
     // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(item, itemRequest);
+    OrderItem actualUpdateDiscreteOrderItemResult = orderItemServiceImpl.updateDiscreteOrderItem(item,
+        new DiscreteOrderItemRequest());
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(item).getProduct();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertNull(itemRequest.getItemAttributes());
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertSame(item, actualUpdateDiscreteOrderItemResult);
   }
 
   /**
    * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem3() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
-    when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    when(item.getProduct()).thenReturn(new ProductBundleImpl());
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(item).getProduct();
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Map<String, String> itemAttributes2 = itemRequest.getItemAttributes();
-    assertEquals(1, itemAttributes2.size());
-    assertTrue(itemAttributes2.containsKey("foo"));
-    assertSame(itemAttributes, itemAttributes2);
-    assertSame(item, actualUpdateDiscreteOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem4() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ArrayList<ProductOption> productOptionList = new ArrayList<>();
-    productOptionList.add(productOptionImpl);
-
-    Product product = mock(Product.class);
-    when(product.getProductOptions()).thenReturn(productOptionList);
-
-    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
-    when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    when(item.getProduct()).thenReturn(product);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(product).getProductOptions();
-    verify(productOptionImpl).getAttributeName();
-    verify(item).getProduct();
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Map<String, String> itemAttributes2 = itemRequest.getItemAttributes();
-    assertEquals(1, itemAttributes2.size());
-    assertTrue(itemAttributes2.containsKey("foo"));
-    assertSame(itemAttributes, itemAttributes2);
-    assertSame(item, actualUpdateDiscreteOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem5() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getProductOptionValidationStrategyType())
-        .thenReturn(ProductOptionValidationStrategyType.ADD_ITEM);
-    when(productOptionImpl.getAttributeName()).thenReturn("foo");
-
-    ArrayList<ProductOption> productOptionList = new ArrayList<>();
-    productOptionList.add(productOptionImpl);
-
-    Product product = mock(Product.class);
-    when(product.getProductOptions()).thenReturn(productOptionList);
-
-    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
-    when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    when(item.getProduct()).thenReturn(product);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(product).getProductOptions();
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getProductOptionValidationStrategyType();
-    verify(item).getProduct();
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Map<String, String> itemAttributes2 = itemRequest.getItemAttributes();
-    assertEquals(1, itemAttributes2.size());
-    assertTrue(itemAttributes2.containsKey("foo"));
-    assertSame(itemAttributes, itemAttributes2);
-    assertSame(item, actualUpdateDiscreteOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem6() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getProductOptionValidationStrategyType()).thenReturn(null);
-    when(productOptionImpl.getAttributeName()).thenReturn("foo");
-
-    ArrayList<ProductOption> productOptionList = new ArrayList<>();
-    productOptionList.add(productOptionImpl);
-
-    Product product = mock(Product.class);
-    when(product.getProductOptions()).thenReturn(productOptionList);
-
-    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
-    when(item.getProduct()).thenReturn(product);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(product).getProductOptions();
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getProductOptionValidationStrategyType();
-    verify(item).getProduct();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertTrue(itemRequest.getItemAttributes().isEmpty());
-    assertSame(item, actualUpdateDiscreteOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem_givenHashMapFooIsNull() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getProductOptionValidationStrategyType())
-        .thenReturn(ProductOptionValidationStrategyType.ADD_ITEM);
-    when(productOptionImpl.getAttributeName()).thenReturn("foo");
-
-    ArrayList<ProductOption> productOptionList = new ArrayList<>();
-    productOptionList.add(productOptionImpl);
-
-    Product product = mock(Product.class);
-    when(product.getProductOptions()).thenReturn(productOptionList);
-
-    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
-    when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    when(item.getProduct()).thenReturn(product);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", null);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(product).getProductOptions();
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getProductOptionValidationStrategyType();
-    verify(item).getProduct();
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Map<String, String> itemAttributes2 = itemRequest.getItemAttributes();
-    assertEquals(1, itemAttributes2.size());
-    assertTrue(itemAttributes2.containsKey("foo"));
-    assertSame(itemAttributes, itemAttributes2);
-    assertSame(item, actualUpdateDiscreteOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link OrderItemAttributeImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem_givenHashMapFooIsOrderItemAttributeImpl() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
-    stringOrderItemAttributeMap.put("foo", new OrderItemAttributeImpl());
-
-    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
-    when(item.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
-    when(item.getProduct()).thenReturn(new ProductBundleImpl());
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(item).getProduct();
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Map<String, String> itemAttributes2 = itemRequest.getItemAttributes();
-    assertEquals(1, itemAttributes2.size());
-    assertTrue(itemAttributes2.containsKey("foo"));
-    assertSame(itemAttributes, itemAttributes2);
-    assertSame(item, actualUpdateDiscreteOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <ul>
-   *   <li>Then {@link DiscreteOrderItemRequest#DiscreteOrderItemRequest()} ItemAttributes Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
-  public void testUpdateDiscreteOrderItem_thenDiscreteOrderItemRequestItemAttributesEmpty() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
-    when(item.getProduct()).thenReturn(new ProductBundleImpl());
-    DiscreteOrderItemRequest itemRequest = new DiscreteOrderItemRequest();
-
-    // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(item, itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(item).getProduct();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertTrue(itemRequest.getItemAttributes().isEmpty());
-    assertSame(item, actualUpdateDiscreteOrderItemResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#updateDiscreteOrderItem(OrderItem,
-   * DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.updateDiscreteOrderItem(OrderItem, DiscreteOrderItemRequest)"})
   public void testUpdateDiscreteOrderItem_whenNull_thenReturnNull() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    DiscreteOrderItemRequest itemRequest = new DiscreteOrderItemRequest();
 
     // Act
-    OrderItem actualUpdateDiscreteOrderItemResult =
-        orderItemServiceImpl.updateDiscreteOrderItem(null, itemRequest);
+    OrderItem actualUpdateDiscreteOrderItemResult = orderItemServiceImpl.updateDiscreteOrderItem(null,
+        new DiscreteOrderItemRequest());
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isNull());
     assertNull(actualUpdateDiscreteOrderItemResult);
-    assertTrue(itemRequest.getItemAttributes().isEmpty());
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code
-   * AbstractOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code AbstractOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"})
   public void testCreateDiscreteOrderItemWithAbstractOrderItemRequest() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
     when(discreteOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
     doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
@@ -1490,60 +620,66 @@ public class OrderItemServiceImplDiffblueTest {
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
 
-    DiscreteOrderItemRequest itemRequest = new DiscreteOrderItemRequest();
-    itemRequest.setSku(new SkuImpl());
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans");
+    AbstractOrderItemRequest itemRequest = mock(AbstractOrderItemRequest.class);
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap);
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
 
     // Act
-    orderItemServiceImpl.createDiscreteOrderItem((AbstractOrderItemRequest) itemRequest);
+    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(discreteOrderItemImpl).setBaseRetailPrice(isNull());
     verify(discreteOrderItemImpl).setBaseSalePrice(isNull());
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
     verify(discreteOrderItemImpl).setSku(isA(Sku.class));
     verify(discreteOrderItemImpl).updateSaleAndRetailPrices();
     verify(discreteOrderItemImpl).assignFinalPrice();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getSku();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code
-   * AbstractOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code AbstractOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"})
   public void testCreateDiscreteOrderItemWithAbstractOrderItemRequest2() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
 
     HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
-    stringOrderItemAttributeMap.put("foo", new OrderItemAttributeImpl());
-
+    stringOrderItemAttributeMap.put("ThreadLocalManager.notify.orphans", new OrderItemAttributeImpl());
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
     when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
     when(discreteOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
@@ -1554,67 +690,63 @@ public class OrderItemServiceImplDiffblueTest {
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
 
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-    itemRequest.setSku(new SkuImpl());
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans");
+    AbstractOrderItemRequest itemRequest = mock(AbstractOrderItemRequest.class);
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap);
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
 
     // Act
-    orderItemServiceImpl.createDiscreteOrderItem((AbstractOrderItemRequest) itemRequest);
+    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(discreteOrderItemImpl).setBaseRetailPrice(isNull());
     verify(discreteOrderItemImpl).setBaseSalePrice(isNull());
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
     verify(discreteOrderItemImpl).setSku(isA(Sku.class));
     verify(discreteOrderItemImpl).updateSaleAndRetailPrices();
     verify(discreteOrderItemImpl).assignFinalPrice();
     verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getSku();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code
-   * AbstractOrderItemRequest}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code AbstractOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithAbstractOrderItemRequest_givenHashMapFooIsFoo() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"})
+  public void testCreateDiscreteOrderItemWithAbstractOrderItemRequest3() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
     when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
     when(discreteOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
@@ -1625,138 +757,66 @@ public class OrderItemServiceImplDiffblueTest {
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
 
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-    itemRequest.setSku(new SkuImpl());
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("ThreadLocalManager.notify.orphans", null);
+    AbstractOrderItemRequest itemRequest = mock(AbstractOrderItemRequest.class);
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap);
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
 
     // Act
-    orderItemServiceImpl.createDiscreteOrderItem((AbstractOrderItemRequest) itemRequest);
+    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(discreteOrderItemImpl).setBaseRetailPrice(isNull());
     verify(discreteOrderItemImpl).setBaseSalePrice(isNull());
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
     verify(discreteOrderItemImpl).setSku(isA(Sku.class));
     verify(discreteOrderItemImpl).updateSaleAndRetailPrices();
     verify(discreteOrderItemImpl).assignFinalPrice();
     verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getSku();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code
-   * AbstractOrderItemRequest}.
-   *
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code AbstractOrderItemRequest}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code null}.
+   *   <li>Given {@link HashMap#HashMap()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithAbstractOrderItemRequest_givenHashMapFooIsNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"})
+  public void testCreateDiscreteOrderItemWithAbstractOrderItemRequest_givenHashMap() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    when(discreteOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
-    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).assignFinalPrice();
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", null);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-    itemRequest.setSku(new SkuImpl());
-
-    // Act
-    orderItemServiceImpl.createDiscreteOrderItem((AbstractOrderItemRequest) itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).setBaseRetailPrice(isNull());
-    verify(discreteOrderItemImpl).setBaseSalePrice(isNull());
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
-    verify(discreteOrderItemImpl).updateSaleAndRetailPrices();
-    verify(discreteOrderItemImpl).assignFinalPrice();
-    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)} with {@code
-   * AbstractOrderItemRequest}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(AbstractOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(AbstractOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithAbstractOrderItemRequest_givenNull() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
     when(discreteOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
     doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
@@ -1766,70 +826,68 @@ public class OrderItemServiceImplDiffblueTest {
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(null);
-    itemRequest.setSku(new SkuImpl());
+    AbstractOrderItemRequest itemRequest = mock(AbstractOrderItemRequest.class);
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getItemAttributes()).thenReturn(new HashMap<>());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
 
     // Act
-    orderItemServiceImpl.createDiscreteOrderItem((AbstractOrderItemRequest) itemRequest);
+    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(discreteOrderItemImpl).setBaseRetailPrice(isNull());
     verify(discreteOrderItemImpl).setBaseSalePrice(isNull());
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
     verify(discreteOrderItemImpl).setSku(isA(Sku.class));
     verify(discreteOrderItemImpl).updateSaleAndRetailPrices();
     verify(discreteOrderItemImpl).assignFinalPrice();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getSku();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code DiscreteOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"})
   public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
     when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
     doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
@@ -1849,48 +907,36 @@ public class OrderItemServiceImplDiffblueTest {
     verify(discreteOrderItemImpl).setSku(isNull());
     verify(discreteOrderItemImpl).setCategory(isNull());
     verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(0));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code DiscreteOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"})
   public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest2() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
 
     ArrayList<DiscreteOrderItemFeePrice> discreteOrderItemFeePriceList = new ArrayList<>();
     discreteOrderItemFeePriceList.add(new DiscreteOrderItemFeePriceImpl());
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices())
-        .thenReturn(discreteOrderItemFeePriceList);
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(discreteOrderItemFeePriceList);
     doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
@@ -1910,195 +956,248 @@ public class OrderItemServiceImplDiffblueTest {
     verify(discreteOrderItemImpl).setSku(isNull());
     verify(discreteOrderItemImpl).setCategory(isNull());
     verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(0));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code DiscreteOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"})
   public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest3() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(null);
-    itemRequest.setRetailPriceOverride(null);
-    itemRequest.setAdditionalAttributes(null);
-    itemRequest.setItemAttributes(null);
-
-    // Act
-    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest4() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
+    doNothing().when(discreteOrderItemImpl).setAdditionalAttributes(Mockito.<Map<String, String>>any());
     doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
-    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(null);
-    itemRequest.setRetailPriceOverride(new Money());
-    itemRequest.setAdditionalAttributes(null);
-    itemRequest.setItemAttributes(null);
-
-    // Act
-    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
-    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setRetailPriceOverride(true);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest5() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
-    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
     when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
     doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
 
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(new Money());
-    itemRequest.setRetailPriceOverride(new Money());
-    itemRequest.setAdditionalAttributes(null);
-    itemRequest.setItemAttributes(null);
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("foo", "foo");
+
+    HashMap<String, String> stringStringMap2 = new HashMap<>();
+    stringStringMap2.put("foo", "foo");
+    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    when(itemRequest.getAdditionalAttributes()).thenReturn(stringStringMap);
+    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap2);
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getBundleOrderItem()).thenReturn(new BundleOrderItemImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+
+    // Act
+    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
+
+    // Assert
+    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
+    verify(discreteOrderItemImpl).setAdditionalAttributes(isA(Map.class));
+    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isA(BundleOrderItem.class));
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
+    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(itemRequest, atLeast(1)).getAdditionalAttributes();
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).getBundleOrderItem();
+    verify(itemRequest).getDiscreteOrderItemFeePrices();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code DiscreteOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"})
+  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest4() {
+    // Arrange
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+
+    HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
+    stringOrderItemAttributeMap.put("foo", new OrderItemAttributeImpl());
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
+    doNothing().when(discreteOrderItemImpl).setAdditionalAttributes(Mockito.<Map<String, String>>any());
+    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
+
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("foo", "foo");
+
+    HashMap<String, String> stringStringMap2 = new HashMap<>();
+    stringStringMap2.put("foo", "foo");
+    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    when(itemRequest.getAdditionalAttributes()).thenReturn(stringStringMap);
+    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap2);
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getBundleOrderItem()).thenReturn(new BundleOrderItemImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+
+    // Act
+    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
+
+    // Assert
+    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
+    verify(discreteOrderItemImpl).setAdditionalAttributes(isA(Map.class));
+    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isA(BundleOrderItem.class));
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
+    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(itemRequest, atLeast(1)).getAdditionalAttributes();
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).getBundleOrderItem();
+    verify(itemRequest).getDiscreteOrderItemFeePrices();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code DiscreteOrderItemRequest}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"})
+  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest_givenHashMap() {
+    // Arrange
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
+    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    when(itemRequest.getAdditionalAttributes()).thenReturn(new HashMap<>());
+    when(itemRequest.getItemAttributes()).thenReturn(new HashMap<>());
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getBundleOrderItem()).thenReturn(new BundleOrderItemImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
 
     // Act
     orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
@@ -2109,207 +1208,86 @@ public class OrderItemServiceImplDiffblueTest {
     verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
     verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
     verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setBundleOrderItem(isA(BundleOrderItem.class));
     verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
     verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setRetailPriceOverride(true);
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
     verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setSalePriceOverride(true);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(itemRequest).getAdditionalAttributes();
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).getBundleOrderItem();
+    verify(itemRequest).getDiscreteOrderItemFeePrices();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code DiscreteOrderItemRequest}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest6() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"})
+  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest_givenHashMap2() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    doNothing().when(discreteOrderItemImpl).setAdditionalAttributes(Mockito.<Map<String, String>>any());
+    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
     when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
-    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
     doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest7() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
-    stringOrderItemAttributeMap.put("foo", new OrderItemAttributeImpl());
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
-    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
 
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest8() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setAdditionalAttributes(Mockito.<Map<String, String>>any());
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    HashMap<String, String> additionalAttributes = new HashMap<>();
-    additionalAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(null);
-    itemRequest.setRetailPriceOverride(null);
-    itemRequest.setAdditionalAttributes(additionalAttributes);
-    itemRequest.setItemAttributes(null);
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("foo", "foo");
+    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    when(itemRequest.getAdditionalAttributes()).thenReturn(stringStringMap);
+    when(itemRequest.getItemAttributes()).thenReturn(new HashMap<>());
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getBundleOrderItem()).thenReturn(new BundleOrderItemImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
 
     // Act
     orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
@@ -2319,67 +1297,92 @@ public class OrderItemServiceImplDiffblueTest {
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
     verify(discreteOrderItemImpl).setAdditionalAttributes(isA(Map.class));
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isA(BundleOrderItem.class));
     verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(itemRequest, atLeast(1)).getAdditionalAttributes();
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).getBundleOrderItem();
+    verify(itemRequest).getDiscreteOrderItemFeePrices();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
+   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code DiscreteOrderItemRequest}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code null}.
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"})
   public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest_givenHashMapFooIsNull() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
     when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
+    doNothing().when(discreteOrderItemImpl).setAdditionalAttributes(Mockito.<Map<String, String>>any());
+    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
     doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
 
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", null);
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("foo", "foo");
 
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
+    HashMap<String, String> stringStringMap2 = new HashMap<>();
+    stringStringMap2.put("foo", null);
+    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    when(itemRequest.getAdditionalAttributes()).thenReturn(stringStringMap);
+    when(itemRequest.getItemAttributes()).thenReturn(stringStringMap2);
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getBundleOrderItem()).thenReturn(new BundleOrderItemImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
 
     // Act
     orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
@@ -2388,499 +1391,92 @@ public class OrderItemServiceImplDiffblueTest {
     verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)} with {@code
-   * DiscreteOrderItemRequest}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDiscreteOrderItem(DiscreteOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDiscreteOrderItem(DiscreteOrderItemRequest)"
-  })
-  public void testCreateDiscreteOrderItemWithDiscreteOrderItemRequest_givenNull() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(null);
-
-    // Act
-    orderItemServiceImpl.createDiscreteOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest,
-   * HashMap)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"
-  })
-  public void testCreateDynamicPriceDiscreteOrderItem_givenHashMapFooIsFoo() {
-    // Arrange
-    DynamicSkuPrices dynamicSkuPrices = new DynamicSkuPrices();
-    dynamicSkuPrices.setDidOverride(true);
-    dynamicSkuPrices.setPriceAdjustment(new Money());
-    dynamicSkuPrices.setRetailPrice(new Money());
-    dynamicSkuPrices.setSalePrice(new Money());
-    when(dynamicSkuPricingService.getSkuPrices(
-            Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
-        .thenReturn(dynamicSkuPrices);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
-    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    orderItemServiceImpl.createDynamicPriceDiscreteOrderItem(itemRequest, new HashMap());
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(dynamicSkuPricingService).getSkuPrices(isA(SkuPriceWrapper.class), isA(HashMap.class));
-    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(discreteOrderItemImpl).setAdditionalAttributes(isA(Map.class));
     verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBaseSalePrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isA(BundleOrderItem.class));
     verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
     verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
     verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
     verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(itemRequest, atLeast(1)).getAdditionalAttributes();
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).getBundleOrderItem();
+    verify(itemRequest).getDiscreteOrderItemFeePrices();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest,
-   * HashMap)}.
-   *
+   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code null}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"
-  })
-  public void testCreateDynamicPriceDiscreteOrderItem_givenHashMapFooIsNull() {
+      "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"})
+  public void testCreateDynamicPriceDiscreteOrderItem_givenArrayList() {
     // Arrange
     DynamicSkuPrices dynamicSkuPrices = new DynamicSkuPrices();
     dynamicSkuPrices.setDidOverride(true);
     dynamicSkuPrices.setPriceAdjustment(new Money());
     dynamicSkuPrices.setRetailPrice(new Money());
     dynamicSkuPrices.setSalePrice(new Money());
-    when(dynamicSkuPricingService.getSkuPrices(
-            Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
+    when(dynamicSkuPricingService.getSkuPrices(Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
         .thenReturn(dynamicSkuPrices);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
-    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(new HashMap<>());
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", null);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    orderItemServiceImpl.createDynamicPriceDiscreteOrderItem(itemRequest, new HashMap());
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(dynamicSkuPricingService).getSkuPrices(isA(SkuPriceWrapper.class), isA(HashMap.class));
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBaseSalePrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest,
-   * HashMap)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link OrderItemAttributeImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"
-  })
-  public void testCreateDynamicPriceDiscreteOrderItem_givenHashMapFooIsOrderItemAttributeImpl() {
-    // Arrange
-    DynamicSkuPrices dynamicSkuPrices = new DynamicSkuPrices();
-    dynamicSkuPrices.setDidOverride(true);
-    dynamicSkuPrices.setPriceAdjustment(new Money());
-    dynamicSkuPrices.setRetailPrice(new Money());
-    dynamicSkuPrices.setSalePrice(new Money());
-    when(dynamicSkuPricingService.getSkuPrices(
-            Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
-        .thenReturn(dynamicSkuPrices);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
-    stringOrderItemAttributeMap.put("foo", new OrderItemAttributeImpl());
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
-    when(discreteOrderItemImpl.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    HashMap<String, String> itemAttributes = new HashMap<>();
-    itemAttributes.put("foo", "foo");
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(itemAttributes);
-
-    // Act
-    orderItemServiceImpl.createDynamicPriceDiscreteOrderItem(itemRequest, new HashMap());
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(dynamicSkuPricingService).getSkuPrices(isA(SkuPriceWrapper.class), isA(HashMap.class));
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBaseSalePrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl, atLeast(1)).getOrderItemAttributes();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest,
-   * HashMap)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then calls {@link OrderItemServiceExtensionManager#getProxy()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"
-  })
-  public void testCreateDynamicPriceDiscreteOrderItem_givenNull_thenCallsGetProxy() {
-    // Arrange
-    DynamicSkuPrices dynamicSkuPrices = new DynamicSkuPrices();
-    dynamicSkuPrices.setDidOverride(true);
-    dynamicSkuPrices.setPriceAdjustment(new Money());
-    dynamicSkuPrices.setRetailPrice(new Money());
-    dynamicSkuPrices.setSalePrice(new Money());
-    when(dynamicSkuPricingService.getSkuPrices(
-            Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
-        .thenReturn(dynamicSkuPrices);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
-    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
-    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
-    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
-    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setItemAttributes(null);
-
-    // Act
-    orderItemServiceImpl.createDynamicPriceDiscreteOrderItem(itemRequest, new HashMap());
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(dynamicSkuPricingService).getSkuPrices(isA(SkuPriceWrapper.class), isA(HashMap.class));
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBaseSalePrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
-    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest,
-   * HashMap)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link DiscreteOrderItemImpl#getRetailPrice()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"
-  })
-  public void testCreateDynamicPriceDiscreteOrderItem_thenCallsGetRetailPrice() {
-    // Arrange
-    DynamicSkuPrices dynamicSkuPrices = new DynamicSkuPrices();
-    dynamicSkuPrices.setDidOverride(true);
-    dynamicSkuPrices.setPriceAdjustment(new Money());
-    dynamicSkuPrices.setRetailPrice(new Money());
-    dynamicSkuPrices.setSalePrice(new Money());
-    when(dynamicSkuPricingService.getSkuPrices(
-            Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
-        .thenReturn(dynamicSkuPrices);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
-    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
-    when(discreteOrderItemImpl.getRetailPrice()).thenReturn(new Money());
     doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
     doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
-    when(discreteOrderItemImpl.getSalePrice()).thenReturn(new Money());
     doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
-
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
-        new DiscreteOrderItemFeePriceImpl();
-    discreteOrderItemFeePriceImpl.setAmount(new Money(10.0d));
-
-    ArrayList<DiscreteOrderItemFeePrice> discreteOrderItemFeePrices = new ArrayList<>();
-    discreteOrderItemFeePrices.add(discreteOrderItemFeePriceImpl);
-
-    DiscreteOrderItemRequest itemRequest =
-        new DiscreteOrderItemRequest(new DiscreteOrderItemRequest());
-    itemRequest.setSalePriceOverride(new Money());
-    itemRequest.setRetailPriceOverride(new Money());
-    itemRequest.setDiscreteOrderItemFeePrices(discreteOrderItemFeePrices);
-    itemRequest.setItemAttributes(null);
+    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    when(itemRequest.getItemAttributes()).thenReturn(new HashMap<>());
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getBundleOrderItem()).thenReturn(new BundleOrderItemImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
 
     // Act
     orderItemServiceImpl.createDynamicPriceDiscreteOrderItem(itemRequest, new HashMap());
@@ -2891,41 +1487,148 @@ public class OrderItemServiceImplDiffblueTest {
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(discreteOrderItemImpl, atLeast(1)).setBaseRetailPrice(isA(Money.class));
     verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
-    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setBundleOrderItem(isA(BundleOrderItem.class));
     verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
-    verify(discreteOrderItemImpl).setOrder((Order) isNull());
-    verify(discreteOrderItemImpl).setProduct(isNull());
-    verify(discreteOrderItemImpl).setSku(isNull());
-    verify(discreteOrderItemImpl).getRetailPrice();
-    verify(discreteOrderItemImpl).getSalePrice();
-    verify(discreteOrderItemImpl).setCategory(isNull());
-    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
-    verify(discreteOrderItemImpl, atLeast(1)).setRetailPrice(Mockito.<Money>any());
-    verify(discreteOrderItemImpl).setRetailPriceOverride(true);
-    verify(discreteOrderItemImpl, atLeast(1)).setSalePrice(Mockito.<Money>any());
-    verify(discreteOrderItemImpl).setSalePriceOverride(true);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl, atLeast(1)).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(discreteOrderItemImpl, atLeast(1)).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest, atLeast(1)).getSku();
+    verify(itemRequest).getBundleOrderItem();
+    verify(itemRequest, atLeast(1)).getDiscreteOrderItemFeePrices();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest,
-   * HashMap)}.
-   *
+   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}.
    * <ul>
-   *   <li>When {@link DiscreteOrderItemRequest#DiscreteOrderItemRequest()}.
+   *   <li>Then calls {@link Money#add(Money)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"
-  })
+      "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"})
+  public void testCreateDynamicPriceDiscreteOrderItem_thenCallsAdd() {
+    // Arrange
+    DynamicSkuPrices dynamicSkuPrices = new DynamicSkuPrices();
+    dynamicSkuPrices.setDidOverride(true);
+    dynamicSkuPrices.setPriceAdjustment(new Money());
+    dynamicSkuPrices.setRetailPrice(new Money());
+    dynamicSkuPrices.setSalePrice(new Money());
+    when(dynamicSkuPricingService.getSkuPrices(Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
+        .thenReturn(dynamicSkuPrices);
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    Money money = mock(Money.class);
+    when(money.add(Mockito.<Money>any())).thenReturn(new Money());
+    Money money2 = mock(Money.class);
+    when(money2.add(Mockito.<Money>any())).thenReturn(new Money());
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    when(discreteOrderItemImpl.getRetailPrice()).thenReturn(money2);
+    when(discreteOrderItemImpl.getSalePrice()).thenReturn(money);
+    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
+
+    ArrayList<DiscreteOrderItemFeePrice> discreteOrderItemFeePriceList = new ArrayList<>();
+    discreteOrderItemFeePriceList.add(new DiscreteOrderItemFeePriceImpl());
+    DiscreteOrderItemRequest itemRequest = mock(DiscreteOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getDiscreteOrderItemFeePrices()).thenReturn(discreteOrderItemFeePriceList);
+    when(itemRequest.getItemAttributes()).thenReturn(new HashMap<>());
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProduct()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getBundleOrderItem()).thenReturn(new BundleOrderItemImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.getPersonalMessage()).thenReturn(new PersonalMessageImpl());
+
+    // Act
+    orderItemServiceImpl.createDynamicPriceDiscreteOrderItem(itemRequest, new HashMap());
+
+    // Assert
+    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
+    verify(money2).add(isNull());
+    verify(money).add(isNull());
+    verify(dynamicSkuPricingService).getSkuPrices(isA(SkuPriceWrapper.class), isA(HashMap.class));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isA(BundleOrderItem.class));
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
+    verify(discreteOrderItemImpl).getRetailPrice();
+    verify(discreteOrderItemImpl).getSalePrice();
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isA(PersonalMessage.class));
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl, atLeast(1)).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(discreteOrderItemImpl, atLeast(1)).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getItemAttributes();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getPersonalMessage();
+    verify(itemRequest).getProduct();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest, atLeast(1)).getSku();
+    verify(itemRequest).getBundleOrderItem();
+    verify(itemRequest, atLeast(1)).getDiscreteOrderItemFeePrices();
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}.
+   * <ul>
+   *   <li>When {@link DiscreteOrderItemRequest#DiscreteOrderItemRequest()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "DiscreteOrderItem OrderItemServiceImpl.createDynamicPriceDiscreteOrderItem(DiscreteOrderItemRequest, HashMap)"})
   public void testCreateDynamicPriceDiscreteOrderItem_whenDiscreteOrderItemRequest() {
     // Arrange
     DynamicSkuPrices dynamicSkuPrices = new DynamicSkuPrices();
@@ -2933,34 +1636,27 @@ public class OrderItemServiceImplDiffblueTest {
     dynamicSkuPrices.setPriceAdjustment(new Money());
     dynamicSkuPrices.setRetailPrice(new Money());
     dynamicSkuPrices.setSalePrice(new Money());
-    when(dynamicSkuPricingService.getSkuPrices(
-            Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
+    when(dynamicSkuPricingService.getSkuPrices(Mockito.<SkuPriceWrapper>any(), Mockito.<HashMap<Object, Object>>any()))
         .thenReturn(dynamicSkuPrices);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
     doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
-        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
-    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
     doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(discreteOrderItemImpl)
+    doNothing().when(discreteOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
     doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
     DiscreteOrderItemRequest itemRequest = new DiscreteOrderItemRequest();
 
@@ -2980,63 +1676,52 @@ public class OrderItemServiceImplDiffblueTest {
     verify(discreteOrderItemImpl).setSku(isNull());
     verify(discreteOrderItemImpl).setCategory(isNull());
     verify(discreteOrderItemImpl).setPersonalMessage(isNull());
-    verify(discreteOrderItemImpl).setQuantity(0);
+    verify(discreteOrderItemImpl).setQuantity(eq(0));
     verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
     verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default
-   *       constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.order.domain.GiftWrapOrderItem OrderItemServiceImpl.createGiftWrapOrderItem(GiftWrapOrderItemRequest)"
-  })
+      "org.broadleafcommerce.core.order.domain.GiftWrapOrderItem OrderItemServiceImpl.createGiftWrapOrderItem(GiftWrapOrderItemRequest)"})
   public void testCreateGiftWrapOrderItem_givenArrayListAddBundleOrderItemImpl() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
 
     ArrayList<OrderItem> orderItemList = new ArrayList<>();
     orderItemList.add(new BundleOrderItemImpl());
-
     GiftWrapOrderItemImpl giftWrapOrderItemImpl = mock(GiftWrapOrderItemImpl.class);
     when(giftWrapOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
     when(giftWrapOrderItemImpl.getWrappedItems()).thenReturn(orderItemList);
     doNothing().when(giftWrapOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
     doNothing().when(giftWrapOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(giftWrapOrderItemImpl)
+    doNothing().when(giftWrapOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(giftWrapOrderItemImpl).assignFinalPrice();
     doNothing().when(giftWrapOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
     doNothing().when(giftWrapOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(giftWrapOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(giftWrapOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(giftWrapOrderItemImpl)
+    doNothing().when(giftWrapOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(giftWrapOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(giftWrapOrderItemImpl);
-
-    SkuImpl sku = new SkuImpl();
-    sku.setId(1L);
+    Sku sku = mock(Sku.class);
+    when(sku.getRetailPrice()).thenReturn(new Money());
+    when(sku.getSalePrice()).thenReturn(new Money());
 
     GiftWrapOrderItemRequest itemRequest = new GiftWrapOrderItemRequest();
     itemRequest.setSku(sku);
@@ -3046,9 +1731,11 @@ public class OrderItemServiceImplDiffblueTest {
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
+    verify(sku).getRetailPrice();
+    verify(sku).getSalePrice();
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(giftWrapOrderItemImpl).setBaseRetailPrice(isNull());
-    verify(giftWrapOrderItemImpl).setBaseSalePrice(isNull());
+    verify(giftWrapOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(giftWrapOrderItemImpl).setBaseSalePrice(isA(Money.class));
     verify(giftWrapOrderItemImpl).setBundleOrderItem(isNull());
     verify(giftWrapOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
     verify(giftWrapOrderItemImpl).setOrder((Order) isNull());
@@ -3058,57 +1745,47 @@ public class OrderItemServiceImplDiffblueTest {
     verify(giftWrapOrderItemImpl, atLeast(1)).getWrappedItems();
     verify(giftWrapOrderItemImpl).assignFinalPrice();
     verify(giftWrapOrderItemImpl).setCategory(isNull());
-    verify(giftWrapOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(giftWrapOrderItemImpl).setQuantity(eq(0));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}.
-   *
    * <ul>
-   *   <li>Then calls {@link OrderItemServiceExtensionManager#getProxy()}.
+   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.order.domain.GiftWrapOrderItem OrderItemServiceImpl.createGiftWrapOrderItem(GiftWrapOrderItemRequest)"
-  })
+      "org.broadleafcommerce.core.order.domain.GiftWrapOrderItem OrderItemServiceImpl.createGiftWrapOrderItem(GiftWrapOrderItemRequest)"})
   public void testCreateGiftWrapOrderItem_thenCallsGetProxy() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     GiftWrapOrderItemImpl giftWrapOrderItemImpl = mock(GiftWrapOrderItemImpl.class);
     when(giftWrapOrderItemImpl.updateSaleAndRetailPrices()).thenReturn(true);
     when(giftWrapOrderItemImpl.getWrappedItems()).thenReturn(new ArrayList<>());
     doNothing().when(giftWrapOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
     doNothing().when(giftWrapOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(giftWrapOrderItemImpl)
+    doNothing().when(giftWrapOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(giftWrapOrderItemImpl).assignFinalPrice();
     doNothing().when(giftWrapOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
     doNothing().when(giftWrapOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(giftWrapOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(giftWrapOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(giftWrapOrderItemImpl)
+    doNothing().when(giftWrapOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(giftWrapOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(giftWrapOrderItemImpl);
-
-    SkuImpl sku = new SkuImpl();
-    sku.setId(1L);
+    Sku sku = mock(Sku.class);
+    when(sku.getRetailPrice()).thenReturn(new Money());
+    when(sku.getSalePrice()).thenReturn(new Money());
 
     GiftWrapOrderItemRequest itemRequest = new GiftWrapOrderItemRequest();
     itemRequest.setSku(sku);
@@ -3118,9 +1795,11 @@ public class OrderItemServiceImplDiffblueTest {
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
+    verify(sku).getRetailPrice();
+    verify(sku).getSalePrice();
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(giftWrapOrderItemImpl).setBaseRetailPrice(isNull());
-    verify(giftWrapOrderItemImpl).setBaseSalePrice(isNull());
+    verify(giftWrapOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(giftWrapOrderItemImpl).setBaseSalePrice(isA(Money.class));
     verify(giftWrapOrderItemImpl).setBundleOrderItem(isNull());
     verify(giftWrapOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
     verify(giftWrapOrderItemImpl).setOrder((Order) isNull());
@@ -3130,36 +1809,28 @@ public class OrderItemServiceImplDiffblueTest {
     verify(giftWrapOrderItemImpl, atLeast(1)).getWrappedItems();
     verify(giftWrapOrderItemImpl).assignFinalPrice();
     verify(giftWrapOrderItemImpl).setCategory(isNull());
-    verify(giftWrapOrderItemImpl).setQuantity(0);
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(giftWrapOrderItemImpl).setQuantity(eq(0));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}.
-   *
    * <ul>
-   *   <li>Then calls {@link GiftWrapOrderItemImpl#setRetailPrice(Money)}.
+   *   <li>Then calls {@link OrderItemImpl#setRetailPrice(Money)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.order.domain.GiftWrapOrderItem OrderItemServiceImpl.createGiftWrapOrderItem(GiftWrapOrderItemRequest)"
-  })
+      "org.broadleafcommerce.core.order.domain.GiftWrapOrderItem OrderItemServiceImpl.createGiftWrapOrderItem(GiftWrapOrderItemRequest)"})
   public void testCreateGiftWrapOrderItem_thenCallsSetRetailPrice() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     GiftWrapOrderItemImpl giftWrapOrderItemImpl = mock(GiftWrapOrderItemImpl.class);
     doNothing().when(giftWrapOrderItemImpl).setRetailPrice(Mockito.<Money>any());
     doNothing().when(giftWrapOrderItemImpl).setRetailPriceOverride(anyBoolean());
@@ -3169,22 +1840,20 @@ public class OrderItemServiceImplDiffblueTest {
     when(giftWrapOrderItemImpl.getWrappedItems()).thenReturn(new ArrayList<>());
     doNothing().when(giftWrapOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
     doNothing().when(giftWrapOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(giftWrapOrderItemImpl)
+    doNothing().when(giftWrapOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(giftWrapOrderItemImpl).assignFinalPrice();
     doNothing().when(giftWrapOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
     doNothing().when(giftWrapOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(giftWrapOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(giftWrapOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(giftWrapOrderItemImpl)
+    doNothing().when(giftWrapOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(giftWrapOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(giftWrapOrderItemImpl);
-
-    SkuImpl sku = new SkuImpl();
-    sku.setId(1L);
+    Sku sku = mock(Sku.class);
+    when(sku.getRetailPrice()).thenReturn(new Money());
+    when(sku.getSalePrice()).thenReturn(new Money());
 
     GiftWrapOrderItemRequest itemRequest = new GiftWrapOrderItemRequest();
     itemRequest.setRetailPriceOverride(new Money());
@@ -3196,9 +1865,11 @@ public class OrderItemServiceImplDiffblueTest {
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
+    verify(sku).getRetailPrice();
+    verify(sku).getSalePrice();
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(giftWrapOrderItemImpl, atLeast(1)).setBaseRetailPrice(Mockito.<Money>any());
-    verify(giftWrapOrderItemImpl, atLeast(1)).setBaseSalePrice(Mockito.<Money>any());
+    verify(giftWrapOrderItemImpl, atLeast(1)).setBaseRetailPrice(isA(Money.class));
+    verify(giftWrapOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
     verify(giftWrapOrderItemImpl).setBundleOrderItem(isNull());
     verify(giftWrapOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
     verify(giftWrapOrderItemImpl).setOrder((Order) isNull());
@@ -3208,40 +1879,32 @@ public class OrderItemServiceImplDiffblueTest {
     verify(giftWrapOrderItemImpl, atLeast(1)).getWrappedItems();
     verify(giftWrapOrderItemImpl).assignFinalPrice();
     verify(giftWrapOrderItemImpl).setCategory(isNull());
-    verify(giftWrapOrderItemImpl).setQuantity(0);
+    verify(giftWrapOrderItemImpl).setQuantity(eq(0));
     verify(giftWrapOrderItemImpl).setRetailPrice(isA(Money.class));
-    verify(giftWrapOrderItemImpl).setRetailPriceOverride(true);
+    verify(giftWrapOrderItemImpl).setRetailPriceOverride(eq(true));
     verify(giftWrapOrderItemImpl).setSalePrice(isA(Money.class));
-    verify(giftWrapOrderItemImpl).setSalePriceOverride(true);
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(giftWrapOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}.
-   *
    * <ul>
-   *   <li>Then calls {@link GiftWrapOrderItemImpl#setSalePrice(Money)}.
+   *   <li>Then calls {@link OrderItemImpl#setSalePrice(Money)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createGiftWrapOrderItem(GiftWrapOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.order.domain.GiftWrapOrderItem OrderItemServiceImpl.createGiftWrapOrderItem(GiftWrapOrderItemRequest)"
-  })
+      "org.broadleafcommerce.core.order.domain.GiftWrapOrderItem OrderItemServiceImpl.createGiftWrapOrderItem(GiftWrapOrderItemRequest)"})
   public void testCreateGiftWrapOrderItem_thenCallsSetSalePrice() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-
     GiftWrapOrderItemImpl giftWrapOrderItemImpl = mock(GiftWrapOrderItemImpl.class);
     doNothing().when(giftWrapOrderItemImpl).setSalePrice(Mockito.<Money>any());
     doNothing().when(giftWrapOrderItemImpl).setSalePriceOverride(anyBoolean());
@@ -3249,22 +1912,20 @@ public class OrderItemServiceImplDiffblueTest {
     when(giftWrapOrderItemImpl.getWrappedItems()).thenReturn(new ArrayList<>());
     doNothing().when(giftWrapOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
     doNothing().when(giftWrapOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
-    doNothing()
-        .when(giftWrapOrderItemImpl)
+    doNothing().when(giftWrapOrderItemImpl)
         .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
     doNothing().when(giftWrapOrderItemImpl).assignFinalPrice();
     doNothing().when(giftWrapOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
     doNothing().when(giftWrapOrderItemImpl).setOrder(Mockito.<Order>any());
     doNothing().when(giftWrapOrderItemImpl).setProduct(Mockito.<Product>any());
     doNothing().when(giftWrapOrderItemImpl).setSku(Mockito.<Sku>any());
-    doNothing()
-        .when(giftWrapOrderItemImpl)
+    doNothing().when(giftWrapOrderItemImpl)
         .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
     doNothing().when(giftWrapOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(giftWrapOrderItemImpl);
-
-    SkuImpl sku = new SkuImpl();
-    sku.setId(1L);
+    Sku sku = mock(Sku.class);
+    when(sku.getRetailPrice()).thenReturn(new Money());
+    when(sku.getSalePrice()).thenReturn(new Money());
 
     GiftWrapOrderItemRequest itemRequest = new GiftWrapOrderItemRequest();
     itemRequest.setSalePriceOverride(new Money());
@@ -3275,9 +1936,11 @@ public class OrderItemServiceImplDiffblueTest {
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
+    verify(sku).getRetailPrice();
+    verify(sku).getSalePrice();
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(giftWrapOrderItemImpl).setBaseRetailPrice(isNull());
-    verify(giftWrapOrderItemImpl, atLeast(1)).setBaseSalePrice(Mockito.<Money>any());
+    verify(giftWrapOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(giftWrapOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
     verify(giftWrapOrderItemImpl).setBundleOrderItem(isNull());
     verify(giftWrapOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
     verify(giftWrapOrderItemImpl).setOrder((Order) isNull());
@@ -3287,134 +1950,163 @@ public class OrderItemServiceImplDiffblueTest {
     verify(giftWrapOrderItemImpl, atLeast(1)).getWrappedItems();
     verify(giftWrapOrderItemImpl).assignFinalPrice();
     verify(giftWrapOrderItemImpl).setCategory(isNull());
-    verify(giftWrapOrderItemImpl).setQuantity(0);
+    verify(giftWrapOrderItemImpl).setQuantity(eq(0));
     verify(giftWrapOrderItemImpl).setSalePrice(isA(Money.class));
-    verify(giftWrapOrderItemImpl).setSalePriceOverride(true);
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(giftWrapOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)} with {@code
-   * BundleOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)} with {@code BundleOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(BundleOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(BundleOrderItemRequest)"})
   public void testCreateBundleOrderItemWithBundleOrderItemRequest() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
-
-    BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
+    BundleOrderItemRequest itemRequest = mock(BundleOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getName()).thenReturn("Name");
+    when(itemRequest.getBundleOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    when(itemRequest.getDiscreteOrderItems()).thenReturn(new ArrayList<>());
+    when(itemRequest.getRetailPriceOverride()).thenReturn(null);
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    doNothing().when(itemRequest).setBundleOrderItemFeePrices(Mockito.<List<BundleOrderItemFeePrice>>any());
+    doNothing().when(itemRequest).setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(itemRequest).setDiscreteOrderItems(Mockito.<List<DiscreteOrderItemRequest>>any());
+    doNothing().when(itemRequest).setName(Mockito.<String>any());
+    doNothing().when(itemRequest).setOrder(Mockito.<Order>any());
+    doNothing().when(itemRequest).setQuantity(anyInt());
+    doNothing().when(itemRequest).setRetailPriceOverride(Mockito.<Money>any());
+    doNothing().when(itemRequest).setSalePriceOverride(Mockito.<Money>any());
     itemRequest.setBundleOrderItemFeePrices(new ArrayList<>());
     itemRequest.setCategory(new CategoryImpl());
     itemRequest.setDiscreteOrderItems(new ArrayList<>());
     itemRequest.setName("Name");
     itemRequest.setOrder(new NullOrderImpl());
     itemRequest.setQuantity(1);
-    Money retailPriceOverride = new Money();
-    itemRequest.setRetailPriceOverride(retailPriceOverride);
+    itemRequest.setRetailPriceOverride(new Money());
     itemRequest.setSalePriceOverride(new Money());
 
     // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest);
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertTrue(actualCreateBundleOrderItemResult instanceof BundleOrderItemImpl);
-    assertEquals(retailPriceOverride, actualCreateBundleOrderItemResult.getBaseRetailPrice());
-    assertEquals(retailPriceOverride, actualCreateBundleOrderItemResult.getBaseSalePrice());
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)} with {@code
-   * BundleOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(BundleOrderItemRequest)"
-  })
-  public void testCreateBundleOrderItemWithBundleOrderItemRequest2() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
-
-    BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
-    itemRequest.setBundleOrderItemFeePrices(new ArrayList<>());
-    itemRequest.setCategory(new CategoryImpl());
-    itemRequest.setDiscreteOrderItems(new ArrayList<>());
-    itemRequest.setName("Name");
-    itemRequest.setOrder(new NullOrderImpl());
-    itemRequest.setQuantity(1);
-    itemRequest.setRetailPriceOverride(null);
-    Money salePriceOverride = new Money();
-    itemRequest.setSalePriceOverride(salePriceOverride);
-
-    // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest);
-
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(itemRequest).getBundleOrderItemFeePrices();
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getDiscreteOrderItems();
+    verify(itemRequest).getName();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).setBundleOrderItemFeePrices(isA(List.class));
+    verify(itemRequest).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(itemRequest).setDiscreteOrderItems(isA(List.class));
+    verify(itemRequest).setName(eq("Name"));
+    verify(itemRequest).setOrder(isA(Order.class));
+    verify(itemRequest).setQuantity(eq(1));
+    verify(itemRequest).setRetailPriceOverride(isA(Money.class));
+    verify(itemRequest).setSalePriceOverride(isA(Money.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertTrue(actualCreateBundleOrderItemResult instanceof BundleOrderItemImpl);
     assertNull(actualCreateBundleOrderItemResult.getBaseRetailPrice());
-    Money baseSalePrice = actualCreateBundleOrderItemResult.getBaseSalePrice();
-    Money absResult = baseSalePrice.abs();
-    assertEquals(salePriceOverride, absResult.abs());
-    Money zeroResult = baseSalePrice.zero();
-    assertEquals(salePriceOverride, zeroResult.abs());
-    assertEquals(salePriceOverride, absResult.zero());
-    assertEquals(salePriceOverride, zeroResult.zero());
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)} with {@code
-   * BundleOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)} with {@code BundleOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(BundleOrderItemRequest)"
-  })
-  public void testCreateBundleOrderItemWithBundleOrderItemRequest3() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(BundleOrderItemRequest)"})
+  public void testCreateBundleOrderItemWithBundleOrderItemRequest2() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    BundleOrderItemRequest itemRequest = mock(BundleOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getName()).thenReturn("Name");
+    when(itemRequest.getBundleOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    when(itemRequest.getDiscreteOrderItems()).thenReturn(new ArrayList<>());
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(null);
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    doNothing().when(itemRequest).setBundleOrderItemFeePrices(Mockito.<List<BundleOrderItemFeePrice>>any());
+    doNothing().when(itemRequest).setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(itemRequest).setDiscreteOrderItems(Mockito.<List<DiscreteOrderItemRequest>>any());
+    doNothing().when(itemRequest).setName(Mockito.<String>any());
+    doNothing().when(itemRequest).setOrder(Mockito.<Order>any());
+    doNothing().when(itemRequest).setQuantity(anyInt());
+    doNothing().when(itemRequest).setRetailPriceOverride(Mockito.<Money>any());
+    doNothing().when(itemRequest).setSalePriceOverride(Mockito.<Money>any());
+    itemRequest.setBundleOrderItemFeePrices(new ArrayList<>());
+    itemRequest.setCategory(new CategoryImpl());
+    itemRequest.setDiscreteOrderItems(new ArrayList<>());
+    itemRequest.setName("Name");
+    itemRequest.setOrder(new NullOrderImpl());
+    itemRequest.setQuantity(1);
+    itemRequest.setRetailPriceOverride(new Money());
+    itemRequest.setSalePriceOverride(new Money());
+
+    // Act
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest);
+
+    // Assert
+    verify(orderItemServiceExtensionManager).getProxy();
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(itemRequest).getBundleOrderItemFeePrices();
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getDiscreteOrderItems();
+    verify(itemRequest).getName();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest).getSalePriceOverride();
+    verify(itemRequest).setBundleOrderItemFeePrices(isA(List.class));
+    verify(itemRequest).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(itemRequest).setDiscreteOrderItems(isA(List.class));
+    verify(itemRequest).setName(eq("Name"));
+    verify(itemRequest).setOrder(isA(Order.class));
+    verify(itemRequest).setQuantity(eq(1));
+    verify(itemRequest).setRetailPriceOverride(isA(Money.class));
+    verify(itemRequest).setSalePriceOverride(isA(Money.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    assertTrue(actualCreateBundleOrderItemResult instanceof BundleOrderItemImpl);
+    assertNull(actualCreateBundleOrderItemResult.getBaseSalePrice());
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)} with {@code BundleOrderItemRequest}.
+   * <ul>
+   *   <li>Then Order return {@link NullOrderImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(BundleOrderItemRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(BundleOrderItemRequest)"})
+  public void testCreateBundleOrderItemWithBundleOrderItemRequest_thenOrderReturnNullOrderImpl() {
+    // Arrange
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
@@ -3426,49 +2118,32 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setName("Name");
     itemRequest.setOrder(new NullOrderImpl());
     itemRequest.setQuantity(1);
-    Money retailPriceOverride = new Money();
-    itemRequest.setRetailPriceOverride(retailPriceOverride);
-    itemRequest.setSalePriceOverride(null);
+    itemRequest.setRetailPriceOverride(new Money());
+    itemRequest.setSalePriceOverride(new Money());
 
     // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest);
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertTrue(actualCreateBundleOrderItemResult instanceof BundleOrderItemImpl);
-    assertNull(actualCreateBundleOrderItemResult.getBaseSalePrice());
-    Money baseRetailPrice = actualCreateBundleOrderItemResult.getBaseRetailPrice();
-    Money absResult = baseRetailPrice.abs();
-    assertEquals(retailPriceOverride, absResult.abs());
-    Money zeroResult = baseRetailPrice.zero();
-    assertEquals(retailPriceOverride, zeroResult.abs());
-    assertEquals(retailPriceOverride, absResult.zero());
-    assertEquals(retailPriceOverride, zeroResult.zero());
+    assertTrue(actualCreateBundleOrderItemResult.getOrder() instanceof NullOrderImpl);
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)} with
-   * {@code ProductBundleOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)} with {@code ProductBundleOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest)"})
   public void testCreateBundleOrderItemWithProductBundleOrderItemRequest() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
@@ -3487,93 +2162,280 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setSku(new SkuImpl());
 
     // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest);
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(orderItemDao).saveOrderItem(isA(OrderItem.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertSame(bundleOrderItemImpl, actualCreateBundleOrderItemResult);
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)} with
-   * {@code ProductBundleOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)} with {@code ProductBundleOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest)"})
   public void testCreateBundleOrderItemWithProductBundleOrderItemRequest2() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
     when(orderItemDao.saveOrderItem(Mockito.<OrderItem>any())).thenReturn(bundleOrderItemImpl);
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
 
-    ProductBundleOrderItemRequest itemRequest = new ProductBundleOrderItemRequest();
+    ProductBundleOrderItemRequest productBundleOrderItemRequest = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest.setName("Name");
+    productBundleOrderItemRequest.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest.setQuantity(1);
+    productBundleOrderItemRequest.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest2 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest2.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest2.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest2.setName("Name");
+    productBundleOrderItemRequest2.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest2.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest2.setQuantity(1);
+    productBundleOrderItemRequest2.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest2.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest2.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest3 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest3.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest3.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest3.setName("Name");
+    productBundleOrderItemRequest3.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest3.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest3.setQuantity(1);
+    productBundleOrderItemRequest3.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest3.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest3.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest4 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest4.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest4.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest4.setName("Name");
+    productBundleOrderItemRequest4.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest4.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest4.setQuantity(1);
+    productBundleOrderItemRequest4.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest4.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest4.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest5 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest5.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest5.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest5.setName("Name");
+    productBundleOrderItemRequest5.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest5.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest5.setQuantity(1);
+    productBundleOrderItemRequest5.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest5.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest5.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest6 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest6.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest6.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest6.setName("Name");
+    productBundleOrderItemRequest6.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest6.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest6.setQuantity(1);
+    productBundleOrderItemRequest6.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest6.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest6.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest7 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest7.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest7.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest7.setName("Name");
+    productBundleOrderItemRequest7.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest7.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest7.setQuantity(1);
+    productBundleOrderItemRequest7.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest7.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest7.setSku(new SkuImpl());
+    ProductBundleOrderItemRequest itemRequest = mock(ProductBundleOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getName()).thenReturn("Name");
+    when(itemRequest.getRetailPriceOverride()).thenReturn(null);
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProductBundle()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
+        .thenReturn(productBundleOrderItemRequest);
+    when(itemRequest.setItemAttributes(Mockito.<Map<String, String>>any())).thenReturn(productBundleOrderItemRequest2);
+    when(itemRequest.setName(Mockito.<String>any())).thenReturn(productBundleOrderItemRequest3);
+    when(itemRequest.setOrder(Mockito.<Order>any())).thenReturn(productBundleOrderItemRequest4);
+    when(itemRequest.setProductBundle(Mockito.<ProductBundle>any())).thenReturn(productBundleOrderItemRequest5);
+    when(itemRequest.setQuantity(anyInt())).thenReturn(productBundleOrderItemRequest6);
+    when(itemRequest.setSku(Mockito.<Sku>any())).thenReturn(productBundleOrderItemRequest7);
+    doNothing().when(itemRequest).setRetailPriceOverride(Mockito.<Money>any());
+    doNothing().when(itemRequest).setSalePriceOverride(Mockito.<Money>any());
     itemRequest.setCategory(new CategoryImpl());
     itemRequest.setItemAttributes(new HashMap<>());
     itemRequest.setName("Name");
     itemRequest.setOrder(new NullOrderImpl());
     itemRequest.setProductBundle(new ProductBundleImpl());
     itemRequest.setQuantity(1);
-    itemRequest.setRetailPriceOverride(null);
+    itemRequest.setRetailPriceOverride(new Money());
     itemRequest.setSalePriceOverride(new Money());
     itemRequest.setSku(new SkuImpl());
 
     // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest);
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(orderItemDao).saveOrderItem(isA(OrderItem.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getName();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getProductBundle();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(itemRequest).setItemAttributes(isA(Map.class));
+    verify(itemRequest).setName(eq("Name"));
+    verify(itemRequest).setOrder(isA(Order.class));
+    verify(itemRequest).setProductBundle(isA(ProductBundle.class));
+    verify(itemRequest).setQuantity(eq(1));
+    verify(itemRequest).setRetailPriceOverride(isA(Money.class));
+    verify(itemRequest).setSalePriceOverride(isA(Money.class));
+    verify(itemRequest).setSku(isA(Sku.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertSame(bundleOrderItemImpl, actualCreateBundleOrderItemResult);
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)} with
-   * {@code ProductBundleOrderItemRequest}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)}
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)} with {@code ProductBundleOrderItemRequest}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest)"})
   public void testCreateBundleOrderItemWithProductBundleOrderItemRequest3() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
     when(orderItemDao.saveOrderItem(Mockito.<OrderItem>any())).thenReturn(bundleOrderItemImpl);
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
 
-    ProductBundleOrderItemRequest itemRequest = new ProductBundleOrderItemRequest();
+    ProductBundleOrderItemRequest productBundleOrderItemRequest = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest.setName("Name");
+    productBundleOrderItemRequest.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest.setQuantity(1);
+    productBundleOrderItemRequest.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest2 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest2.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest2.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest2.setName("Name");
+    productBundleOrderItemRequest2.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest2.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest2.setQuantity(1);
+    productBundleOrderItemRequest2.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest2.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest2.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest3 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest3.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest3.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest3.setName("Name");
+    productBundleOrderItemRequest3.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest3.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest3.setQuantity(1);
+    productBundleOrderItemRequest3.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest3.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest3.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest4 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest4.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest4.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest4.setName("Name");
+    productBundleOrderItemRequest4.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest4.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest4.setQuantity(1);
+    productBundleOrderItemRequest4.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest4.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest4.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest5 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest5.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest5.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest5.setName("Name");
+    productBundleOrderItemRequest5.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest5.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest5.setQuantity(1);
+    productBundleOrderItemRequest5.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest5.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest5.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest6 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest6.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest6.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest6.setName("Name");
+    productBundleOrderItemRequest6.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest6.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest6.setQuantity(1);
+    productBundleOrderItemRequest6.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest6.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest6.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest7 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest7.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest7.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest7.setName("Name");
+    productBundleOrderItemRequest7.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest7.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest7.setQuantity(1);
+    productBundleOrderItemRequest7.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest7.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest7.setSku(new SkuImpl());
+    ProductBundleOrderItemRequest itemRequest = mock(ProductBundleOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getName()).thenReturn("Name");
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(null);
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProductBundle()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
+        .thenReturn(productBundleOrderItemRequest);
+    when(itemRequest.setItemAttributes(Mockito.<Map<String, String>>any())).thenReturn(productBundleOrderItemRequest2);
+    when(itemRequest.setName(Mockito.<String>any())).thenReturn(productBundleOrderItemRequest3);
+    when(itemRequest.setOrder(Mockito.<Order>any())).thenReturn(productBundleOrderItemRequest4);
+    when(itemRequest.setProductBundle(Mockito.<ProductBundle>any())).thenReturn(productBundleOrderItemRequest5);
+    when(itemRequest.setQuantity(anyInt())).thenReturn(productBundleOrderItemRequest6);
+    when(itemRequest.setSku(Mockito.<Sku>any())).thenReturn(productBundleOrderItemRequest7);
+    doNothing().when(itemRequest).setRetailPriceOverride(Mockito.<Money>any());
+    doNothing().when(itemRequest).setSalePriceOverride(Mockito.<Money>any());
     itemRequest.setCategory(new CategoryImpl());
     itemRequest.setItemAttributes(new HashMap<>());
     itemRequest.setName("Name");
@@ -3581,41 +2443,50 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setProductBundle(new ProductBundleImpl());
     itemRequest.setQuantity(1);
     itemRequest.setRetailPriceOverride(new Money());
-    itemRequest.setSalePriceOverride(null);
+    itemRequest.setSalePriceOverride(new Money());
     itemRequest.setSku(new SkuImpl());
 
     // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest);
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest);
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(orderItemDao).saveOrderItem(isA(OrderItem.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getName();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getProductBundle();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(itemRequest).setItemAttributes(isA(Map.class));
+    verify(itemRequest).setName(eq("Name"));
+    verify(itemRequest).setOrder(isA(Order.class));
+    verify(itemRequest).setProductBundle(isA(ProductBundle.class));
+    verify(itemRequest).setQuantity(eq(1));
+    verify(itemRequest).setRetailPriceOverride(isA(Money.class));
+    verify(itemRequest).setSalePriceOverride(isA(Money.class));
+    verify(itemRequest).setSku(isA(Sku.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertSame(bundleOrderItemImpl, actualCreateBundleOrderItemResult);
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
-   * with {@code ProductBundleOrderItemRequest}, {@code boolean}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)} with {@code ProductBundleOrderItemRequest}, {@code boolean}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest, boolean)"
-  })
+      "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest, boolean)"})
   public void testCreateBundleOrderItemWithProductBundleOrderItemRequestBoolean() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
@@ -3634,93 +2505,130 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setSku(new SkuImpl());
 
     // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest, true);
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest, true);
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(orderItemDao).saveOrderItem(isA(OrderItem.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertSame(bundleOrderItemImpl, actualCreateBundleOrderItemResult);
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
-   * with {@code ProductBundleOrderItemRequest}, {@code boolean}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)} with {@code ProductBundleOrderItemRequest}, {@code boolean}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest, boolean)"
-  })
+      "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest, boolean)"})
   public void testCreateBundleOrderItemWithProductBundleOrderItemRequestBoolean2() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
     when(orderItemDao.saveOrderItem(Mockito.<OrderItem>any())).thenReturn(bundleOrderItemImpl);
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
 
-    ProductBundleOrderItemRequest itemRequest = new ProductBundleOrderItemRequest();
-    itemRequest.setCategory(new CategoryImpl());
-    itemRequest.setItemAttributes(new HashMap<>());
-    itemRequest.setName("Name");
-    itemRequest.setOrder(new NullOrderImpl());
-    itemRequest.setProductBundle(new ProductBundleImpl());
-    itemRequest.setQuantity(1);
-    itemRequest.setRetailPriceOverride(null);
-    itemRequest.setSalePriceOverride(new Money());
-    itemRequest.setSku(new SkuImpl());
+    ProductBundleOrderItemRequest productBundleOrderItemRequest = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest.setName("Name");
+    productBundleOrderItemRequest.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest.setQuantity(1);
+    productBundleOrderItemRequest.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest.setSku(new SkuImpl());
 
-    // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest, true);
+    ProductBundleOrderItemRequest productBundleOrderItemRequest2 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest2.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest2.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest2.setName("Name");
+    productBundleOrderItemRequest2.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest2.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest2.setQuantity(1);
+    productBundleOrderItemRequest2.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest2.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest2.setSku(new SkuImpl());
 
-    // Assert
-    verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemDao).saveOrderItem(isA(OrderItem.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertSame(bundleOrderItemImpl, actualCreateBundleOrderItemResult);
-  }
+    ProductBundleOrderItemRequest productBundleOrderItemRequest3 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest3.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest3.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest3.setName("Name");
+    productBundleOrderItemRequest3.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest3.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest3.setQuantity(1);
+    productBundleOrderItemRequest3.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest3.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest3.setSku(new SkuImpl());
 
-  /**
-   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
-   * with {@code ProductBundleOrderItemRequest}, {@code boolean}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest, boolean)"
-  })
-  public void testCreateBundleOrderItemWithProductBundleOrderItemRequestBoolean3() {
-    // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
-    when(orderItemDao.saveOrderItem(Mockito.<OrderItem>any())).thenReturn(bundleOrderItemImpl);
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    ProductBundleOrderItemRequest productBundleOrderItemRequest4 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest4.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest4.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest4.setName("Name");
+    productBundleOrderItemRequest4.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest4.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest4.setQuantity(1);
+    productBundleOrderItemRequest4.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest4.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest4.setSku(new SkuImpl());
 
-    ProductBundleOrderItemRequest itemRequest = new ProductBundleOrderItemRequest();
+    ProductBundleOrderItemRequest productBundleOrderItemRequest5 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest5.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest5.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest5.setName("Name");
+    productBundleOrderItemRequest5.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest5.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest5.setQuantity(1);
+    productBundleOrderItemRequest5.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest5.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest5.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest6 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest6.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest6.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest6.setName("Name");
+    productBundleOrderItemRequest6.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest6.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest6.setQuantity(1);
+    productBundleOrderItemRequest6.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest6.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest6.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest7 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest7.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest7.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest7.setName("Name");
+    productBundleOrderItemRequest7.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest7.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest7.setQuantity(1);
+    productBundleOrderItemRequest7.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest7.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest7.setSku(new SkuImpl());
+    ProductBundleOrderItemRequest itemRequest = mock(ProductBundleOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getName()).thenReturn("Name");
+    when(itemRequest.getRetailPriceOverride()).thenReturn(null);
+    when(itemRequest.getSalePriceOverride()).thenReturn(new Money());
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProductBundle()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
+        .thenReturn(productBundleOrderItemRequest);
+    when(itemRequest.setItemAttributes(Mockito.<Map<String, String>>any())).thenReturn(productBundleOrderItemRequest2);
+    when(itemRequest.setName(Mockito.<String>any())).thenReturn(productBundleOrderItemRequest3);
+    when(itemRequest.setOrder(Mockito.<Order>any())).thenReturn(productBundleOrderItemRequest4);
+    when(itemRequest.setProductBundle(Mockito.<ProductBundle>any())).thenReturn(productBundleOrderItemRequest5);
+    when(itemRequest.setQuantity(anyInt())).thenReturn(productBundleOrderItemRequest6);
+    when(itemRequest.setSku(Mockito.<Sku>any())).thenReturn(productBundleOrderItemRequest7);
+    doNothing().when(itemRequest).setRetailPriceOverride(Mockito.<Money>any());
+    doNothing().when(itemRequest).setSalePriceOverride(Mockito.<Money>any());
     itemRequest.setCategory(new CategoryImpl());
     itemRequest.setItemAttributes(new HashMap<>());
     itemRequest.setName("Name");
@@ -3728,39 +2636,236 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setProductBundle(new ProductBundleImpl());
     itemRequest.setQuantity(1);
     itemRequest.setRetailPriceOverride(new Money());
-    itemRequest.setSalePriceOverride(null);
+    itemRequest.setSalePriceOverride(new Money());
     itemRequest.setSku(new SkuImpl());
 
     // Act
-    BundleOrderItem actualCreateBundleOrderItemResult =
-        orderItemServiceImpl.createBundleOrderItem(itemRequest, true);
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest, true);
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
     verify(orderItemDao).create(isA(OrderItemType.class));
     verify(orderItemDao).saveOrderItem(isA(OrderItem.class));
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getName();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getProductBundle();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest).getRetailPriceOverride();
+    verify(itemRequest, atLeast(1)).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(itemRequest).setItemAttributes(isA(Map.class));
+    verify(itemRequest).setName(eq("Name"));
+    verify(itemRequest).setOrder(isA(Order.class));
+    verify(itemRequest).setProductBundle(isA(ProductBundle.class));
+    verify(itemRequest).setQuantity(eq(1));
+    verify(itemRequest).setRetailPriceOverride(isA(Money.class));
+    verify(itemRequest).setSalePriceOverride(isA(Money.class));
+    verify(itemRequest).setSku(isA(Sku.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    assertSame(bundleOrderItemImpl, actualCreateBundleOrderItemResult);
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)} with {@code ProductBundleOrderItemRequest}, {@code boolean}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createBundleOrderItem(ProductBundleOrderItemRequest, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "BundleOrderItem OrderItemServiceImpl.createBundleOrderItem(ProductBundleOrderItemRequest, boolean)"})
+  public void testCreateBundleOrderItemWithProductBundleOrderItemRequestBoolean3() {
+    // Arrange
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
+    when(orderItemDao.saveOrderItem(Mockito.<OrderItem>any())).thenReturn(bundleOrderItemImpl);
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest.setName("Name");
+    productBundleOrderItemRequest.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest.setQuantity(1);
+    productBundleOrderItemRequest.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest2 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest2.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest2.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest2.setName("Name");
+    productBundleOrderItemRequest2.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest2.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest2.setQuantity(1);
+    productBundleOrderItemRequest2.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest2.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest2.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest3 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest3.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest3.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest3.setName("Name");
+    productBundleOrderItemRequest3.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest3.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest3.setQuantity(1);
+    productBundleOrderItemRequest3.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest3.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest3.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest4 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest4.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest4.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest4.setName("Name");
+    productBundleOrderItemRequest4.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest4.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest4.setQuantity(1);
+    productBundleOrderItemRequest4.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest4.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest4.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest5 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest5.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest5.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest5.setName("Name");
+    productBundleOrderItemRequest5.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest5.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest5.setQuantity(1);
+    productBundleOrderItemRequest5.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest5.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest5.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest6 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest6.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest6.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest6.setName("Name");
+    productBundleOrderItemRequest6.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest6.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest6.setQuantity(1);
+    productBundleOrderItemRequest6.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest6.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest6.setSku(new SkuImpl());
+
+    ProductBundleOrderItemRequest productBundleOrderItemRequest7 = new ProductBundleOrderItemRequest();
+    productBundleOrderItemRequest7.setCategory(new CategoryImpl());
+    productBundleOrderItemRequest7.setItemAttributes(new HashMap<>());
+    productBundleOrderItemRequest7.setName("Name");
+    productBundleOrderItemRequest7.setOrder(new NullOrderImpl());
+    productBundleOrderItemRequest7.setProductBundle(new ProductBundleImpl());
+    productBundleOrderItemRequest7.setQuantity(1);
+    productBundleOrderItemRequest7.setRetailPriceOverride(new Money());
+    productBundleOrderItemRequest7.setSalePriceOverride(new Money());
+    productBundleOrderItemRequest7.setSku(new SkuImpl());
+    ProductBundleOrderItemRequest itemRequest = mock(ProductBundleOrderItemRequest.class);
+    when(itemRequest.getQuantity()).thenReturn(1);
+    when(itemRequest.getName()).thenReturn("Name");
+    when(itemRequest.getRetailPriceOverride()).thenReturn(new Money());
+    when(itemRequest.getSalePriceOverride()).thenReturn(null);
+    when(itemRequest.getCategory()).thenReturn(new CategoryImpl());
+    when(itemRequest.getProductBundle()).thenReturn(new ProductBundleImpl());
+    when(itemRequest.getSku()).thenReturn(new SkuImpl());
+    when(itemRequest.getOrder()).thenReturn(new NullOrderImpl());
+    when(itemRequest.setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
+        .thenReturn(productBundleOrderItemRequest);
+    when(itemRequest.setItemAttributes(Mockito.<Map<String, String>>any())).thenReturn(productBundleOrderItemRequest2);
+    when(itemRequest.setName(Mockito.<String>any())).thenReturn(productBundleOrderItemRequest3);
+    when(itemRequest.setOrder(Mockito.<Order>any())).thenReturn(productBundleOrderItemRequest4);
+    when(itemRequest.setProductBundle(Mockito.<ProductBundle>any())).thenReturn(productBundleOrderItemRequest5);
+    when(itemRequest.setQuantity(anyInt())).thenReturn(productBundleOrderItemRequest6);
+    when(itemRequest.setSku(Mockito.<Sku>any())).thenReturn(productBundleOrderItemRequest7);
+    doNothing().when(itemRequest).setRetailPriceOverride(Mockito.<Money>any());
+    doNothing().when(itemRequest).setSalePriceOverride(Mockito.<Money>any());
+    itemRequest.setCategory(new CategoryImpl());
+    itemRequest.setItemAttributes(new HashMap<>());
+    itemRequest.setName("Name");
+    itemRequest.setOrder(new NullOrderImpl());
+    itemRequest.setProductBundle(new ProductBundleImpl());
+    itemRequest.setQuantity(1);
+    itemRequest.setRetailPriceOverride(new Money());
+    itemRequest.setSalePriceOverride(new Money());
+    itemRequest.setSku(new SkuImpl());
+
+    // Act
+    BundleOrderItem actualCreateBundleOrderItemResult = orderItemServiceImpl.createBundleOrderItem(itemRequest, true);
+
+    // Assert
+    verify(orderItemServiceExtensionManager).getProxy();
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(orderItemDao).saveOrderItem(isA(OrderItem.class));
+    verify(itemRequest).getCategory();
+    verify(itemRequest).getName();
+    verify(itemRequest).getOrder();
+    verify(itemRequest).getProductBundle();
+    verify(itemRequest).getQuantity();
+    verify(itemRequest, atLeast(1)).getRetailPriceOverride();
+    verify(itemRequest).getSalePriceOverride();
+    verify(itemRequest).getSku();
+    verify(itemRequest).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(itemRequest).setItemAttributes(isA(Map.class));
+    verify(itemRequest).setName(eq("Name"));
+    verify(itemRequest).setOrder(isA(Order.class));
+    verify(itemRequest).setProductBundle(isA(ProductBundle.class));
+    verify(itemRequest).setQuantity(eq(1));
+    verify(itemRequest).setRetailPriceOverride(isA(Money.class));
+    verify(itemRequest).setSalePriceOverride(isA(Money.class));
+    verify(itemRequest).setSku(isA(Sku.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
     assertSame(bundleOrderItemImpl, actualCreateBundleOrderItemResult);
   }
 
   /**
    * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"})
   public void testBuildOrderItemRequestDTOFromOrderItem() {
+    // Arrange
+    BundleOrderItemImpl item = new BundleOrderItemImpl();
+    item.setOrder(new NullOrderImpl());
+
+    // Act
+    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult = orderItemServiceImpl
+        .buildOrderItemRequestDTOFromOrderItem(item);
+
+    // Assert
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult instanceof NonDiscreteOrderItemRequestDTO);
+    Money overrideRetailPrice = actualBuildOrderItemRequestDTOFromOrderItemResult.getOverrideRetailPrice();
+    Currency currency = overrideRetailPrice.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    assertNull(((NonDiscreteOrderItemRequestDTO) actualBuildOrderItemRequestDTOFromOrderItemResult).getItemName());
+    assertEquals(0, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    assertEquals(expectedAmount, overrideRetailPrice.getAmount());
+    assertEquals(overrideRetailPrice, overrideRetailPrice.abs());
+    assertEquals(overrideRetailPrice, overrideRetailPrice.zero());
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"})
+  public void testBuildOrderItemRequestDTOFromOrderItem2() {
     // Arrange
     HashMap<String, String> stringStringMap = new HashMap<>();
     stringStringMap.put("foo", "foo");
-
     DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
     when(item.getQuantity()).thenReturn(1);
     when(item.getChildOrderItems()).thenReturn(new ArrayList<>());
@@ -3771,8 +2876,8 @@ public class OrderItemServiceImplDiffblueTest {
     when(item.getSku()).thenReturn(new SkuImpl());
 
     // Act
-    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult =
-        orderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(item);
+    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult = orderItemServiceImpl
+        .buildOrderItemRequestDTOFromOrderItem(item);
 
     // Assert
     verify(item, atLeast(1)).getAdditionalAttributes();
@@ -3782,30 +2887,180 @@ public class OrderItemServiceImplDiffblueTest {
     verify(item).getChildOrderItems();
     verify(item, atLeast(1)).getOrderItemAttributes();
     verify(item).getQuantity();
-    Map<String, String> additionalAttributes =
-        actualBuildOrderItemRequestDTOFromOrderItemResult.getAdditionalAttributes();
+    Map<String, String> additionalAttributes = actualBuildOrderItemRequestDTOFromOrderItemResult
+        .getAdditionalAttributes();
     assertEquals(1, additionalAttributes.size());
     assertEquals("foo", additionalAttributes.get("foo"));
-    assertEquals(1, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getItemAttributes().isEmpty());
   }
 
   /**
    * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
-   *
-   * <ul>
-   *   <li>Then return ChildOrderItems Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"
-  })
-  public void testBuildOrderItemRequestDTOFromOrderItem_thenReturnChildOrderItemsEmpty() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"})
+  public void testBuildOrderItemRequestDTOFromOrderItem3() {
+    // Arrange
+    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
+    when(item.getQuantity()).thenReturn(1);
+    when(item.getChildOrderItems()).thenReturn(new ArrayList<>());
+    when(item.getAdditionalAttributes()).thenReturn(new HashMap<>());
+    when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
+    when(item.getCategory()).thenReturn(null);
+    when(item.getProduct()).thenReturn(new ProductBundleImpl());
+    when(item.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult = orderItemServiceImpl
+        .buildOrderItemRequestDTOFromOrderItem(item);
+
+    // Assert
+    verify(item, atLeast(1)).getAdditionalAttributes();
+    verify(item, atLeast(1)).getProduct();
+    verify(item, atLeast(1)).getSku();
+    verify(item).getCategory();
+    verify(item).getChildOrderItems();
+    verify(item, atLeast(1)).getOrderItemAttributes();
+    verify(item).getQuantity();
+    assertNull(actualBuildOrderItemRequestDTOFromOrderItemResult.getOverrideRetailPrice());
+    assertEquals(1, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getAdditionalAttributes().isEmpty());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getItemAttributes().isEmpty());
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"})
+  public void testBuildOrderItemRequestDTOFromOrderItem4() {
+    // Arrange
+    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
+    when(item.getQuantity()).thenReturn(1);
+    when(item.getChildOrderItems()).thenReturn(new ArrayList<>());
+    when(item.getAdditionalAttributes()).thenReturn(new HashMap<>());
+    when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
+    when(item.getCategory()).thenReturn(new CategoryImpl());
+    when(item.getProduct()).thenReturn(null);
+    when(item.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult = orderItemServiceImpl
+        .buildOrderItemRequestDTOFromOrderItem(item);
+
+    // Assert
+    verify(item, atLeast(1)).getAdditionalAttributes();
+    verify(item).getProduct();
+    verify(item, atLeast(1)).getSku();
+    verify(item, atLeast(1)).getCategory();
+    verify(item).getChildOrderItems();
+    verify(item, atLeast(1)).getOrderItemAttributes();
+    verify(item).getQuantity();
+    assertNull(actualBuildOrderItemRequestDTOFromOrderItemResult.getOverrideRetailPrice());
+    assertEquals(1, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getAdditionalAttributes().isEmpty());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getItemAttributes().isEmpty());
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"})
+  public void testBuildOrderItemRequestDTOFromOrderItem5() {
+    // Arrange
+    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
+    when(item.getQuantity()).thenReturn(1);
+    when(item.getChildOrderItems()).thenReturn(new ArrayList<>());
+    when(item.getAdditionalAttributes()).thenReturn(new HashMap<>());
+    when(item.getOrderItemAttributes()).thenReturn(new HashMap<>());
+    when(item.getCategory()).thenReturn(new CategoryImpl());
+    when(item.getProduct()).thenReturn(new ProductBundleImpl());
+    when(item.getSku()).thenReturn(null);
+
+    // Act
+    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult = orderItemServiceImpl
+        .buildOrderItemRequestDTOFromOrderItem(item);
+
+    // Assert
+    verify(item, atLeast(1)).getAdditionalAttributes();
+    verify(item, atLeast(1)).getProduct();
+    verify(item).getSku();
+    verify(item, atLeast(1)).getCategory();
+    verify(item).getChildOrderItems();
+    verify(item, atLeast(1)).getOrderItemAttributes();
+    verify(item).getQuantity();
+    assertNull(actualBuildOrderItemRequestDTOFromOrderItemResult.getOverrideRetailPrice());
+    assertEquals(1, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getAdditionalAttributes().isEmpty());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getItemAttributes().isEmpty());
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
+   * <ul>
+   *   <li>Then return ItemAttributes size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"})
+  public void testBuildOrderItemRequestDTOFromOrderItem_thenReturnItemAttributesSizeIsOne() {
+    // Arrange
+    HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
+    stringOrderItemAttributeMap.put("foo", new OrderItemAttributeImpl());
+    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
+    when(item.getQuantity()).thenReturn(1);
+    when(item.getChildOrderItems()).thenReturn(new ArrayList<>());
+    when(item.getAdditionalAttributes()).thenReturn(new HashMap<>());
+    when(item.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
+    when(item.getCategory()).thenReturn(new CategoryImpl());
+    when(item.getProduct()).thenReturn(new ProductBundleImpl());
+    when(item.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult = orderItemServiceImpl
+        .buildOrderItemRequestDTOFromOrderItem(item);
+
+    // Assert
+    verify(item, atLeast(1)).getAdditionalAttributes();
+    verify(item, atLeast(1)).getProduct();
+    verify(item, atLeast(1)).getSku();
+    verify(item, atLeast(1)).getCategory();
+    verify(item).getChildOrderItems();
+    verify(item, atLeast(1)).getOrderItemAttributes();
+    verify(item).getQuantity();
+    Map<String, String> itemAttributes = actualBuildOrderItemRequestDTOFromOrderItemResult.getItemAttributes();
+    assertEquals(1, itemAttributes.size());
+    assertNull(itemAttributes.get("foo"));
+    assertNull(actualBuildOrderItemRequestDTOFromOrderItemResult.getOverrideRetailPrice());
+    assertEquals(1, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getAdditionalAttributes().isEmpty());
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
+   * <ul>
+   *   <li>Then return OverrideRetailPrice is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"})
+  public void testBuildOrderItemRequestDTOFromOrderItem_thenReturnOverrideRetailPriceIsNull() {
     // Arrange
     DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
     when(item.getQuantity()).thenReturn(1);
@@ -3817,8 +3072,8 @@ public class OrderItemServiceImplDiffblueTest {
     when(item.getSku()).thenReturn(new SkuImpl());
 
     // Act
-    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult =
-        orderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(item);
+    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult = orderItemServiceImpl
+        .buildOrderItemRequestDTOFromOrderItem(item);
 
     // Assert
     verify(item, atLeast(1)).getAdditionalAttributes();
@@ -3828,683 +3083,466 @@ public class OrderItemServiceImplDiffblueTest {
     verify(item).getChildOrderItems();
     verify(item, atLeast(1)).getOrderItemAttributes();
     verify(item).getQuantity();
-    assertEquals(1, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
-    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getChildOrderItems().isEmpty());
-    assertTrue(
-        actualBuildOrderItemRequestDTOFromOrderItemResult.getAdditionalAttributes().isEmpty());
-    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getItemAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
-   *
-   * <ul>
-   *   <li>Then return ChildOrderItems size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"
-  })
-  public void testBuildOrderItemRequestDTOFromOrderItem_thenReturnChildOrderItemsSizeIsOne() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(1L);
-
-    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
-    bundleOrderItemImpl.setOrder(new NullOrderImpl());
-
-    ArrayList<OrderItem> childOrderItems = new ArrayList<>();
-    childOrderItems.add(bundleOrderItemImpl);
-
-    BundleOrderItemImpl bundleOrderItemImpl2 = new BundleOrderItemImpl();
-    bundleOrderItemImpl2.setAuditable(auditable2);
-    bundleOrderItemImpl2.setBaseRetailPrice(new Money());
-    bundleOrderItemImpl2.setBaseSalePrice(new Money());
-    bundleOrderItemImpl2.setBundleOrderItemFeePrices(new ArrayList<>());
-    bundleOrderItemImpl2.setCandidateItemOffers(new ArrayList<>());
-    bundleOrderItemImpl2.setCartMessages(new ArrayList<>());
-    bundleOrderItemImpl2.setDiscountingAllowed(true);
-    bundleOrderItemImpl2.setDiscreteOrderItems(new ArrayList<>());
-    bundleOrderItemImpl2.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    bundleOrderItemImpl2.setHasValidationError(true);
-    bundleOrderItemImpl2.setId(1L);
-    bundleOrderItemImpl2.setName("Name");
-    bundleOrderItemImpl2.setOrder(new NullOrderImpl());
-    bundleOrderItemImpl2.setOrderItemAdjustments(new ArrayList<>());
-    bundleOrderItemImpl2.setOrderItemPriceDetails(new ArrayList<>());
-    bundleOrderItemImpl2.setOrderItemQualifiers(new ArrayList<>());
-    bundleOrderItemImpl2.setOrderItemType(OrderItemType.BASIC);
-    bundleOrderItemImpl2.setParentOrderItem(new BundleOrderItemImpl());
-    bundleOrderItemImpl2.setPersonalMessage(new PersonalMessageImpl());
-    bundleOrderItemImpl2.setPrice(new Money());
-    bundleOrderItemImpl2.setProratedOrderItemAdjustments(new ArrayList<>());
-    bundleOrderItemImpl2.setQuantity(1);
-    bundleOrderItemImpl2.setRetailPrice(new Money());
-    bundleOrderItemImpl2.setRetailPriceOverride(true);
-    bundleOrderItemImpl2.setSalePrice(new Money());
-    bundleOrderItemImpl2.setSalePriceOverride(true);
-    bundleOrderItemImpl2.setTaxable(true);
-    bundleOrderItemImpl2.updateSaleAndRetailPrices();
-    bundleOrderItemImpl2.setOrderItemAttributes(null);
-    bundleOrderItemImpl2.setChildOrderItems(childOrderItems);
-
-    ArrayList<OrderItem> childOrderItems2 = new ArrayList<>();
-    childOrderItems2.add(bundleOrderItemImpl2);
-
-    BundleOrderItemImpl item = new BundleOrderItemImpl();
-    item.setAuditable(auditable);
-    Money baseRetailPrice = new Money();
-    item.setBaseRetailPrice(baseRetailPrice);
-    item.setBaseSalePrice(new Money());
-    item.setBundleOrderItemFeePrices(new ArrayList<>());
-    item.setCandidateItemOffers(new ArrayList<>());
-    item.setCartMessages(new ArrayList<>());
-    item.setDiscountingAllowed(true);
-    item.setDiscreteOrderItems(new ArrayList<>());
-    item.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    item.setHasValidationError(true);
-    item.setId(1L);
-    item.setName("Name");
-    item.setOrder(new NullOrderImpl());
-    item.setOrderItemAdjustments(new ArrayList<>());
-    item.setOrderItemPriceDetails(new ArrayList<>());
-    item.setOrderItemQualifiers(new ArrayList<>());
-    item.setOrderItemType(OrderItemType.BASIC);
-    item.setParentOrderItem(new BundleOrderItemImpl());
-    item.setPersonalMessage(new PersonalMessageImpl());
-    item.setPrice(new Money());
-    item.setProratedOrderItemAdjustments(new ArrayList<>());
-    item.setQuantity(1);
-    item.setRetailPrice(new Money());
-    item.setRetailPriceOverride(true);
-    item.setSalePrice(new Money());
-    item.setSalePriceOverride(true);
-    item.setTaxable(true);
-    item.updateSaleAndRetailPrices();
-    item.setOrderItemAttributes(null);
-    item.setChildOrderItems(childOrderItems2);
-
-    // Act
-    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult =
-        orderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(item);
-
-    // Assert
-    List<OrderItemRequestDTO> childOrderItems3 =
-        actualBuildOrderItemRequestDTOFromOrderItemResult.getChildOrderItems();
-    assertEquals(1, childOrderItems3.size());
-    assertTrue(childOrderItems3.get(0) instanceof NonDiscreteOrderItemRequestDTO);
-    assertTrue(
-        actualBuildOrderItemRequestDTOFromOrderItemResult
-            instanceof NonDiscreteOrderItemRequestDTO);
-    assertEquals(
-        "Name",
-        ((NonDiscreteOrderItemRequestDTO) actualBuildOrderItemRequestDTOFromOrderItemResult)
-            .getItemName());
-    assertEquals(
-        baseRetailPrice,
-        actualBuildOrderItemRequestDTOFromOrderItemResult.getOverrideRetailPrice());
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
-   *
-   * <ul>
-   *   <li>Then return ItemAttributes size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"
-  })
-  public void testBuildOrderItemRequestDTOFromOrderItem_thenReturnItemAttributesSizeIsOne() {
-    // Arrange
-    HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
-    stringOrderItemAttributeMap.put("foo", new OrderItemAttributeImpl());
-
-    DiscreteOrderItemImpl item = mock(DiscreteOrderItemImpl.class);
-    when(item.getQuantity()).thenReturn(1);
-    when(item.getChildOrderItems()).thenReturn(new ArrayList<>());
-    when(item.getAdditionalAttributes()).thenReturn(new HashMap<>());
-    when(item.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
-    when(item.getCategory()).thenReturn(new CategoryImpl());
-    when(item.getProduct()).thenReturn(new ProductBundleImpl());
-    when(item.getSku()).thenReturn(new SkuImpl());
-
-    // Act
-    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult =
-        orderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(item);
-
-    // Assert
-    verify(item, atLeast(1)).getAdditionalAttributes();
-    verify(item, atLeast(1)).getProduct();
-    verify(item, atLeast(1)).getSku();
-    verify(item, atLeast(1)).getCategory();
-    verify(item).getChildOrderItems();
-    verify(item, atLeast(1)).getOrderItemAttributes();
-    verify(item).getQuantity();
-    Map<String, String> itemAttributes =
-        actualBuildOrderItemRequestDTOFromOrderItemResult.getItemAttributes();
-    assertEquals(1, itemAttributes.size());
-    assertNull(itemAttributes.get("foo"));
     assertNull(actualBuildOrderItemRequestDTOFromOrderItemResult.getOverrideRetailPrice());
     assertEquals(1, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
-   *
-   * <ul>
-   *   <li>Then return ItemName is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"
-  })
-  public void testBuildOrderItemRequestDTOFromOrderItem_thenReturnItemNameIsNull() {
-    // Arrange
-    BundleOrderItemImpl item = new BundleOrderItemImpl();
-    item.setOrder(new NullOrderImpl());
-
-    // Act
-    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult =
-        orderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(item);
-
-    // Assert
-    assertTrue(
-        actualBuildOrderItemRequestDTOFromOrderItemResult
-            instanceof NonDiscreteOrderItemRequestDTO);
-    assertNull(
-        ((NonDiscreteOrderItemRequestDTO) actualBuildOrderItemRequestDTOFromOrderItemResult)
-            .getItemName());
-    Money overrideRetailPrice =
-        actualBuildOrderItemRequestDTOFromOrderItemResult.getOverrideRetailPrice();
-    Money actualAbsResult = overrideRetailPrice.abs();
-    assertEquals(overrideRetailPrice, actualAbsResult);
-    Money actualZeroResult = overrideRetailPrice.zero();
-    assertEquals(overrideRetailPrice, actualZeroResult);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}.
-   *
-   * <ul>
-   *   <li>Then return Quantity intValue is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#buildOrderItemRequestDTOFromOrderItem(OrderItem)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItemRequestDTO OrderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(OrderItem)"
-  })
-  public void testBuildOrderItemRequestDTOFromOrderItem_thenReturnQuantityIntValueIsZero() {
-    // Arrange and Act
-    OrderItemRequestDTO actualBuildOrderItemRequestDTOFromOrderItemResult =
-        orderItemServiceImpl.buildOrderItemRequestDTOFromOrderItem(new DiscreteOrderItemImpl());
-
-    // Assert
-    assertEquals(0, actualBuildOrderItemRequestDTOFromOrderItemResult.getQuantity().intValue());
-    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getChildOrderItems().isEmpty());
-    assertTrue(
-        actualBuildOrderItemRequestDTOFromOrderItemResult.getAdditionalAttributes().isEmpty());
+    assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getAdditionalAttributes().isEmpty());
     assertTrue(actualBuildOrderItemRequestDTOFromOrderItemResult.getItemAttributes().isEmpty());
   }
 
   /**
    * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
-   *
    * <ul>
-   *   <li>Then ParentOrderItem return {@link BundleOrderItemImpl}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link DiscreteOrderItemFeePriceImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order,
-   * OrderItemRequestDTO)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"
-  })
-  public void testBuildOrderItemFromDTO_thenParentOrderItemReturnBundleOrderItemImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"})
+  public void testBuildOrderItemFromDTO_givenArrayListAddDiscreteOrderItemFeePriceImpl() {
     // Arrange
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getName()).thenReturn("Name");
-    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
-    when(catalogService.findCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
-    when(orderItemDao.readOrderItemById(Mockito.<Long>any())).thenReturn(bundleOrderItemImpl);
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
-    NullOrderImpl order = new NullOrderImpl();
 
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-    orderItemRequestDTO.setSkuId(1L);
-    orderItemRequestDTO.setProductId(1L);
-    orderItemRequestDTO.setCategoryId(1L);
-    orderItemRequestDTO.setParentOrderItemId(1L);
-
-    // Act
-    OrderItem actualBuildOrderItemFromDTOResult =
-        orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(productBundleImpl).getSkuBundleItems();
-    verify(productBundleImpl).getName();
-    verify(catalogService).findCategoryById(1L);
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemDao).readOrderItemById(1L);
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    OrderItem parentOrderItem = actualBuildOrderItemFromDTOResult.getParentOrderItem();
-    assertTrue(parentOrderItem instanceof BundleOrderItemImpl);
-    assertTrue(actualBuildOrderItemFromDTOResult instanceof BundleOrderItemImpl);
-    assertTrue(actualBuildOrderItemFromDTOResult.isChildOrderItem());
-    assertSame(bundleOrderItemImpl, parentOrderItem);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
-   *
-   * <ul>
-   *   <li>Then Product return {@link ProductImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order,
-   * OrderItemRequestDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"
-  })
-  public void testBuildOrderItemFromDTO_thenProductReturnProductImpl() {
-    // Arrange
-    when(catalogService.findCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
-    ProductImpl productImpl = new ProductImpl();
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productImpl);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new DiscreteOrderItemImpl());
-    NullOrderImpl order = new NullOrderImpl();
-
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-    orderItemRequestDTO.setSkuId(1L);
-    orderItemRequestDTO.setProductId(1L);
-    orderItemRequestDTO.setCategoryId(1L);
-    orderItemRequestDTO.setParentOrderItemId(null);
-
-    // Act
-    OrderItem actualBuildOrderItemFromDTOResult =
-        orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(catalogService).findCategoryById(1L);
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Product product = ((DiscreteOrderItemImpl) actualBuildOrderItemFromDTOResult).getProduct();
-    assertTrue(product instanceof ProductImpl);
-    assertTrue(actualBuildOrderItemFromDTOResult instanceof DiscreteOrderItemImpl);
-    assertSame(productImpl, product);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
-   *
-   * <ul>
-   *   <li>Then return Category is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order,
-   * OrderItemRequestDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"
-  })
-  public void testBuildOrderItemFromDTO_thenReturnCategoryIsNull() {
-    // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
-    ProductImpl productImpl = new ProductImpl();
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productImpl);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new DiscreteOrderItemImpl());
-    NullOrderImpl order = new NullOrderImpl();
-
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-    orderItemRequestDTO.setSkuId(1L);
-    orderItemRequestDTO.setProductId(1L);
-    orderItemRequestDTO.setCategoryId(null);
-    orderItemRequestDTO.setParentOrderItemId(null);
-
-    // Act
-    OrderItem actualBuildOrderItemFromDTOResult =
-        orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Product product = ((DiscreteOrderItemImpl) actualBuildOrderItemFromDTOResult).getProduct();
-    assertTrue(product instanceof ProductImpl);
-    assertTrue(actualBuildOrderItemFromDTOResult instanceof DiscreteOrderItemImpl);
-    assertNull(actualBuildOrderItemFromDTOResult.getCategory());
-    assertSame(productImpl, product);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
-   *
-   * <ul>
-   *   <li>Then return {@link DiscreteOrderItemImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order,
-   * OrderItemRequestDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"
-  })
-  public void testBuildOrderItemFromDTO_thenReturnDiscreteOrderItemImpl() {
-    // Arrange
-    when(catalogService.findCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    DiscreteOrderItemImpl discreteOrderItemImpl = new DiscreteOrderItemImpl();
+    ArrayList<DiscreteOrderItemFeePrice> discreteOrderItemFeePriceList = new ArrayList<>();
+    discreteOrderItemFeePriceList.add(new DiscreteOrderItemFeePriceImpl());
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(discreteOrderItemFeePriceList);
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
     when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
     NullOrderImpl order = new NullOrderImpl();
 
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-    orderItemRequestDTO.setSkuId(1L);
-    orderItemRequestDTO.setProductId(null);
-    orderItemRequestDTO.setCategoryId(1L);
-    orderItemRequestDTO.setParentOrderItemId(null);
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+    orderItemRequestDTO.setQuantity(1);
 
     // Act
-    OrderItem actualBuildOrderItemFromDTOResult =
-        orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
+    orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
 
     // Assert
     verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(catalogService).findCategoryById(1L);
-    verify(catalogService).findSkuById(1L);
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertSame(discreteOrderItemImpl, actualBuildOrderItemFromDTOResult);
+    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
+    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setSku(isNull());
+    verify(discreteOrderItemImpl).setCategory(isNull());
+    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
-   *
    * <ul>
-   *   <li>Then return RetailPrice is {@code null}.
+   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order,
-   * OrderItemRequestDTO)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"
-  })
-  public void testBuildOrderItemFromDTO_thenReturnRetailPriceIsNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"})
+  public void testBuildOrderItemFromDTO_givenCatalogServiceFindProductByIdReturnNull() {
     // Arrange
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getName()).thenReturn("Name");
-    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
-    when(productBundleImpl.getDefaultCategory()).thenReturn(new CategoryImpl());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
-    NullOrderImpl order = new NullOrderImpl();
-
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-    orderItemRequestDTO.setSkuId(null);
-    orderItemRequestDTO.setProductId(1L);
-    orderItemRequestDTO.setCategoryId(null);
-    orderItemRequestDTO.setParentOrderItemId(null);
-
-    // Act
-    OrderItem actualBuildOrderItemFromDTOResult =
-        orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(productBundleImpl).getSkuBundleItems();
-    verify(productBundleImpl).getDefaultCategory();
-    verify(productBundleImpl).getName();
-    verify(catalogService).findProductById(1L);
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    assertTrue(actualBuildOrderItemFromDTOResult instanceof BundleOrderItemImpl);
-    assertNull(actualBuildOrderItemFromDTOResult.getRetailPrice());
-    assertNull(actualBuildOrderItemFromDTOResult.getSalePrice());
-    assertNull(((BundleOrderItemImpl) actualBuildOrderItemFromDTOResult).getSku());
-    assertTrue(actualBuildOrderItemFromDTOResult.isSkuActive());
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
-   *
-   * <ul>
-   *   <li>Then Sku return {@link SkuImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order,
-   * OrderItemRequestDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"
-  })
-  public void testBuildOrderItemFromDTO_thenSkuReturnSkuImpl() {
-    // Arrange
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getName()).thenReturn("Name");
-    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
-    when(productBundleImpl.getDefaultCategory()).thenReturn(new CategoryImpl());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
-    SkuImpl skuImpl = new SkuImpl();
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
-    NullOrderImpl order = new NullOrderImpl();
-
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-    orderItemRequestDTO.setSkuId(1L);
-    orderItemRequestDTO.setProductId(1L);
-    orderItemRequestDTO.setCategoryId(null);
-    orderItemRequestDTO.setParentOrderItemId(null);
-
-    // Act
-    OrderItem actualBuildOrderItemFromDTOResult =
-        orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
-
-    // Assert
-    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(productBundleImpl).getSkuBundleItems();
-    verify(productBundleImpl).getDefaultCategory();
-    verify(productBundleImpl).getName();
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Sku sku = ((BundleOrderItemImpl) actualBuildOrderItemFromDTOResult).getSku();
-    assertTrue(sku instanceof SkuImpl);
-    assertTrue(actualBuildOrderItemFromDTOResult instanceof BundleOrderItemImpl);
-    assertFalse(actualBuildOrderItemFromDTOResult.isSkuActive());
-    assertSame(skuImpl, sku);
-  }
-
-  /**
-   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
-   *
-   * <ul>
-   *   <li>Then Sku return {@link SkuImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order,
-   * OrderItemRequestDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"
-  })
-  public void testBuildOrderItemFromDTO_thenSkuReturnSkuImpl2() {
-    // Arrange
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getName()).thenReturn("Name");
-    when(productBundleImpl.getSkuBundleItems()).thenReturn(new ArrayList<>());
     when(catalogService.findCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
-    SkuImpl skuImpl = new SkuImpl();
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
-
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(null);
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
-    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(new BundleOrderItemImpl());
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    doNothing().when(discreteOrderItemImpl).setHasValidationError(Mockito.<Boolean>any());
+    doNothing().when(discreteOrderItemImpl).setParentOrderItem(Mockito.<OrderItem>any());
+    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    when(orderItemDao.readOrderItemById(Mockito.<Long>any())).thenReturn(new BundleOrderItemImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
     NullOrderImpl order = new NullOrderImpl();
 
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-    orderItemRequestDTO.setSkuId(1L);
-    orderItemRequestDTO.setProductId(1L);
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
     orderItemRequestDTO.setCategoryId(1L);
-    orderItemRequestDTO.setParentOrderItemId(null);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Pricing Model Type");
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSkuId(1L);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setQuantity(1);
 
     // Act
-    OrderItem actualBuildOrderItemFromDTOResult =
-        orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
+    orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
 
     // Assert
     verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
-    verify(productBundleImpl).getSkuBundleItems();
-    verify(productBundleImpl).getName();
-    verify(catalogService).findCategoryById(1L);
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
+    verify(catalogService).findCategoryById(eq(1L));
+    verify(catalogService).findProductById(eq(1L));
+    verify(catalogService).findSkuById(eq(1L));
     verify(orderItemDao).create(isA(OrderItemType.class));
-    verify(orderItemServiceExtensionHandler, atLeast(1))
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
-    Sku sku = ((BundleOrderItemImpl) actualBuildOrderItemFromDTOResult).getSku();
-    assertTrue(sku instanceof SkuImpl);
-    assertTrue(actualBuildOrderItemFromDTOResult instanceof BundleOrderItemImpl);
-    assertFalse(actualBuildOrderItemFromDTOResult.isSkuActive());
-    assertSame(skuImpl, sku);
+    verify(orderItemDao).readOrderItemById(eq(1L));
+    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
+    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setHasValidationError(eq(true));
+    verify(discreteOrderItemImpl).setParentOrderItem(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
+   * <ul>
+   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@link ProductImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"})
+  public void testBuildOrderItemFromDTO_givenCatalogServiceFindProductByIdReturnProductImpl() {
+    // Arrange
+    when(catalogService.findCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductImpl());
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    doNothing().when(discreteOrderItemImpl).setHasValidationError(Mockito.<Boolean>any());
+    doNothing().when(discreteOrderItemImpl).setParentOrderItem(Mockito.<OrderItem>any());
+    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    when(orderItemDao.readOrderItemById(Mockito.<Long>any())).thenReturn(new BundleOrderItemImpl());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
+    NullOrderImpl order = new NullOrderImpl();
+
+    ConfigurableOrderItemRequest orderItemRequestDTO = new ConfigurableOrderItemRequest();
+    orderItemRequestDTO.setAdditionalAttributes(new HashMap<>());
+    orderItemRequestDTO.setCategoryId(1L);
+    orderItemRequestDTO.setChildOrderItems(new ArrayList<>());
+    orderItemRequestDTO.setDiscountsAllowed(true);
+    orderItemRequestDTO.setDisplayPrice(new Money());
+    orderItemRequestDTO.setExpandable(true);
+    orderItemRequestDTO.setFirstExpandable(true);
+    orderItemRequestDTO.setHasConfigurationError(true);
+    orderItemRequestDTO.setHasOverridenPrice(true);
+    orderItemRequestDTO.setIsMultiSelect(true);
+    orderItemRequestDTO.setItemAttributes(new HashMap<>());
+    orderItemRequestDTO.setLastExpandable(true);
+    orderItemRequestDTO.setMaxQuantity(3);
+    orderItemRequestDTO.setMinQuantity(1);
+    orderItemRequestDTO.setOrderItemId(1L);
+    orderItemRequestDTO.setOrderItemIndex(1);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setParentOrderItemId(1L);
+    orderItemRequestDTO.setPricingModelType("Pricing Model Type");
+    orderItemRequestDTO.setProductChoices(new ArrayList<>());
+    orderItemRequestDTO.setProductId(1L);
+    orderItemRequestDTO.setQuantity(1);
+    orderItemRequestDTO.setSkuId(1L);
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setQuantity(1);
+
+    // Act
+    orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
+
+    // Assert
+    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
+    verify(catalogService).findCategoryById(eq(1L));
+    verify(catalogService).findProductById(eq(1L));
+    verify(catalogService).findSkuById(eq(1L));
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(orderItemDao).readOrderItemById(eq(1L));
+    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
+    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isA(Product.class));
+    verify(discreteOrderItemImpl).setSku(isA(Sku.class));
+    verify(discreteOrderItemImpl).setCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setHasValidationError(eq(true));
+    verify(discreteOrderItemImpl).setParentOrderItem(isA(OrderItem.class));
+    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
+   * <ul>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} OverrideRetailPrice is {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"})
+  public void testBuildOrderItemFromDTO_whenOrderItemRequestDTOOverrideRetailPriceIsMoney() {
+    // Arrange
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    doNothing().when(discreteOrderItemImpl).setBaseRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setRetailPriceOverride(anyBoolean());
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
+    NullOrderImpl order = new NullOrderImpl();
+
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+    orderItemRequestDTO.setOverrideRetailPrice(new Money());
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setQuantity(1);
+
+    // Act
+    orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
+
+    // Assert
+    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
+    verify(discreteOrderItemImpl).setBaseRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setSku(isNull());
+    verify(discreteOrderItemImpl).setCategory(isNull());
+    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl).setRetailPrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setRetailPriceOverride(eq(true));
+    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
+   * <ul>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} OverrideSalePrice is {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"})
+  public void testBuildOrderItemFromDTO_whenOrderItemRequestDTOOverrideSalePriceIsMoney() {
+    // Arrange
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    doNothing().when(discreteOrderItemImpl).setBaseSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePrice(Mockito.<Money>any());
+    doNothing().when(discreteOrderItemImpl).setSalePriceOverride(anyBoolean());
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
+    NullOrderImpl order = new NullOrderImpl();
+
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+    orderItemRequestDTO.setOverrideSalePrice(new Money());
+    orderItemRequestDTO.setQuantity(1);
+
+    // Act
+    orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
+
+    // Assert
+    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
+    verify(discreteOrderItemImpl, atLeast(1)).setBaseSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setSku(isNull());
+    verify(discreteOrderItemImpl).setCategory(isNull());
+    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(discreteOrderItemImpl).setSalePrice(isA(Money.class));
+    verify(discreteOrderItemImpl).setSalePriceOverride(eq(true));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
+  }
+
+  /**
+   * Test {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}.
+   * <ul>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()} Quantity is one.</li>
+   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#buildOrderItemFromDTO(Order, OrderItemRequestDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItem OrderItemServiceImpl.buildOrderItemFromDTO(Order, OrderItemRequestDTO)"})
+  public void testBuildOrderItemFromDTO_whenOrderItemRequestDTOQuantityIsOne_thenCallsGetProxy() {
+    // Arrange
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
+    DiscreteOrderItemImpl discreteOrderItemImpl = mock(DiscreteOrderItemImpl.class);
+    when(discreteOrderItemImpl.getDiscreteOrderItemFeePrices()).thenReturn(new ArrayList<>());
+    doNothing().when(discreteOrderItemImpl).setBundleOrderItem(Mockito.<BundleOrderItem>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setDiscreteOrderItemFeePrices(Mockito.<List<DiscreteOrderItemFeePrice>>any());
+    doNothing().when(discreteOrderItemImpl).setOrder(Mockito.<Order>any());
+    doNothing().when(discreteOrderItemImpl).setProduct(Mockito.<Product>any());
+    doNothing().when(discreteOrderItemImpl).setSku(Mockito.<Sku>any());
+    doNothing().when(discreteOrderItemImpl)
+        .setCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(discreteOrderItemImpl).setPersonalMessage(Mockito.<PersonalMessage>any());
+    doNothing().when(discreteOrderItemImpl).setQuantity(anyInt());
+    when(orderItemDao.create(Mockito.<OrderItemType>any())).thenReturn(discreteOrderItemImpl);
+    NullOrderImpl order = new NullOrderImpl();
+
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+    orderItemRequestDTO.setQuantity(1);
+
+    // Act
+    orderItemServiceImpl.buildOrderItemFromDTO(order, orderItemRequestDTO);
+
+    // Assert
+    verify(orderItemServiceExtensionManager, atLeast(1)).getProxy();
+    verify(orderItemDao).create(isA(OrderItemType.class));
+    verify(discreteOrderItemImpl).getDiscreteOrderItemFeePrices();
+    verify(discreteOrderItemImpl).setBundleOrderItem(isNull());
+    verify(discreteOrderItemImpl).setDiscreteOrderItemFeePrices(isA(List.class));
+    verify(discreteOrderItemImpl).setOrder(isA(Order.class));
+    verify(discreteOrderItemImpl).setProduct(isNull());
+    verify(discreteOrderItemImpl).setSku(isNull());
+    verify(discreteOrderItemImpl).setCategory(isNull());
+    verify(discreteOrderItemImpl).setPersonalMessage(isNull());
+    verify(discreteOrderItemImpl).setQuantity(eq(1));
+    verify(orderItemServiceExtensionHandler, atLeast(1)).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#priceOrderItem(OrderItem)}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#priceOrderItem(OrderItem)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#priceOrderItem(OrderItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderItemServiceImpl.priceOrderItem(OrderItem)"})
   public void testPriceOrderItem() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
     when(orderItemServiceExtensionHandler.modifyOrderItemPrices(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
@@ -4519,17 +3557,16 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#findAllProductsInRequest(ConfigurableOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#findAllProductsInRequest(ConfigurableOrderItemRequest)}
+   * <ul>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#findAllProductsInRequest(ConfigurableOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.util.Set OrderItemServiceImpl.findAllProductsInRequest(ConfigurableOrderItemRequest)"
-  })
-  public void testFindAllProductsInRequest() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.Set OrderItemServiceImpl.findAllProductsInRequest(ConfigurableOrderItemRequest)"})
+  public void testFindAllProductsInRequest_thenReturnSizeIsOne() {
     // Arrange
     ConfigurableOrderItemRequest itemRequest = new ConfigurableOrderItemRequest();
     itemRequest.setAdditionalAttributes(new HashMap<>());
@@ -4552,11 +3589,9 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setOverrideSalePrice(new Money());
     itemRequest.setParentOrderItemId(1L);
     itemRequest.setPricingModelType("Pricing Model Type");
-    itemRequest.setProduct(new ProductBundleImpl());
     itemRequest.setProductChoices(new ArrayList<>());
     itemRequest.setProductId(1L);
     itemRequest.setQuantity(1);
-    itemRequest.setSku(new SkuImpl());
     itemRequest.setSkuId(1L);
 
     // Act and Assert
@@ -4565,17 +3600,16 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#findAllProductsInRequest(ConfigurableOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#findAllProductsInRequest(ConfigurableOrderItemRequest)}
+   * <ul>
+   *   <li>Then return size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#findAllProductsInRequest(ConfigurableOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.util.Set OrderItemServiceImpl.findAllProductsInRequest(ConfigurableOrderItemRequest)"
-  })
-  public void testFindAllProductsInRequest2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.Set OrderItemServiceImpl.findAllProductsInRequest(ConfigurableOrderItemRequest)"})
+  public void testFindAllProductsInRequest_thenReturnSizeIsTwo() {
     // Arrange
     ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
     configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
@@ -4601,7 +3635,6 @@ public class OrderItemServiceImplDiffblueTest {
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
     configurableOrderItemRequest.setQuantity(1);
-    configurableOrderItemRequest.setSku(new SkuImpl());
     configurableOrderItemRequest.setSkuId(1L);
     configurableOrderItemRequest.setProduct(new ProductBundleImpl());
 
@@ -4628,30 +3661,26 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setOverrideSalePrice(new Money());
     itemRequest.setParentOrderItemId(1L);
     itemRequest.setPricingModelType("Pricing Model Type");
-    itemRequest.setProduct(new ProductBundleImpl());
     itemRequest.setProductChoices(new ArrayList<>());
     itemRequest.setProductId(1L);
     itemRequest.setQuantity(1);
-    itemRequest.setSku(new SkuImpl());
     itemRequest.setSkuId(1L);
     itemRequest.setChildOrderItems(childOrderItems);
 
     // Act and Assert
-    assertEquals(1, orderItemServiceImpl.findAllProductsInRequest(itemRequest).size());
+    assertEquals(2, orderItemServiceImpl.findAllProductsInRequest(itemRequest).size());
   }
 
   /**
    * Test {@link OrderItemServiceImpl#findAllChildProductsInRequest(List)}.
-   *
    * <ul>
-   *   <li>Then return size is one.
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#findAllChildProductsInRequest(List)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#findAllChildProductsInRequest(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Set OrderItemServiceImpl.findAllChildProductsInRequest(List)"})
   public void testFindAllChildProductsInRequest_thenReturnSizeIsOne() {
     // Arrange
@@ -4679,7 +3708,6 @@ public class OrderItemServiceImplDiffblueTest {
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
     configurableOrderItemRequest.setQuantity(1);
-    configurableOrderItemRequest.setSku(new SkuImpl());
     configurableOrderItemRequest.setSkuId(1L);
     configurableOrderItemRequest.setProduct(new ProductBundleImpl());
 
@@ -4692,17 +3720,15 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#findAllChildProductsInRequest(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#findAllChildProductsInRequest(List)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#findAllChildProductsInRequest(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Set OrderItemServiceImpl.findAllChildProductsInRequest(List)"})
   public void testFindAllChildProductsInRequest_whenArrayList_thenReturnEmpty() {
     // Arrange, Act and Assert
@@ -4711,20 +3737,16 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#applyAdditionalOrderItemProperties(OrderItem)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#applyAdditionalOrderItemProperties(OrderItem)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#applyAdditionalOrderItemProperties(OrderItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderItemServiceImpl.applyAdditionalOrderItemProperties(OrderItem)"})
   public void testApplyAdditionalOrderItemProperties() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(
-            Mockito.<OrderItem>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.applyAdditionalOrderItemProperties(Mockito.<OrderItem>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
 
@@ -4733,26 +3755,21 @@ public class OrderItemServiceImplDiffblueTest {
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemServiceExtensionHandler)
-        .applyAdditionalOrderItemProperties(isA(OrderItem.class));
+    verify(orderItemServiceExtensionHandler).applyAdditionalOrderItemProperties(isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#createConfigurableOrderItemRequestFromProduct(Product)}.
-   *
    * <ul>
-   *   <li>Then return MaxQuantity is {@code null}.
+   *   <li>Then return MaxQuantity is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#createConfigurableOrderItemRequestFromProduct(Product)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#createConfigurableOrderItemRequestFromProduct(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ConfigurableOrderItemRequest OrderItemServiceImpl.createConfigurableOrderItemRequestFromProduct(Product)"
-  })
+      "ConfigurableOrderItemRequest OrderItemServiceImpl.createConfigurableOrderItemRequestFromProduct(Product)"})
   public void testCreateConfigurableOrderItemRequestFromProduct_thenReturnMaxQuantityIsNull() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
@@ -4760,8 +3777,8 @@ public class OrderItemServiceImplDiffblueTest {
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
     // Act
-    ConfigurableOrderItemRequest actualCreateConfigurableOrderItemRequestFromProductResult =
-        orderItemServiceImpl.createConfigurableOrderItemRequestFromProduct(product);
+    ConfigurableOrderItemRequest actualCreateConfigurableOrderItemRequestFromProductResult = orderItemServiceImpl
+        .createConfigurableOrderItemRequestFromProduct(product);
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -4778,49 +3795,34 @@ public class OrderItemServiceImplDiffblueTest {
     assertNull(actualCreateConfigurableOrderItemRequestFromProductResult.getOverrideRetailPrice());
     assertNull(actualCreateConfigurableOrderItemRequestFromProductResult.getOverrideSalePrice());
     assertNull(actualCreateConfigurableOrderItemRequestFromProductResult.getSku());
-    assertEquals(
-        0, actualCreateConfigurableOrderItemRequestFromProductResult.getMinQuantity().intValue());
-    assertEquals(
-        1, actualCreateConfigurableOrderItemRequestFromProductResult.getQuantity().intValue());
-    assertEquals(
-        1L, actualCreateConfigurableOrderItemRequestFromProductResult.getProductId().longValue());
+    assertEquals(0, actualCreateConfigurableOrderItemRequestFromProductResult.getMinQuantity().intValue());
+    assertEquals(1, actualCreateConfigurableOrderItemRequestFromProductResult.getQuantity().intValue());
+    assertEquals(1L, actualCreateConfigurableOrderItemRequestFromProductResult.getProductId().longValue());
     assertFalse(actualCreateConfigurableOrderItemRequestFromProductResult.getDiscountsAllowed());
-    assertFalse(
-        actualCreateConfigurableOrderItemRequestFromProductResult.getHasConfigurationError());
+    assertFalse(actualCreateConfigurableOrderItemRequestFromProductResult.getHasConfigurationError());
     assertFalse(actualCreateConfigurableOrderItemRequestFromProductResult.getHasOverridenPrice());
     assertFalse(actualCreateConfigurableOrderItemRequestFromProductResult.getIsMultiSelect());
     assertFalse(actualCreateConfigurableOrderItemRequestFromProductResult.isExpandable());
     assertFalse(actualCreateConfigurableOrderItemRequestFromProductResult.isFirstExpandable());
     assertFalse(actualCreateConfigurableOrderItemRequestFromProductResult.isLastExpandable());
-    assertTrue(
-        actualCreateConfigurableOrderItemRequestFromProductResult.getChildOrderItems().isEmpty());
-    assertTrue(
-        actualCreateConfigurableOrderItemRequestFromProductResult
-            .getAdditionalAttributes()
-            .isEmpty());
-    assertTrue(
-        actualCreateConfigurableOrderItemRequestFromProductResult.getItemAttributes().isEmpty());
+    assertTrue(actualCreateConfigurableOrderItemRequestFromProductResult.getChildOrderItems().isEmpty());
+    assertTrue(actualCreateConfigurableOrderItemRequestFromProductResult.getAdditionalAttributes().isEmpty());
+    assertTrue(actualCreateConfigurableOrderItemRequestFromProductResult.getItemAttributes().isEmpty());
     assertSame(product, actualCreateConfigurableOrderItemRequestFromProductResult.getProduct());
   }
 
   /**
    * Test {@link OrderItemServiceImpl#modifyOrderItemRequest(ConfigurableOrderItemRequest)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#modifyOrderItemRequest(ConfigurableOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#modifyOrderItemRequest(ConfigurableOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemServiceImpl.modifyOrderItemRequest(ConfigurableOrderItemRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemServiceImpl.modifyOrderItemRequest(ConfigurableOrderItemRequest)"})
   public void testModifyOrderItemRequest() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.modifyOrderItemRequest(
-            Mockito.<ConfigurableOrderItemRequest>any()))
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.modifyOrderItemRequest(Mockito.<ConfigurableOrderItemRequest>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
 
@@ -4845,11 +3847,9 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setOverrideSalePrice(new Money());
     itemRequest.setParentOrderItemId(1L);
     itemRequest.setPricingModelType("Pricing Model Type");
-    itemRequest.setProduct(new ProductBundleImpl());
     itemRequest.setProductChoices(new ArrayList<>());
     itemRequest.setProductId(1L);
     itemRequest.setQuantity(1);
-    itemRequest.setSku(new SkuImpl());
     itemRequest.setSkuId(1L);
 
     // Act
@@ -4857,30 +3857,22 @@ public class OrderItemServiceImplDiffblueTest {
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemServiceExtensionHandler)
-        .modifyOrderItemRequest(isA(ConfigurableOrderItemRequest.class));
+    verify(orderItemServiceExtensionHandler).modifyOrderItemRequest(isA(ConfigurableOrderItemRequest.class));
   }
 
   /**
-   * Test {@link OrderItemServiceImpl#mergeOrderItemRequest(ConfigurableOrderItemRequest,
-   * OrderItem)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemServiceImpl#mergeOrderItemRequest(ConfigurableOrderItemRequest, OrderItem)}
+   * Test {@link OrderItemServiceImpl#mergeOrderItemRequest(ConfigurableOrderItemRequest, OrderItem)}.
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#mergeOrderItemRequest(ConfigurableOrderItemRequest, OrderItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemServiceImpl.mergeOrderItemRequest(ConfigurableOrderItemRequest, OrderItem)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemServiceImpl.mergeOrderItemRequest(ConfigurableOrderItemRequest, OrderItem)"})
   public void testMergeOrderItemRequest() {
     // Arrange
-    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler =
-        mock(OrderItemServiceExtensionHandler.class);
-    when(orderItemServiceExtensionHandler.mergeOrderItemRequest(
-            Mockito.<ConfigurableOrderItemRequest>any(), Mockito.<OrderItem>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    OrderItemServiceExtensionHandler orderItemServiceExtensionHandler = mock(OrderItemServiceExtensionHandler.class);
+    when(orderItemServiceExtensionHandler.mergeOrderItemRequest(Mockito.<ConfigurableOrderItemRequest>any(),
+        Mockito.<OrderItem>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(orderItemServiceExtensionManager.getProxy()).thenReturn(orderItemServiceExtensionHandler);
 
     ConfigurableOrderItemRequest itemRequest = new ConfigurableOrderItemRequest();
@@ -4904,11 +3896,9 @@ public class OrderItemServiceImplDiffblueTest {
     itemRequest.setOverrideSalePrice(new Money());
     itemRequest.setParentOrderItemId(1L);
     itemRequest.setPricingModelType("Pricing Model Type");
-    itemRequest.setProduct(new ProductBundleImpl());
     itemRequest.setProductChoices(new ArrayList<>());
     itemRequest.setProductId(1L);
     itemRequest.setQuantity(1);
-    itemRequest.setSku(new SkuImpl());
     itemRequest.setSkuId(1L);
 
     // Act
@@ -4916,144 +3906,112 @@ public class OrderItemServiceImplDiffblueTest {
 
     // Assert
     verify(orderItemServiceExtensionManager).getProxy();
-    verify(orderItemServiceExtensionHandler)
-        .mergeOrderItemRequest(isA(ConfigurableOrderItemRequest.class), isA(OrderItem.class));
+    verify(orderItemServiceExtensionHandler).mergeOrderItemRequest(isA(ConfigurableOrderItemRequest.class),
+        isA(OrderItem.class));
   }
 
   /**
    * Test {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List, Date, Date)}.
-   *
    * <ul>
-   *   <li>Given one.
-   *   <li>When {@link ArrayList#ArrayList()} add one.
+   *   <li>Given one.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List,
-   * Date, Date)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List, Date, Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List OrderItemServiceImpl.findOrderItemsForCustomersInDateRange(List, Date, Date)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OrderItemServiceImpl.findOrderItemsForCustomersInDateRange(List, Date, Date)"})
   public void testFindOrderItemsForCustomersInDateRange_givenOne_whenArrayListAddOne() {
     // Arrange
-    when(orderItemDao.readOrderItemsForCustomersInDateRange(
-            Mockito.<List<Long>>any(), Mockito.<Date>any(), Mockito.<Date>any()))
-        .thenReturn(new ArrayList<>());
+    when(orderItemDao.readOrderItemsForCustomersInDateRange(Mockito.<List<Long>>any(), Mockito.<Date>any(),
+        Mockito.<Date>any())).thenReturn(new ArrayList<>());
 
     ArrayList<Long> customerIds = new ArrayList<>();
     customerIds.add(1L);
-    Date startDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date startDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
-    List<OrderItem> actualFindOrderItemsForCustomersInDateRangeResult =
-        orderItemServiceImpl.findOrderItemsForCustomersInDateRange(
-            customerIds,
-            startDate,
+    List<OrderItem> actualFindOrderItemsForCustomersInDateRangeResult = orderItemServiceImpl
+        .findOrderItemsForCustomersInDateRange(customerIds, startDate,
             Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Assert
-    verify(orderItemDao)
-        .readOrderItemsForCustomersInDateRange(isA(List.class), isA(Date.class), isA(Date.class));
+    verify(orderItemDao).readOrderItemsForCustomersInDateRange(isA(List.class), isA(Date.class), isA(Date.class));
     assertTrue(actualFindOrderItemsForCustomersInDateRangeResult.isEmpty());
   }
 
   /**
    * Test {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List, Date, Date)}.
-   *
    * <ul>
-   *   <li>Given zero.
-   *   <li>When {@link ArrayList#ArrayList()} add zero.
+   *   <li>Given zero.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List,
-   * Date, Date)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List, Date, Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List OrderItemServiceImpl.findOrderItemsForCustomersInDateRange(List, Date, Date)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OrderItemServiceImpl.findOrderItemsForCustomersInDateRange(List, Date, Date)"})
   public void testFindOrderItemsForCustomersInDateRange_givenZero_whenArrayListAddZero() {
     // Arrange
-    when(orderItemDao.readOrderItemsForCustomersInDateRange(
-            Mockito.<List<Long>>any(), Mockito.<Date>any(), Mockito.<Date>any()))
-        .thenReturn(new ArrayList<>());
+    when(orderItemDao.readOrderItemsForCustomersInDateRange(Mockito.<List<Long>>any(), Mockito.<Date>any(),
+        Mockito.<Date>any())).thenReturn(new ArrayList<>());
 
     ArrayList<Long> customerIds = new ArrayList<>();
     customerIds.add(0L);
     customerIds.add(1L);
-    Date startDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date startDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
-    List<OrderItem> actualFindOrderItemsForCustomersInDateRangeResult =
-        orderItemServiceImpl.findOrderItemsForCustomersInDateRange(
-            customerIds,
-            startDate,
+    List<OrderItem> actualFindOrderItemsForCustomersInDateRangeResult = orderItemServiceImpl
+        .findOrderItemsForCustomersInDateRange(customerIds, startDate,
             Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Assert
-    verify(orderItemDao)
-        .readOrderItemsForCustomersInDateRange(isA(List.class), isA(Date.class), isA(Date.class));
+    verify(orderItemDao).readOrderItemsForCustomersInDateRange(isA(List.class), isA(Date.class), isA(Date.class));
     assertTrue(actualFindOrderItemsForCustomersInDateRangeResult.isEmpty());
   }
 
   /**
    * Test {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List, Date, Date)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List,
-   * Date, Date)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#findOrderItemsForCustomersInDateRange(List, Date, Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List OrderItemServiceImpl.findOrderItemsForCustomersInDateRange(List, Date, Date)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OrderItemServiceImpl.findOrderItemsForCustomersInDateRange(List, Date, Date)"})
   public void testFindOrderItemsForCustomersInDateRange_whenArrayList() {
     // Arrange
-    when(orderItemDao.readOrderItemsForCustomersInDateRange(
-            Mockito.<List<Long>>any(), Mockito.<Date>any(), Mockito.<Date>any()))
-        .thenReturn(new ArrayList<>());
+    when(orderItemDao.readOrderItemsForCustomersInDateRange(Mockito.<List<Long>>any(), Mockito.<Date>any(),
+        Mockito.<Date>any())).thenReturn(new ArrayList<>());
     ArrayList<Long> customerIds = new ArrayList<>();
-    Date startDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date startDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
-    List<OrderItem> actualFindOrderItemsForCustomersInDateRangeResult =
-        orderItemServiceImpl.findOrderItemsForCustomersInDateRange(
-            customerIds,
-            startDate,
+    List<OrderItem> actualFindOrderItemsForCustomersInDateRangeResult = orderItemServiceImpl
+        .findOrderItemsForCustomersInDateRange(customerIds, startDate,
             Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Assert
-    verify(orderItemDao)
-        .readOrderItemsForCustomersInDateRange(isA(List.class), isA(Date.class), isA(Date.class));
+    verify(orderItemDao).readOrderItemsForCustomersInDateRange(isA(List.class), isA(Date.class), isA(Date.class));
     assertTrue(actualFindOrderItemsForCustomersInDateRangeResult.isEmpty());
   }
 
   /**
    * Test {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}.
-   *
    * <ul>
-   *   <li>Given {@link OrderStatus#ARCHIVED}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link OrderStatus#ARCHIVED}.
+   *   <li>Given {@link OrderStatus#ARCHIVED}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link OrderStatus#ARCHIVED}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderItemServiceImpl.readBatchOrderItems(int, int, List)"})
   public void testReadBatchOrderItems_givenArchived_whenArrayListAddArchived() {
     // Arrange
@@ -5064,8 +4022,7 @@ public class OrderItemServiceImplDiffblueTest {
     orderStatusList.add(OrderStatus.ARCHIVED);
 
     // Act
-    List<OrderItem> actualReadBatchOrderItemsResult =
-        orderItemServiceImpl.readBatchOrderItems(1, 3, orderStatusList);
+    List<OrderItem> actualReadBatchOrderItemsResult = orderItemServiceImpl.readBatchOrderItems(1, 3, orderStatusList);
 
     // Assert
     verify(orderItemDao).readBatchOrderItems(eq(1), eq(3), isA(List.class));
@@ -5074,17 +4031,15 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}.
-   *
    * <ul>
-   *   <li>Given {@link OrderStatus#ARCHIVED}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link OrderStatus#ARCHIVED}.
+   *   <li>Given {@link OrderStatus#ARCHIVED}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link OrderStatus#ARCHIVED}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderItemServiceImpl.readBatchOrderItems(int, int, List)"})
   public void testReadBatchOrderItems_givenArchived_whenArrayListAddArchived2() {
     // Arrange
@@ -5096,8 +4051,7 @@ public class OrderItemServiceImplDiffblueTest {
     orderStatusList.add(OrderStatus.ARCHIVED);
 
     // Act
-    List<OrderItem> actualReadBatchOrderItemsResult =
-        orderItemServiceImpl.readBatchOrderItems(1, 3, orderStatusList);
+    List<OrderItem> actualReadBatchOrderItemsResult = orderItemServiceImpl.readBatchOrderItems(1, 3, orderStatusList);
 
     // Assert
     verify(orderItemDao).readBatchOrderItems(eq(1), eq(3), isA(List.class));
@@ -5106,16 +4060,14 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#readBatchOrderItems(int, int, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderItemServiceImpl.readBatchOrderItems(int, int, List)"})
   public void testReadBatchOrderItems_whenArrayList() {
     // Arrange
@@ -5123,8 +4075,7 @@ public class OrderItemServiceImplDiffblueTest {
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<OrderItem> actualReadBatchOrderItemsResult =
-        orderItemServiceImpl.readBatchOrderItems(1, 3, new ArrayList<>());
+    List<OrderItem> actualReadBatchOrderItemsResult = orderItemServiceImpl.readBatchOrderItems(1, 3, new ArrayList<>());
 
     // Assert
     verify(orderItemDao).readBatchOrderItems(eq(1), eq(3), isA(List.class));
@@ -5133,12 +4084,11 @@ public class OrderItemServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemServiceImpl#readNumberOfOrderItems()}.
-   *
-   * <p>Method under test: {@link OrderItemServiceImpl#readNumberOfOrderItems()}
+   * <p>
+   * Method under test: {@link OrderItemServiceImpl#readNumberOfOrderItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OrderItemServiceImpl.readNumberOfOrderItems()"})
   public void testReadNumberOfOrderItems() {
     // Arrange

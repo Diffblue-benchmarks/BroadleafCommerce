@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.vendor.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,27 +28,21 @@ import org.junit.experimental.categories.Category;
 public class FulfillmentPriceHostExceptionDiffblueTest {
   /**
    * Test {@link FulfillmentPriceHostException#FulfillmentPriceHostException(String)}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * FulfillmentPriceHostException#FulfillmentPriceHostException(String)}
+   * <p>
+   * Method under test: {@link FulfillmentPriceHostException#FulfillmentPriceHostException(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentPriceHostException.<init>()",
-    "void FulfillmentPriceHostException.<init>(String)",
-    "void FulfillmentPriceHostException.<init>(String, Throwable)",
-    "void FulfillmentPriceHostException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentPriceHostException.<init>()", "void FulfillmentPriceHostException.<init>(String)",
+      "void FulfillmentPriceHostException.<init>(String, Throwable)",
+      "void FulfillmentPriceHostException.<init>(Throwable)"})
   public void testNewFulfillmentPriceHostException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
-    FulfillmentPriceHostException actualFulfillmentPriceHostException =
-        new FulfillmentPriceHostException("An error occurred");
+    FulfillmentPriceHostException actualFulfillmentPriceHostException = new FulfillmentPriceHostException(
+        "An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualFulfillmentPriceHostException.getMessage());
@@ -60,30 +53,24 @@ public class FulfillmentPriceHostExceptionDiffblueTest {
 
   /**
    * Test {@link FulfillmentPriceHostException#FulfillmentPriceHostException(String, Throwable)}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * FulfillmentPriceHostException#FulfillmentPriceHostException(String, Throwable)}
+   * <p>
+   * Method under test: {@link FulfillmentPriceHostException#FulfillmentPriceHostException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentPriceHostException.<init>()",
-    "void FulfillmentPriceHostException.<init>(String)",
-    "void FulfillmentPriceHostException.<init>(String, Throwable)",
-    "void FulfillmentPriceHostException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentPriceHostException.<init>()", "void FulfillmentPriceHostException.<init>(String)",
+      "void FulfillmentPriceHostException.<init>(String, Throwable)",
+      "void FulfillmentPriceHostException.<init>(Throwable)"})
   public void testNewFulfillmentPriceHostException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    FulfillmentPriceHostException actualFulfillmentPriceHostException =
-        new FulfillmentPriceHostException("An error occurred", cause);
+    FulfillmentPriceHostException actualFulfillmentPriceHostException = new FulfillmentPriceHostException(
+        "An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualFulfillmentPriceHostException.getMessage());
@@ -94,30 +81,23 @@ public class FulfillmentPriceHostExceptionDiffblueTest {
 
   /**
    * Test {@link FulfillmentPriceHostException#FulfillmentPriceHostException(Throwable)}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code Throwable}.
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * FulfillmentPriceHostException#FulfillmentPriceHostException(Throwable)}
+   * <p>
+   * Method under test: {@link FulfillmentPriceHostException#FulfillmentPriceHostException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentPriceHostException.<init>()",
-    "void FulfillmentPriceHostException.<init>(String)",
-    "void FulfillmentPriceHostException.<init>(String, Throwable)",
-    "void FulfillmentPriceHostException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentPriceHostException.<init>()", "void FulfillmentPriceHostException.<init>(String)",
+      "void FulfillmentPriceHostException.<init>(String, Throwable)",
+      "void FulfillmentPriceHostException.<init>(Throwable)"})
   public void testNewFulfillmentPriceHostException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    FulfillmentPriceHostException actualFulfillmentPriceHostException =
-        new FulfillmentPriceHostException(cause);
+    FulfillmentPriceHostException actualFulfillmentPriceHostException = new FulfillmentPriceHostException(cause);
 
     // Assert
     assertEquals("java.lang.Throwable", actualFulfillmentPriceHostException.getMessage());
@@ -128,26 +108,20 @@ public class FulfillmentPriceHostExceptionDiffblueTest {
 
   /**
    * Test {@link FulfillmentPriceHostException#FulfillmentPriceHostException()}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code null}.
+   *   <li>Then return Message is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentPriceHostException#FulfillmentPriceHostException()}
+   * <p>
+   * Method under test: {@link FulfillmentPriceHostException#FulfillmentPriceHostException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentPriceHostException.<init>()",
-    "void FulfillmentPriceHostException.<init>(String)",
-    "void FulfillmentPriceHostException.<init>(String, Throwable)",
-    "void FulfillmentPriceHostException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentPriceHostException.<init>()", "void FulfillmentPriceHostException.<init>(String)",
+      "void FulfillmentPriceHostException.<init>(String, Throwable)",
+      "void FulfillmentPriceHostException.<init>(Throwable)"})
   public void testNewFulfillmentPriceHostException_thenReturnMessageIsNull() {
     // Arrange and Act
-    FulfillmentPriceHostException actualFulfillmentPriceHostException =
-        new FulfillmentPriceHostException();
+    FulfillmentPriceHostException actualFulfillmentPriceHostException = new FulfillmentPriceHostException();
 
     // Assert
     assertNull(actualFulfillmentPriceHostException.getMessage());

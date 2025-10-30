@@ -18,8 +18,7 @@
 package org.broadleafcommerce.openadmin.server.security.dao;
 
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,40 +28,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminNavigationDaoImplDiffblueTest {
-  @InjectMocks private AdminNavigationDaoImpl adminNavigationDaoImpl;
+  @InjectMocks
+  private AdminNavigationDaoImpl adminNavigationDaoImpl;
 
   /**
    * Test {@link AdminNavigationDaoImpl#getSectionKey(boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminNavigationDaoImpl#getSectionKey(boolean)}
+   * <p>
+   * Method under test: {@link AdminNavigationDaoImpl#getSectionKey(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.String AdminNavigationDaoImpl.getSectionKey(boolean)"})
-  public void testGetSectionKey_whenFalse() {
-    // Arrange, Act and Assert
-    assertNull(adminNavigationDaoImpl.getSectionKey(false));
-  }
-
-  /**
-   * Test {@link AdminNavigationDaoImpl#getSectionKey(boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminNavigationDaoImpl#getSectionKey(boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String AdminNavigationDaoImpl.getSectionKey(boolean)"})
-  public void testGetSectionKey_whenTrue() {
+  public void testGetSectionKey() {
     // Arrange, Act and Assert
     assertNull(adminNavigationDaoImpl.getSectionKey(true));
   }

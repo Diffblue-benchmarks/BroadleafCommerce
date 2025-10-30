@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,17 +48,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {NoOpCache.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NoOpCacheDiffblueTest {
-  @Autowired private NoOpCache noOpCache;
+  @Autowired
+  private NoOpCache noOpCache;
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>Then return CacheManager is {@link NoOpCacheManager} (default constructor).
+   *   <li>Then return CacheManager is {@link NoOpCacheManager} (default constructor).</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link NoOpCache#NoOpCache(NoOpCacheManager)}
    *   <li>{@link NoOpCache#clear()}
@@ -77,24 +75,13 @@ public class NoOpCacheDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NoOpCache.<init>()",
-    "void NoOpCache.<init>(NoOpCacheManager)",
-    "void NoOpCache.clear()",
-    "void NoOpCache.close()",
-    "void NoOpCache.deregisterCacheEntryListener(CacheEntryListenerConfiguration)",
-    "CacheManager NoOpCache.getCacheManager()",
-    "String NoOpCache.getName()",
-    "boolean NoOpCache.isClosed()",
-    "void NoOpCache.loadAll(Set, boolean, CompletionListener)",
-    "void NoOpCache.put(Object, Object)",
-    "void NoOpCache.putAll(Map)",
-    "void NoOpCache.registerCacheEntryListener(CacheEntryListenerConfiguration)",
-    "void NoOpCache.removeAll()",
-    "void NoOpCache.removeAll(Set)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NoOpCache.<init>()", "void NoOpCache.<init>(NoOpCacheManager)", "void NoOpCache.clear()",
+      "void NoOpCache.close()", "void NoOpCache.deregisterCacheEntryListener(CacheEntryListenerConfiguration)",
+      "CacheManager NoOpCache.getCacheManager()", "String NoOpCache.getName()", "boolean NoOpCache.isClosed()",
+      "void NoOpCache.loadAll(Set, boolean, CompletionListener)", "void NoOpCache.put(Object, Object)",
+      "void NoOpCache.putAll(Map)", "void NoOpCache.registerCacheEntryListener(CacheEntryListenerConfiguration)",
+      "void NoOpCache.removeAll()", "void NoOpCache.removeAll(Set)"})
   public void testGettersAndSetters_thenReturnCacheManagerIsNoOpCacheManager() {
     // Arrange
     NoOpCacheManager noOpCacheManager = new NoOpCacheManager();
@@ -103,18 +90,14 @@ public class NoOpCacheDiffblueTest {
     NoOpCache actualNoOpCache = new NoOpCache(noOpCacheManager);
     actualNoOpCache.clear();
     actualNoOpCache.close();
-    MutableCacheEntryListenerConfiguration cacheEntryListenerConfiguration =
-        new MutableCacheEntryListenerConfiguration(
-            mock(Factory.class), mock(Factory.class), true, true);
-    actualNoOpCache.deregisterCacheEntryListener(cacheEntryListenerConfiguration);
+    actualNoOpCache.deregisterCacheEntryListener(
+        new MutableCacheEntryListenerConfiguration(mock(Factory.class), mock(Factory.class), true, true));
     HashSet<Object> set = new HashSet<>();
     actualNoOpCache.loadAll(set, true, new CompletionListenerFuture());
     actualNoOpCache.put(BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD);
     actualNoOpCache.putAll(new HashMap<>());
-    MutableCacheEntryListenerConfiguration cacheEntryListenerConfiguration2 =
-        new MutableCacheEntryListenerConfiguration(
-            mock(Factory.class), mock(Factory.class), true, true);
-    actualNoOpCache.registerCacheEntryListener(cacheEntryListenerConfiguration2);
+    actualNoOpCache.registerCacheEntryListener(
+        new MutableCacheEntryListenerConfiguration(mock(Factory.class), mock(Factory.class), true, true));
     actualNoOpCache.removeAll();
     actualNoOpCache.removeAll(new HashSet<>());
     CacheManager actualCacheManager = actualNoOpCache.getCacheManager();
@@ -128,13 +111,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>Then return CacheManager is {@code null}.
+   *   <li>Then return CacheManager is {@code null}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link NoOpCache#NoOpCache()}
    *   <li>{@link NoOpCache#clear()}
@@ -152,41 +133,26 @@ public class NoOpCacheDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NoOpCache.<init>()",
-    "void NoOpCache.<init>(NoOpCacheManager)",
-    "void NoOpCache.clear()",
-    "void NoOpCache.close()",
-    "void NoOpCache.deregisterCacheEntryListener(CacheEntryListenerConfiguration)",
-    "CacheManager NoOpCache.getCacheManager()",
-    "String NoOpCache.getName()",
-    "boolean NoOpCache.isClosed()",
-    "void NoOpCache.loadAll(Set, boolean, CompletionListener)",
-    "void NoOpCache.put(Object, Object)",
-    "void NoOpCache.putAll(Map)",
-    "void NoOpCache.registerCacheEntryListener(CacheEntryListenerConfiguration)",
-    "void NoOpCache.removeAll()",
-    "void NoOpCache.removeAll(Set)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NoOpCache.<init>()", "void NoOpCache.<init>(NoOpCacheManager)", "void NoOpCache.clear()",
+      "void NoOpCache.close()", "void NoOpCache.deregisterCacheEntryListener(CacheEntryListenerConfiguration)",
+      "CacheManager NoOpCache.getCacheManager()", "String NoOpCache.getName()", "boolean NoOpCache.isClosed()",
+      "void NoOpCache.loadAll(Set, boolean, CompletionListener)", "void NoOpCache.put(Object, Object)",
+      "void NoOpCache.putAll(Map)", "void NoOpCache.registerCacheEntryListener(CacheEntryListenerConfiguration)",
+      "void NoOpCache.removeAll()", "void NoOpCache.removeAll(Set)"})
   public void testGettersAndSetters_thenReturnCacheManagerIsNull() {
     // Arrange and Act
     NoOpCache actualNoOpCache = new NoOpCache();
     actualNoOpCache.clear();
     actualNoOpCache.close();
-    MutableCacheEntryListenerConfiguration cacheEntryListenerConfiguration =
-        new MutableCacheEntryListenerConfiguration(
-            mock(Factory.class), mock(Factory.class), true, true);
-    actualNoOpCache.deregisterCacheEntryListener(cacheEntryListenerConfiguration);
+    actualNoOpCache.deregisterCacheEntryListener(
+        new MutableCacheEntryListenerConfiguration(mock(Factory.class), mock(Factory.class), true, true));
     HashSet<Object> set = new HashSet<>();
     actualNoOpCache.loadAll(set, true, new CompletionListenerFuture());
     actualNoOpCache.put(BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD);
     actualNoOpCache.putAll(new HashMap<>());
-    MutableCacheEntryListenerConfiguration cacheEntryListenerConfiguration2 =
-        new MutableCacheEntryListenerConfiguration(
-            mock(Factory.class), mock(Factory.class), true, true);
-    actualNoOpCache.registerCacheEntryListener(cacheEntryListenerConfiguration2);
+    actualNoOpCache.registerCacheEntryListener(
+        new MutableCacheEntryListenerConfiguration(mock(Factory.class), mock(Factory.class), true, true));
     actualNoOpCache.removeAll();
     actualNoOpCache.removeAll(new HashSet<>());
     CacheManager actualCacheManager = actualNoOpCache.getCacheManager();
@@ -200,12 +166,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#get(Object)}.
-   *
-   * <p>Method under test: {@link NoOpCache#get(Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#get(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object NoOpCache.get(Object)"})
   public void testGet() {
     // Arrange, Act and Assert
@@ -214,17 +179,15 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#getAll(Set)}.
-   *
    * <ul>
-   *   <li>Given {@link DynamicDaoHelperImpl#LOCK_OBJECT}.
-   *   <li>When {@link HashSet#HashSet()} add {@link DynamicDaoHelperImpl#LOCK_OBJECT}.
+   *   <li>Given {@link DynamicDaoHelperImpl#LOCK_OBJECT}.</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link DynamicDaoHelperImpl#LOCK_OBJECT}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NoOpCache#getAll(Set)}
+   * <p>
+   * Method under test: {@link NoOpCache#getAll(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NoOpCache.getAll(Set)"})
   public void testGetAll_givenLock_object_whenHashSetAddLock_object() {
     // Arrange
@@ -240,17 +203,15 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#getAll(Set)}.
-   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>When {@link HashSet#HashSet()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NoOpCache#getAll(Set)}
+   * <p>
+   * Method under test: {@link NoOpCache#getAll(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NoOpCache.getAll(Set)"})
   public void testGetAll_givenNull_field_whenHashSetAddNull_field() {
     // Arrange
@@ -265,16 +226,14 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#getAll(Set)}.
-   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
+   *   <li>When {@link HashSet#HashSet()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NoOpCache#getAll(Set)}
+   * <p>
+   * Method under test: {@link NoOpCache#getAll(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NoOpCache.getAll(Set)"})
   public void testGetAll_whenHashSet() {
     // Arrange
@@ -286,12 +245,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#containsKey(Object)}.
-   *
-   * <p>Method under test: {@link NoOpCache#containsKey(Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#containsKey(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean NoOpCache.containsKey(Object)"})
   public void testContainsKey() {
     // Arrange, Act and Assert
@@ -300,12 +258,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#getAndPut(Object, Object)}.
-   *
-   * <p>Method under test: {@link NoOpCache#getAndPut(Object, Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#getAndPut(Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object NoOpCache.getAndPut(Object, Object)"})
   public void testGetAndPut() {
     // Arrange, Act and Assert
@@ -314,12 +271,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#putIfAbsent(Object, Object)}.
-   *
-   * <p>Method under test: {@link NoOpCache#putIfAbsent(Object, Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#putIfAbsent(Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean NoOpCache.putIfAbsent(Object, Object)"})
   public void testPutIfAbsent() {
     // Arrange, Act and Assert
@@ -328,12 +284,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#remove(Object)} with {@code o}.
-   *
-   * <p>Method under test: {@link NoOpCache#remove(Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#remove(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean NoOpCache.remove(Object)"})
   public void testRemoveWithO() {
     // Arrange, Act and Assert
@@ -342,12 +297,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#remove(Object, Object)} with {@code o}, {@code o2}.
-   *
-   * <p>Method under test: {@link NoOpCache#remove(Object, Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#remove(Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean NoOpCache.remove(Object, Object)"})
   public void testRemoveWithOO2() {
     // Arrange, Act and Assert
@@ -356,12 +310,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#getAndRemove(Object)}.
-   *
-   * <p>Method under test: {@link NoOpCache#getAndRemove(Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#getAndRemove(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object NoOpCache.getAndRemove(Object)"})
   public void testGetAndRemove() {
     // Arrange, Act and Assert
@@ -370,12 +323,11 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#replace(Object, Object)} with {@code o}, {@code o2}.
-   *
-   * <p>Method under test: {@link NoOpCache#replace(Object, Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#replace(Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean NoOpCache.replace(Object, Object)"})
   public void testReplaceWithOO2() {
     // Arrange, Act and Assert
@@ -384,28 +336,24 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#replace(Object, Object, Object)} with {@code o}, {@code o2}, {@code v1}.
-   *
-   * <p>Method under test: {@link NoOpCache#replace(Object, Object, Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#replace(Object, Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean NoOpCache.replace(Object, Object, Object)"})
   public void testReplaceWithOO2V1() {
     // Arrange, Act and Assert
-    assertFalse(
-        noOpCache.replace(
-            BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD));
+    assertFalse(noOpCache.replace(BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
    * Test {@link NoOpCache#getAndReplace(Object, Object)}.
-   *
-   * <p>Method under test: {@link NoOpCache#getAndReplace(Object, Object)}
+   * <p>
+   * Method under test: {@link NoOpCache#getAndReplace(Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object NoOpCache.getAndReplace(Object, Object)"})
   public void testGetAndReplace() {
     // Arrange, Act and Assert
@@ -414,26 +362,24 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#iterator()}.
-   *
-   * <p>Method under test: {@link NoOpCache#iterator()}
+   * <p>
+   * Method under test: {@link NoOpCache#iterator()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Iterator NoOpCache.iterator()"})
   public void testIterator() {
     // Arrange, Act and Assert
-    assertNull(new NoOpCache().iterator());
+    assertNull((new NoOpCache()).iterator());
   }
 
   /**
    * Test {@link NoOpCache#unwrap(Class)}.
-   *
-   * <p>Method under test: {@link NoOpCache#unwrap(Class)}
+   * <p>
+   * Method under test: {@link NoOpCache#unwrap(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object NoOpCache.unwrap(Class)"})
   public void testUnwrap() {
     // Arrange
@@ -446,17 +392,15 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}.
-   *
    * <ul>
-   *   <li>Given {@link DynamicDaoHelperImpl#LOCK_OBJECT}.
-   *   <li>When {@link HashSet#HashSet()} add {@link DynamicDaoHelperImpl#LOCK_OBJECT}.
+   *   <li>Given {@link DynamicDaoHelperImpl#LOCK_OBJECT}.</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link DynamicDaoHelperImpl#LOCK_OBJECT}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}
+   * <p>
+   * Method under test: {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NoOpCache.invokeAll(Set, EntryProcessor, Object[])"})
   public void testInvokeAll_givenLock_object_whenHashSetAddLock_object() {
     // Arrange
@@ -472,17 +416,15 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}.
-   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>When {@link HashSet#HashSet()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}
+   * <p>
+   * Method under test: {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NoOpCache.invokeAll(Set, EntryProcessor, Object[])"})
   public void testInvokeAll_givenNull_field_whenHashSetAddNull_field() {
     // Arrange
@@ -497,50 +439,43 @@ public class NoOpCacheDiffblueTest {
 
   /**
    * Test {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}.
-   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
+   *   <li>When {@link HashSet#HashSet()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}
+   * <p>
+   * Method under test: {@link NoOpCache#invokeAll(Set, EntryProcessor, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map NoOpCache.invokeAll(Set, EntryProcessor, Object[])"})
   public void testInvokeAll_whenHashSet() {
     // Arrange
     NoOpCache noOpCache = new NoOpCache();
 
     // Act and Assert
-    assertNull(
-        noOpCache.invokeAll(new HashSet<>(), mock(EntryProcessor.class), BLCFieldUtils.NULL_FIELD));
+    assertNull(noOpCache.invokeAll(new HashSet<>(), mock(EntryProcessor.class), BLCFieldUtils.NULL_FIELD));
   }
 
   /**
    * Test {@link NoOpCache#invoke(Object, EntryProcessor, Object[])}.
-   *
-   * <p>Method under test: {@link NoOpCache#invoke(Object, EntryProcessor, Object[])}
+   * <p>
+   * Method under test: {@link NoOpCache#invoke(Object, EntryProcessor, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object NoOpCache.invoke(Object, EntryProcessor, Object[])"})
   public void testInvoke() throws EntryProcessorException {
     // Arrange, Act and Assert
-    assertNull(
-        noOpCache.invoke(
-            BLCFieldUtils.NULL_FIELD, mock(EntryProcessor.class), BLCFieldUtils.NULL_FIELD));
+    assertNull(noOpCache.invoke(BLCFieldUtils.NULL_FIELD, mock(EntryProcessor.class), BLCFieldUtils.NULL_FIELD));
   }
 
   /**
    * Test {@link NoOpCache#getConfiguration(Class)}.
-   *
-   * <p>Method under test: {@link NoOpCache#getConfiguration(Class)}
+   * <p>
+   * Method under test: {@link NoOpCache#getConfiguration(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"javax.cache.configuration.Configuration NoOpCache.getConfiguration(Class)"})
   public void testGetConfiguration() {
     // Arrange

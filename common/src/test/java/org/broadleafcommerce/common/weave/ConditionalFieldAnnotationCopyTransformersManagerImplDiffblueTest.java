@@ -23,8 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.junit.Test;
@@ -34,44 +33,34 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class ConditionalFieldAnnotationCopyTransformersManagerImplDiffblueTest {
   @InjectMocks
-  private ConditionalFieldAnnotationCopyTransformersManagerImpl
-      conditionalFieldAnnotationCopyTransformersManagerImpl;
+  private ConditionalFieldAnnotationCopyTransformersManagerImpl conditionalFieldAnnotationCopyTransformersManagerImpl;
 
-  @Mock private Map<String, ConditionalFieldAnnotationCopyTransformMemberDTO> map;
+  @Mock
+  private Map<String, ConditionalFieldAnnotationCopyTransformMemberDTO> map;
 
   /**
    * Test {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#isEntityEnabled(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Map} {@link Map#containsKey(Object)} return {@code false}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Map} {@link Map#containsKey(Object)} return {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ConditionalFieldAnnotationCopyTransformersManagerImpl#isEntityEnabled(String)}
+   * <p>
+   * Method under test: {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#isEntityEnabled(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean ConditionalFieldAnnotationCopyTransformersManagerImpl.isEntityEnabled(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean ConditionalFieldAnnotationCopyTransformersManagerImpl.isEntityEnabled(String)"})
   public void testIsEntityEnabled_givenMapContainsKeyReturnFalse_thenReturnFalse() {
     // Arrange
     when(map.containsKey(Mockito.<Object>any())).thenReturn(false);
 
     // Act
-    Boolean actualIsEntityEnabledResult =
-        conditionalFieldAnnotationCopyTransformersManagerImpl.isEntityEnabled("Entity Name");
+    Boolean actualIsEntityEnabledResult = conditionalFieldAnnotationCopyTransformersManagerImpl
+        .isEntityEnabled("Entity Name");
 
     // Assert
     verify(map).containsKey(isA(Object.class));
@@ -80,28 +69,23 @@ public class ConditionalFieldAnnotationCopyTransformersManagerImplDiffblueTest {
 
   /**
    * Test {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#isEntityEnabled(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Map} {@link Map#containsKey(Object)} return {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Map} {@link Map#containsKey(Object)} return {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ConditionalFieldAnnotationCopyTransformersManagerImpl#isEntityEnabled(String)}
+   * <p>
+   * Method under test: {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#isEntityEnabled(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean ConditionalFieldAnnotationCopyTransformersManagerImpl.isEntityEnabled(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean ConditionalFieldAnnotationCopyTransformersManagerImpl.isEntityEnabled(String)"})
   public void testIsEntityEnabled_givenMapContainsKeyReturnTrue_thenReturnTrue() {
     // Arrange
     when(map.containsKey(Mockito.<Object>any())).thenReturn(true);
 
     // Act
-    Boolean actualIsEntityEnabledResult =
-        conditionalFieldAnnotationCopyTransformersManagerImpl.isEntityEnabled("Entity Name");
+    Boolean actualIsEntityEnabledResult = conditionalFieldAnnotationCopyTransformersManagerImpl
+        .isEntityEnabled("Entity Name");
 
     // Assert
     verify(map).containsKey(isA(Object.class));
@@ -110,30 +94,23 @@ public class ConditionalFieldAnnotationCopyTransformersManagerImplDiffblueTest {
 
   /**
    * Test {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#getTransformMember(String)}.
-   *
-   * <p>Method under test: {@link
-   * ConditionalFieldAnnotationCopyTransformersManagerImpl#getTransformMember(String)}
+   * <p>
+   * Method under test: {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#getTransformMember(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ConditionalFieldAnnotationCopyTransformMemberDTO ConditionalFieldAnnotationCopyTransformersManagerImpl.getTransformMember(String)"
-  })
+      "ConditionalFieldAnnotationCopyTransformMemberDTO ConditionalFieldAnnotationCopyTransformersManagerImpl.getTransformMember(String)"})
   public void testGetTransformMember() {
     // Arrange
-    ConditionalFieldAnnotationCopyTransformMemberDTO
-        conditionalFieldAnnotationCopyTransformMemberDTO =
-            new ConditionalFieldAnnotationCopyTransformMemberDTO();
+    ConditionalFieldAnnotationCopyTransformMemberDTO conditionalFieldAnnotationCopyTransformMemberDTO = new ConditionalFieldAnnotationCopyTransformMemberDTO();
     conditionalFieldAnnotationCopyTransformMemberDTO.setConditionalProperty("Property Name");
-    conditionalFieldAnnotationCopyTransformMemberDTO.setTemplateNames(
-        new String[] {"Template Names"});
-    when(map.get(Mockito.<Object>any()))
-        .thenReturn(conditionalFieldAnnotationCopyTransformMemberDTO);
+    conditionalFieldAnnotationCopyTransformMemberDTO.setTemplateNames(new String[]{"Template Names"});
+    when(map.get(Mockito.<Object>any())).thenReturn(conditionalFieldAnnotationCopyTransformMemberDTO);
 
     // Act
-    ConditionalFieldAnnotationCopyTransformMemberDTO actualTransformMember =
-        conditionalFieldAnnotationCopyTransformersManagerImpl.getTransformMember("Entity Name");
+    ConditionalFieldAnnotationCopyTransformMemberDTO actualTransformMember = conditionalFieldAnnotationCopyTransformersManagerImpl
+        .getTransformMember("Entity Name");
 
     // Assert
     verify(map).get(isA(Object.class));
@@ -142,48 +119,14 @@ public class ConditionalFieldAnnotationCopyTransformersManagerImplDiffblueTest {
 
   /**
    * Test {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#isPropertyEnabled(String)}.
-   *
-   * <p>Method under test: {@link
-   * ConditionalFieldAnnotationCopyTransformersManagerImpl#isPropertyEnabled(String)}
+   * <p>
+   * Method under test: {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#isPropertyEnabled(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean ConditionalFieldAnnotationCopyTransformersManagerImpl.isPropertyEnabled(String)"
-  })
-  public void testIsPropertyEnabled() throws BeansException {
-    // Arrange
-    ConditionalFieldAnnotationCopyTransformersManagerImpl
-        conditionalFieldAnnotationCopyTransformersManagerImpl =
-            new ConditionalFieldAnnotationCopyTransformersManagerImpl();
-    conditionalFieldAnnotationCopyTransformersManagerImpl.setBeanFactory(
-        new DefaultListableBeanFactory());
-
-    // Act and Assert
-    assertFalse(
-        conditionalFieldAnnotationCopyTransformersManagerImpl.isPropertyEnabled("Property Name"));
-  }
-
-  /**
-   * Test {@link ConditionalFieldAnnotationCopyTransformersManagerImpl#isPropertyEnabled(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ConditionalFieldAnnotationCopyTransformersManagerImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ConditionalFieldAnnotationCopyTransformersManagerImpl#isPropertyEnabled(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean ConditionalFieldAnnotationCopyTransformersManagerImpl.isPropertyEnabled(String)"
-  })
-  public void testIsPropertyEnabled_givenConditionalFieldAnnotationCopyTransformersManagerImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean ConditionalFieldAnnotationCopyTransformersManagerImpl.isPropertyEnabled(String)"})
+  public void testIsPropertyEnabled() {
     // Arrange, Act and Assert
-    assertFalse(
-        conditionalFieldAnnotationCopyTransformersManagerImpl.isPropertyEnabled("Property Name"));
+    assertFalse(conditionalFieldAnnotationCopyTransformersManagerImpl.isPropertyEnabled("Property Name"));
   }
 }

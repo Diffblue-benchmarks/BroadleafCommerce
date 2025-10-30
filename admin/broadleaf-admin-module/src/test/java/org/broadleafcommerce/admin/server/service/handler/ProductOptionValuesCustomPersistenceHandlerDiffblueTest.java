@@ -20,12 +20,12 @@ package org.broadleafcommerce.admin.server.service.handler;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
@@ -52,107 +52,81 @@ public class ProductOptionValuesCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ProductOptionValuesCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValuesCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductOptionValuesCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "java.lang.Boolean ProductOptionValuesCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
+      "java.lang.Boolean ProductOptionValuesCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch_thenReturnFalse() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(productOptionValuesCustomPersistenceHandler.canHandleFetch(persistencePackage));
+    assertFalse(productOptionValuesCustomPersistenceHandler.canHandleFetch(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
-   * Test {@link ProductOptionValuesCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link ProductOptionValuesCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.
+   *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValuesCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ProductOptionValuesCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "DynamicResultSet ProductOptionValuesCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
+      "DynamicResultSet ProductOptionValuesCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_thenReturnDynamicResultSet() throws ServiceException {
     // Arrange
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
     RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    DynamicResultSet actualFetchResult =
-        productOptionValuesCustomPersistenceHandler.fetch(
-            persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = productOptionValuesCustomPersistenceHandler.fetch(persistencePackage, cto,
+        dynamicEntityDao, helper);
 
     // Assert
     verify(persistencePackage).getCustomCriteria();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
     assertSame(dynamicResultSet, actualFetchResult);
   }
 
   /**
    * Test {@link ProductOptionValuesCustomPersistenceHandler#getOptionKey(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Given array of {@link String} with {@code Custom Criteria}.
-   *   <li>Then return {@code null}.
+   *   <li>Given array of {@link String} with {@code Custom Criteria}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValuesCustomPersistenceHandler#getOptionKey(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ProductOptionValuesCustomPersistenceHandler#getOptionKey(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long ProductOptionValuesCustomPersistenceHandler.getOptionKey(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ProductOptionValuesCustomPersistenceHandler.getOptionKey(PersistencePackage)"})
   public void testGetOptionKey_givenArrayOfStringWithCustomCriteria_thenReturnNull() {
     // Arrange
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
 
     // Act
-    Long actualOptionKey =
-        productOptionValuesCustomPersistenceHandler.getOptionKey(persistencePackage);
+    Long actualOptionKey = productOptionValuesCustomPersistenceHandler.getOptionKey(persistencePackage);
 
     // Assert
     verify(persistencePackage).getCustomCriteria();

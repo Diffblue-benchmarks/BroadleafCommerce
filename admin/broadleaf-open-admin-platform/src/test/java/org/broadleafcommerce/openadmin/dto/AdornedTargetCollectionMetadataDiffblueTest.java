@@ -28,8 +28,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import org.broadleafcommerce.common.presentation.client.AdornedTargetAddMethodType;
@@ -43,12 +42,10 @@ import org.mockito.Mockito;
 public class AdornedTargetCollectionMetadataDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link
-   *       AdornedTargetCollectionMetadata#setAdornedTargetAddMethodType(AdornedTargetAddMethodType)}
+   *   <li>{@link AdornedTargetCollectionMetadata#setAdornedTargetAddMethodType(AdornedTargetAddMethodType)}
    *   <li>{@link AdornedTargetCollectionMetadata#setGridVisibleFields(String[])}
    *   <li>{@link AdornedTargetCollectionMetadata#setIgnoreAdornedProperties(boolean)}
    *   <li>{@link AdornedTargetCollectionMetadata#setMaintainedAdornedTargetFields(String[])}
@@ -63,42 +60,36 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "AdornedTargetAddMethodType AdornedTargetCollectionMetadata.getAdornedTargetAddMethodType()",
-    "String[] AdornedTargetCollectionMetadata.getGridVisibleFields()",
-    "String[] AdornedTargetCollectionMetadata.getMaintainedAdornedTargetFields()",
-    "String AdornedTargetCollectionMetadata.getParentObjectClass()",
-    "String AdornedTargetCollectionMetadata.getSelectizeVisibleField()",
-    "boolean AdornedTargetCollectionMetadata.isIgnoreAdornedProperties()",
-    "void AdornedTargetCollectionMetadata.setAdornedTargetAddMethodType(AdornedTargetAddMethodType)",
-    "void AdornedTargetCollectionMetadata.setGridVisibleFields(String[])",
-    "void AdornedTargetCollectionMetadata.setIgnoreAdornedProperties(boolean)",
-    "void AdornedTargetCollectionMetadata.setMaintainedAdornedTargetFields(String[])",
-    "void AdornedTargetCollectionMetadata.setParentObjectClass(String)",
-    "void AdornedTargetCollectionMetadata.setSelectizeVisibleField(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"AdornedTargetAddMethodType AdornedTargetCollectionMetadata.getAdornedTargetAddMethodType()",
+      "String[] AdornedTargetCollectionMetadata.getGridVisibleFields()",
+      "String[] AdornedTargetCollectionMetadata.getMaintainedAdornedTargetFields()",
+      "String AdornedTargetCollectionMetadata.getParentObjectClass()",
+      "String AdornedTargetCollectionMetadata.getSelectizeVisibleField()",
+      "boolean AdornedTargetCollectionMetadata.isIgnoreAdornedProperties()",
+      "void AdornedTargetCollectionMetadata.setAdornedTargetAddMethodType(AdornedTargetAddMethodType)",
+      "void AdornedTargetCollectionMetadata.setGridVisibleFields(String[])",
+      "void AdornedTargetCollectionMetadata.setIgnoreAdornedProperties(boolean)",
+      "void AdornedTargetCollectionMetadata.setMaintainedAdornedTargetFields(String[])",
+      "void AdornedTargetCollectionMetadata.setParentObjectClass(String)",
+      "void AdornedTargetCollectionMetadata.setSelectizeVisibleField(String)"})
   public void testGettersAndSetters() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act
-    adornedTargetCollectionMetadata.setAdornedTargetAddMethodType(
-        AdornedTargetAddMethodType.LOOKUP);
-    String[] gridVisibleFields = new String[] {"Grid Visible Fields"};
+    adornedTargetCollectionMetadata.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
+    String[] gridVisibleFields = new String[]{"Grid Visible Fields"};
     adornedTargetCollectionMetadata.setGridVisibleFields(gridVisibleFields);
     adornedTargetCollectionMetadata.setIgnoreAdornedProperties(true);
-    String[] maintainedAdornedTargetFields = new String[] {"Maintained Adorned Target Fields"};
+    String[] maintainedAdornedTargetFields = new String[]{"Maintained Adorned Target Fields"};
     adornedTargetCollectionMetadata.setMaintainedAdornedTargetFields(maintainedAdornedTargetFields);
     adornedTargetCollectionMetadata.setParentObjectClass("Parent Object Class");
     adornedTargetCollectionMetadata.setSelectizeVisibleField("Selectize Visible Field");
-    AdornedTargetAddMethodType actualAdornedTargetAddMethodType =
-        adornedTargetCollectionMetadata.getAdornedTargetAddMethodType();
+    AdornedTargetAddMethodType actualAdornedTargetAddMethodType = adornedTargetCollectionMetadata
+        .getAdornedTargetAddMethodType();
     String[] actualGridVisibleFields = adornedTargetCollectionMetadata.getGridVisibleFields();
-    String[] actualMaintainedAdornedTargetFields =
-        adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields();
+    String[] actualMaintainedAdornedTargetFields = adornedTargetCollectionMetadata.getMaintainedAdornedTargetFields();
     String actualParentObjectClass = adornedTargetCollectionMetadata.getParentObjectClass();
     String actualSelectizeVisibleField = adornedTargetCollectionMetadata.getSelectizeVisibleField();
 
@@ -109,31 +100,25 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
     assertTrue(adornedTargetCollectionMetadata.isIgnoreAdornedProperties());
     assertSame(gridVisibleFields, actualGridVisibleFields);
     assertSame(maintainedAdornedTargetFields, actualMaintainedAdornedTargetFields);
-    assertArrayEquals(new String[] {"Grid Visible Fields"}, actualGridVisibleFields);
-    assertArrayEquals(
-        new String[] {"Maintained Adorned Target Fields"}, actualMaintainedAdornedTargetFields);
+    assertArrayEquals(new String[]{"Grid Visible Fields"}, actualGridVisibleFields);
+    assertArrayEquals(new String[]{"Maintained Adorned Target Fields"}, actualMaintainedAdornedTargetFields);
   }
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#accept(MetadataVisitor)}.
-   *
    * <ul>
-   *   <li>When {@link MetadataVisitorAdapter} {@link
-   *       MetadataVisitorAdapter#visit(AdornedTargetCollectionMetadata)} does nothing.
-   *   <li>Then calls {@link MetadataVisitorAdapter#visit(AdornedTargetCollectionMetadata)}.
+   *   <li>When {@link MetadataVisitorAdapter} {@link MetadataVisitorAdapter#visit(AdornedTargetCollectionMetadata)} does nothing.</li>
+   *   <li>Then calls {@link MetadataVisitorAdapter#visit(AdornedTargetCollectionMetadata)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#accept(MetadataVisitor)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#accept(MetadataVisitor)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdornedTargetCollectionMetadata.accept(MetadataVisitor)"})
   public void testAccept_whenMetadataVisitorAdapterVisitDoesNothing_thenCallsVisit() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     MetadataVisitorAdapter visitor = mock(MetadataVisitorAdapter.class);
     doNothing().when(visitor).visit(Mockito.<AdornedTargetCollectionMetadata>any());
 
@@ -146,931 +131,638 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
   public void testPopulate() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(new String[]{"foo"});
     persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(new HashMap<>());
+    persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
 
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-    metadata.setAdditionalMetadata(new HashMap<>());
-
     // Act
-    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata.populate(metadata);
+    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata
+        .populate(new AdornedTargetCollectionMetadata());
 
     // Assert
     assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
     assertNull(actualPopulateResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualPopulateResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualPopulateResult)
+        .getPersistencePerspective();
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
   }
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
   public void testPopulate2() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = new HashMap<>();
+    persistencePerspectiveItems.put(PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
 
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(new String[] {"foo"});
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-    metadata.setAdditionalMetadata(new HashMap<>());
-
-    // Act
-    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata.populate(metadata);
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualPopulateResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualPopulateResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(
-        new String[] {"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate3() {
-    // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(
-        PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
 
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-    metadata.setAdditionalMetadata(new HashMap<>());
-
     // Act
-    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata.populate(metadata);
+    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata
+        .populate(new AdornedTargetCollectionMetadata());
 
     // Assert
     assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
-    assertEquals(
-        persistencePerspectiveItems,
-        ((AdornedTargetCollectionMetadata) actualPopulateResult)
-            .getPersistencePerspective()
+    assertEquals(persistencePerspectiveItems,
+        ((AdornedTargetCollectionMetadata) actualPopulateResult).getPersistencePerspective()
             .getPersistencePerspectiveItems());
   }
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
-   *
    * <ul>
-   *   <li>Then return array length is one.
+   *   <li>Given {@link PersistencePerspective#PersistencePerspective()} PersistencePerspectiveItems is {@link HashMap#HashMap()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnArrayLengthIsOne() {
+  public void testPopulate_givenPersistencePerspectivePersistencePerspectiveItemsIsHashMap() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey foreignKey = new ForeignKey();
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {foreignKey};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[] {new ForeignKey()});
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-    metadata.setAdditionalMetadata(new HashMap<>());
-
-    // Act
-    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata.populate(metadata);
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
-    ForeignKey[] additionalForeignKeys2 =
-        ((AdornedTargetCollectionMetadata) actualPopulateResult)
-            .getPersistencePerspective()
-            .getAdditionalForeignKeys();
-    assertEquals(1, additionalForeignKeys2.length);
-    assertEquals(foreignKey, additionalForeignKeys2[0]);
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
-   *
-   * <ul>
-   *   <li>Then return AvailableToTypes is array of {@link String} with {@code Available To Types}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnAvailableToTypesIsArrayOfStringWithAvailableToTypes() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setAvailableToTypes(new String[] {"Available To Types"});
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-    metadata.setAdditionalMetadata(new HashMap<>());
-
-    // Act
-    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata.populate(metadata);
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualPopulateResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(
-        new String[] {"Available To Types"}, actualPopulateResult.getAvailableToTypes());
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
-   *
-   * <ul>
-   *   <li>Then return AvailableToTypes is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnAvailableToTypesIsNull() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-    metadata.setAdditionalMetadata(new HashMap<>());
-
-    // Act
-    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata.populate(metadata);
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualPopulateResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualPopulateResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
-   *
-   * <ul>
-   *   <li>Then return PersistencePerspective ExcludeFields is array of {@link String} with {@code
-   *       foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnPersistencePerspectiveExcludeFieldsIsArrayOfStringWithFoo() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(new String[] {"foo"});
-    persistencePerspective.setIncludeFields(null);
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-    metadata.setAdditionalMetadata(new HashMap<>());
-
-    // Act
-    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata.populate(metadata);
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualPopulateResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualPopulateResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(new String[] {"foo"}, persistencePerspective2.getExcludeFields());
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
-   *
-   * <ul>
-   *   <li>Then return PersistencePerspective IncludeFields is array of {@link String} with {@code
-   *       foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnPersistencePerspectiveIncludeFieldsIsArrayOfStringWithFoo() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(new String[] {"foo"});
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-    metadata.setAdditionalMetadata(new HashMap<>());
-
-    // Act
-    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata.populate(metadata);
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualPopulateResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualPopulateResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertArrayEquals(new String[] {"foo"}, persistencePerspective2.getIncludeFields());
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(new String[] {"foo"});
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertArrayEquals(new String[] {"foo"}, persistencePerspective2.getIncludeFields());
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata2() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(new String[] {"foo"});
-    persistencePerspective.setIncludeFields(null);
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(new String[] {"foo"}, persistencePerspective2.getExcludeFields());
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata3() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(new HashMap<>());
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
 
     // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
+    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata
+        .populate(new AdornedTargetCollectionMetadata());
 
     // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective();
+    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
+    assertNull(actualPopulateResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualPopulateResult)
+        .getPersistencePerspective();
     assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
   }
 
   /**
-   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return array length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata4() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnArrayLengthIsOne() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(new String[] {"foo"});
-    persistencePerspective.setAdditionalForeignKeys(null);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    ForeignKey foreignKey = new ForeignKey();
+    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[]{foreignKey});
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
 
     // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
+    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata
+        .populate(new AdornedTargetCollectionMetadata());
 
     // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(
-        new String[] {"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
+    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
+    ForeignKey[] additionalForeignKeys = ((AdornedTargetCollectionMetadata) actualPopulateResult)
+        .getPersistencePerspective()
+        .getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys.length);
+    assertEquals(foreignKey, additionalForeignKeys[0]);
   }
 
   /**
-   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return AvailableToTypes is array of {@link String} with {@code Available To Types}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata5() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnAvailableToTypesIsArrayOfStringWithAvailableToTypes() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setAvailableToTypes(new String[] {"Available To Types"});
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setAvailableToTypes(new String[]{"Available To Types"});
     adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
 
     // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
+    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata
+        .populate(new AdornedTargetCollectionMetadata());
 
     // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective();
+    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualPopulateResult)
+        .getPersistencePerspective();
     assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(
-        new String[] {"Available To Types"}, actualCloneFieldMetadataResult.getAvailableToTypes());
+    assertArrayEquals(new String[]{"Available To Types"}, actualPopulateResult.getAvailableToTypes());
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return AvailableToTypes is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnAvailableToTypesIsNull() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata
+        .populate(new AdornedTargetCollectionMetadata());
+
+    // Assert
+    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
+    assertNull(actualPopulateResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualPopulateResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return PersistencePerspective ExcludeFields is array of {@link String} with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnPersistencePerspectiveExcludeFieldsIsArrayOfStringWithFoo() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(new String[]{"foo"});
+    persistencePerspective.setIncludeFields(null);
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata
+        .populate(new AdornedTargetCollectionMetadata());
+
+    // Assert
+    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
+    assertNull(actualPopulateResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualPopulateResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getExcludeFields());
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return PersistencePerspective IncludeFields is array of {@link String} with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#populate(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnPersistencePerspectiveIncludeFieldsIsArrayOfStringWithFoo() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(new String[]{"foo"});
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualPopulateResult = adornedTargetCollectionMetadata
+        .populate(new AdornedTargetCollectionMetadata());
+
+    // Assert
+    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
+    assertNull(actualPopulateResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualPopulateResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getIncludeFields());
   }
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = adornedTargetCollectionMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertTrue(persistencePerspective2.getPersistencePerspectiveItems().isEmpty());
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata2() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(new String[]{"foo"});
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = adornedTargetCollectionMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getIncludeFields());
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata3() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(new String[]{"foo"});
+    persistencePerspective.setIncludeFields(null);
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = adornedTargetCollectionMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getExcludeFields());
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata4() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(new HashMap<>());
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = adornedTargetCollectionMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertTrue(persistencePerspective2.getPersistencePerspectiveItems().isEmpty());
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata5() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(new String[]{"foo"});
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = adornedTargetCollectionMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
+    PersistencePerspective persistencePerspective2 = ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
+  }
+
+  /**
+   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata6() {
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(
-        PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = new HashMap<>();
+    persistencePerspectiveItems.put(PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
 
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
 
     // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
+    FieldMetadata actualCloneFieldMetadataResult = adornedTargetCollectionMetadata.cloneFieldMetadata();
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    assertEquals(
-        persistencePerspectiveItems,
-        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective()
+    assertEquals(persistencePerspectiveItems,
+        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective()
             .getPersistencePerspectiveItems());
   }
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
    * <ul>
-   *   <li>Then return {@link AdornedTargetCollectionMetadata} (default constructor).
+   *   <li>Then return array length is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata_thenReturnAdornedTargetCollectionMetadata() {
-    // Arrange
-    HashMap<String, Object> additionalMetadata = new HashMap<>();
-    additionalMetadata.put("foo", "42");
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(new PersistencePerspective());
-    adornedTargetCollectionMetadata.setAdditionalMetadata(additionalMetadata);
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    assertEquals(adornedTargetCollectionMetadata, actualCloneFieldMetadataResult);
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
-   * <ul>
-   *   <li>Then return array length is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata_thenReturnArrayLengthIsOne() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
     ForeignKey foreignKey = new ForeignKey();
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {foreignKey};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[] {new ForeignKey()});
+    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[]{foreignKey});
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
 
     // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
+    FieldMetadata actualCloneFieldMetadataResult = adornedTargetCollectionMetadata.cloneFieldMetadata();
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    ForeignKey[] additionalForeignKeys2 =
-        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective()
-            .getAdditionalForeignKeys();
-    assertEquals(1, additionalForeignKeys2.length);
-    assertEquals(foreignKey, additionalForeignKeys2[0]);
+    ForeignKey[] additionalForeignKeys = ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective()
+        .getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys.length);
+    assertEquals(foreignKey, additionalForeignKeys[0]);
   }
 
   /**
-   * Test {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}.
-   *
+   * Test {@link AdornedTargetCollectionMetadata#equals(Object)}, and {@link AdornedTargetCollectionMetadata#hashCode()}.
    * <ul>
-   *   <li>Then return AvailableToTypes is {@code null}.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata AdornedTargetCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata_thenReturnAvailableToTypesIsNull() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult =
-        adornedTargetCollectionMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof AdornedTargetCollectionMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((AdornedTargetCollectionMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-  }
-
-  /**
-   * Test {@link AdornedTargetCollectionMetadata#equals(Object)}, and {@link
-   * AdornedTargetCollectionMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AdornedTargetCollectionMetadata#equals(Object)}
    *   <li>{@link AdornedTargetCollectionMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 = new AdornedTargetCollectionMetadata();
 
     // Act and Assert
     assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata2);
-    assertEquals(
-        adornedTargetCollectionMetadata.hashCode(), adornedTargetCollectionMetadata2.hashCode());
+    int expectedHashCodeResult = adornedTargetCollectionMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetCollectionMetadata2.hashCode());
   }
 
   /**
-   * Test {@link AdornedTargetCollectionMetadata#equals(Object)}, and {@link
-   * AdornedTargetCollectionMetadata#hashCode()}.
-   *
+   * Test {@link AdornedTargetCollectionMetadata#equals(Object)}, and {@link AdornedTargetCollectionMetadata#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AdornedTargetCollectionMetadata#equals(Object)}
    *   <li>{@link AdornedTargetCollectionMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setParentObjectClass("Parent Object Class");
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata2.setParentObjectClass("Parent Object Class");
 
     // Act and Assert
     assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata2);
-    assertEquals(
-        adornedTargetCollectionMetadata.hashCode(), adornedTargetCollectionMetadata2.hashCode());
+    int expectedHashCodeResult = adornedTargetCollectionMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetCollectionMetadata2.hashCode());
   }
 
   /**
-   * Test {@link AdornedTargetCollectionMetadata#equals(Object)}, and {@link
-   * AdornedTargetCollectionMetadata#hashCode()}.
-   *
+   * Test {@link AdornedTargetCollectionMetadata#equals(Object)}, and {@link AdornedTargetCollectionMetadata#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AdornedTargetCollectionMetadata#equals(Object)}
    *   <li>{@link AdornedTargetCollectionMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setSelectizeVisibleField("Selectize Visible Field");
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata2.setSelectizeVisibleField("Selectize Visible Field");
 
     // Act and Assert
     assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata2);
-    assertEquals(
-        adornedTargetCollectionMetadata.hashCode(), adornedTargetCollectionMetadata2.hashCode());
+    int expectedHashCodeResult = adornedTargetCollectionMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetCollectionMetadata2.hashCode());
   }
 
   /**
-   * Test {@link AdornedTargetCollectionMetadata#equals(Object)}, and {@link
-   * AdornedTargetCollectionMetadata#hashCode()}.
-   *
+   * Test {@link AdornedTargetCollectionMetadata#equals(Object)}, and {@link AdornedTargetCollectionMetadata#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AdornedTargetCollectionMetadata#equals(Object)}
    *   <li>{@link AdornedTargetCollectionMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act and Assert
     assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata);
@@ -1080,21 +772,17 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new AdornedTargetCollectionMetadata(), 1);
@@ -1102,25 +790,20 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setIgnoreAdornedProperties(true);
 
     // Act and Assert
@@ -1129,25 +812,20 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setParentObjectClass("Parent Object Class");
 
     // Act and Assert
@@ -1156,26 +834,21 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setGridVisibleFields(new String[] {"Grid Visible Fields"});
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setGridVisibleFields(new String[]{"Grid Visible Fields"});
 
     // Act and Assert
     assertNotEquals(adornedTargetCollectionMetadata, new AdornedTargetCollectionMetadata());
@@ -1183,25 +856,20 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setSelectizeVisibleField("Selectize Visible Field");
 
     // Act and Assert
@@ -1210,27 +878,21 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    adornedTargetCollectionMetadata.setMaintainedAdornedTargetFields(
-        new String[] {"Maintained Adorned Target Fields"});
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    adornedTargetCollectionMetadata.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
 
     // Act and Assert
     assertNotEquals(adornedTargetCollectionMetadata, new AdornedTargetCollectionMetadata());
@@ -1238,25 +900,20 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setPersistencePerspective(new PersistencePerspective());
 
     // Act and Assert
@@ -1265,28 +922,22 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata2.setParentObjectClass("Parent Object Class");
 
     // Act and Assert
@@ -1295,28 +946,22 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata2.setSelectizeVisibleField("Selectize Visible Field");
 
     // Act and Assert
@@ -1325,21 +970,17 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new AdornedTargetCollectionMetadata(), null);
@@ -1347,43 +988,37 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link AdornedTargetCollectionMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link AdornedTargetCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetCollectionMetadata.equals(Object)",
-    "int AdornedTargetCollectionMetadata.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean AdornedTargetCollectionMetadata.equals(Object)",
+      "int AdornedTargetCollectionMetadata.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        new AdornedTargetCollectionMetadata(), "Different type to AdornedTargetCollectionMetadata");
+    assertNotEquals(new AdornedTargetCollectionMetadata(), "Different type to AdornedTargetCollectionMetadata");
   }
 
   /**
    * Test new {@link AdornedTargetCollectionMetadata} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AdornedTargetCollectionMetadata}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link AdornedTargetCollectionMetadata}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdornedTargetCollectionMetadata.<init>()"})
   public void testNewAdornedTargetCollectionMetadata() {
     // Arrange and Act
-    AdornedTargetCollectionMetadata actualAdornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata actualAdornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Assert
+    assertNull(actualAdornedTargetCollectionMetadata.getCustomCriteria());
+    assertNull(actualAdornedTargetCollectionMetadata.getAvailableToTypes());
     assertNull(actualAdornedTargetCollectionMetadata.getChildrenExcluded());
     assertNull(actualAdornedTargetCollectionMetadata.getExcluded());
     assertNull(actualAdornedTargetCollectionMetadata.getLazyFetch());
@@ -1406,14 +1041,11 @@ public class AdornedTargetCollectionMetadataDiffblueTest {
     assertNull(actualAdornedTargetCollectionMetadata.getShowIfProperty());
     assertNull(actualAdornedTargetCollectionMetadata.getTab());
     assertNull(actualAdornedTargetCollectionMetadata.getTargetClass());
-    assertNull(actualAdornedTargetCollectionMetadata.getCustomCriteria());
-    assertNull(actualAdornedTargetCollectionMetadata.getAvailableToTypes());
     assertNull(actualAdornedTargetCollectionMetadata.getShowIfFieldEquals());
     assertNull(actualAdornedTargetCollectionMetadata.getAdornedTargetAddMethodType());
     assertNull(actualAdornedTargetCollectionMetadata.getPersistencePerspective());
     assertEquals(0, actualAdornedTargetCollectionMetadata.getGridVisibleFields().length);
-    assertEquals(
-        0, actualAdornedTargetCollectionMetadata.getMaintainedAdornedTargetFields().length);
+    assertEquals(0, actualAdornedTargetCollectionMetadata.getMaintainedAdornedTargetFields().length);
     assertFalse(actualAdornedTargetCollectionMetadata.isIgnoreAdornedProperties());
     assertFalse(actualAdornedTargetCollectionMetadata.getManualFetch());
     assertTrue(actualAdornedTargetCollectionMetadata.getAdditionalMetadata().isEmpty());

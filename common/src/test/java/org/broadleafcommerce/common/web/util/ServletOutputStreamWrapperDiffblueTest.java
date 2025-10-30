@@ -18,8 +18,7 @@
 package org.broadleafcommerce.common.web.util;
 
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -30,40 +29,34 @@ import org.junit.experimental.categories.Category;
 public class ServletOutputStreamWrapperDiffblueTest {
   /**
    * Test {@link ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}.
-   *
-   * <p>Method under test: {@link
-   * ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}
+   * <p>
+   * Method under test: {@link ServletOutputStreamWrapper#ServletOutputStreamWrapper(OutputStream)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ServletOutputStreamWrapper.<init>(OutputStream)"})
   public void testNewServletOutputStreamWrapper() {
     // Arrange, Act and Assert
-    assertFalse(new ServletOutputStreamWrapper(new ByteArrayOutputStream()).isReady());
+    assertFalse((new ServletOutputStreamWrapper(new ByteArrayOutputStream(1))).isReady());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ServletOutputStreamWrapper#setWriteListener(WriteListener)}
    *   <li>{@link ServletOutputStreamWrapper#isReady()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ServletOutputStreamWrapper.isReady()",
-    "void ServletOutputStreamWrapper.setWriteListener(WriteListener)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ServletOutputStreamWrapper.isReady()",
+      "void ServletOutputStreamWrapper.setWriteListener(WriteListener)"})
   public void testGettersAndSetters() {
     // Arrange
-    ServletOutputStreamWrapper servletOutputStreamWrapper =
-        new ServletOutputStreamWrapper(new ByteArrayOutputStream());
+    ServletOutputStreamWrapper servletOutputStreamWrapper = new ServletOutputStreamWrapper(
+        new ByteArrayOutputStream(1));
 
     // Act
     servletOutputStreamWrapper.setWriteListener(null);

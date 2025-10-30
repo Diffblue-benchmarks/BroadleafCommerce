@@ -24,8 +24,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,32 +40,32 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreditCardTypesProcessorDiffblueTest {
-  @Mock private CreditCardTypesExtensionManager creditCardTypesExtensionManager;
+  @InjectMocks
+  private CreditCardTypesProcessor creditCardTypesProcessor;
 
-  @InjectMocks private CreditCardTypesProcessor creditCardTypesProcessor;
+  @Mock
+  private CreditCardTypesExtensionManager creditCardTypesExtensionManager;
 
   /**
    * Test {@link CreditCardTypesProcessor#getName()}.
-   *
-   * <p>Method under test: {@link CreditCardTypesProcessor#getName()}
+   * <p>
+   * Method under test: {@link CreditCardTypesProcessor#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CreditCardTypesProcessor.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("credit_card_types", new CreditCardTypesProcessor().getName());
+    assertEquals("credit_card_types", (new CreditCardTypesProcessor()).getName());
   }
 
   /**
    * Test {@link CreditCardTypesProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link CreditCardTypesProcessor#getPrecedence()}
+   * <p>
+   * Method under test: {@link CreditCardTypesProcessor#getPrecedence()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int CreditCardTypesProcessor.getPrecedence()"})
   public void testGetPrecedence() {
     // Arrange, Act and Assert
@@ -75,12 +74,11 @@ public class CreditCardTypesProcessorDiffblueTest {
 
   /**
    * Test {@link CreditCardTypesProcessor#useGlobalScope()}.
-   *
-   * <p>Method under test: {@link CreditCardTypesProcessor#useGlobalScope()}
+   * <p>
+   * Method under test: {@link CreditCardTypesProcessor#useGlobalScope()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CreditCardTypesProcessor.useGlobalScope()"})
   public void testUseGlobalScope() {
     // Arrange, Act and Assert
@@ -88,89 +86,23 @@ public class CreditCardTypesProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link CreditCardTypesProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link CreditCardTypesProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
+   * Test {@link CreditCardTypesProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test: {@link CreditCardTypesProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map CreditCardTypesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CreditCardTypesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
   public void testPopulateModelVariables() {
     // Arrange
-    when(creditCardTypesExtensionManager.getProxy()).thenThrow(new RuntimeException());
-
-    // Act
-    Map<String, Object> actualPopulateModelVariablesResult =
-        creditCardTypesProcessor.populateModelVariables(
-            "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(creditCardTypesExtensionManager).getProxy();
-    assertNull(actualPopulateModelVariablesResult);
-  }
-
-  /**
-   * Test {@link CreditCardTypesProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link CreditCardTypesProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map CreditCardTypesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
-  public void testPopulateModelVariables2() {
-    // Arrange
-    CreditCardTypesExtensionHandler creditCardTypesExtensionHandler =
-        mock(CreditCardTypesExtensionHandler.class);
+    CreditCardTypesExtensionHandler creditCardTypesExtensionHandler = mock(CreditCardTypesExtensionHandler.class);
     when(creditCardTypesExtensionHandler.populateCreditCardMap(Mockito.<Map<String, String>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(creditCardTypesExtensionManager.getProxy()).thenReturn(creditCardTypesExtensionHandler);
 
     // Act
-    Map<String, Object> actualPopulateModelVariablesResult =
-        creditCardTypesProcessor.populateModelVariables(
-            "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(creditCardTypesExtensionManager).getProxy();
-    verify(creditCardTypesExtensionHandler).populateCreditCardMap(isA(Map.class));
-    assertNull(actualPopulateModelVariablesResult);
-  }
-
-  /**
-   * Test {@link CreditCardTypesProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link CreditCardTypesProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map CreditCardTypesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
-  public void testPopulateModelVariables3() {
-    // Arrange
-    CreditCardTypesExtensionHandler creditCardTypesExtensionHandler =
-        mock(CreditCardTypesExtensionHandler.class);
-    when(creditCardTypesExtensionHandler.populateCreditCardMap(Mockito.<Map<String, String>>any()))
-        .thenThrow(new RuntimeException());
-    when(creditCardTypesExtensionManager.getProxy()).thenReturn(creditCardTypesExtensionHandler);
-
-    // Act
-    Map<String, Object> actualPopulateModelVariablesResult =
-        creditCardTypesProcessor.populateModelVariables(
-            "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
+    Map<String, Object> actualPopulateModelVariablesResult = creditCardTypesProcessor.populateModelVariables("Tag Name",
+        new HashMap<>(), mock(BroadleafTemplateContext.class));
 
     // Assert
     verify(creditCardTypesExtensionManager).getProxy();

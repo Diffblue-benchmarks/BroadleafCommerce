@@ -25,8 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -52,17 +51,15 @@ import org.junit.experimental.categories.Category;
 public class ShippingActivityDiffblueTest {
   /**
    * Test {@link ShippingActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor).
-   *   <li>Then return SeedData Id is {@code null}.
+   *   <li>Given {@link OrderImpl} (default constructor).</li>
+   *   <li>Then return SeedData Id is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ShippingActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link ShippingActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext ShippingActivity.execute(ProcessContext)"})
   public void testExecute_givenOrderImpl_thenReturnSeedDataIdIsNull() throws Exception {
     // Arrange
@@ -97,16 +94,14 @@ public class ShippingActivityDiffblueTest {
 
   /**
    * Test {@link ShippingActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Then SeedData Locale return {@link LocaleImpl}.
+   *   <li>Then SeedData Locale return {@link LocaleImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ShippingActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link ShippingActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext ShippingActivity.execute(ProcessContext)"})
   public void testExecute_thenSeedDataLocaleReturnLocaleImpl() throws Exception {
     // Arrange
@@ -114,12 +109,9 @@ public class ShippingActivityDiffblueTest {
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
-
     BroadleafCurrency currency = mock(BroadleafCurrency.class);
     when(currency.getCurrencyCode()).thenReturn("GBP");
 
@@ -143,11 +135,11 @@ public class ShippingActivityDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
 
     DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
@@ -179,21 +171,16 @@ public class ShippingActivityDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ShippingActivity}
    *   <li>{@link ShippingActivity#setShippingService(ShippingService)}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ShippingActivity.<init>()",
-    "void ShippingActivity.setShippingService(ShippingService)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ShippingActivity.<init>()", "void ShippingActivity.setShippingService(ShippingService)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ShippingActivity actualShippingActivity = new ShippingActivity();

@@ -18,25 +18,21 @@
 package org.broadleafcommerce.openadmin.web.filter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Set;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.common.security.BroadleafExternalAuthenticationUserDetails;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
@@ -60,10 +56,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @ContextConfiguration(classes = {AdminExternalLoginStateFilter.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminExternalLoginStateFilterDiffblueTest {
-  @Autowired private AdminExternalLoginStateFilter adminExternalLoginStateFilter;
+  @Autowired
+  private AdminExternalLoginStateFilter adminExternalLoginStateFilter;
 
   @MockBean(name = "blAdminSecurityService")
   private AdminSecurityService adminSecurityService;
@@ -72,71 +69,22 @@ public class AdminExternalLoginStateFilterDiffblueTest {
   private EntityConfiguration entityConfiguration;
 
   /**
-   * Test {@link AdminExternalLoginStateFilter#doFilter(ServletRequest, ServletResponse,
-   * FilterChain)}.
-   *
+   * Test {@link AdminExternalLoginStateFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
+   *   <li>Then calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminExternalLoginStateFilter#doFilter(ServletRequest,
-   * ServletResponse, FilterChain)}
+   * <p>
+   * Method under test: {@link AdminExternalLoginStateFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"
-  })
-  public void testDoFilter_givenIOException_thenThrowIOException()
-      throws IOException, ServletException {
-    // Arrange
-    HttpServletRequestWrapper servletRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-
-    FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new IOException())
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act and Assert
-    assertThrows(
-        IOException.class,
-        () -> adminExternalLoginStateFilter.doFilter(servletRequest, servletResponse, filterChain));
-    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-  }
-
-  /**
-   * Test {@link AdminExternalLoginStateFilter#doFilter(ServletRequest, ServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminExternalLoginStateFilter#doFilter(ServletRequest,
-   * ServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminExternalLoginStateFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"})
   public void testDoFilter_thenCallsDoFilter() throws IOException, ServletException {
     // Arrange
-    HttpServletRequestWrapper servletRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    JSCompatibilityRequestWrapper servletRequest = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
     MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
     adminExternalLoginStateFilter.doFilter(servletRequest, servletResponse, filterChain);
@@ -146,193 +94,26 @@ public class AdminExternalLoginStateFilterDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}.
-   *
-   * <p>Method under test: {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"
-  })
-  public void testSaveAdminUser() {
-    // Arrange
-    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-    BroadleafExternalAuthenticationUserDetails broadleafUser =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-    AdminUserImpl user = new AdminUserImpl();
-
-    // Act
-    adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
-
-    // Assert
-    verify(adminSecurityService).readAllAdminRoles();
-    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    assertEquals("", user.getMainEntityName());
-    assertEquals("", user.getName());
-    assertEquals("iloveyou", user.getUnencodedPassword());
-    assertEquals("janedoe", user.getLogin());
-  }
-
-  /**
-   * Test {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}.
-   *
-   * <p>Method under test: {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"
-  })
-  public void testSaveAdminUser2() {
-    // Arrange
-    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    BroadleafExternalAuthenticationUserDetails broadleafUser =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(broadleafUser.getFirstName()).thenReturn("");
-    when(broadleafUser.getLastName()).thenReturn(null);
-    when(broadleafUser.getEmail()).thenReturn("jane.doe@example.org");
-    when(broadleafUser.getPassword()).thenReturn("iloveyou");
-    when(broadleafUser.getUsername()).thenReturn("janedoe");
-    when(broadleafUser.getAuthorities()).thenReturn(new ArrayList<>());
-
-    AdminUser user = mock(AdminUser.class);
-    doNothing().when(user).setAllRoles(Mockito.<Set<AdminRole>>any());
-    when(user.getUnencodedPassword()).thenReturn(null);
-    when(user.getAllRoles()).thenReturn(null);
-    when(user.getLogin()).thenReturn("Login");
-    doNothing().when(user).setEmail(Mockito.<String>any());
-    doNothing().when(user).setLogin(Mockito.<String>any());
-    doNothing().when(user).setName(Mockito.<String>any());
-    doNothing().when(user).setUnencodedPassword(Mockito.<String>any());
-
-    // Act
-    adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
-
-    // Assert
-    verify(broadleafUser).getEmail();
-    verify(broadleafUser, atLeast(1)).getFirstName();
-    verify(broadleafUser).getLastName();
-    verify(user).getAllRoles();
-    verify(user).getLogin();
-    verify(user).getUnencodedPassword();
-    verify(user).setAllRoles(isA(Set.class));
-    verify(user).setEmail("jane.doe@example.org");
-    verify(user).setLogin("janedoe");
-    verify(user).setName("");
-    verify(user, atLeast(1)).setUnencodedPassword(Mockito.<String>any());
-    verify(adminSecurityService).readAllAdminRoles();
-    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    verify(broadleafUser).getAuthorities();
-    verify(broadleafUser).getPassword();
-    verify(broadleafUser).getUsername();
-  }
-
-  /**
-   * Test {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}.
-   *
-   * <p>Method under test: {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"
-  })
-  public void testSaveAdminUser3() {
-    // Arrange
-    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    BroadleafExternalAuthenticationUserDetails broadleafUser =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(broadleafUser.getFirstName()).thenReturn(null);
-    when(broadleafUser.getLastName()).thenReturn("");
-    when(broadleafUser.getEmail()).thenReturn("jane.doe@example.org");
-    when(broadleafUser.getPassword()).thenReturn("iloveyou");
-    when(broadleafUser.getUsername()).thenReturn("janedoe");
-    when(broadleafUser.getAuthorities()).thenReturn(new ArrayList<>());
-
-    AdminUser user = mock(AdminUser.class);
-    doNothing().when(user).setAllRoles(Mockito.<Set<AdminRole>>any());
-    when(user.getUnencodedPassword()).thenReturn(null);
-    when(user.getAllRoles()).thenReturn(null);
-    when(user.getLogin()).thenReturn("Login");
-    doNothing().when(user).setEmail(Mockito.<String>any());
-    doNothing().when(user).setLogin(Mockito.<String>any());
-    doNothing().when(user).setName(Mockito.<String>any());
-    doNothing().when(user).setUnencodedPassword(Mockito.<String>any());
-
-    // Act
-    adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
-
-    // Assert
-    verify(broadleafUser).getEmail();
-    verify(broadleafUser).getFirstName();
-    verify(broadleafUser, atLeast(1)).getLastName();
-    verify(user).getAllRoles();
-    verify(user).getLogin();
-    verify(user).getUnencodedPassword();
-    verify(user).setAllRoles(isA(Set.class));
-    verify(user).setEmail("jane.doe@example.org");
-    verify(user).setLogin("janedoe");
-    verify(user).setName("");
-    verify(user, atLeast(1)).setUnencodedPassword(Mockito.<String>any());
-    verify(adminSecurityService).readAllAdminRoles();
-    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    verify(broadleafUser).getAuthorities();
-    verify(broadleafUser).getPassword();
-    verify(broadleafUser).getUsername();
-  }
-
-  /**
-   * Test {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}.
-   *
+   * Test {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminRoleImpl} (default constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminRoleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}
+   * <p>
+   * Method under test: {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"
-  })
+      "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"})
   public void testSaveAdminUser_givenArrayListAddAdminRoleImpl() {
     // Arrange
     ArrayList<AdminRole> adminRoleList = new ArrayList<>();
     adminRoleList.add(new AdminRoleImpl());
     when(adminSecurityService.readAllAdminRoles()).thenReturn(adminRoleList);
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-    BroadleafExternalAuthenticationUserDetails broadleafUser =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails broadleafUser = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
+
     AdminUserImpl user = new AdminUserImpl();
 
     // Act
@@ -344,95 +125,27 @@ public class AdminExternalLoginStateFilterDiffblueTest {
     assertEquals("", user.getMainEntityName());
     assertEquals("", user.getName());
     assertEquals("iloveyou", user.getUnencodedPassword());
-    assertEquals("janedoe", user.getLogin());
+    assertNull(user.getEmail());
   }
 
   /**
-   * Test {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}.
-   *
+   * Test {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link
-   *       SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.
+   *   <li>Given {@code Jane}.</li>
+   *   <li>Then {@link AdminUserImpl} (default constructor) MainEntityName is {@code Jane Doe}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}
+   * <p>
+   * Method under test: {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"
-  })
-  public void testSaveAdminUser_givenArrayListAddSimpleGrantedAuthorityWithRole() {
-    // Arrange
-    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    ArrayList<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
-    grantedAuthorityList.add(new SimpleGrantedAuthority("Role"));
-
-    BroadleafExternalAuthenticationUserDetails broadleafUser =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(broadleafUser.getFirstName()).thenReturn(null);
-    when(broadleafUser.getLastName()).thenReturn(null);
-    when(broadleafUser.getEmail()).thenReturn("jane.doe@example.org");
-    when(broadleafUser.getPassword()).thenReturn("iloveyou");
-    when(broadleafUser.getUsername()).thenReturn("janedoe");
-    when(broadleafUser.getAuthorities()).thenReturn(grantedAuthorityList);
-    AdminUserImpl user = new AdminUserImpl();
-
-    // Act
-    adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
-
-    // Assert
-    verify(broadleafUser).getEmail();
-    verify(broadleafUser).getFirstName();
-    verify(broadleafUser).getLastName();
-    verify(adminSecurityService).readAllAdminRoles();
-    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    verify(broadleafUser).getAuthorities();
-    verify(broadleafUser).getPassword();
-    verify(broadleafUser).getUsername();
-    assertEquals("", user.getMainEntityName());
-    assertEquals("", user.getName());
-    assertEquals("iloveyou", user.getUnencodedPassword());
-    assertEquals("jane.doe@example.org", user.getEmail());
-    assertEquals("janedoe", user.getLogin());
-  }
-
-  /**
-   * Test {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}.
-   *
-   * <ul>
-   *   <li>Given {@code Jane}.
-   *   <li>Then {@link AdminUserImpl} (default constructor) MainEntityName is {@code Jane Doe}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"
-  })
+      "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"})
   public void testSaveAdminUser_givenJane_thenAdminUserImplMainEntityNameIsJaneDoe() {
     // Arrange
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    BroadleafExternalAuthenticationUserDetails broadleafUser =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails broadleafUser = mock(BroadleafExternalAuthenticationUserDetails.class);
     when(broadleafUser.getEmail()).thenReturn("jane.doe@example.org");
     when(broadleafUser.getFirstName()).thenReturn("Jane");
     when(broadleafUser.getLastName()).thenReturn("Doe");
@@ -457,73 +170,204 @@ public class AdminExternalLoginStateFilterDiffblueTest {
     assertEquals("Jane Doe", user.getName());
     assertEquals("iloveyou", user.getUnencodedPassword());
     assertEquals("jane.doe@example.org", user.getEmail());
-    assertEquals("janedoe", user.getLogin());
   }
 
   /**
-   * Test {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}.
-   *
+   * Test {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}.
    * <ul>
-   *   <li>Given {@code Login}.
-   *   <li>Then calls {@link AdminUser#getAllRoles()}.
+   *   <li>Given {@code null}.</li>
+   *   <li>Then {@link AdminUserImpl} (default constructor) UnencodedPassword is {@code janedoe}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * AdminUser)}
+   * <p>
+   * Method under test: {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"
-  })
-  public void testSaveAdminUser_givenLogin_thenCallsGetAllRoles() {
+      "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"})
+  public void testSaveAdminUser_givenNull_thenAdminUserImplUnencodedPasswordIsJanedoe() {
     // Arrange
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    BroadleafExternalAuthenticationUserDetails broadleafUser =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(broadleafUser.getFirstName()).thenReturn(null);
-    when(broadleafUser.getLastName()).thenReturn(null);
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails broadleafUser = mock(BroadleafExternalAuthenticationUserDetails.class);
     when(broadleafUser.getEmail()).thenReturn("jane.doe@example.org");
-    when(broadleafUser.getPassword()).thenReturn("iloveyou");
+    when(broadleafUser.getFirstName()).thenReturn("Jane");
+    when(broadleafUser.getLastName()).thenReturn("Doe");
+    when(broadleafUser.getPassword()).thenReturn(null);
     when(broadleafUser.getUsername()).thenReturn("janedoe");
     when(broadleafUser.getAuthorities()).thenReturn(new ArrayList<>());
-
-    AdminUser user = mock(AdminUser.class);
-    doNothing().when(user).setAllRoles(Mockito.<Set<AdminRole>>any());
-    when(user.getUnencodedPassword()).thenReturn(null);
-    when(user.getAllRoles()).thenReturn(null);
-    when(user.getLogin()).thenReturn("Login");
-    doNothing().when(user).setEmail(Mockito.<String>any());
-    doNothing().when(user).setLogin(Mockito.<String>any());
-    doNothing().when(user).setName(Mockito.<String>any());
-    doNothing().when(user).setUnencodedPassword(Mockito.<String>any());
+    AdminUserImpl user = new AdminUserImpl();
 
     // Act
     adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
 
     // Assert
     verify(broadleafUser).getEmail();
-    verify(broadleafUser).getFirstName();
-    verify(broadleafUser).getLastName();
-    verify(user).getAllRoles();
-    verify(user).getLogin();
-    verify(user).getUnencodedPassword();
-    verify(user).setAllRoles(isA(Set.class));
-    verify(user).setEmail("jane.doe@example.org");
-    verify(user).setLogin("janedoe");
-    verify(user).setName("");
-    verify(user, atLeast(1)).setUnencodedPassword(Mockito.<String>any());
+    verify(broadleafUser, atLeast(1)).getFirstName();
+    verify(broadleafUser, atLeast(1)).getLastName();
     verify(adminSecurityService).readAllAdminRoles();
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
     verify(broadleafUser).getAuthorities();
     verify(broadleafUser).getPassword();
     verify(broadleafUser).getUsername();
+    assertEquals("Jane Doe", user.getMainEntityName());
+    assertEquals("Jane Doe", user.getName());
+    assertEquals("jane.doe@example.org", user.getEmail());
+    assertEquals("janedoe", user.getUnencodedPassword());
+  }
+
+  /**
+   * Test {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}.
+   * <ul>
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"})
+  public void testSaveAdminUser_givenSimpleGrantedAuthorityWithRole() {
+    // Arrange
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
+    BroadleafExternalAuthenticationUserDetails broadleafUser = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", authorities);
+
+    AdminUserImpl user = new AdminUserImpl();
+
+    // Act
+    adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
+
+    // Assert
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    assertEquals("", user.getMainEntityName());
+    assertEquals("", user.getName());
+    assertEquals("iloveyou", user.getUnencodedPassword());
+    assertNull(user.getEmail());
+  }
+
+  /**
+   * Test {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}.
+   * <ul>
+   *   <li>Then {@link AdminUserImpl} (default constructor) MainEntityName is {@code Doe}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"})
+  public void testSaveAdminUser_thenAdminUserImplMainEntityNameIsDoe() {
+    // Arrange
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails broadleafUser = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(broadleafUser.getEmail()).thenReturn("jane.doe@example.org");
+    when(broadleafUser.getFirstName()).thenReturn(" ");
+    when(broadleafUser.getLastName()).thenReturn("Doe");
+    when(broadleafUser.getPassword()).thenReturn("iloveyou");
+    when(broadleafUser.getUsername()).thenReturn("janedoe");
+    when(broadleafUser.getAuthorities()).thenReturn(new ArrayList<>());
+    AdminUserImpl user = new AdminUserImpl();
+
+    // Act
+    adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
+
+    // Assert
+    verify(broadleafUser).getEmail();
+    verify(broadleafUser, atLeast(1)).getFirstName();
+    verify(broadleafUser, atLeast(1)).getLastName();
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(broadleafUser).getAuthorities();
+    verify(broadleafUser).getPassword();
+    verify(broadleafUser).getUsername();
+    assertEquals("Doe", user.getMainEntityName());
+    assertEquals("Doe", user.getName());
+    assertEquals("iloveyou", user.getUnencodedPassword());
+    assertEquals("jane.doe@example.org", user.getEmail());
+  }
+
+  /**
+   * Test {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}.
+   * <ul>
+   *   <li>Then {@link AdminUserImpl} (default constructor) MainEntityName is empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"})
+  public void testSaveAdminUser_thenAdminUserImplMainEntityNameIsEmptyString() {
+    // Arrange
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails broadleafUser = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
+
+    AdminUserImpl user = new AdminUserImpl();
+
+    // Act
+    adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
+
+    // Assert
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    assertEquals("", user.getMainEntityName());
+    assertEquals("", user.getName());
+    assertEquals("iloveyou", user.getUnencodedPassword());
+    assertNull(user.getEmail());
+  }
+
+  /**
+   * Test {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}.
+   * <ul>
+   *   <li>Then {@link AdminUserImpl} (default constructor) MainEntityName is {@code Jane}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminExternalLoginStateFilter#saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void AdminExternalLoginStateFilter.saveAdminUser(BroadleafExternalAuthenticationUserDetails, AdminUser)"})
+  public void testSaveAdminUser_thenAdminUserImplMainEntityNameIsJane() {
+    // Arrange
+    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails broadleafUser = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(broadleafUser.getEmail()).thenReturn("jane.doe@example.org");
+    when(broadleafUser.getFirstName()).thenReturn("Jane");
+    when(broadleafUser.getLastName()).thenReturn(" ");
+    when(broadleafUser.getPassword()).thenReturn("iloveyou");
+    when(broadleafUser.getUsername()).thenReturn("janedoe");
+    when(broadleafUser.getAuthorities()).thenReturn(new ArrayList<>());
+    AdminUserImpl user = new AdminUserImpl();
+
+    // Act
+    adminExternalLoginStateFilter.saveAdminUser(broadleafUser, user);
+
+    // Assert
+    verify(broadleafUser).getEmail();
+    verify(broadleafUser, atLeast(1)).getFirstName();
+    verify(broadleafUser, atLeast(1)).getLastName();
+    verify(adminSecurityService).readAllAdminRoles();
+    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(broadleafUser).getAuthorities();
+    verify(broadleafUser).getPassword();
+    verify(broadleafUser).getUsername();
+    assertEquals("Jane ", user.getMainEntityName());
+    assertEquals("Jane ", user.getName());
+    assertEquals("iloveyou", user.getUnencodedPassword());
+    assertEquals("jane.doe@example.org", user.getEmail());
   }
 }

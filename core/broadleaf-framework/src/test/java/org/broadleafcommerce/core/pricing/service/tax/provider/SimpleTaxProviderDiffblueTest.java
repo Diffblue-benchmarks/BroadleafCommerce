@@ -25,11 +25,11 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -57,18 +57,15 @@ import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
-import org.broadleafcommerce.core.order.domain.GiftWrapOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
-import org.broadleafcommerce.core.order.domain.OrderItemImpl;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.domain.TaxDetail;
 import org.broadleafcommerce.core.order.domain.TaxDetailImpl;
 import org.broadleafcommerce.core.order.domain.TaxType;
 import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
-import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.pricing.service.exception.TaxException;
 import org.broadleafcommerce.profile.core.domain.Address;
@@ -94,40 +91,37 @@ public class SimpleTaxProviderDiffblueTest {
   @MockBean(name = "blEntityConfiguration")
   private EntityConfiguration entityConfiguration;
 
-  @Autowired private SimpleTaxProvider simpleTaxProvider;
+  @Autowired
+  private SimpleTaxProvider simpleTaxProvider;
 
   /**
    * Test {@link SimpleTaxProvider#canRespond(ModuleConfiguration)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#canRespond(ModuleConfiguration)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#canRespond(ModuleConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SimpleTaxProvider.canRespond(ModuleConfiguration)"})
   public void testCanRespond_whenNull_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(new SimpleTaxProvider().canRespond(null));
+    assertTrue((new SimpleTaxProvider()).canRespond(null));
   }
 
   /**
    * Test {@link SimpleTaxProvider#canRespond(ModuleConfiguration)}.
-   *
    * <ul>
-   *   <li>When {@link SiteMapConfigurationImpl} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>When {@link SiteMapConfigurationImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#canRespond(ModuleConfiguration)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#canRespond(ModuleConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SimpleTaxProvider.canRespond(ModuleConfiguration)"})
   public void testCanRespond_whenSiteMapConfigurationImpl_thenReturnFalse() {
     // Arrange
@@ -139,90 +133,25 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#calculateTaxForOrder(Order, ModuleConfiguration)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#calculateTaxForOrder(Order,
-   * ModuleConfiguration)}
+   * <ul>
+   *   <li>Given {@link SimpleTaxProvider} (default constructor).</li>
+   *   <li>Then return {@link OrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#calculateTaxForOrder(Order, ModuleConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Order SimpleTaxProvider.calculateTaxForOrder(Order, ModuleConfiguration)"})
-  public void testCalculateTaxForOrder() throws TaxException {
+  public void testCalculateTaxForOrder_givenSimpleTaxProvider_thenReturnOrderImpl() throws TaxException {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-    simpleTaxProvider.setDefaultItemTaxRate(null);
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(1L);
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupItem> fulfillmentGroupItems = new ArrayList<>();
-    fulfillmentGroupItems.add(fulfillmentGroupItemImpl);
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(null);
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl.setId(1L);
-    fulfillmentGroupFeeImpl.setName("Name");
-    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFees = new ArrayList<>();
-    fulfillmentGroupFees.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(1L);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(new NullOrderImpl());
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupItems(fulfillmentGroupItems);
-    fulfillmentGroupImpl.setFulfillmentGroupFees(fulfillmentGroupFees);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(null);
-    fulfillmentGroupImpl.setAddress(null);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
-    fulfillmentGroups.add(fulfillmentGroupImpl);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -231,277 +160,7 @@ public class SimpleTaxProviderDiffblueTest {
     order.setCurrency(new BroadleafCurrencyImpl());
     order.setCustomer(new CustomerImpl());
     order.setEmailAddress("42 Main St");
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    Money subTotal = new Money();
-    order.setSubTotal(subTotal);
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setFulfillmentGroups(fulfillmentGroups);
-
-    // Act
-    Order actualCalculateTaxForOrderResult =
-        simpleTaxProvider.calculateTaxForOrder(order, new SiteMapConfigurationImpl());
-
-    // Assert
-    List<FulfillmentGroup> fulfillmentGroups2 =
-        actualCalculateTaxForOrderResult.getFulfillmentGroups();
-    assertEquals(1, fulfillmentGroups2.size());
-    FulfillmentGroup getResult = fulfillmentGroups2.get(0);
-    assertTrue(getResult instanceof FulfillmentGroupImpl);
-    assertTrue(actualCalculateTaxForOrderResult instanceof OrderImpl);
-    Money absResult = getResult.getTotalFeeTax().abs();
-    assertEquals(subTotal, absResult.zero().abs().abs());
-    Money absResult2 = absResult.abs();
-    Money zeroResult = absResult2.zero();
-    assertEquals(subTotal, zeroResult.abs());
-    assertEquals(subTotal, absResult2.abs().zero());
-    assertEquals(subTotal, zeroResult.zero());
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#calculateTaxForOrder(Order, ModuleConfiguration)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#calculateTaxForOrder(Order,
-   * ModuleConfiguration)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order SimpleTaxProvider.calculateTaxForOrder(Order, ModuleConfiguration)"})
-  public void testCalculateTaxForOrder2() throws TaxException {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-    simpleTaxProvider.setDefaultItemTaxRate(null);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(new NullOrderImpl());
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(1L);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupItem> fulfillmentGroupItems = new ArrayList<>();
-    fulfillmentGroupItems.add(fulfillmentGroupItemImpl);
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(null);
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl.setId(1L);
-    fulfillmentGroupFeeImpl.setName("Name");
-    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFees = new ArrayList<>();
-    fulfillmentGroupFees.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(1L);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(new NullOrderImpl());
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupItems(fulfillmentGroupItems);
-    fulfillmentGroupImpl.setFulfillmentGroupFees(fulfillmentGroupFees);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(null);
-    fulfillmentGroupImpl.setAddress(null);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
-    fulfillmentGroups.add(fulfillmentGroupImpl);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    Money subTotal = new Money();
-    order.setSubTotal(subTotal);
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setFulfillmentGroups(fulfillmentGroups);
-
-    // Act
-    Order actualCalculateTaxForOrderResult =
-        simpleTaxProvider.calculateTaxForOrder(order, new SiteMapConfigurationImpl());
-
-    // Assert
-    List<FulfillmentGroup> fulfillmentGroups2 =
-        actualCalculateTaxForOrderResult.getFulfillmentGroups();
-    assertEquals(1, fulfillmentGroups2.size());
-    FulfillmentGroup getResult = fulfillmentGroups2.get(0);
-    assertTrue(getResult instanceof FulfillmentGroupImpl);
-    List<FulfillmentGroupItem> fulfillmentGroupItems2 = getResult.getFulfillmentGroupItems();
-    assertEquals(1, fulfillmentGroupItems2.size());
-    FulfillmentGroupItem getResult2 = fulfillmentGroupItems2.get(0);
-    assertTrue(getResult2 instanceof FulfillmentGroupItemImpl);
-    assertTrue(actualCalculateTaxForOrderResult instanceof OrderImpl);
-    assertEquals(subTotal, getResult2.getProratedOrderAdjustmentAmount());
-    assertEquals(subTotal, getResult2.getRetailPrice());
-    assertEquals(subTotal, getResult2.getTotalItemAmount());
-    assertEquals(subTotal, getResult2.getTotalItemTaxableAmount());
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#calculateTaxForOrder(Order, ModuleConfiguration)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#calculateTaxForOrder(Order,
-   * ModuleConfiguration)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order SimpleTaxProvider.calculateTaxForOrder(Order, ModuleConfiguration)"})
-  public void testCalculateTaxForOrder3() throws TaxException {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-    simpleTaxProvider.setDefaultItemTaxRate(null);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(1L);
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupItem> fulfillmentGroupItems = new ArrayList<>();
-    fulfillmentGroupItems.add(fulfillmentGroupItemImpl);
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(null);
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl.setId(1L);
-    fulfillmentGroupFeeImpl.setName("Name");
-    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFees = new ArrayList<>();
-    fulfillmentGroupFees.add(new FulfillmentGroupFeeImpl());
-    fulfillmentGroupFees.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(1L);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(new NullOrderImpl());
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupItems(fulfillmentGroupItems);
-    fulfillmentGroupImpl.setFulfillmentGroupFees(fulfillmentGroupFees);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(null);
-    fulfillmentGroupImpl.setAddress(null);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
-    fulfillmentGroups.add(fulfillmentGroupImpl);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
     order.setId(1L);
     order.setLocale(new LocaleImpl());
     order.setName("Name");
@@ -512,398 +171,41 @@ public class SimpleTaxProviderDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
-    order.setFulfillmentGroups(fulfillmentGroups);
 
-    // Act
-    Order actualCalculateTaxForOrderResult =
-        simpleTaxProvider.calculateTaxForOrder(order, new SiteMapConfigurationImpl());
-
-    // Assert
-    List<FulfillmentGroup> fulfillmentGroups2 =
-        actualCalculateTaxForOrderResult.getFulfillmentGroups();
-    assertEquals(1, fulfillmentGroups2.size());
-    FulfillmentGroup getResult = fulfillmentGroups2.get(0);
-    List<FulfillmentGroupFee> fulfillmentGroupFees2 = getResult.getFulfillmentGroupFees();
-    assertEquals(2, fulfillmentGroupFees2.size());
-    FulfillmentGroupFee getResult2 = fulfillmentGroupFees2.get(0);
-    assertTrue(getResult2 instanceof FulfillmentGroupFeeImpl);
-    assertTrue(getResult instanceof FulfillmentGroupImpl);
-    assertTrue(actualCalculateTaxForOrderResult instanceof OrderImpl);
-    assertNull(getResult2.getId());
-    assertNull(getResult2.getName());
-    assertNull(getResult2.getReportingCode());
-    assertNull(getResult2.getTotalTax());
-    assertNull(getResult2.getFulfillmentGroup());
-    assertSame(fulfillmentGroupFeeImpl, fulfillmentGroupFees2.get(1));
+    // Act and Assert
+    assertSame(order, simpleTaxProvider.calculateTaxForOrder(order, new SiteMapConfigurationImpl()));
   }
 
   /**
    * Test {@link SimpleTaxProvider#calculateTaxForOrder(Order, ModuleConfiguration)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#calculateTaxForOrder(Order,
-   * ModuleConfiguration)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order SimpleTaxProvider.calculateTaxForOrder(Order, ModuleConfiguration)"})
-  public void testCalculateTaxForOrder4() throws TaxException {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-    simpleTaxProvider.setDefaultItemTaxRate(null);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(1L);
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupItem> fulfillmentGroupItems = new ArrayList<>();
-    fulfillmentGroupItems.add(fulfillmentGroupItemImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(new Money());
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(fulfillmentGroup);
-    fulfillmentGroupFeeImpl.setId(1L);
-    fulfillmentGroupFeeImpl.setName("Name");
-    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFees = new ArrayList<>();
-    fulfillmentGroupFees.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(1L);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(new NullOrderImpl());
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupItems(fulfillmentGroupItems);
-    fulfillmentGroupImpl.setFulfillmentGroupFees(fulfillmentGroupFees);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(null);
-    fulfillmentGroupImpl.setAddress(null);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
-    fulfillmentGroups.add(fulfillmentGroupImpl);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    Money subTotal = new Money();
-    order.setSubTotal(subTotal);
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setFulfillmentGroups(fulfillmentGroups);
-
-    // Act
-    Order actualCalculateTaxForOrderResult =
-        simpleTaxProvider.calculateTaxForOrder(order, new SiteMapConfigurationImpl());
-
-    // Assert
-    List<FulfillmentGroup> fulfillmentGroups2 =
-        actualCalculateTaxForOrderResult.getFulfillmentGroups();
-    assertEquals(1, fulfillmentGroups2.size());
-    FulfillmentGroup getResult = fulfillmentGroups2.get(0);
-    List<FulfillmentGroupFee> fulfillmentGroupFees2 = getResult.getFulfillmentGroupFees();
-    assertEquals(1, fulfillmentGroupFees2.size());
-    FulfillmentGroupFee getResult2 = fulfillmentGroupFees2.get(0);
-    assertTrue(getResult2 instanceof FulfillmentGroupFeeImpl);
-    assertTrue(getResult instanceof FulfillmentGroupImpl);
-    assertTrue(actualCalculateTaxForOrderResult instanceof OrderImpl);
-    assertNull(((FulfillmentGroupFeeImpl) getResult2).getCurrencyCode());
-    assertEquals(subTotal, getResult2.getAmount());
-    assertEquals(subTotal, getResult2.getTotalTax());
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#calculateTaxForOrder(Order, ModuleConfiguration)}.
-   *
    * <ul>
-   *   <li>Then FulfillmentGroups first Address return {@link AddressImpl}.
+   *   <li>Given {@link SimpleTaxProvider} (default constructor).</li>
+   *   <li>Then return {@link OrderImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#calculateTaxForOrder(Order,
-   * ModuleConfiguration)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#calculateTaxForOrder(Order, ModuleConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Order SimpleTaxProvider.calculateTaxForOrder(Order, ModuleConfiguration)"})
-  public void testCalculateTaxForOrder_thenFulfillmentGroupsFirstAddressReturnAddressImpl()
-      throws TaxException {
+  public void testCalculateTaxForOrder_givenSimpleTaxProvider_thenReturnOrderImpl2() throws TaxException {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-    simpleTaxProvider.setDefaultItemTaxRate(null);
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(1L);
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupItem> fulfillmentGroupItems = new ArrayList<>();
-    fulfillmentGroupItems.add(fulfillmentGroupItemImpl);
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(null);
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl.setId(1L);
-    fulfillmentGroupFeeImpl.setName("Name");
-    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFees = new ArrayList<>();
-    fulfillmentGroupFees.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(1L);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(new NullOrderImpl());
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupItems(fulfillmentGroupItems);
-    fulfillmentGroupImpl.setFulfillmentGroupFees(fulfillmentGroupFees);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(null);
-    AddressImpl address = new AddressImpl();
-    fulfillmentGroupImpl.setAddress(address);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
-    fulfillmentGroups.add(fulfillmentGroupImpl);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setFulfillmentGroups(fulfillmentGroups);
-
-    // Act
-    Order actualCalculateTaxForOrderResult =
-        simpleTaxProvider.calculateTaxForOrder(order, new SiteMapConfigurationImpl());
-
-    // Assert
-    List<FulfillmentGroup> fulfillmentGroups2 =
-        actualCalculateTaxForOrderResult.getFulfillmentGroups();
-    assertEquals(1, fulfillmentGroups2.size());
-    FulfillmentGroup getResult = fulfillmentGroups2.get(0);
-    assertTrue(getResult instanceof FulfillmentGroupImpl);
-    assertTrue(actualCalculateTaxForOrderResult instanceof OrderImpl);
-    Address address2 = getResult.getAddress();
-    assertTrue(address2 instanceof AddressImpl);
-    assertSame(address, address2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#calculateTaxForOrder(Order, ModuleConfiguration)}.
-   *
-   * <ul>
-   *   <li>Then return FulfillmentGroups size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#calculateTaxForOrder(Order,
-   * ModuleConfiguration)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order SimpleTaxProvider.calculateTaxForOrder(Order, ModuleConfiguration)"})
-  public void testCalculateTaxForOrder_thenReturnFulfillmentGroupsSizeIsTwo() throws TaxException {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-    simpleTaxProvider.setDefaultItemTaxRate(null);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(1L);
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupItem> fulfillmentGroupItems = new ArrayList<>();
-    fulfillmentGroupItems.add(fulfillmentGroupItemImpl);
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(null);
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl.setId(1L);
-    fulfillmentGroupFeeImpl.setName("Name");
-    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFees = new ArrayList<>();
-    fulfillmentGroupFees.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroupImpl.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroupImpl.setFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setId(1L);
-    fulfillmentGroupImpl.setMerchandiseTotal(new Money());
-    fulfillmentGroupImpl.setMethod("Fulfillment Method");
-    fulfillmentGroupImpl.setOrder(new NullOrderImpl());
-    fulfillmentGroupImpl.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroupImpl.setPhone(new PhoneImpl());
-    fulfillmentGroupImpl.setPrimary(true);
-    fulfillmentGroupImpl.setReferenceNumber("42");
-    fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroupImpl.setSequence(1);
-    fulfillmentGroupImpl.setService("Service");
-    fulfillmentGroupImpl.setShippingOverride(true);
-    fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupImpl.setTotal(new Money());
-    fulfillmentGroupImpl.setTotalFeeTax(new Money());
-    fulfillmentGroupImpl.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroupImpl.setTotalItemTax(new Money());
-    fulfillmentGroupImpl.setTotalTax(new Money());
-    fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroupImpl.setFulfillmentGroupItems(fulfillmentGroupItems);
-    fulfillmentGroupImpl.setFulfillmentGroupFees(fulfillmentGroupFees);
-    fulfillmentGroupImpl.setIsShippingPriceTaxable(null);
-    fulfillmentGroupImpl.setAddress(null);
-    fulfillmentGroupImpl.setTaxes(new ArrayList<>());
 
     ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
     fulfillmentGroups.add(new FulfillmentGroupImpl());
-    fulfillmentGroups.add(fulfillmentGroupImpl);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -912,6 +214,7 @@ public class SimpleTaxProviderDiffblueTest {
     order.setCurrency(new BroadleafCurrencyImpl());
     order.setCustomer(new CustomerImpl());
     order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(fulfillmentGroups);
     order.setId(1L);
     order.setLocale(new LocaleImpl());
     order.setName("Name");
@@ -922,43 +225,33 @@ public class SimpleTaxProviderDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
-    order.setFulfillmentGroups(fulfillmentGroups);
 
     // Act
-    Order actualCalculateTaxForOrderResult =
-        simpleTaxProvider.calculateTaxForOrder(order, new SiteMapConfigurationImpl());
+    Order actualCalculateTaxForOrderResult = simpleTaxProvider.calculateTaxForOrder(order,
+        new SiteMapConfigurationImpl());
 
     // Assert
-    List<FulfillmentGroup> fulfillmentGroups2 =
-        actualCalculateTaxForOrderResult.getFulfillmentGroups();
-    assertEquals(2, fulfillmentGroups2.size());
-    assertTrue(fulfillmentGroups2.get(0) instanceof FulfillmentGroupImpl);
-    FulfillmentGroup getResult = fulfillmentGroups2.get(1);
-    assertTrue(getResult instanceof FulfillmentGroupImpl);
     assertTrue(actualCalculateTaxForOrderResult instanceof OrderImpl);
-    assertSame(fulfillmentGroupImpl, getResult);
+    assertSame(fulfillmentGroups, actualCalculateTaxForOrderResult.getFulfillmentGroups());
   }
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
   public void testHandleFulfillmentGroupItemTaxes() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
@@ -978,28 +271,27 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
   public void testHandleFulfillmentGroupItemTaxes2() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
     when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    AddressImpl address = new AddressImpl();
-    address.setIsoCountryAlpha2(new ISOCountryImpl());
+    Address address = mock(Address.class);
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("");
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
+    when(address.getState()).thenReturn(new StateImpl());
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(address);
@@ -1013,48 +305,298 @@ public class SimpleTaxProviderDiffblueTest {
     verify(fulfillmentGroupItem).getOrderItem();
     verify(fulfillmentGroupItem).getTaxes();
     verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
+    verify(address).getCity();
+    verify(address, atLeast(1)).getIsoCountryAlpha2();
+    verify(address).getPostalCode();
+    verify(address).getState();
+    verify(address).getStateProvinceRegion();
   }
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
   public void testHandleFulfillmentGroupItemTaxes3() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
+    simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
     when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
+    Address address = mock(Address.class);
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
 
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(new ISOCodeStatusType("Type", "Friendly Type"));
-    isoCountryImpl.setAlpha2("GB");
-    isoCountryImpl.setName(null);
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.setAddress(address);
+    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
 
-    StateImpl stateImpl = new StateImpl();
-    stateImpl.setCountry(new CountryImpl());
-    stateImpl.setAbbreviation("MD");
-    stateImpl.setName(null);
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
 
+    // Assert
+    verify(bundleOrderItemImpl).isTaxable();
+    verify(fulfillmentGroupItem).getOrderItem();
+    verify(fulfillmentGroupItem).getTaxes();
+    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
+    verify(address).getCity();
+    verify(address, atLeast(1)).getIsoCountryAlpha2();
+    verify(address).getPostalCode();
+    verify(address, atLeast(1)).getStateProvinceRegion();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupItemTaxes4() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemCityTaxRateMap(new HashMap<>());
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
+    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
+    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
+    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
+    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
+    Address address = mock(Address.class);
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.setAddress(address);
+    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(bundleOrderItemImpl).isTaxable();
+    verify(fulfillmentGroupItem).getOrderItem();
+    verify(fulfillmentGroupItem).getTaxes();
+    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
+    verify(address).getCity();
+    verify(address, atLeast(1)).getIsoCountryAlpha2();
+    verify(address).getPostalCode();
+    verify(address, atLeast(1)).getStateProvinceRegion();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupItemTaxes5() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
+    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
+    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
+    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
+    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
+    Address address = mock(Address.class);
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.setAddress(address);
+    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(bundleOrderItemImpl).isTaxable();
+    verify(fulfillmentGroupItem).getOrderItem();
+    verify(fulfillmentGroupItem).getTaxes();
+    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
+    verify(address).getCity();
+    verify(address, atLeast(1)).getIsoCountryAlpha2();
+    verify(address).getPostalCode();
+    verify(address, atLeast(1)).getStateProvinceRegion();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupItemTaxes6() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
+    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
+    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
+    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
+    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
+    Address address = mock(Address.class);
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.setAddress(address);
+    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(bundleOrderItemImpl).isTaxable();
+    verify(fulfillmentGroupItem).getOrderItem();
+    verify(fulfillmentGroupItem).getTaxes();
+    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
+    verify(address).getCity();
+    verify(address, atLeast(1)).getIsoCountryAlpha2();
+    verify(address).getPostalCode();
+    verify(address, atLeast(1)).getStateProvinceRegion();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link Address} {@link Address#getCity()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupItemTaxes_givenAddressGetCityReturnNull() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemCityTaxRateMap(new HashMap<>());
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
+    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
+    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
+    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
+    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
     Address address = mock(Address.class);
     when(address.getCity()).thenReturn(null);
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.setAddress(address);
+    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(bundleOrderItemImpl).isTaxable();
+    verify(fulfillmentGroupItem).getOrderItem();
+    verify(fulfillmentGroupItem).getTaxes();
+    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
+    verify(address).getCity();
+    verify(address, atLeast(1)).getIsoCountryAlpha2();
+    verify(address).getPostalCode();
+    verify(address, atLeast(1)).getStateProvinceRegion();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link Address} {@link Address#getPostalCode()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupItemTaxes_givenAddressGetPostalCodeReturnNull() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
+    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
+    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
+    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
+    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
+    Address address = mock(Address.class);
+    when(address.getCity()).thenReturn("Oxford");
     when(address.getPostalCode()).thenReturn(null);
-    when(address.getStateProvinceRegion()).thenReturn("");
-    when(address.getIsoCountryAlpha2()).thenReturn(isoCountryImpl);
-    when(address.getState()).thenReturn(stateImpl);
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.setAddress(address);
+    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(bundleOrderItemImpl).isTaxable();
+    verify(fulfillmentGroupItem).getOrderItem();
+    verify(fulfillmentGroupItem).getTaxes();
+    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
+    verify(address).getCity();
+    verify(address, atLeast(1)).getIsoCountryAlpha2();
+    verify(address).getPostalCode();
+    verify(address, atLeast(1)).getStateProvinceRegion();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link Address} {@link Address#getStateProvinceRegion()} return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupItemTaxes_givenAddressGetStateProvinceRegionReturnNull() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
+    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
+    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
+    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
+    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
+    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
+    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
+    Address address = mock(Address.class);
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn(null);
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
+    when(address.getState()).thenReturn(new StateImpl());
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(address);
@@ -1077,25 +619,20 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).
+   *   <li>Given {@link AddressImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
   public void testHandleFulfillmentGroupItemTaxes_givenAddressImpl() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
@@ -1117,233 +654,20 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).
+   *   <li>Given {@link BundleOrderItemImpl} {@link BundleOrderItemImpl#isTaxable()} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenAddressImpl2() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
-
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
-
-    // Assert
-    verify(bundleOrderItemImpl).isTaxable();
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getTaxes();
-    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenAddressImpl3() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemCityTaxRateMap(new HashMap<>());
-
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
-
-    // Assert
-    verify(bundleOrderItemImpl).isTaxable();
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getTaxes();
-    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenAddressImpl4() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
-
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
-
-    // Assert
-    verify(bundleOrderItemImpl).isTaxable();
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getTaxes();
-    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenAddressImpl5() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
-
-    // Assert
-    verify(bundleOrderItemImpl).isTaxable();
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getTaxes();
-    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) StateProvinceRegion is {@code us-east-2}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenAddressImplStateProvinceRegionIsUsEast2() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    AddressImpl address = new AddressImpl();
-    address.setStateProvinceRegion("us-east-2");
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
-
-    // Assert
-    verify(bundleOrderItemImpl).isTaxable();
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getTaxes();
-    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} {@link BundleOrderItemImpl#isTaxable()} return {@code
-   *       false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
   public void testHandleFulfillmentGroupItemTaxes_givenBundleOrderItemImplIsTaxableReturnFalse() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(false);
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
 
@@ -1360,49 +684,33 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link ISOCountryImpl} (default constructor) Alpha2 is {@code null}.
+   *   <li>Given {@link ISOCountryImpl} {@link ISOCountryImpl#getName()} return {@code Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenISOCountryImplAlpha2IsNull() {
+  public void testHandleFulfillmentGroupItemTaxes_givenISOCountryImplGetNameReturnName() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
     when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(new ISOCodeStatusType("Type", "Friendly Type"));
-    isoCountryImpl.setAlpha2(null);
-    isoCountryImpl.setName(null);
-
-    StateImpl stateImpl = new StateImpl();
-    stateImpl.setCountry(new CountryImpl());
-    stateImpl.setAbbreviation("MD");
-    stateImpl.setName(null);
-
+    ISOCountryImpl isoCountryImpl = mock(ISOCountryImpl.class);
+    when(isoCountryImpl.getName()).thenReturn("Name");
+    when(isoCountryImpl.getAlpha2()).thenReturn("Alpha2");
     Address address = mock(Address.class);
-    when(address.getCity()).thenReturn(null);
-    when(address.getPostalCode()).thenReturn(null);
-    when(address.getStateProvinceRegion()).thenReturn(" ");
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
     when(address.getIsoCountryAlpha2()).thenReturn(isoCountryImpl);
-    when(address.getState()).thenReturn(stateImpl);
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(address);
@@ -1412,6 +720,8 @@ public class SimpleTaxProviderDiffblueTest {
     simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
 
     // Assert
+    verify(isoCountryImpl, atLeast(1)).getAlpha2();
+    verify(isoCountryImpl, atLeast(1)).getName();
     verify(bundleOrderItemImpl).isTaxable();
     verify(fulfillmentGroupItem).getOrderItem();
     verify(fulfillmentGroupItem).getTaxes();
@@ -1419,55 +729,38 @@ public class SimpleTaxProviderDiffblueTest {
     verify(address).getCity();
     verify(address, atLeast(1)).getIsoCountryAlpha2();
     verify(address).getPostalCode();
-    verify(address).getState();
-    verify(address).getStateProvinceRegion();
+    verify(address, atLeast(1)).getStateProvinceRegion();
   }
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link ISOCountryImpl} (default constructor) Name is {@code Name}.
+   *   <li>Given {@link ISOCountryImpl} {@link ISOCountryImpl#getName()} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenISOCountryImplNameIsName() {
+  public void testHandleFulfillmentGroupItemTaxes_givenISOCountryImplGetNameReturnNull() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
     when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(new ISOCodeStatusType("Type", "Friendly Type"));
-    isoCountryImpl.setAlpha2("GB");
-    isoCountryImpl.setName("Name");
-
-    StateImpl stateImpl = new StateImpl();
-    stateImpl.setCountry(new CountryImpl());
-    stateImpl.setAbbreviation("MD");
-    stateImpl.setName(null);
-
+    ISOCountryImpl isoCountryImpl = mock(ISOCountryImpl.class);
+    when(isoCountryImpl.getName()).thenReturn(null);
+    when(isoCountryImpl.getAlpha2()).thenReturn("Alpha2");
     Address address = mock(Address.class);
-    when(address.getCity()).thenReturn(null);
-    when(address.getPostalCode()).thenReturn(null);
-    when(address.getStateProvinceRegion()).thenReturn(" ");
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
     when(address.getIsoCountryAlpha2()).thenReturn(isoCountryImpl);
-    when(address.getState()).thenReturn(stateImpl);
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(address);
@@ -1477,6 +770,8 @@ public class SimpleTaxProviderDiffblueTest {
     simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
 
     // Assert
+    verify(isoCountryImpl, atLeast(1)).getAlpha2();
+    verify(isoCountryImpl).getName();
     verify(bundleOrderItemImpl).isTaxable();
     verify(fulfillmentGroupItem).getOrderItem();
     verify(fulfillmentGroupItem).getTaxes();
@@ -1484,55 +779,35 @@ public class SimpleTaxProviderDiffblueTest {
     verify(address).getCity();
     verify(address, atLeast(1)).getIsoCountryAlpha2();
     verify(address).getPostalCode();
-    verify(address).getState();
-    verify(address).getStateProvinceRegion();
+    verify(address, atLeast(1)).getStateProvinceRegion();
   }
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link StateImpl} (default constructor) Abbreviation is {@code null}.
+   *   <li>Given {@link SimpleTaxProvider} (default constructor).</li>
+   *   <li>Then calls {@link Address#getCity()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenStateImplAbbreviationIsNull() {
+  public void testHandleFulfillmentGroupItemTaxes_givenSimpleTaxProvider_thenCallsGetCity() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
-
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
     when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(new ISOCodeStatusType("Type", "Friendly Type"));
-    isoCountryImpl.setAlpha2("GB");
-    isoCountryImpl.setName(null);
-
-    StateImpl stateImpl = new StateImpl();
-    stateImpl.setCountry(new CountryImpl());
-    stateImpl.setAbbreviation(null);
-    stateImpl.setName(null);
-
     Address address = mock(Address.class);
-    when(address.getCity()).thenReturn(null);
-    when(address.getPostalCode()).thenReturn(null);
-    when(address.getStateProvinceRegion()).thenReturn(" ");
-    when(address.getIsoCountryAlpha2()).thenReturn(isoCountryImpl);
-    when(address.getState()).thenReturn(stateImpl);
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
+    when(address.getIsoCountryAlpha2()).thenReturn(new ISOCountryImpl());
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(address);
@@ -1549,250 +824,36 @@ public class SimpleTaxProviderDiffblueTest {
     verify(address).getCity();
     verify(address, atLeast(1)).getIsoCountryAlpha2();
     verify(address).getPostalCode();
-    verify(address).getState();
-    verify(address).getStateProvinceRegion();
+    verify(address, atLeast(1)).getStateProvinceRegion();
   }
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link StateImpl} (default constructor) Name is {@code Name}.
-   *   <li>Then calls {@link Address#getCity()}.
+   *   <li>Then calls {@link Address#getCountry()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_givenStateImplNameIsName_thenCallsGetCity() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
-
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(new ISOCodeStatusType("Type", "Friendly Type"));
-    isoCountryImpl.setAlpha2("GB");
-    isoCountryImpl.setName(null);
-
-    StateImpl stateImpl = new StateImpl();
-    stateImpl.setCountry(new CountryImpl());
-    stateImpl.setAbbreviation("MD");
-    stateImpl.setName("Name");
-
-    Address address = mock(Address.class);
-    when(address.getCity()).thenReturn(null);
-    when(address.getPostalCode()).thenReturn(null);
-    when(address.getStateProvinceRegion()).thenReturn(" ");
-    when(address.getIsoCountryAlpha2()).thenReturn(isoCountryImpl);
-    when(address.getState()).thenReturn(stateImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
-
-    // Assert
-    verify(bundleOrderItemImpl).isTaxable();
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getTaxes();
-    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
-    verify(address).getCity();
-    verify(address, atLeast(1)).getIsoCountryAlpha2();
-    verify(address).getPostalCode();
-    verify(address).getState();
-    verify(address).getStateProvinceRegion();
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Address#getCity()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_thenCallsGetCity() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(new ISOCodeStatusType("Type", "Friendly Type"));
-    isoCountryImpl.setAlpha2("GB");
-    isoCountryImpl.setName(null);
-
-    StateImpl stateImpl = new StateImpl();
-    stateImpl.setCountry(new CountryImpl());
-    stateImpl.setAbbreviation("MD");
-    stateImpl.setName(null);
-
-    Address address = mock(Address.class);
-    when(address.getCity()).thenReturn(null);
-    when(address.getPostalCode()).thenReturn(null);
-    when(address.getStateProvinceRegion()).thenReturn(" ");
-    when(address.getIsoCountryAlpha2()).thenReturn(isoCountryImpl);
-    when(address.getState()).thenReturn(stateImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
-
-    // Assert
-    verify(bundleOrderItemImpl).isTaxable();
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getTaxes();
-    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
-    verify(address).getCity();
-    verify(address, atLeast(1)).getIsoCountryAlpha2();
-    verify(address).getPostalCode();
-    verify(address).getState();
-    verify(address).getStateProvinceRegion();
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Address#getCity()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_thenCallsGetCity2() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
-
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
-    when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
-    when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(new ISOCodeStatusType("Type", "Friendly Type"));
-    isoCountryImpl.setAlpha2("GB");
-    isoCountryImpl.setName(null);
-
-    StateImpl stateImpl = new StateImpl();
-    stateImpl.setCountry(new CountryImpl());
-    stateImpl.setAbbreviation("MD");
-    stateImpl.setName(null);
-
-    Address address = mock(Address.class);
-    when(address.getCity()).thenReturn(null);
-    when(address.getPostalCode()).thenReturn(null);
-    when(address.getStateProvinceRegion()).thenReturn(" ");
-    when(address.getIsoCountryAlpha2()).thenReturn(isoCountryImpl);
-    when(address.getState()).thenReturn(stateImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupItemTaxes(fulfillmentGroup);
-
-    // Assert
-    verify(bundleOrderItemImpl).isTaxable();
-    verify(fulfillmentGroupItem).getOrderItem();
-    verify(fulfillmentGroupItem).getTaxes();
-    verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
-    verify(address).getCity();
-    verify(address, atLeast(1)).getIsoCountryAlpha2();
-    verify(address).getPostalCode();
-    verify(address).getState();
-    verify(address).getStateProvinceRegion();
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Address#getCity()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupItemTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupItemTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupItemTaxes_thenCallsGetCity3() {
+  public void testHandleFulfillmentGroupItemTaxes_thenCallsGetCountry() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-
     BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
     when(bundleOrderItemImpl.isTaxable()).thenReturn(true);
-
     FulfillmentGroupItemImpl fulfillmentGroupItem = mock(FulfillmentGroupItemImpl.class);
     when(fulfillmentGroupItem.getTaxes()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupItem.getTotalItemTaxableAmount()).thenReturn(new Money());
     when(fulfillmentGroupItem.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(new ISOCodeStatusType("Type", "Friendly Type"));
-    isoCountryImpl.setAlpha2("GB");
-    isoCountryImpl.setName(null);
-
-    StateImpl stateImpl = new StateImpl();
-    stateImpl.setCountry(new CountryImpl());
-    stateImpl.setAbbreviation("MD");
-    stateImpl.setName(null);
-
     Address address = mock(Address.class);
-    when(address.getCity()).thenReturn(null);
-    when(address.getPostalCode()).thenReturn(null);
-    when(address.getStateProvinceRegion()).thenReturn(" ");
-    when(address.getIsoCountryAlpha2()).thenReturn(isoCountryImpl);
-    when(address.getState()).thenReturn(stateImpl);
+    when(address.getCity()).thenReturn("Oxford");
+    when(address.getPostalCode()).thenReturn("Postal Code");
+    when(address.getStateProvinceRegion()).thenReturn("us-east-2");
+    when(address.getIsoCountryAlpha2()).thenReturn(null);
+    when(address.getCountry()).thenReturn(new CountryImpl());
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(address);
@@ -1807,34 +868,361 @@ public class SimpleTaxProviderDiffblueTest {
     verify(fulfillmentGroupItem).getTaxes();
     verify(fulfillmentGroupItem).getTotalItemTaxableAmount();
     verify(address).getCity();
-    verify(address, atLeast(1)).getIsoCountryAlpha2();
+    verify(address).getCountry();
+    verify(address).getIsoCountryAlpha2();
     verify(address).getPostalCode();
-    verify(address).getState();
-    verify(address).getStateProvinceRegion();
+    verify(address, atLeast(1)).getStateProvinceRegion();
   }
 
   /**
    * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link State} {@link State#getName()} return {@code Name}.
+   *   <li>Given {@link AddressImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupFeeTaxes_givenStateGetNameReturnName() {
+  public void testHandleFulfillmentGroupFeeTaxes_givenAddressImpl() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(new ArrayList<>());
+    when(fulfillmentGroupFee.getAmount()).thenReturn(new Money());
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
 
-    FulfillmentGroupFeeImpl fulfillmentGroupFee = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFee.setTaxable(true);
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.setAddress(new AddressImpl());
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
 
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
+   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getAmount()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupFeeTaxes_givenBigDecimalWith23_thenCallsGetAmount() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+
+    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
+    Money amount = new Money();
+    taxDetailList.add(new TaxDetailImpl(TaxType.CITY, amount, new BigDecimal("2.3")));
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(taxDetailList);
+    when(fulfillmentGroupFee.getAmount()).thenReturn(new Money());
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType#CITY}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupFeeTaxes_givenTaxDetailImplGetTypeReturnCity() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
+    when(taxDetailImpl.getType()).thenReturn(TaxType.CITY);
+
+    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
+    taxDetailList.add(taxDetailImpl);
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(taxDetailList);
+    when(fulfillmentGroupFee.getAmount()).thenReturn(new Money());
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+    verify(taxDetailImpl).getType();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType#COMBINED}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupFeeTaxes_givenTaxDetailImplGetTypeReturnCombined() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
+    when(taxDetailImpl.getType()).thenReturn(TaxType.COMBINED);
+
+    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
+    taxDetailList.add(taxDetailImpl);
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(taxDetailList);
+    when(fulfillmentGroupFee.getAmount()).thenReturn(new Money());
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+    verify(taxDetailImpl).getType();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType#TaxType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupFeeTaxes_givenTaxDetailImplGetTypeReturnTaxType() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
+    when(taxDetailImpl.getType()).thenReturn(new TaxType());
+
+    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
+    taxDetailList.add(taxDetailImpl);
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(taxDetailList);
+    when(fulfillmentGroupFee.getAmount()).thenReturn(new Money());
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+    verify(taxDetailImpl).getType();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupFeeTaxes_givenTaxDetailImplGetTypeReturnTaxType2() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
+    when(taxDetailImpl.getType()).thenReturn(mock(TaxType.class));
+
+    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
+    taxDetailList.add(taxDetailImpl);
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(taxDetailList);
+    when(fulfillmentGroupFee.getAmount()).thenReturn(new Money());
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+    verify(taxDetailImpl).getType();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getAmount()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupFeeTaxes_thenCallsGetAmount() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(new ArrayList<>());
+    when(fulfillmentGroupFee.getAmount()).thenReturn(new Money());
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Then calls {@link Money#multiply(BigDecimal)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupFeeTaxes_thenCallsMultiply() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setDefaultItemTaxRate(10.0d);
+    TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
+    doNothing().when(taxDetailImpl).setAmount(Mockito.<Money>any());
+    doNothing().when(taxDetailImpl).setRate(Mockito.<BigDecimal>any());
+    when(taxDetailImpl.getType()).thenReturn(TaxType.COMBINED);
+
+    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
+    taxDetailList.add(taxDetailImpl);
+    Money money = mock(Money.class);
+    when(money.multiply(Mockito.<BigDecimal>any())).thenReturn(new Money());
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(taxDetailList);
+    when(fulfillmentGroupFee.getAmount()).thenReturn(money);
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(money).multiply(isA(BigDecimal.class));
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+    verify(taxDetailImpl).getType();
+    verify(taxDetailImpl).setAmount(isA(Money.class));
+    verify(taxDetailImpl).setRate(isA(BigDecimal.class));
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Then calls {@link TaxDetailImpl#setAmount(Money)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupFeeTaxes_thenCallsSetAmount() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setDefaultItemTaxRate(10.0d);
+    TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
+    doNothing().when(taxDetailImpl).setAmount(Mockito.<Money>any());
+    doNothing().when(taxDetailImpl).setRate(Mockito.<BigDecimal>any());
+    when(taxDetailImpl.getType()).thenReturn(TaxType.COMBINED);
+
+    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
+    taxDetailList.add(taxDetailImpl);
+    FulfillmentGroupFeeImpl fulfillmentGroupFee = mock(FulfillmentGroupFeeImpl.class);
+    when(fulfillmentGroupFee.getTaxes()).thenReturn(taxDetailList);
+    when(fulfillmentGroupFee.getAmount()).thenReturn(new Money());
+    when(fulfillmentGroupFee.isTaxable()).thenReturn(true);
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+
+    // Act
+    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+
+    // Assert
+    verify(fulfillmentGroupFee).getAmount();
+    verify(fulfillmentGroupFee).getTaxes();
+    verify(fulfillmentGroupFee).isTaxable();
+    verify(taxDetailImpl).getType();
+    verify(taxDetailImpl).setAmount(isA(Money.class));
+    verify(taxDetailImpl).setRate(isA(BigDecimal.class));
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
+   * <ul>
+   *   <li>Given {@link State} {@link State#getName()} return {@code Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupTaxes_givenStateGetNameReturnName() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
     State state = mock(State.class);
     when(state.getName()).thenReturn("Name");
     when(state.getAbbreviation()).thenReturn("Abbreviation");
@@ -1844,10 +1232,10 @@ public class SimpleTaxProviderDiffblueTest {
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+    fulfillmentGroup.setIsShippingPriceTaxable(null);
 
     // Act
-    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
 
     // Assert
     verify(state, atLeast(1)).getAbbreviation();
@@ -1855,27 +1243,20 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}.
-   *
+   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
    * <ul>
-   *   <li>Given {@link State} {@link State#getName()} return {@code null}.
+   *   <li>Given {@link State} {@link State#getName()} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#handleFulfillmentGroupFeeTaxes(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupFeeTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupFeeTaxes_givenStateGetNameReturnNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
+  public void testHandleFulfillmentGroupTaxes_givenStateGetNameReturnNull() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFee = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFee.setTaxable(true);
-
+    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
     State state = mock(State.class);
     when(state.getName()).thenReturn(null);
     when(state.getAbbreviation()).thenReturn("Abbreviation");
@@ -1885,10 +1266,10 @@ public class SimpleTaxProviderDiffblueTest {
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.addFulfillmentGroupFee(fulfillmentGroupFee);
+    fulfillmentGroup.setIsShippingPriceTaxable(null);
 
     // Act
-    simpleTaxProvider.handleFulfillmentGroupFeeTaxes(fulfillmentGroup);
+    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
 
     // Assert
     verify(state, atLeast(1)).getAbbreviation();
@@ -1896,1075 +1277,20 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.CITY);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(null);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("2.3"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes2() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.COMBINED);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    Money fulfillmentPrice = new Money();
-    fulfillmentGroup.setFulfillmentPrice(fulfillmentPrice);
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(null);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert
-    assertTrue(fulfillmentGroup.getTaxes().isEmpty());
-    Money absResult = fulfillmentGroup.getFulfillmentGroupAdjustmentsValue().abs();
-    Money absResult2 = absResult.zero().abs();
-    Money absResult3 = absResult2.abs();
-    assertEquals(fulfillmentPrice, absResult3.abs());
-    assertEquals(fulfillmentPrice, absResult2.zero().abs());
-    Money zeroResult = absResult.abs().zero();
-    Money zeroResult2 = zeroResult.zero();
-    assertEquals(fulfillmentPrice, zeroResult2.abs());
-    assertEquals(fulfillmentPrice, absResult3.zero());
-    assertEquals(fulfillmentPrice, zeroResult.abs().zero());
-    assertEquals(fulfillmentPrice, zeroResult2.zero());
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes3() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(10.0d);
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.COMBINED);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(null);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("10.0"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes_givenAddressImpl() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.CITY);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("2.3"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) Country is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes_givenAddressImplCountryIsNull() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
-    address.setIsoCountryAlpha2(null);
-    address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
-    address.setCountry(null);
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.CITY);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("2.3"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) IsoCountryAlpha2 is {@link
-   *       ISOCountryImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes_givenAddressImplIsoCountryAlpha2IsISOCountryImpl() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCity("Oxford");
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(new ISOCountryImpl());
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("us-east-2");
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.CITY);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("2.3"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) StateProvinceRegion is {@code not blank}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes_givenAddressImplStateProvinceRegionIsNotBlank() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
-    address.setIsoCountryAlpha2(null);
-    address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
-    address.setCountry(new CountryImpl());
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.CITY);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("2.3"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link TaxDetailImpl#TaxDetailImpl()} JurisdictionName is {@code name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes_givenTaxDetailImplJurisdictionNameIsName() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    CountryImpl country = new CountryImpl();
-    country.setName("Name");
-    country.setAbbreviation("Fulfillment Group");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
-    address.setIsoCountryAlpha2(null);
-    address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
-    address.setCountry(country);
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("name");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("name");
-    taxDetailImpl.setType(TaxType.CITY);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("2.3"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link ISOCountry#getAlpha2()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes_thenCallsGetAlpha2() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
-    when(isoCountryAlpha2.getName()).thenReturn(null);
-    when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCity("Oxford");
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(isoCountryAlpha2);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("us-east-2");
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.CITY);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    verify(isoCountryAlpha2, atLeast(1)).getAlpha2();
-    verify(isoCountryAlpha2).getName();
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("2.3"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link ISOCountry#getAlpha2()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes_thenCallsGetAlpha22() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
-    when(isoCountryAlpha2.getName()).thenReturn("Name");
-    when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCity("Oxford");
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(isoCountryAlpha2);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("us-east-2");
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setAmount(new Money());
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setCurrency(new BroadleafCurrencyImpl());
-    taxDetailImpl.setId(1L);
-    taxDetailImpl.setJurisdictionName("currency.default");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("currency.default");
-    taxDetailImpl.setType(TaxType.CITY);
-
-    ArrayList<TaxDetail> taxes = new ArrayList<>();
-    taxes.add(taxDetailImpl);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-    fulfillmentGroup.setTaxes(taxes);
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    verify(isoCountryAlpha2, atLeast(1)).getAlpha2();
-    verify(isoCountryAlpha2, atLeast(1)).getName();
-    List<TaxDetail> taxes2 = fulfillmentGroup.getTaxes();
-    assertEquals(1, taxes2.size());
-    TaxDetail getResult = taxes2.get(0);
-    assertTrue(getResult instanceof TaxDetailImpl);
-    assertEquals(new BigDecimal("2.3"), getResult.getRate());
-    assertSame(taxes, taxes2);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>When {@link FulfillmentGroupImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#handleFulfillmentGroupTaxes(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleTaxProvider.handleFulfillmentGroupTaxes(FulfillmentGroup)"})
-  public void testHandleFulfillmentGroupTaxes_whenFulfillmentGroupImpl() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-
-    // Act
-    simpleTaxProvider.handleFulfillmentGroupTaxes(fulfillmentGroup);
-
-    // Assert that nothing has changed
-    assertTrue(fulfillmentGroup.getTaxes().isEmpty());
-  }
-
-  /**
    * Test {@link SimpleTaxProvider#applyTaxFactor(List, BigDecimal, Money)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then {@link ArrayList#ArrayList()} first is {@link TaxDetailImpl#TaxDetailImpl()}.
+   *   <li>Then {@link ArrayList#ArrayList()} first is {@link TaxDetailImpl#TaxDetailImpl()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#applyTaxFactor(List, BigDecimal, Money)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#applyTaxFactor(List, BigDecimal, Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleTaxProvider.applyTaxFactor(List, BigDecimal, Money)"})
-  public void testApplyTaxFactor_whenArrayList_thenArrayListFirstIsTaxDetailImpl() {
+  public void testApplyTaxFactor_thenArrayListFirstIsTaxDetailImpl() {
     // Arrange
     TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<TaxDetail>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<TaxDetail>>any()))
         .thenReturn(taxDetailImpl);
     ArrayList<TaxDetail> taxes = new ArrayList<>();
     BigDecimal taxFactor = new BigDecimal("2.3");
@@ -2973,21 +1299,54 @@ public class SimpleTaxProviderDiffblueTest {
     simpleTaxProvider.applyTaxFactor(taxes, taxFactor, new Money());
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.core.order.domain.TaxDetail"), isA(Class.class));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.TaxDetail"),
+        isA(Class.class));
     assertEquals(1, taxes.size());
     assertSame(taxDetailImpl, taxes.get(0));
   }
 
   /**
-   * Test {@link SimpleTaxProvider#findExistingTaxDetail(List)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
+   * Test {@link SimpleTaxProvider#applyTaxFactor(List, BigDecimal, Money)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#applyTaxFactor(List, BigDecimal, Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.applyTaxFactor(List, BigDecimal, Money)"})
+  public void testApplyTaxFactor_whenArrayList_thenArrayListSizeIsOne() {
+    // Arrange
+    TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
+    doNothing().when(taxDetailImpl).setAmount(Mockito.<Money>any());
+    doNothing().when(taxDetailImpl).setRate(Mockito.<BigDecimal>any());
+    doNothing().when(taxDetailImpl).setType(Mockito.<TaxType>any());
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<TaxDetail>>any()))
+        .thenReturn(taxDetailImpl);
+    ArrayList<TaxDetail> taxes = new ArrayList<>();
+    BigDecimal taxFactor = new BigDecimal("2.3");
+
+    // Act
+    simpleTaxProvider.applyTaxFactor(taxes, taxFactor, new Money());
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.TaxDetail"),
+        isA(Class.class));
+    verify(taxDetailImpl).setAmount(isA(Money.class));
+    verify(taxDetailImpl).setRate(isA(BigDecimal.class));
+    verify(taxDetailImpl).setType(isA(TaxType.class));
+    assertEquals(1, taxes.size());
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#findExistingTaxDetail(List)}.
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TaxDetail SimpleTaxProvider.findExistingTaxDetail(List)"})
   public void testFindExistingTaxDetail() {
     // Arrange
@@ -3006,23 +1365,20 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#findExistingTaxDetail(List)}.
-   *
    * <ul>
-   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TaxDetail SimpleTaxProvider.findExistingTaxDetail(List)"})
   public void testFindExistingTaxDetail_givenBigDecimalWith23() {
     // Arrange
     ArrayList<TaxDetail> taxes = new ArrayList<>();
     Money amount = new Money();
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl(TaxType.CITY, amount, new BigDecimal("2.3"));
-    taxes.add(taxDetailImpl);
+    taxes.add(new TaxDetailImpl(TaxType.CITY, amount, new BigDecimal("2.3")));
 
     // Act and Assert
     assertNull(simpleTaxProvider.findExistingTaxDetail(taxes));
@@ -3030,17 +1386,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#findExistingTaxDetail(List)}.
-   *
    * <ul>
-   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType#CITY}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType#CITY}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TaxDetail SimpleTaxProvider.findExistingTaxDetail(List)"})
   public void testFindExistingTaxDetail_givenTaxDetailImplGetTypeReturnCity_thenReturnNull() {
     // Arrange
@@ -3060,17 +1414,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#findExistingTaxDetail(List)}.
-   *
    * <ul>
-   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link
-   *       TaxType#COMBINED}.
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType#COMBINED}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TaxDetail SimpleTaxProvider.findExistingTaxDetail(List)"})
   public void testFindExistingTaxDetail_givenTaxDetailImplGetTypeReturnCombined() {
     // Arrange
@@ -3089,18 +1440,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#findExistingTaxDetail(List)}.
-   *
    * <ul>
-   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link
-   *       TaxType#TaxType()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType#TaxType()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TaxDetail SimpleTaxProvider.findExistingTaxDetail(List)"})
   public void testFindExistingTaxDetail_givenTaxDetailImplGetTypeReturnTaxType_thenReturnNull() {
     // Arrange
@@ -3120,17 +1468,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#findExistingTaxDetail(List)}.
-   *
    * <ul>
-   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getType()} return {@link TaxType}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TaxDetail SimpleTaxProvider.findExistingTaxDetail(List)"})
   public void testFindExistingTaxDetail_givenTaxDetailImplGetTypeReturnTaxType_thenReturnNull2() {
     // Arrange
@@ -3150,17 +1496,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#findExistingTaxDetail(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#findExistingTaxDetail(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TaxDetail SimpleTaxProvider.findExistingTaxDetail(List)"})
   public void testFindExistingTaxDetail_whenArrayList_thenReturnNull() {
     // Arrange, Act and Assert
@@ -3169,38 +1513,31 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#commitTaxForOrder(Order, ModuleConfiguration)}.
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#commitTaxForOrder(Order, ModuleConfiguration)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#commitTaxForOrder(Order, ModuleConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Order SimpleTaxProvider.commitTaxForOrder(Order, ModuleConfiguration)"})
   public void testCommitTaxForOrder() throws TaxException {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     NullOrderImpl order = new NullOrderImpl();
 
-    // Act
-    Order actualCommitTaxForOrderResult =
-        simpleTaxProvider.commitTaxForOrder(order, new SiteMapConfigurationImpl());
-
-    // Assert
-    assertSame(order, actualCommitTaxForOrderResult);
+    // Act and Assert
+    assertSame(order, simpleTaxProvider.commitTaxForOrder(order, new SiteMapConfigurationImpl()));
   }
 
   /**
    * Test {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}.
-   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>When {@link HashMap#HashMap()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupPostalCodeRate(Map, String)"})
   public void testLookupPostalCodeRate_whenHashMap() {
     // Arrange, Act and Assert
@@ -3209,16 +1546,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupPostalCodeRate(Map, String)"})
   public void testLookupPostalCodeRate_whenNull() {
     // Arrange, Act and Assert
@@ -3227,16 +1562,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}.
-   *
    * <ul>
-   *   <li>When {@code Postal Code}.
+   *   <li>When {@code Postal Code}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupPostalCodeRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupPostalCodeRate(Map, String)"})
   public void testLookupPostalCodeRate_whenPostalCode() {
     // Arrange, Act and Assert
@@ -3245,16 +1578,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#lookupCityRate(Map, String)}.
-   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>When {@link HashMap#HashMap()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCityRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCityRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCityRate(Map, String)"})
   public void testLookupCityRate_whenHashMap() {
     // Arrange, Act and Assert
@@ -3263,16 +1594,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#lookupCityRate(Map, String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCityRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCityRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCityRate(Map, String)"})
   public void testLookupCityRate_whenNull() {
     // Arrange, Act and Assert
@@ -3281,16 +1610,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#lookupCityRate(Map, String)}.
-   *
    * <ul>
-   *   <li>When {@code Oxford}.
+   *   <li>When {@code Oxford}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCityRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCityRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCityRate(Map, String)"})
   public void testLookupCityRate_whenOxford() {
     // Arrange, Act and Assert
@@ -3298,18 +1625,15 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap},
-   * {@code stateProvinceRegion}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap}, {@code stateProvinceRegion}.
    * <ul>
-   *   <li>When empty string.
+   *   <li>When empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, String)"})
   public void testLookupStateRateWithStateTaxRateMapStateProvinceRegion_whenEmptyString() {
     // Arrange, Act and Assert
@@ -3317,75 +1641,47 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap},
-   * {@code stateProvinceRegion}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap}, {@code stateProvinceRegion}.
    * <ul>
-   *   <li>When {@code not blank}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, String)"})
-  public void testLookupStateRateWithStateTaxRateMapStateProvinceRegion_whenNotBlank() {
+  public void testLookupStateRateWithStateTaxRateMapStateProvinceRegion_whenNull() {
     // Arrange, Act and Assert
-    assertNull(simpleTaxProvider.lookupStateRate(null, "not blank"));
+    assertNull(simpleTaxProvider.lookupStateRate(null, (String) null));
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap},
-   * {@code stateProvinceRegion}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap}, {@code stateProvinceRegion}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, String)"})
-  public void testLookupStateRateWithStateTaxRateMapStateProvinceRegion_whenNull() {
+  public void testLookupStateRateWithStateTaxRateMapStateProvinceRegion_whenNull2() {
     // Arrange, Act and Assert
     assertNull(simpleTaxProvider.lookupStateRate(new HashMap<>(), (String) null));
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap},
-   * {@code stateProvinceRegion}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap}, {@code stateProvinceRegion}.
    * <ul>
-   *   <li>When space.
+   *   <li>When {@code us-east-2}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, String)"})
-  public void testLookupStateRateWithStateTaxRateMapStateProvinceRegion_whenSpace() {
-    // Arrange, Act and Assert
-    assertNull(simpleTaxProvider.lookupStateRate(new HashMap<>(), " "));
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, String)} with {@code stateTaxRateMap},
-   * {@code stateProvinceRegion}.
-   *
-   * <ul>
-   *   <li>When {@code us-east-2}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, String)"})
   public void testLookupStateRateWithStateTaxRateMapStateProvinceRegion_whenUsEast2() {
     // Arrange, Act and Assert
@@ -3393,19 +1689,16 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code
-   * state}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code state}.
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link StateImpl} (default constructor) Name is {@code null}.
+   *   <li>Given {@code null}.</li>
+   *   <li>When {@link StateImpl} (default constructor) Name is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, State)"})
   public void testLookupStateRateWithStateTaxRateMapState_givenNull_whenStateImplNameIsNull() {
     // Arrange
@@ -3422,37 +1715,31 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code
-   * state}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code state}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, State)"})
   public void testLookupStateRateWithStateTaxRateMapState_whenNull() {
     // Arrange, Act and Assert
-    assertNull(new SimpleTaxProvider().lookupStateRate(null, (State) null));
+    assertNull((new SimpleTaxProvider()).lookupStateRate(null, (State) null));
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code
-   * state}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code state}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, State)"})
   public void testLookupStateRateWithStateTaxRateMapState_whenNull2() {
     // Arrange
@@ -3463,18 +1750,15 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code
-   * state}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code state}.
    * <ul>
-   *   <li>When {@link StateImpl} (default constructor).
+   *   <li>When {@link StateImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, State)"})
   public void testLookupStateRateWithStateTaxRateMapState_whenStateImpl() {
     // Arrange
@@ -3486,18 +1770,15 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code
-   * state}.
-   *
+   * Test {@link SimpleTaxProvider#lookupStateRate(Map, State)} with {@code stateTaxRateMap}, {@code state}.
    * <ul>
-   *   <li>When {@link StateImpl} (default constructor) Name is {@code MD}.
+   *   <li>When {@link StateImpl} (default constructor) Name is {@code MD}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupStateRate(Map, State)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupStateRate(Map, State)"})
   public void testLookupStateRateWithStateTaxRateMapState_whenStateImplNameIsMd() {
     // Arrange
@@ -3514,18 +1795,15 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap},
-   * {@code country}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap}, {@code country}.
    * <ul>
-   *   <li>Given {@code GB}.
+   *   <li>Given {@code GB}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, Country)"})
   public void testLookupCountryRateWithCountryTaxRateMapCountry_givenGb() {
     // Arrange
@@ -3541,31 +1819,26 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap},
-   * {@code country}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap}, {@code country}.
    * <ul>
-   *   <li>Given {@code null}.
+   *   <li>Given {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, Country)"})
   public void testLookupCountryRateWithCountryTaxRateMapCountry_givenNull() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     HashMap<String, Double> countryTaxRateMap = new HashMap<>();
-
     Country country = mock(Country.class);
     when(country.getName()).thenReturn(null);
     when(country.getAbbreviation()).thenReturn("Abbreviation");
 
     // Act
-    Double actualLookupCountryRateResult =
-        simpleTaxProvider.lookupCountryRate(countryTaxRateMap, country);
+    Double actualLookupCountryRateResult = simpleTaxProvider.lookupCountryRate(countryTaxRateMap, country);
 
     // Assert
     verify(country, atLeast(1)).getAbbreviation();
@@ -3574,31 +1847,54 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap},
-   * {@code country}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap}, {@code country}.
    * <ul>
-   *   <li>When {@link Country} {@link Country#getName()} return {@code Name}.
+   *   <li>Then return doubleValue is {@code 0.5}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, Country)"})
+  public void testLookupCountryRateWithCountryTaxRateMapCountry_thenReturnDoubleValueIs05() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+
+    HashMap<String, Double> countryTaxRateMap = new HashMap<>();
+    countryTaxRateMap.put("42", 0.5d);
+    Country country = mock(Country.class);
+    when(country.getAbbreviation()).thenReturn("42");
+
+    // Act
+    Double actualLookupCountryRateResult = simpleTaxProvider.lookupCountryRate(countryTaxRateMap, country);
+
+    // Assert
+    verify(country, atLeast(1)).getAbbreviation();
+    assertEquals(0.5d, actualLookupCountryRateResult.doubleValue(), 0.0);
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap}, {@code country}.
+   * <ul>
+   *   <li>When {@link Country} {@link Country#getName()} return {@code Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, Country)"})
   public void testLookupCountryRateWithCountryTaxRateMapCountry_whenCountryGetNameReturnName() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     HashMap<String, Double> countryTaxRateMap = new HashMap<>();
-
     Country country = mock(Country.class);
     when(country.getName()).thenReturn("Name");
     when(country.getAbbreviation()).thenReturn("Abbreviation");
 
     // Act
-    Double actualLookupCountryRateResult =
-        simpleTaxProvider.lookupCountryRate(countryTaxRateMap, country);
+    Double actualLookupCountryRateResult = simpleTaxProvider.lookupCountryRate(countryTaxRateMap, country);
 
     // Assert
     verify(country, atLeast(1)).getAbbreviation();
@@ -3607,20 +1903,18 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap},
-   * {@code country}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap}, {@code country}.
    * <ul>
-   *   <li>When {@link CountryImpl} (default constructor).
+   *   <li>When {@link CountryImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, Country)"})
-  public void testLookupCountryRateWithCountryTaxRateMapCountry_whenCountryImpl() {
+  public void testLookupCountryRateWithCountryTaxRateMapCountry_whenCountryImpl_thenReturnNull() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     HashMap<String, Double> countryTaxRateMap = new HashMap<>();
@@ -3630,39 +1924,35 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap},
-   * {@code country}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap}, {@code country}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, Country)"})
-  public void testLookupCountryRateWithCountryTaxRateMapCountry_whenNull() {
+  public void testLookupCountryRateWithCountryTaxRateMapCountry_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new SimpleTaxProvider().lookupCountryRate(null, (Country) null));
+    assertNull((new SimpleTaxProvider()).lookupCountryRate(null, (Country) null));
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap},
-   * {@code country}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, Country)} with {@code countryTaxRateMap}, {@code country}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, Country)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, Country)"})
-  public void testLookupCountryRateWithCountryTaxRateMapCountry_whenNull2() {
+  public void testLookupCountryRateWithCountryTaxRateMapCountry_whenNull_thenReturnNull2() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
 
@@ -3671,18 +1961,15 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code
-   * countryTaxRateMap}, {@code isoCountry}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code countryTaxRateMap}, {@code isoCountry}.
    * <ul>
-   *   <li>Given {@code null}.
+   *   <li>Given {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, ISOCountry)"})
   public void testLookupCountryRateWithCountryTaxRateMapIsoCountry_givenNull() {
     // Arrange
@@ -3701,18 +1988,15 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code
-   * countryTaxRateMap}, {@code isoCountry}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code countryTaxRateMap}, {@code isoCountry}.
    * <ul>
-   *   <li>When {@link ISOCountryImpl} (default constructor).
+   *   <li>When {@link ISOCountryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, ISOCountry)"})
   public void testLookupCountryRateWithCountryTaxRateMapIsoCountry_whenISOCountryImpl() {
     // Arrange
@@ -3724,18 +2008,15 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code
-   * countryTaxRateMap}, {@code isoCountry}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code countryTaxRateMap}, {@code isoCountry}.
    * <ul>
-   *   <li>When {@link ISOCountryImpl} (default constructor) Name is {@code GB}.
+   *   <li>When {@link ISOCountryImpl} (default constructor) Name is {@code GB}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, ISOCountry)"})
   public void testLookupCountryRateWithCountryTaxRateMapIsoCountry_whenISOCountryImplNameIsGb() {
     // Arrange
@@ -3754,37 +2035,31 @@ public class SimpleTaxProviderDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code
-   * countryTaxRateMap}, {@code isoCountry}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code countryTaxRateMap}, {@code isoCountry}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, ISOCountry)"})
   public void testLookupCountryRateWithCountryTaxRateMapIsoCountry_whenNull() {
     // Arrange, Act and Assert
-    assertNull(new SimpleTaxProvider().lookupCountryRate(null, (ISOCountry) null));
+    assertNull((new SimpleTaxProvider()).lookupCountryRate(null, (ISOCountry) null));
   }
 
   /**
-   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code
-   * countryTaxRateMap}, {@code isoCountry}.
-   *
+   * Test {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)} with {@code countryTaxRateMap}, {@code isoCountry}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#lookupCountryRate(Map, ISOCountry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Double SimpleTaxProvider.lookupCountryRate(Map, ISOCountry)"})
   public void testLookupCountryRateWithCountryTaxRateMapIsoCountry_whenNull2() {
     // Arrange
@@ -3796,78 +2071,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#isItemTaxable(FulfillmentGroupItem)}.
-   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link BundleOrderItemImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#isItemTaxable(FulfillmentGroupItem)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#isItemTaxable(FulfillmentGroupItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SimpleTaxProvider.isItemTaxable(FulfillmentGroupItem)"})
-  public void testIsItemTaxable_givenAuditableCreatedByIsOne_thenReturnFalse() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderItemImpl orderItem = new OrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(1L);
-    orderItem.setName("Name");
-    orderItem.setOrder(new NullOrderImpl());
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(false);
-    orderItem.updateSaleAndRetailPrices();
-
-    FulfillmentGroupItemImpl item = new FulfillmentGroupItemImpl();
-    item.setOrderItem(orderItem);
-
-    // Act and Assert
-    assertFalse(simpleTaxProvider.isItemTaxable(item));
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#isItemTaxable(FulfillmentGroupItem)}.
-   *
-   * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#isItemTaxable(FulfillmentGroupItem)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SimpleTaxProvider.isItemTaxable(FulfillmentGroupItem)"})
   public void testIsItemTaxable_givenBundleOrderItemImpl_thenReturnTrue() {
     // Arrange
@@ -3882,17 +2094,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#isFeeTaxable(FulfillmentGroupFee)}.
-   *
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#isFeeTaxable(FulfillmentGroupFee)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#isFeeTaxable(FulfillmentGroupFee)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SimpleTaxProvider.isFeeTaxable(FulfillmentGroupFee)"})
   public void testIsFeeTaxable_givenTrue_thenReturnTrue() {
     // Arrange
@@ -3907,17 +2117,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#isFeeTaxable(FulfillmentGroupFee)}.
-   *
    * <ul>
-   *   <li>When {@link FulfillmentGroupFeeImpl} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>When {@link FulfillmentGroupFeeImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#isFeeTaxable(FulfillmentGroupFee)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#isFeeTaxable(FulfillmentGroupFee)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SimpleTaxProvider.isFeeTaxable(FulfillmentGroupFee)"})
   public void testIsFeeTaxable_whenFulfillmentGroupFeeImpl_thenReturnFalse() {
     // Arrange
@@ -3929,225 +2137,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@link Country} {@link Country#getName()} return {@code Name}.
-   *   <li>Then calls {@link Country#getAbbreviation()}.
+   *   <li>Given {@link CountryImpl} (default constructor).</li>
+   *   <li>When {@link AddressImpl} (default constructor) Country is {@link CountryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
-  public void testDetermineItemTaxRate_givenCountryGetNameReturnName_thenCallsGetAbbreviation() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultItemTaxRate(null);
-
-    Country country = mock(Country.class);
-    when(country.getName()).thenReturn("Name");
-    when(country.getAbbreviation()).thenReturn("Abbreviation");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
-    address.setIsoCountryAlpha2(null);
-    address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
-    address.setCountry(country);
-
-    // Act
-    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
-
-    // Assert
-    verify(country, atLeast(1)).getAbbreviation();
-    verify(country, atLeast(1)).getName();
-    assertEquals(new BigDecimal("0"), actualDetermineItemTaxRateResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
-   * <ul>
-   *   <li>Given {@link Country} {@link Country#getName()} return {@code null}.
-   *   <li>Then calls {@link Country#getAbbreviation()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
-  public void testDetermineItemTaxRate_givenCountryGetNameReturnNull_thenCallsGetAbbreviation() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultItemTaxRate(null);
-
-    Country country = mock(Country.class);
-    when(country.getName()).thenReturn(null);
-    when(country.getAbbreviation()).thenReturn("Abbreviation");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
-    address.setIsoCountryAlpha2(null);
-    address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
-    address.setCountry(country);
-
-    // Act
-    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
-
-    // Assert
-    verify(country, atLeast(1)).getAbbreviation();
-    verify(country).getName();
-    assertEquals(new BigDecimal("0"), actualDetermineItemTaxRateResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
-   * <ul>
-   *   <li>Given {@link CountryImpl} (default constructor) Name is {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
-  public void testDetermineItemTaxRate_givenCountryImplNameIsName() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultItemTaxRate(null);
-
-    CountryImpl country = new CountryImpl();
-    country.setName("Name");
-    country.setAbbreviation("42 Main St");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
-    address.setIsoCountryAlpha2(null);
-    address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
-    address.setCountry(country);
-
-    // Act
-    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
-
-    // Assert
-    assertEquals(new BigDecimal("0"), actualDetermineItemTaxRateResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
-   * <ul>
-   *   <li>Given {@link CountryImpl} (default constructor).
-   *   <li>When {@link AddressImpl} (default constructor) Country is {@link CountryImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_givenCountryImpl_whenAddressImplCountryIsCountryImpl() {
     // Arrange
@@ -4185,12 +2183,12 @@ public class SimpleTaxProviderDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
     address.setIsoCountryAlpha2(null);
     address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
     address.setCountry(new CountryImpl());
+    address.setStateProvinceRegion(null);
+    address.setState(null);
+    address.setCity(null);
 
     // Act
     BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
@@ -4201,16 +2199,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given empty string.
+   *   <li>Given empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_givenEmptyString() {
     // Arrange
@@ -4228,23 +2224,87 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@link ISOCountry} {@link ISOCountry#getName()} return {@code Name}.
-   *   <li>Then calls {@link ISOCountry#getAlpha2()}.
+   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@code 0.5}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.5}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
-  public void testDetermineItemTaxRate_givenISOCountryGetNameReturnName_thenCallsGetAlpha2() {
+  public void testDetermineItemTaxRate_givenHashMap42Is05_thenReturnBigDecimalWith05() {
+    // Arrange
+    HashMap<String, Double> itemCountryTaxRateMap = new HashMap<>();
+    itemCountryTaxRateMap.put("42", 0.5d);
+
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemCountryTaxRateMap(itemCountryTaxRateMap);
+    ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
+    when(isoCountryAlpha2.getName()).thenReturn("42");
+    when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
+
+    AddressImpl address = new AddressImpl();
+    address.setIsoCountryAlpha2(isoCountryAlpha2);
+
+    // Act
+    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
+
+    // Assert
+    verify(isoCountryAlpha2, atLeast(1)).getAlpha2();
+    verify(isoCountryAlpha2, atLeast(1)).getName();
+    assertEquals(new BigDecimal("0.5"), actualDetermineItemTaxRateResult);
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
+   * <ul>
+   *   <li>Given {@link ISOCountry} {@link ISOCountry#getAlpha2()} return {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
+  public void testDetermineItemTaxRate_givenISOCountryGetAlpha2Return42() {
+    // Arrange
+    HashMap<String, Double> itemCountryTaxRateMap = new HashMap<>();
+    itemCountryTaxRateMap.put("42", 0.5d);
+
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemCountryTaxRateMap(itemCountryTaxRateMap);
+    ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
+    when(isoCountryAlpha2.getAlpha2()).thenReturn("42");
+
+    AddressImpl address = new AddressImpl();
+    address.setIsoCountryAlpha2(isoCountryAlpha2);
+
+    // Act
+    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
+
+    // Assert
+    verify(isoCountryAlpha2, atLeast(1)).getAlpha2();
+    assertEquals(new BigDecimal("0.5"), actualDetermineItemTaxRateResult);
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
+   * <ul>
+   *   <li>Given {@link ISOCountry} {@link ISOCountry#getName()} return {@code Name}.</li>
+   *   <li>Then calls {@link ISOCountry#getName()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
+  public void testDetermineItemTaxRate_givenISOCountryGetNameReturnName_thenCallsGetName() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-
     ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
     when(isoCountryAlpha2.getName()).thenReturn("Name");
     when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
@@ -4263,23 +2323,20 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@link ISOCountry} {@link ISOCountry#getName()} return {@code null}.
-   *   <li>Then calls {@link ISOCountry#getAlpha2()}.
+   *   <li>Given {@link ISOCountry} {@link ISOCountry#getName()} return {@code null}.</li>
+   *   <li>Then calls {@link ISOCountry#getName()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
-  public void testDetermineItemTaxRate_givenISOCountryGetNameReturnNull_thenCallsGetAlpha2() {
+  public void testDetermineItemTaxRate_givenISOCountryGetNameReturnNull_thenCallsGetName() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
-
     ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
     when(isoCountryAlpha2.getName()).thenReturn(null);
     when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
@@ -4298,16 +2355,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@link ISOCountryImpl} (default constructor).
+   *   <li>Given {@link ISOCountryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_givenISOCountryImpl() {
     // Arrange
@@ -4325,16 +2380,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@link ISOCountryImpl} (default constructor).
+   *   <li>Given {@link ISOCountryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_givenISOCountryImpl2() {
     // Arrange
@@ -4353,19 +2406,172 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@code Postal Code}.
-   *   <li>When {@link AddressImpl} (default constructor) PostalCode is {@code Postal Code}.
+   *   <li>Given {@link SimpleTaxProvider} (default constructor).</li>
+   *   <li>When {@link AddressImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
-  public void testDetermineItemTaxRate_givenPostalCode_whenAddressImplPostalCodeIsPostalCode() {
+  public void testDetermineItemTaxRate_givenSimpleTaxProvider_whenAddressImpl() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+
+    // Act
+    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(new AddressImpl());
+
+    // Assert
+    assertEquals(new BigDecimal("0"), actualDetermineItemTaxRateResult);
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
+   * <ul>
+   *   <li>Given {@link StateImpl} (default constructor) Name is {@code 42 Main St}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
+  public void testDetermineItemTaxRate_givenStateImplNameIs42MainSt() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
+    simpleTaxProvider.setItemCityTaxRateMap(new HashMap<>());
+    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
+    simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
+    simpleTaxProvider.setDefaultItemTaxRate(null);
+
+    StateImpl state = new StateImpl();
+    state.setCountry(new CountryImpl());
+    state.setAbbreviation("42 Main St");
+    state.setName("42 Main St");
+
+    AddressImpl address = new AddressImpl();
+    address.setActive(true);
+    address.setAddressLine1("42 Main St");
+    address.setAddressLine2("42 Main St");
+    address.setAddressLine3("42 Main St");
+    address.setBusiness(true);
+    address.setCompanyName("Company Name");
+    address.setCounty("3");
+    address.setDefault(true);
+    address.setEmailAddress("42 Main St");
+    address.setFax("Fax");
+    address.setFirstName("Jane");
+    address.setFullName("Dr Jane Doe");
+    address.setId(1L);
+    address.setIsoCountrySubdivision("GB");
+    address.setLastName("Doe");
+    address.setMailing(true);
+    address.setPhoneFax(new PhoneImpl());
+    address.setPhonePrimary(new PhoneImpl());
+    address.setPhoneSecondary(new PhoneImpl());
+    address.setPrimaryPhone("6625550144");
+    address.setSecondaryPhone("6625550144");
+    address.setStandardized(true);
+    address.setStreet(true);
+    address.setTokenizedAddress("42 Main St");
+    address.setVerificationLevel("Verification Level");
+    address.setZipFour("21654");
+    address.setIsoCountryAlpha2(null);
+    address.setPostalCode(null);
+    address.setCountry(null);
+    address.setStateProvinceRegion(null);
+    address.setState(state);
+    address.setCity(null);
+
+    // Act
+    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
+
+    // Assert
+    assertEquals(new BigDecimal("0"), actualDetermineItemTaxRateResult);
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
+   * <ul>
+   *   <li>Given {@link StateImpl} (default constructor) Name is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
+  public void testDetermineItemTaxRate_givenStateImplNameIsNull() {
+    // Arrange
+    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
+    simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
+    simpleTaxProvider.setItemCityTaxRateMap(new HashMap<>());
+    simpleTaxProvider.setItemStateTaxRateMap(new HashMap<>());
+    simpleTaxProvider.setItemCountryTaxRateMap(new HashMap<>());
+    simpleTaxProvider.setDefaultItemTaxRate(null);
+
+    StateImpl state = new StateImpl();
+    state.setCountry(new CountryImpl());
+    state.setAbbreviation("42 Main St");
+    state.setName(null);
+
+    AddressImpl address = new AddressImpl();
+    address.setActive(true);
+    address.setAddressLine1("42 Main St");
+    address.setAddressLine2("42 Main St");
+    address.setAddressLine3("42 Main St");
+    address.setBusiness(true);
+    address.setCompanyName("Company Name");
+    address.setCounty("3");
+    address.setDefault(true);
+    address.setEmailAddress("42 Main St");
+    address.setFax("Fax");
+    address.setFirstName("Jane");
+    address.setFullName("Dr Jane Doe");
+    address.setId(1L);
+    address.setIsoCountrySubdivision("GB");
+    address.setLastName("Doe");
+    address.setMailing(true);
+    address.setPhoneFax(new PhoneImpl());
+    address.setPhonePrimary(new PhoneImpl());
+    address.setPhoneSecondary(new PhoneImpl());
+    address.setPrimaryPhone("6625550144");
+    address.setSecondaryPhone("6625550144");
+    address.setStandardized(true);
+    address.setStreet(true);
+    address.setTokenizedAddress("42 Main St");
+    address.setVerificationLevel("Verification Level");
+    address.setZipFour("21654");
+    address.setIsoCountryAlpha2(null);
+    address.setPostalCode(null);
+    address.setCountry(null);
+    address.setStateProvinceRegion(null);
+    address.setState(state);
+    address.setCity(null);
+
+    // Act
+    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
+
+    // Assert
+    assertEquals(new BigDecimal("0"), actualDetermineItemTaxRateResult);
+  }
+
+  /**
+   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
+   * <ul>
+   *   <li>Given {@link StateImpl} (default constructor).</li>
+   *   <li>When {@link AddressImpl} (default constructor) State is {@link StateImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
+  public void testDetermineItemTaxRate_givenStateImpl_whenAddressImplStateIsStateImpl() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
@@ -4401,12 +2607,12 @@ public class SimpleTaxProviderDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
     address.setIsoCountryAlpha2(null);
-    address.setPostalCode("Postal Code");
-    address.setCity(null);
-    address.setState(null);
+    address.setPostalCode(null);
     address.setCountry(null);
+    address.setStateProvinceRegion(null);
+    address.setState(new StateImpl());
+    address.setCity(null);
 
     // Act
     BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
@@ -4417,43 +2623,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@link SimpleTaxProvider} (default constructor).
-   *   <li>When {@link AddressImpl} (default constructor).
+   *   <li>Given {@code true}.</li>
+   *   <li>When {@link AddressImpl} (default constructor) City is {@code 42 Main St}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
-  public void testDetermineItemTaxRate_givenSimpleTaxProvider_whenAddressImpl() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-
-    // Act
-    BigDecimal actualDetermineItemTaxRateResult =
-        simpleTaxProvider.determineItemTaxRate(new AddressImpl());
-
-    // Assert
-    assertEquals(new BigDecimal("0"), actualDetermineItemTaxRateResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link AddressImpl} (default constructor) City is {@code 42 Main St}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_givenTrue_whenAddressImplCityIs42MainSt() {
     // Arrange
@@ -4491,12 +2669,12 @@ public class SimpleTaxProviderDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
     address.setIsoCountryAlpha2(null);
     address.setPostalCode(null);
-    address.setCity("42 Main St");
-    address.setState(null);
     address.setCountry(null);
+    address.setStateProvinceRegion(null);
+    address.setState(null);
+    address.setCity("42 Main St");
 
     // Act
     BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
@@ -4507,19 +2685,17 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link AddressImpl} (default constructor) Country is {@code null}.
+   *   <li>Given {@code true}.</li>
+   *   <li>When {@link AddressImpl} (default constructor) StateProvinceRegion is {@code 42 Main St}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
-  public void testDetermineItemTaxRate_givenTrue_whenAddressImplCountryIsNull() {
+  public void testDetermineItemTaxRate_givenTrue_whenAddressImplStateProvinceRegionIs42MainSt() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setItemPostalCodeTaxRateMap(new HashMap<>());
@@ -4555,12 +2731,12 @@ public class SimpleTaxProviderDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
     address.setIsoCountryAlpha2(null);
     address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
     address.setCountry(null);
+    address.setStateProvinceRegion("42 Main St");
+    address.setState(null);
+    address.setCity(null);
 
     // Act
     BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(address);
@@ -4571,16 +2747,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Given {@code us-east-2}.
+   *   <li>Given {@code us-east-2}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_givenUsEast2() {
     // Arrange
@@ -4598,16 +2772,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.0}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.0}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_thenReturnBigDecimalWith100() {
     // Arrange
@@ -4615,8 +2787,7 @@ public class SimpleTaxProviderDiffblueTest {
     simpleTaxProvider.setDefaultItemTaxRate(10.0d);
 
     // Act
-    BigDecimal actualDetermineItemTaxRateResult =
-        simpleTaxProvider.determineItemTaxRate(new AddressImpl());
+    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(new AddressImpl());
 
     // Assert
     assertEquals(new BigDecimal("10.0"), actualDetermineItemTaxRateResult);
@@ -4624,16 +2795,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>When {@link AddressImpl} (default constructor).
+   *   <li>When {@link AddressImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_whenAddressImpl() {
     // Arrange
@@ -4645,8 +2814,7 @@ public class SimpleTaxProviderDiffblueTest {
     simpleTaxProvider.setDefaultItemTaxRate(null);
 
     // Act
-    BigDecimal actualDetermineItemTaxRateResult =
-        simpleTaxProvider.determineItemTaxRate(new AddressImpl());
+    BigDecimal actualDetermineItemTaxRateResult = simpleTaxProvider.determineItemTaxRate(new AddressImpl());
 
     // Assert
     assertEquals(new BigDecimal("0"), actualDetermineItemTaxRateResult);
@@ -4654,16 +2822,14 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineItemTaxRate(Address)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineItemTaxRate(Address)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineItemTaxRate(Address)"})
   public void testDetermineItemTaxRate_whenNull() {
     // Arrange
@@ -4683,16 +2849,12 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"})
   public void testDetermineTaxRateForFulfillmentGroup() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
@@ -4708,9 +2870,7 @@ public class SimpleTaxProviderDiffblueTest {
     address.setAddressLine2("42 Main St");
     address.setAddressLine3("42 Main St");
     address.setBusiness(true);
-    address.setCity("Oxford");
     address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
     address.setCounty("3");
     address.setDefault(true);
     address.setEmailAddress("42 Main St");
@@ -4718,23 +2878,25 @@ public class SimpleTaxProviderDiffblueTest {
     address.setFirstName("Jane");
     address.setFullName("Dr Jane Doe");
     address.setId(1L);
-    address.setIsoCountryAlpha2(new ISOCountryImpl());
     address.setIsoCountrySubdivision("GB");
     address.setLastName("Doe");
     address.setMailing(true);
     address.setPhoneFax(new PhoneImpl());
     address.setPhonePrimary(new PhoneImpl());
     address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
     address.setPrimaryPhone("6625550144");
     address.setSecondaryPhone("6625550144");
     address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("us-east-2");
     address.setStreet(true);
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
+    address.setIsoCountryAlpha2(null);
+    address.setPostalCode(null);
+    address.setState(null);
+    address.setCountry(null);
+    address.setStateProvinceRegion("Fulfillment Group");
+    address.setCity(null);
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
@@ -4753,10 +2915,13 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -4769,8 +2934,8 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setAddress(address);
 
     // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
+    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult = simpleTaxProvider
+        .determineTaxRateForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
     assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
@@ -4778,222 +2943,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup2() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
-    when(isoCountryAlpha2.getName()).thenReturn(null);
-    when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCity("Oxford");
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(isoCountryAlpha2);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion(null);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-
-    // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
-
-    // Assert
-    verify(isoCountryAlpha2, atLeast(1)).getAlpha2();
-    verify(isoCountryAlpha2).getName();
-    assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup3() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
-    when(isoCountryAlpha2.getName()).thenReturn(null);
-    when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCity("Oxford");
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(isoCountryAlpha2);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("");
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-
-    // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
-
-    // Assert
-    verify(isoCountryAlpha2, atLeast(1)).getAlpha2();
-    verify(isoCountryAlpha2).getName();
-    assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).
+   *   <li>Given {@link AddressImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"})
   public void testDetermineTaxRateForFulfillmentGroup_givenAddressImpl() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
@@ -5020,10 +2978,13 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -5036,8 +2997,8 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setAddress(new AddressImpl());
 
     // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
+    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult = simpleTaxProvider
+        .determineTaxRateForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
     assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
@@ -5045,20 +3006,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) City is {@code Fulfillment Group}.
+   *   <li>Given {@link AddressImpl} (default constructor) City is {@code Fulfillment Group}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"})
   public void testDetermineTaxRateForFulfillmentGroup_givenAddressImplCityIsFulfillmentGroup() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
@@ -5095,12 +3051,12 @@ public class SimpleTaxProviderDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
     address.setIsoCountryAlpha2(null);
     address.setPostalCode(null);
-    address.setCity("Fulfillment Group");
     address.setState(null);
     address.setCountry(null);
+    address.setStateProvinceRegion(null);
+    address.setCity("Fulfillment Group");
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
@@ -5119,10 +3075,13 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -5135,8 +3094,8 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setAddress(address);
 
     // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
+    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult = simpleTaxProvider
+        .determineTaxRateForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
     assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
@@ -5144,21 +3103,16 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) City is {@code null}.
+   *   <li>Given {@link AddressImpl} (default constructor) Country is {@link CountryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup_givenAddressImplCityIsNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"})
+  public void testDetermineTaxRateForFulfillmentGroup_givenAddressImplCountryIsCountryImpl() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
@@ -5194,12 +3148,12 @@ public class SimpleTaxProviderDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
     address.setIsoCountryAlpha2(null);
     address.setPostalCode(null);
-    address.setCity(null);
     address.setState(null);
     address.setCountry(new CountryImpl());
+    address.setStateProvinceRegion(null);
+    address.setCity(null);
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
@@ -5218,10 +3172,13 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -5234,8 +3191,8 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setAddress(address);
 
     // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
+    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult = simpleTaxProvider
+        .determineTaxRateForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
     assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
@@ -5243,21 +3200,16 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) Country is {@code null}.
+   *   <li>Given {@link AddressImpl} (default constructor) State is {@link StateImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup_givenAddressImplCountryIsNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"})
+  public void testDetermineTaxRateForFulfillmentGroup_givenAddressImplStateIsStateImpl() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
     simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
@@ -5293,115 +3245,12 @@ public class SimpleTaxProviderDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
     address.setIsoCountryAlpha2(null);
     address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
+    address.setState(new StateImpl());
     address.setCountry(null);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-
-    // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
-
-    // Assert
-    assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link Country} {@link Country#getName()} return {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup_givenCountryGetNameReturnName() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    Country country = mock(Country.class);
-    when(country.getName()).thenReturn("Name");
-    when(country.getAbbreviation()).thenReturn("Abbreviation");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
-    address.setIsoCountryAlpha2(null);
-    address.setPostalCode(null);
+    address.setStateProvinceRegion(null);
     address.setCity(null);
-    address.setState(null);
-    address.setCountry(country);
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
@@ -5420,10 +3269,13 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -5436,136 +3288,24 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setAddress(address);
 
     // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
+    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult = simpleTaxProvider
+        .determineTaxRateForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
-    verify(country, atLeast(1)).getAbbreviation();
-    verify(country, atLeast(1)).getName();
     assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
   }
 
   /**
    * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link Country} {@link Country#getName()} return {@code null}.
+   *   <li>Given {@link CountryImpl} (default constructor) Name is {@code Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup_givenCountryGetNameReturnNull() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    Country country = mock(Country.class);
-    when(country.getName()).thenReturn(null);
-    when(country.getAbbreviation()).thenReturn("Abbreviation");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
-    address.setIsoCountryAlpha2(null);
-    address.setPostalCode(null);
-    address.setCity(null);
-    address.setState(null);
-    address.setCountry(country);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-
-    // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
-
-    // Assert
-    verify(country, atLeast(1)).getAbbreviation();
-    verify(country).getName();
-    assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link CountryImpl} (default constructor) Name is {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"})
   public void testDetermineTaxRateForFulfillmentGroup_givenCountryImplNameIsName() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
@@ -5606,12 +3346,12 @@ public class SimpleTaxProviderDiffblueTest {
     address.setTokenizedAddress("42 Main St");
     address.setVerificationLevel("Verification Level");
     address.setZipFour("21654");
-    address.setStateProvinceRegion("not blank");
     address.setIsoCountryAlpha2(null);
     address.setPostalCode(null);
-    address.setCity(null);
     address.setState(null);
     address.setCountry(country);
+    address.setStateProvinceRegion(null);
+    address.setCity(null);
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
@@ -5630,10 +3370,13 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -5646,8 +3389,8 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setAddress(address);
 
     // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
+    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult = simpleTaxProvider
+        .determineTaxRateForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
     assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
@@ -5655,302 +3398,22 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Given {@link ISOCountry} {@link ISOCountry#getName()} return {@code Name}.
+   *   <li>When {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup_givenISOCountryGetNameReturnName() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
-    when(isoCountryAlpha2.getName()).thenReturn("Name");
-    when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCity("Oxford");
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(isoCountryAlpha2);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("us-east-2");
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-
-    // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
-
-    // Assert
-    verify(isoCountryAlpha2, atLeast(1)).getAlpha2();
-    verify(isoCountryAlpha2, atLeast(1)).getName();
-    assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link ISOCountry} {@link ISOCountry#getName()} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup_givenISOCountryGetNameReturnNull() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(null);
-
-    ISOCountry isoCountryAlpha2 = mock(ISOCountry.class);
-    when(isoCountryAlpha2.getName()).thenReturn(null);
-    when(isoCountryAlpha2.getAlpha2()).thenReturn("Alpha2");
-
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine1("42 Main St");
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCity("Oxford");
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(isoCountryAlpha2);
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("us-east-2");
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(address);
-
-    // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
-
-    // Assert
-    verify(isoCountryAlpha2, atLeast(1)).getAlpha2();
-    verify(isoCountryAlpha2).getName();
-    assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.0}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
-  public void testDetermineTaxRateForFulfillmentGroup_thenReturnBigDecimalWith100() {
-    // Arrange
-    SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
-    simpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCityTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupStateTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(new HashMap<>());
-    simpleTaxProvider.setDefaultFulfillmentGroupTaxRate(10.0d);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(1L);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setOrder(new NullOrderImpl());
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setIsShippingPriceTaxable(null);
-    fulfillmentGroup.setAddress(null);
-
-    // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
-
-    // Assert
-    assertEquals(new BigDecimal("10.0"), actualDetermineTaxRateForFulfillmentGroupResult);
-  }
-
-  /**
-   * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>When {@link FulfillmentGroupImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"})
   public void testDetermineTaxRateForFulfillmentGroup_whenFulfillmentGroupImpl() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
 
     // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(new FulfillmentGroupImpl());
+    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult = simpleTaxProvider
+        .determineTaxRateForFulfillmentGroup(new FulfillmentGroupImpl());
 
     // Assert
     assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
@@ -5958,20 +3421,15 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>When {@link FulfillmentGroupImpl} (default constructor) Address is {@code null}.
+   *   <li>When {@link FulfillmentGroupImpl} (default constructor) Address is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link SimpleTaxProvider#determineTaxRateForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BigDecimal SimpleTaxProvider.determineTaxRateForFulfillmentGroup(FulfillmentGroup)"})
   public void testDetermineTaxRateForFulfillmentGroup_whenFulfillmentGroupImplAddressIsNull() {
     // Arrange
     SimpleTaxProvider simpleTaxProvider = new SimpleTaxProvider();
@@ -5998,10 +3456,13 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -6014,8 +3475,8 @@ public class SimpleTaxProviderDiffblueTest {
     fulfillmentGroup.setAddress(null);
 
     // Act
-    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult =
-        simpleTaxProvider.determineTaxRateForFulfillmentGroup(fulfillmentGroup);
+    BigDecimal actualDetermineTaxRateForFulfillmentGroupResult = simpleTaxProvider
+        .determineTaxRateForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
     assertEquals(new BigDecimal("0"), actualDetermineTaxRateForFulfillmentGroupResult);
@@ -6023,9 +3484,8 @@ public class SimpleTaxProviderDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SimpleTaxProvider}
    *   <li>{@link SimpleTaxProvider#setDefaultFulfillmentGroupTaxRate(Double)}
@@ -6052,32 +3512,23 @@ public class SimpleTaxProviderDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleTaxProvider.<init>()",
-    "void SimpleTaxProvider.cancelTax(Order, ModuleConfiguration)",
-    "Double SimpleTaxProvider.getDefaultFulfillmentGroupTaxRate()",
-    "Double SimpleTaxProvider.getDefaultItemTaxRate()",
-    "Map SimpleTaxProvider.getFulfillmentGroupCityTaxRateMap()",
-    "Map SimpleTaxProvider.getFulfillmentGroupCountryTaxRateMap()",
-    "Map SimpleTaxProvider.getFulfillmentGroupPostalCodeTaxRateMap()",
-    "Map SimpleTaxProvider.getFulfillmentGroupStateTaxRateMap()",
-    "Map SimpleTaxProvider.getItemCityTaxRateMap()",
-    "Map SimpleTaxProvider.getItemCountryTaxRateMap()",
-    "Map SimpleTaxProvider.getItemPostalCodeTaxRateMap()",
-    "Map SimpleTaxProvider.getItemStateTaxRateMap()",
-    "void SimpleTaxProvider.setDefaultFulfillmentGroupTaxRate(Double)",
-    "void SimpleTaxProvider.setDefaultItemTaxRate(Double)",
-    "void SimpleTaxProvider.setFulfillmentGroupCityTaxRateMap(Map)",
-    "void SimpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(Map)",
-    "void SimpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(Map)",
-    "void SimpleTaxProvider.setFulfillmentGroupStateTaxRateMap(Map)",
-    "void SimpleTaxProvider.setItemCityTaxRateMap(Map)",
-    "void SimpleTaxProvider.setItemCountryTaxRateMap(Map)",
-    "void SimpleTaxProvider.setItemPostalCodeTaxRateMap(Map)",
-    "void SimpleTaxProvider.setItemStateTaxRateMap(Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleTaxProvider.<init>()", "void SimpleTaxProvider.cancelTax(Order, ModuleConfiguration)",
+      "Double SimpleTaxProvider.getDefaultFulfillmentGroupTaxRate()",
+      "Double SimpleTaxProvider.getDefaultItemTaxRate()", "Map SimpleTaxProvider.getFulfillmentGroupCityTaxRateMap()",
+      "Map SimpleTaxProvider.getFulfillmentGroupCountryTaxRateMap()",
+      "Map SimpleTaxProvider.getFulfillmentGroupPostalCodeTaxRateMap()",
+      "Map SimpleTaxProvider.getFulfillmentGroupStateTaxRateMap()", "Map SimpleTaxProvider.getItemCityTaxRateMap()",
+      "Map SimpleTaxProvider.getItemCountryTaxRateMap()", "Map SimpleTaxProvider.getItemPostalCodeTaxRateMap()",
+      "Map SimpleTaxProvider.getItemStateTaxRateMap()",
+      "void SimpleTaxProvider.setDefaultFulfillmentGroupTaxRate(Double)",
+      "void SimpleTaxProvider.setDefaultItemTaxRate(Double)",
+      "void SimpleTaxProvider.setFulfillmentGroupCityTaxRateMap(Map)",
+      "void SimpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(Map)",
+      "void SimpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(Map)",
+      "void SimpleTaxProvider.setFulfillmentGroupStateTaxRateMap(Map)",
+      "void SimpleTaxProvider.setItemCityTaxRateMap(Map)", "void SimpleTaxProvider.setItemCountryTaxRateMap(Map)",
+      "void SimpleTaxProvider.setItemPostalCodeTaxRateMap(Map)", "void SimpleTaxProvider.setItemStateTaxRateMap(Map)"})
   public void testGettersAndSetters() throws TaxException {
     // Arrange and Act
     SimpleTaxProvider actualSimpleTaxProvider = new SimpleTaxProvider();
@@ -6088,8 +3539,7 @@ public class SimpleTaxProviderDiffblueTest {
     HashMap<String, Double> fulfillmentGroupCountryTaxRateMap = new HashMap<>();
     actualSimpleTaxProvider.setFulfillmentGroupCountryTaxRateMap(fulfillmentGroupCountryTaxRateMap);
     HashMap<String, Double> fulfillmentGroupPostalCodeTaxRateMap = new HashMap<>();
-    actualSimpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(
-        fulfillmentGroupPostalCodeTaxRateMap);
+    actualSimpleTaxProvider.setFulfillmentGroupPostalCodeTaxRateMap(fulfillmentGroupPostalCodeTaxRateMap);
     HashMap<String, Double> fulfillmentGroupStateTaxRateMap = new HashMap<>();
     actualSimpleTaxProvider.setFulfillmentGroupStateTaxRateMap(fulfillmentGroupStateTaxRateMap);
     HashMap<String, Double> itemCityTaxRateMap = new HashMap<>();
@@ -6102,24 +3552,20 @@ public class SimpleTaxProviderDiffblueTest {
     actualSimpleTaxProvider.setItemStateTaxRateMap(itemStateTaxRateMap);
     NullOrderImpl order = new NullOrderImpl();
     actualSimpleTaxProvider.cancelTax(order, new SiteMapConfigurationImpl());
-    Double actualDefaultFulfillmentGroupTaxRate =
-        actualSimpleTaxProvider.getDefaultFulfillmentGroupTaxRate();
+    Double actualDefaultFulfillmentGroupTaxRate = actualSimpleTaxProvider.getDefaultFulfillmentGroupTaxRate();
     Double actualDefaultItemTaxRate = actualSimpleTaxProvider.getDefaultItemTaxRate();
-    Map<String, Double> actualFulfillmentGroupCityTaxRateMap =
-        actualSimpleTaxProvider.getFulfillmentGroupCityTaxRateMap();
-    Map<String, Double> actualFulfillmentGroupCountryTaxRateMap =
-        actualSimpleTaxProvider.getFulfillmentGroupCountryTaxRateMap();
-    Map<String, Double> actualFulfillmentGroupPostalCodeTaxRateMap =
-        actualSimpleTaxProvider.getFulfillmentGroupPostalCodeTaxRateMap();
-    Map<String, Double> actualFulfillmentGroupStateTaxRateMap =
-        actualSimpleTaxProvider.getFulfillmentGroupStateTaxRateMap();
+    Map<String, Double> actualFulfillmentGroupCityTaxRateMap = actualSimpleTaxProvider
+        .getFulfillmentGroupCityTaxRateMap();
+    Map<String, Double> actualFulfillmentGroupCountryTaxRateMap = actualSimpleTaxProvider
+        .getFulfillmentGroupCountryTaxRateMap();
+    Map<String, Double> actualFulfillmentGroupPostalCodeTaxRateMap = actualSimpleTaxProvider
+        .getFulfillmentGroupPostalCodeTaxRateMap();
+    Map<String, Double> actualFulfillmentGroupStateTaxRateMap = actualSimpleTaxProvider
+        .getFulfillmentGroupStateTaxRateMap();
     Map<String, Double> actualItemCityTaxRateMap = actualSimpleTaxProvider.getItemCityTaxRateMap();
-    Map<String, Double> actualItemCountryTaxRateMap =
-        actualSimpleTaxProvider.getItemCountryTaxRateMap();
-    Map<String, Double> actualItemPostalCodeTaxRateMap =
-        actualSimpleTaxProvider.getItemPostalCodeTaxRateMap();
-    Map<String, Double> actualItemStateTaxRateMap =
-        actualSimpleTaxProvider.getItemStateTaxRateMap();
+    Map<String, Double> actualItemCountryTaxRateMap = actualSimpleTaxProvider.getItemCountryTaxRateMap();
+    Map<String, Double> actualItemPostalCodeTaxRateMap = actualSimpleTaxProvider.getItemPostalCodeTaxRateMap();
+    Map<String, Double> actualItemStateTaxRateMap = actualSimpleTaxProvider.getItemStateTaxRateMap();
 
     // Assert
     assertEquals(10.0d, actualDefaultFulfillmentGroupTaxRate.doubleValue(), 0.0);

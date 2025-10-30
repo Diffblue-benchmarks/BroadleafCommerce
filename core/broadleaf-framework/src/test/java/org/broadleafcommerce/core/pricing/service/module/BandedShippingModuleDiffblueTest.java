@@ -26,8 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,24 +46,20 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BandedShippingModuleDiffblueTest {
-  @InjectMocks private BandedShippingModule bandedShippingModule;
+  @InjectMocks
+  private BandedShippingModule bandedShippingModule;
 
   /**
    * Test {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Then Order return {@link NullOrderImpl}.
+   *   <li>Then Order return {@link NullOrderImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateShippingForFulfillmentGroup_thenOrderReturnNullOrderImpl() {
     // Arrange
     BandedShippingModule bandedShippingModule = new BandedShippingModule();
@@ -75,42 +70,35 @@ public class BandedShippingModuleDiffblueTest {
     fulfillmentGroup.setOrder(order);
 
     // Act
-    FulfillmentGroup actualCalculateShippingForFulfillmentGroupResult =
-        bandedShippingModule.calculateShippingForFulfillmentGroup(fulfillmentGroup);
+    FulfillmentGroup actualCalculateShippingForFulfillmentGroupResult = bandedShippingModule
+        .calculateShippingForFulfillmentGroup(fulfillmentGroup);
 
     // Assert
     assertTrue(actualCalculateShippingForFulfillmentGroupResult instanceof FulfillmentGroupImpl);
     Order order2 = actualCalculateShippingForFulfillmentGroupResult.getOrder();
     assertTrue(order2 instanceof NullOrderImpl);
-    assertNull(
-        ((FulfillmentGroupImpl) actualCalculateShippingForFulfillmentGroupResult)
-            .getCurrencyCode());
+    assertNull(((FulfillmentGroupImpl) actualCalculateShippingForFulfillmentGroupResult).getCurrencyCode());
     assertSame(order, order2);
   }
 
   /**
    * Test {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Then return FulfillmentPrice is {@code null}.
+   *   <li>Then return FulfillmentPrice is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateShippingForFulfillmentGroup_thenReturnFulfillmentPriceIsNull() {
     // Arrange
     BandedShippingModule bandedShippingModule = new BandedShippingModule();
 
     // Act
-    FulfillmentGroup actualCalculateShippingForFulfillmentGroupResult =
-        bandedShippingModule.calculateShippingForFulfillmentGroup(new FulfillmentGroupImpl());
+    FulfillmentGroup actualCalculateShippingForFulfillmentGroupResult = bandedShippingModule
+        .calculateShippingForFulfillmentGroup(new FulfillmentGroupImpl());
 
     // Assert
     assertTrue(actualCalculateShippingForFulfillmentGroupResult instanceof FulfillmentGroupImpl);
@@ -125,25 +113,19 @@ public class BandedShippingModuleDiffblueTest {
 
   /**
    * Test {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}.
-   *
    * <ul>
-   *   <li>Then throw {@link NotImplementedException}.
+   *   <li>Then throw {@link NotImplementedException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
+   * <p>
+   * Method under test: {@link BandedShippingModule#calculateShippingForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FulfillmentGroup BandedShippingModule.calculateShippingForFulfillmentGroup(FulfillmentGroup)"})
   public void testCalculateShippingForFulfillmentGroup_thenThrowNotImplementedException() {
     // Arrange
     BandedShippingModule bandedShippingModule = new BandedShippingModule();
     bandedShippingModule.setDefaultModule(true);
-
     State state = mock(State.class);
     when(state.getAbbreviation()).thenThrow(new NotImplementedException());
 
@@ -155,39 +137,35 @@ public class BandedShippingModuleDiffblueTest {
     fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
 
     // Act and Assert
-    assertThrows(
-        NotImplementedException.class,
+    assertThrows(NotImplementedException.class,
         () -> bandedShippingModule.calculateShippingForFulfillmentGroup(fulfillmentGroup));
     verify(state).getAbbreviation();
   }
 
   /**
    * Test {@link BandedShippingModule#getServiceName()}.
-   *
-   * <p>Method under test: {@link BandedShippingModule#getServiceName()}
+   * <p>
+   * Method under test: {@link BandedShippingModule#getServiceName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BandedShippingModule.getServiceName()"})
   public void testGetServiceName() {
     // Arrange, Act and Assert
-    assertEquals("BANDED_SHIPPING", new BandedShippingModule().getServiceName());
+    assertEquals("BANDED_SHIPPING", (new BandedShippingModule()).getServiceName());
   }
 
   /**
    * Test {@link BandedShippingModule#isValidModuleForService(String)}.
-   *
    * <ul>
-   *   <li>When {@code BANDED_SHIPPING}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code BANDED_SHIPPING}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BandedShippingModule#isValidModuleForService(String)}
+   * <p>
+   * Method under test: {@link BandedShippingModule#isValidModuleForService(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean BandedShippingModule.isValidModuleForService(String)"})
   public void testIsValidModuleForService_whenBandedShipping_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -196,17 +174,15 @@ public class BandedShippingModuleDiffblueTest {
 
   /**
    * Test {@link BandedShippingModule#isValidModuleForService(String)}.
-   *
    * <ul>
-   *   <li>When {@code Service Name}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Service Name}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BandedShippingModule#isValidModuleForService(String)}
+   * <p>
+   * Method under test: {@link BandedShippingModule#isValidModuleForService(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean BandedShippingModule.isValidModuleForService(String)"})
   public void testIsValidModuleForService_whenServiceName_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -215,9 +191,8 @@ public class BandedShippingModuleDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BandedShippingModule}
    *   <li>{@link BandedShippingModule#setDefaultModule(Boolean)}
@@ -231,19 +206,12 @@ public class BandedShippingModuleDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BandedShippingModule.<init>()",
-    "Map BandedShippingModule.getFeeSubTypeMapping()",
-    "Map BandedShippingModule.getFeeTypeMapping()",
-    "String BandedShippingModule.getName()",
-    "Boolean BandedShippingModule.isDefaultModule()",
-    "void BandedShippingModule.setDefaultModule(Boolean)",
-    "void BandedShippingModule.setFeeSubTypeMapping(Map)",
-    "void BandedShippingModule.setFeeTypeMapping(Map)",
-    "void BandedShippingModule.setName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BandedShippingModule.<init>()", "Map BandedShippingModule.getFeeSubTypeMapping()",
+      "Map BandedShippingModule.getFeeTypeMapping()", "String BandedShippingModule.getName()",
+      "Boolean BandedShippingModule.isDefaultModule()", "void BandedShippingModule.setDefaultModule(Boolean)",
+      "void BandedShippingModule.setFeeSubTypeMapping(Map)", "void BandedShippingModule.setFeeTypeMapping(Map)",
+      "void BandedShippingModule.setName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BandedShippingModule actualBandedShippingModule = new BandedShippingModule();

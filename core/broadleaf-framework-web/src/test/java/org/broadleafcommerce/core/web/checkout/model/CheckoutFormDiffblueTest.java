@@ -20,7 +20,6 @@ package org.broadleafcommerce.core.web.checkout.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
@@ -38,13 +37,12 @@ import org.junit.jupiter.api.Test;
 class CheckoutFormDiffblueTest {
   /**
    * Test new {@link CheckoutForm} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link CheckoutForm}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link CheckoutForm}
    */
   @Test
   @DisplayName("Test new CheckoutForm (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CheckoutForm.<init>()"})
   void testNewCheckoutForm() {
     // Arrange and Act
@@ -68,18 +66,16 @@ class CheckoutFormDiffblueTest {
 
   /**
    * Test {@link CheckoutForm#getApprovedCreditCardTypes()}.
-   *
-   * <p>Method under test: {@link CheckoutForm#getApprovedCreditCardTypes()}
+   * <p>
+   * Method under test: {@link CheckoutForm#getApprovedCreditCardTypes()}
    */
   @Test
   @DisplayName("Test getApprovedCreditCardTypes()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"List CheckoutForm.getApprovedCreditCardTypes()"})
   void testGetApprovedCreditCardTypes() {
     // Arrange and Act
-    List<CreditCardType> actualApprovedCreditCardTypes =
-        new CheckoutForm().getApprovedCreditCardTypes();
+    List<CreditCardType> actualApprovedCreditCardTypes = (new CheckoutForm()).getApprovedCreditCardTypes();
 
     // Assert
     assertEquals(3, actualApprovedCreditCardTypes.size());
@@ -96,21 +92,19 @@ class CheckoutFormDiffblueTest {
 
   /**
    * Test {@link CheckoutForm#getShippingAddress()}.
-   *
    * <ul>
-   *   <li>Then IsoCountryAlpha2 return {@link ISOCountryImpl}.
+   *   <li>Then IsoCountryAlpha2 return {@link ISOCountryImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutForm#getShippingAddress()}
+   * <p>
+   * Method under test: {@link CheckoutForm#getShippingAddress()}
    */
   @Test
   @DisplayName("Test getShippingAddress(); then IsoCountryAlpha2 return ISOCountryImpl")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Address CheckoutForm.getShippingAddress()"})
   void testGetShippingAddress_thenIsoCountryAlpha2ReturnISOCountryImpl() {
     // Arrange and Act
-    Address actualShippingAddress = new CheckoutForm().getShippingAddress();
+    Address actualShippingAddress = (new CheckoutForm()).getShippingAddress();
 
     // Assert
     assertTrue(actualShippingAddress.getIsoCountryAlpha2() instanceof ISOCountryImpl);
@@ -129,17 +123,15 @@ class CheckoutFormDiffblueTest {
 
   /**
    * Test {@link CheckoutForm#getShippingAddress()}.
-   *
    * <ul>
-   *   <li>Then return {@link AddressImpl} (default constructor).
+   *   <li>Then return {@link AddressImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutForm#getShippingAddress()}
+   * <p>
+   * Method under test: {@link CheckoutForm#getShippingAddress()}
    */
   @Test
   @DisplayName("Test getShippingAddress(); then return AddressImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Address CheckoutForm.getShippingAddress()"})
   void testGetShippingAddress_thenReturnAddressImpl() {
     // Arrange
@@ -165,23 +157,20 @@ class CheckoutFormDiffblueTest {
 
   /**
    * Test {@link CheckoutForm#getBillingAddress()}.
-   *
    * <ul>
-   *   <li>Given {@link CheckoutForm} (default constructor).
-   *   <li>Then IsoCountryAlpha2 return {@link ISOCountryImpl}.
+   *   <li>Given {@link CheckoutForm} (default constructor).</li>
+   *   <li>Then IsoCountryAlpha2 return {@link ISOCountryImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutForm#getBillingAddress()}
+   * <p>
+   * Method under test: {@link CheckoutForm#getBillingAddress()}
    */
   @Test
-  @DisplayName(
-      "Test getBillingAddress(); given CheckoutForm (default constructor); then IsoCountryAlpha2 return ISOCountryImpl")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getBillingAddress(); given CheckoutForm (default constructor); then IsoCountryAlpha2 return ISOCountryImpl")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Address CheckoutForm.getBillingAddress()"})
   void testGetBillingAddress_givenCheckoutForm_thenIsoCountryAlpha2ReturnISOCountryImpl() {
     // Arrange and Act
-    Address actualBillingAddress = new CheckoutForm().getBillingAddress();
+    Address actualBillingAddress = (new CheckoutForm()).getBillingAddress();
 
     // Assert
     assertTrue(actualBillingAddress.getIsoCountryAlpha2() instanceof ISOCountryImpl);
@@ -200,17 +189,15 @@ class CheckoutFormDiffblueTest {
 
   /**
    * Test {@link CheckoutForm#getBillingAddress()}.
-   *
    * <ul>
-   *   <li>Then return {@link AddressImpl} (default constructor).
+   *   <li>Then return {@link AddressImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutForm#getBillingAddress()}
+   * <p>
+   * Method under test: {@link CheckoutForm#getBillingAddress()}
    */
   @Test
   @DisplayName("Test getBillingAddress(); then return AddressImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Address CheckoutForm.getBillingAddress()"})
   void testGetBillingAddress_thenReturnAddressImpl() {
     // Arrange
@@ -236,9 +223,8 @@ class CheckoutFormDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CheckoutForm#setBillingAddress(Address)}
    *   <li>{@link CheckoutForm#setCreditCardCvvCode(String)}
@@ -260,26 +246,15 @@ class CheckoutFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String CheckoutForm.getCreditCardCvvCode()",
-    "String CheckoutForm.getCreditCardExpMonth()",
-    "String CheckoutForm.getCreditCardExpYear()",
-    "String CheckoutForm.getCreditCardNumber()",
-    "String CheckoutForm.getEmailAddress()",
-    "boolean CheckoutForm.getIsSameAddress()",
-    "String CheckoutForm.getSelectedCreditCardType()",
-    "void CheckoutForm.setBillingAddress(Address)",
-    "void CheckoutForm.setCreditCardCvvCode(String)",
-    "void CheckoutForm.setCreditCardExpMonth(String)",
-    "void CheckoutForm.setCreditCardExpYear(String)",
-    "void CheckoutForm.setCreditCardNumber(String)",
-    "void CheckoutForm.setEmailAddress(String)",
-    "void CheckoutForm.setIsSameAddress(boolean)",
-    "void CheckoutForm.setSelectedCreditCardType(String)",
-    "void CheckoutForm.setShippingAddress(Address)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String CheckoutForm.getCreditCardCvvCode()", "String CheckoutForm.getCreditCardExpMonth()",
+      "String CheckoutForm.getCreditCardExpYear()", "String CheckoutForm.getCreditCardNumber()",
+      "String CheckoutForm.getEmailAddress()", "boolean CheckoutForm.getIsSameAddress()",
+      "String CheckoutForm.getSelectedCreditCardType()", "void CheckoutForm.setBillingAddress(Address)",
+      "void CheckoutForm.setCreditCardCvvCode(String)", "void CheckoutForm.setCreditCardExpMonth(String)",
+      "void CheckoutForm.setCreditCardExpYear(String)", "void CheckoutForm.setCreditCardNumber(String)",
+      "void CheckoutForm.setEmailAddress(String)", "void CheckoutForm.setIsSameAddress(boolean)",
+      "void CheckoutForm.setSelectedCreditCardType(String)", "void CheckoutForm.setShippingAddress(Address)"})
   void testGettersAndSetters() {
     // Arrange
     CheckoutForm checkoutForm = new CheckoutForm();

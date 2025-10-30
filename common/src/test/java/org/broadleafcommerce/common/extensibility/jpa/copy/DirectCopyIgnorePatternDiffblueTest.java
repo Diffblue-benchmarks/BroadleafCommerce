@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.extensibility.jpa.copy;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,9 +27,8 @@ import org.junit.experimental.categories.Category;
 public class DirectCopyIgnorePatternDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link DirectCopyIgnorePattern}
    *   <li>{@link DirectCopyIgnorePattern#setPatterns(String[])}
@@ -40,21 +38,17 @@ public class DirectCopyIgnorePatternDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void DirectCopyIgnorePattern.<init>()",
-    "String[] DirectCopyIgnorePattern.getPatterns()",
-    "String[] DirectCopyIgnorePattern.getTemplateTokenPatterns()",
-    "void DirectCopyIgnorePattern.setPatterns(String[])",
-    "void DirectCopyIgnorePattern.setTemplateTokenPatterns(String[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DirectCopyIgnorePattern.<init>()", "String[] DirectCopyIgnorePattern.getPatterns()",
+      "String[] DirectCopyIgnorePattern.getTemplateTokenPatterns()",
+      "void DirectCopyIgnorePattern.setPatterns(String[])",
+      "void DirectCopyIgnorePattern.setTemplateTokenPatterns(String[])"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DirectCopyIgnorePattern actualDirectCopyIgnorePattern = new DirectCopyIgnorePattern();
-    String[] patterns = new String[] {"Patterns"};
+    String[] patterns = new String[]{"Patterns"};
     actualDirectCopyIgnorePattern.setPatterns(patterns);
-    String[] templateTokenPatterns = new String[] {"ABC123"};
+    String[] templateTokenPatterns = new String[]{"ABC123"};
     actualDirectCopyIgnorePattern.setTemplateTokenPatterns(templateTokenPatterns);
     String[] actualPatterns = actualDirectCopyIgnorePattern.getPatterns();
     String[] actualTemplateTokenPatterns = actualDirectCopyIgnorePattern.getTemplateTokenPatterns();
@@ -62,7 +56,7 @@ public class DirectCopyIgnorePatternDiffblueTest {
     // Assert
     assertSame(templateTokenPatterns, actualTemplateTokenPatterns);
     assertSame(patterns, actualPatterns);
-    assertArrayEquals(new String[] {"ABC123"}, actualTemplateTokenPatterns);
-    assertArrayEquals(new String[] {"Patterns"}, actualPatterns);
+    assertArrayEquals(new String[]{"ABC123"}, actualTemplateTokenPatterns);
+    assertArrayEquals(new String[]{"Patterns"}, actualPatterns);
   }
 }

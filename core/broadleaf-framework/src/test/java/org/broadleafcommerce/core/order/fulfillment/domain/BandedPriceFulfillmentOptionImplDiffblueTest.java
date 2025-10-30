@@ -17,21 +17,26 @@
  */
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -43,31 +48,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BandedPriceFulfillmentOptionImplDiffblueTest {
-  @Autowired private BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl;
+  @Autowired
+  private BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl;
 
   /**
-   * Test {@link
-   * BandedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * BandedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link BandedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test: {@link BandedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CreateResponse BandedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+      "CreateResponse BandedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl2 = new BandedPriceFulfillmentOptionImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(new BandedPriceFulfillmentOptionImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<BandedPriceFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult =
-        bandedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<BandedPriceFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult = bandedPriceFulfillmentOptionImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -75,39 +78,49 @@ public class BandedPriceFulfillmentOptionImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * BandedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * BandedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link BandedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <ul>
+   *   <li>Then Clone return {@link BandedPriceFulfillmentOptionImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BandedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CreateResponse BandedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+      "CreateResponse BandedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance_thenCloneReturnBandedPriceFulfillmentOptionImpl()
+      throws CloneNotSupportedException {
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(bandedPriceFulfillmentOptionImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    BandedPriceFulfillmentOptionImpl bandedPriceFulfillmentOptionImpl2 = new BandedPriceFulfillmentOptionImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<BandedPriceFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult =
-        bandedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<BandedPriceFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult = bandedPriceFulfillmentOptionImpl2
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService).getCeilingImplClass(
+        eq("org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOptionImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    BandedPriceFulfillmentOption clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof BandedPriceFulfillmentOptionImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(bandedPriceFulfillmentOptionImpl2, clone);
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BandedPriceFulfillmentOptionImpl}
    *   <li>{@link BandedPriceFulfillmentOptionImpl#setBands(List)}
@@ -115,17 +128,12 @@ public class BandedPriceFulfillmentOptionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BandedPriceFulfillmentOptionImpl.<init>()",
-    "List BandedPriceFulfillmentOptionImpl.getBands()",
-    "void BandedPriceFulfillmentOptionImpl.setBands(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BandedPriceFulfillmentOptionImpl.<init>()",
+      "List BandedPriceFulfillmentOptionImpl.getBands()", "void BandedPriceFulfillmentOptionImpl.setBands(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    BandedPriceFulfillmentOptionImpl actualBandedPriceFulfillmentOptionImpl =
-        new BandedPriceFulfillmentOptionImpl();
+    BandedPriceFulfillmentOptionImpl actualBandedPriceFulfillmentOptionImpl = new BandedPriceFulfillmentOptionImpl();
     ArrayList<FulfillmentPriceBand> bands = new ArrayList<>();
     actualBandedPriceFulfillmentOptionImpl.setBands(bands);
     List<FulfillmentPriceBand> actualBands = actualBandedPriceFulfillmentOptionImpl.getBands();

@@ -23,8 +23,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.List;
@@ -39,39 +38,37 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {AdornedTargetCollectionMetadata.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FieldMetadataDiffblueTest {
-  @Autowired private FieldMetadata fieldMetadata;
+  @Autowired
+  private FieldMetadata fieldMetadata;
 
   /**
    * Test {@link FieldMetadata#getAvailableToTypes()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getAvailableToTypes()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getAvailableToTypes()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String[] FieldMetadata.getAvailableToTypes()"})
   public void testGetAvailableToTypes() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getAvailableToTypes());
+    assertNull((new AdornedTargetCollectionMetadata()).getAvailableToTypes());
   }
 
   /**
    * Test {@link FieldMetadata#setAvailableToTypes(String[])}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setAvailableToTypes(String[])}
+   * <p>
+   * Method under test: {@link FieldMetadata#setAvailableToTypes(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setAvailableToTypes(String[])"})
   public void testSetAvailableToTypes() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    String[] availableToTypes = new String[] {"Available To Types"};
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    String[] availableToTypes = new String[]{"Available To Types"};
 
     // Act
     adornedTargetCollectionMetadata.setAvailableToTypes(availableToTypes);
@@ -82,26 +79,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getInheritedFromType()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getInheritedFromType()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getInheritedFromType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getInheritedFromType()"})
   public void testGetInheritedFromType() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getInheritedFromType());
+    assertNull((new AdornedTargetCollectionMetadata()).getInheritedFromType());
   }
 
   /**
    * Test {@link FieldMetadata#setInheritedFromType(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setInheritedFromType(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setInheritedFromType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setInheritedFromType(String)"})
   public void testSetInheritedFromType() {
     // Arrange and Act
@@ -114,40 +109,35 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getExcluded()}.
-   *
    * <ul>
-   *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getExcluded()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getExcluded()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getExcluded()"})
   public void testGetExcluded_givenAdornedTargetCollectionMetadata_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getExcluded());
+    assertNull((new AdornedTargetCollectionMetadata()).getExcluded());
   }
 
   /**
    * Test {@link FieldMetadata#getExcluded()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getExcluded()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getExcluded()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getExcluded()"})
   public void testGetExcluded_thenReturnFalse() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setExcluded(false);
 
     // Act and Assert
@@ -156,21 +146,18 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getExcluded()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getExcluded()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getExcluded()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getExcluded()"})
   public void testGetExcluded_thenReturnTrue() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setExcluded(true);
 
     // Act and Assert
@@ -179,17 +166,15 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#setExcluded(Boolean)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setExcluded(Boolean)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setExcluded(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setExcluded(Boolean)"})
   public void testSetExcluded() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act
     adornedTargetCollectionMetadata.setExcluded(true);
@@ -200,31 +185,28 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getAdditionalMetadata()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getAdditionalMetadata()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getAdditionalMetadata()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map FieldMetadata.getAdditionalMetadata()"})
   public void testGetAdditionalMetadata() {
     // Arrange, Act and Assert
-    assertTrue(new AdornedTargetCollectionMetadata().getAdditionalMetadata().isEmpty());
+    assertTrue((new AdornedTargetCollectionMetadata()).getAdditionalMetadata().isEmpty());
   }
 
   /**
    * Test {@link FieldMetadata#setAdditionalMetadata(Map)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setAdditionalMetadata(Map)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setAdditionalMetadata(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setAdditionalMetadata(Map)"})
   public void testSetAdditionalMetadata() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     HashMap<String, Object> additionalMetadata = new HashMap<>();
 
     // Act
@@ -236,111 +218,45 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#populate(FieldMetadata)}.
-   *
    * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor).
-   *   <li>Then return {@link AdornedTargetCollectionMetadata} (default constructor).
+   *   <li>Given {@link BasicFieldMetadata} (default constructor).</li>
+   *   <li>Then return {@link AdornedTargetCollectionMetadata} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#populate(FieldMetadata)}
+   * <p>
+   * Method under test: {@link FieldMetadata#populate(FieldMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata FieldMetadata.populate(FieldMetadata)"})
   public void testPopulate_givenBasicFieldMetadata_thenReturnAdornedTargetCollectionMetadata() {
     // Arrange
     BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
     AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
 
-    // Act
-    FieldMetadata actualPopulateResult = basicFieldMetadata.populate(metadata);
-
-    // Assert
-    assertSame(metadata, actualPopulateResult);
-  }
-
-  /**
-   * Test {@link FieldMetadata#populate(FieldMetadata)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code 42}.
-   *   <li>Then return {@link AdornedTargetCollectionMetadata}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata FieldMetadata.populate(FieldMetadata)"})
-  public void testPopulate_givenHashMapFooIs42_thenReturnAdornedTargetCollectionMetadata() {
-    // Arrange
-    HashMap<String, Object> additionalMetadata = new HashMap<>();
-    additionalMetadata.put("foo", "42");
-
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAdditionalMetadata(additionalMetadata);
-
-    // Act
-    FieldMetadata actualPopulateResult =
-        basicFieldMetadata.populate(new AdornedTargetCollectionMetadata());
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof AdornedTargetCollectionMetadata);
-    Map<String, Object> additionalMetadata2 = actualPopulateResult.getAdditionalMetadata();
-    assertEquals(1, additionalMetadata2.size());
-    assertEquals("42", additionalMetadata2.get("foo"));
-  }
-
-  /**
-   * Test {@link FieldMetadata#populate(FieldMetadata)}.
-   *
-   * <ul>
-   *   <li>Then return {@link AdornedTargetCollectionMetadata} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata FieldMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnAdornedTargetCollectionMetadata() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAvailableToTypes(new String[] {"Available To Types"});
-    AdornedTargetCollectionMetadata metadata = new AdornedTargetCollectionMetadata();
-
-    // Act
-    FieldMetadata actualPopulateResult = basicFieldMetadata.populate(metadata);
-
-    // Assert
-    assertSame(metadata, actualPopulateResult);
+    // Act and Assert
+    assertSame(metadata, basicFieldMetadata.populate(metadata));
   }
 
   /**
    * Test {@link FieldMetadata#getShowIfProperty()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getShowIfProperty()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getShowIfProperty()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getShowIfProperty()"})
   public void testGetShowIfProperty() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getShowIfProperty());
+    assertNull((new AdornedTargetCollectionMetadata()).getShowIfProperty());
   }
 
   /**
    * Test {@link FieldMetadata#setShowIfProperty(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setShowIfProperty(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setShowIfProperty(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setShowIfProperty(String)"})
   public void testSetShowIfProperty() {
     // Arrange and Act
@@ -353,31 +269,28 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getShowIfFieldEquals()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getShowIfFieldEquals()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getShowIfFieldEquals()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map FieldMetadata.getShowIfFieldEquals()"})
   public void testGetShowIfFieldEquals() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getShowIfFieldEquals());
+    assertNull((new AdornedTargetCollectionMetadata()).getShowIfFieldEquals());
   }
 
   /**
    * Test {@link FieldMetadata#setShowIfFieldEquals(Map)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setShowIfFieldEquals(Map)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setShowIfFieldEquals(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setShowIfFieldEquals(Map)"})
   public void testSetShowIfFieldEquals() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     HashMap<String, List<String>> showIfFieldEquals = new HashMap<>();
 
     // Act
@@ -389,26 +302,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getCurrencyCodeField()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getCurrencyCodeField()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getCurrencyCodeField()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getCurrencyCodeField()"})
   public void testGetCurrencyCodeField() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getCurrencyCodeField());
+    assertNull((new AdornedTargetCollectionMetadata()).getCurrencyCodeField());
   }
 
   /**
    * Test {@link FieldMetadata#setCurrencyCodeField(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setCurrencyCodeField(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setCurrencyCodeField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setCurrencyCodeField(String)"})
   public void testSetCurrencyCodeField() {
     // Arrange and Act
@@ -421,26 +332,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getFriendlyName()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getFriendlyName()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getFriendlyName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getFriendlyName()"})
   public void testGetFriendlyName() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getFriendlyName());
+    assertNull((new AdornedTargetCollectionMetadata()).getFriendlyName());
   }
 
   /**
    * Test {@link FieldMetadata#setFriendlyName(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setFriendlyName(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setFriendlyName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setFriendlyName(String)"})
   public void testSetFriendlyName() {
     // Arrange and Act
@@ -453,26 +362,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getAddFriendlyName()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getAddFriendlyName()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getAddFriendlyName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getAddFriendlyName()"})
   public void testGetAddFriendlyName() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getAddFriendlyName());
+    assertNull((new AdornedTargetCollectionMetadata()).getAddFriendlyName());
   }
 
   /**
    * Test {@link FieldMetadata#setAddFriendlyName(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setAddFriendlyName(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setAddFriendlyName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setAddFriendlyName(String)"})
   public void testSetAddFriendlyName() {
     // Arrange and Act
@@ -485,26 +392,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getSecurityLevel()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getSecurityLevel()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getSecurityLevel()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getSecurityLevel()"})
   public void testGetSecurityLevel() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getSecurityLevel());
+    assertNull((new AdornedTargetCollectionMetadata()).getSecurityLevel());
   }
 
   /**
    * Test {@link FieldMetadata#setSecurityLevel(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setSecurityLevel(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setSecurityLevel(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setSecurityLevel(String)"})
   public void testSetSecurityLevel() {
     // Arrange and Act
@@ -517,31 +422,28 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getOrder()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getOrder()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Integer FieldMetadata.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getOrder());
+    assertNull((new AdornedTargetCollectionMetadata()).getOrder());
   }
 
   /**
    * Test {@link FieldMetadata#setOrder(Integer)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setOrder(Integer)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setOrder(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setOrder(Integer)"})
   public void testSetOrder() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act
     adornedTargetCollectionMetadata.setOrder(1);
@@ -552,26 +454,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getTargetClass()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getTargetClass()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getTargetClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getTargetClass()"})
   public void testGetTargetClass() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getTargetClass());
+    assertNull((new AdornedTargetCollectionMetadata()).getTargetClass());
   }
 
   /**
    * Test {@link FieldMetadata#setTargetClass(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setTargetClass(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setTargetClass(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setTargetClass(String)"})
   public void testSetTargetClass() {
     // Arrange and Act
@@ -584,26 +484,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getFieldName()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getFieldName()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getFieldName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getFieldName()"})
   public void testGetFieldName() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getFieldName());
+    assertNull((new AdornedTargetCollectionMetadata()).getFieldName());
   }
 
   /**
    * Test {@link FieldMetadata#setFieldName(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setFieldName(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setFieldName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setFieldName(String)"})
   public void testSetFieldName() {
     // Arrange and Act
@@ -616,26 +514,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getOwningClassFriendlyName()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getOwningClassFriendlyName()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getOwningClassFriendlyName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getOwningClassFriendlyName()"})
   public void testGetOwningClassFriendlyName() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getOwningClassFriendlyName());
+    assertNull((new AdornedTargetCollectionMetadata()).getOwningClassFriendlyName());
   }
 
   /**
    * Test {@link FieldMetadata#setOwningClassFriendlyName(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setOwningClassFriendlyName(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setOwningClassFriendlyName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setOwningClassFriendlyName(String)"})
   public void testSetOwningClassFriendlyName() {
     // Arrange and Act
@@ -648,26 +544,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getOwningClass()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getOwningClass()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getOwningClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getOwningClass()"})
   public void testGetOwningClass() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getOwningClass());
+    assertNull((new AdornedTargetCollectionMetadata()).getOwningClass());
   }
 
   /**
    * Test {@link FieldMetadata#setOwningClass(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setOwningClass(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setOwningClass(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setOwningClass(String)"})
   public void testSetOwningClass() {
     // Arrange and Act
@@ -680,26 +574,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getPrefix()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getPrefix()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getPrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getPrefix()"})
   public void testGetPrefix() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getPrefix());
+    assertNull((new AdornedTargetCollectionMetadata()).getPrefix());
   }
 
   /**
    * Test {@link FieldMetadata#setPrefix(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setPrefix(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setPrefix(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setPrefix(String)"})
   public void testSetPrefix() {
     // Arrange and Act
@@ -712,40 +604,35 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getChildrenExcluded()}.
-   *
    * <ul>
-   *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getChildrenExcluded()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getChildrenExcluded()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getChildrenExcluded()"})
   public void testGetChildrenExcluded_givenAdornedTargetCollectionMetadata_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getChildrenExcluded());
+    assertNull((new AdornedTargetCollectionMetadata()).getChildrenExcluded());
   }
 
   /**
    * Test {@link FieldMetadata#getChildrenExcluded()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getChildrenExcluded()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getChildrenExcluded()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getChildrenExcluded()"})
   public void testGetChildrenExcluded_thenReturnFalse() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setChildrenExcluded(false);
 
     // Act and Assert
@@ -754,21 +641,18 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getChildrenExcluded()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getChildrenExcluded()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getChildrenExcluded()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getChildrenExcluded()"})
   public void testGetChildrenExcluded_thenReturnTrue() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setChildrenExcluded(true);
 
     // Act and Assert
@@ -777,17 +661,15 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#setChildrenExcluded(Boolean)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setChildrenExcluded(Boolean)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setChildrenExcluded(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setChildrenExcluded(Boolean)"})
   public void testSetChildrenExcluded() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act
     adornedTargetCollectionMetadata.setChildrenExcluded(true);
@@ -798,26 +680,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getTab()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getTab()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getTab()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getTab()"})
   public void testGetTab() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getTab());
+    assertNull((new AdornedTargetCollectionMetadata()).getTab());
   }
 
   /**
    * Test {@link FieldMetadata#setTab(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setTab(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setTab(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setTab(String)"})
   public void testSetTab() {
     // Arrange and Act
@@ -830,31 +710,28 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getTabOrder()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getTabOrder()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getTabOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Integer FieldMetadata.getTabOrder()"})
   public void testGetTabOrder() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getTabOrder());
+    assertNull((new AdornedTargetCollectionMetadata()).getTabOrder());
   }
 
   /**
    * Test {@link FieldMetadata#setTabOrder(Integer)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setTabOrder(Integer)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setTabOrder(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setTabOrder(Integer)"})
   public void testSetTabOrder() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act
     adornedTargetCollectionMetadata.setTabOrder(1);
@@ -865,26 +742,24 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getGroup()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getGroup()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getGroup()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldMetadata.getGroup()"})
   public void testGetGroup() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getGroup());
+    assertNull((new AdornedTargetCollectionMetadata()).getGroup());
   }
 
   /**
    * Test {@link FieldMetadata#setGroup(String)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setGroup(String)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setGroup(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setGroup(String)"})
   public void testSetGroup() {
     // Arrange and Act
@@ -897,31 +772,28 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getGroupOrder()}.
-   *
-   * <p>Method under test: {@link FieldMetadata#getGroupOrder()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getGroupOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Integer FieldMetadata.getGroupOrder()"})
   public void testGetGroupOrder() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getGroupOrder());
+    assertNull((new AdornedTargetCollectionMetadata()).getGroupOrder());
   }
 
   /**
    * Test {@link FieldMetadata#setGroupOrder(Integer)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setGroupOrder(Integer)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setGroupOrder(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setGroupOrder(Integer)"})
   public void testSetGroupOrder() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act
     adornedTargetCollectionMetadata.setGroupOrder(1);
@@ -932,40 +804,35 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getLazyFetch()}.
-   *
    * <ul>
-   *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getLazyFetch()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getLazyFetch()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getLazyFetch()"})
   public void testGetLazyFetch_givenAdornedTargetCollectionMetadata_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new AdornedTargetCollectionMetadata().getLazyFetch());
+    assertNull((new AdornedTargetCollectionMetadata()).getLazyFetch());
   }
 
   /**
    * Test {@link FieldMetadata#getLazyFetch()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getLazyFetch()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getLazyFetch()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getLazyFetch()"})
   public void testGetLazyFetch_thenReturnFalse() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setLazyFetch(false);
 
     // Act and Assert
@@ -974,21 +841,18 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getLazyFetch()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getLazyFetch()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getLazyFetch()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldMetadata.getLazyFetch()"})
   public void testGetLazyFetch_thenReturnTrue() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setLazyFetch(true);
 
     // Act and Assert
@@ -997,17 +861,15 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#setLazyFetch(Boolean)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setLazyFetch(Boolean)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setLazyFetch(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setLazyFetch(Boolean)"})
   public void testSetLazyFetch() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act
     adornedTargetCollectionMetadata.setLazyFetch(true);
@@ -1018,40 +880,35 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#getManualFetch()}.
-   *
    * <ul>
-   *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getManualFetch()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getManualFetch()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldMetadata.getManualFetch()"})
   public void testGetManualFetch_givenAdornedTargetCollectionMetadata_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new AdornedTargetCollectionMetadata().getManualFetch());
+    assertFalse((new AdornedTargetCollectionMetadata()).getManualFetch());
   }
 
   /**
    * Test {@link FieldMetadata#getManualFetch()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#getManualFetch()}
+   * <p>
+   * Method under test: {@link FieldMetadata#getManualFetch()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldMetadata.getManualFetch()"})
   public void testGetManualFetch_thenReturnTrue() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
     adornedTargetCollectionMetadata.setManualFetch(true);
 
     // Act and Assert
@@ -1060,17 +917,15 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#setManualFetch(boolean)}.
-   *
-   * <p>Method under test: {@link FieldMetadata#setManualFetch(boolean)}
+   * <p>
+   * Method under test: {@link FieldMetadata#setManualFetch(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldMetadata.setManualFetch(boolean)"})
   public void testSetManualFetch() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act
     adornedTargetCollectionMetadata.setManualFetch(true);
@@ -1081,49 +936,42 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#equals(Object)}, and {@link FieldMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 = new AdornedTargetCollectionMetadata();
 
     // Act and Assert
     assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata2);
-    assertEquals(
-        adornedTargetCollectionMetadata.hashCode(), adornedTargetCollectionMetadata2.hashCode());
+    int expectedHashCodeResult = adornedTargetCollectionMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetCollectionMetadata2.hashCode());
   }
 
   /**
    * Test {@link FieldMetadata#equals(Object)}, and {@link FieldMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = new AdornedTargetCollectionMetadata();
 
     // Act and Assert
     assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata);
@@ -1133,17 +981,15 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -1152,17 +998,15 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -1171,17 +1015,15 @@ public class FieldMetadataDiffblueTest {
 
   /**
    * Test {@link FieldMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

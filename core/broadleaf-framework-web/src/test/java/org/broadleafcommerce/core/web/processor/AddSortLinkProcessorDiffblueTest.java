@@ -18,40 +18,44 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class AddSortLinkProcessorDiffblueTest {
+  @InjectMocks
+  private AddSortLinkProcessor addSortLinkProcessor;
+
   /**
    * Test {@link AddSortLinkProcessor#getName()}.
-   *
-   * <p>Method under test: {@link AddSortLinkProcessor#getName()}
+   * <p>
+   * Method under test: {@link AddSortLinkProcessor#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"java.lang.String AddSortLinkProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("addsortlink", new AddSortLinkProcessor().getName());
+    assertEquals("addsortlink", (new AddSortLinkProcessor()).getName());
   }
 
   /**
    * Test {@link AddSortLinkProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link AddSortLinkProcessor#getPrecedence()}
+   * <p>
+   * Method under test: {@link AddSortLinkProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int AddSortLinkProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert
-    assertEquals(10000, new AddSortLinkProcessor().getPrecedence());
+    assertEquals(10000, addSortLinkProcessor.getPrecedence());
   }
 }

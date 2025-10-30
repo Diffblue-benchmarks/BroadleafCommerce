@@ -18,40 +18,44 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class PaginationSizeLinkProcessorDiffblueTest {
+  @InjectMocks
+  private PaginationSizeLinkProcessor paginationSizeLinkProcessor;
+
   /**
    * Test {@link PaginationSizeLinkProcessor#getName()}.
-   *
-   * <p>Method under test: {@link PaginationSizeLinkProcessor#getName()}
+   * <p>
+   * Method under test: {@link PaginationSizeLinkProcessor#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"java.lang.String PaginationSizeLinkProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("pagination-size-link", new PaginationSizeLinkProcessor().getName());
+    assertEquals("pagination-size-link", (new PaginationSizeLinkProcessor()).getName());
   }
 
   /**
    * Test {@link PaginationSizeLinkProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link PaginationSizeLinkProcessor#getPrecedence()}
+   * <p>
+   * Method under test: {@link PaginationSizeLinkProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int PaginationSizeLinkProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert
-    assertEquals(10000, new PaginationSizeLinkProcessor().getPrecedence());
+    assertEquals(10000, paginationSizeLinkProcessor.getPrecedence());
   }
 }

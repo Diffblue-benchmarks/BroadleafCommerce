@@ -19,14 +19,12 @@ package org.broadleafcommerce.core.web.order.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
@@ -41,40 +39,26 @@ import org.springframework.security.core.Authentication;
 
 class BroadleafAuthenticationSuccessHandlerDiffblueTest {
   /**
-   * Test {@link BroadleafAuthenticationSuccessHandler#onAuthenticationSuccess(HttpServletRequest,
-   * HttpServletResponse, Authentication)} with {@code request}, {@code response}, {@code
-   * authentication}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafAuthenticationSuccessHandler#onAuthenticationSuccess(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
+   * Test {@link BroadleafAuthenticationSuccessHandler#onAuthenticationSuccess(HttpServletRequest, HttpServletResponse, Authentication)} with {@code request}, {@code response}, {@code authentication}.
+   * <p>
+   * Method under test: {@link BroadleafAuthenticationSuccessHandler#onAuthenticationSuccess(HttpServletRequest, HttpServletResponse, Authentication)}
    */
   @Test
-  @DisplayName(
-      "Test onAuthenticationSuccess(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authentication'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test onAuthenticationSuccess(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authentication'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "void BroadleafAuthenticationSuccessHandler.onAuthenticationSuccess(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testOnAuthenticationSuccessWithRequestResponseAuthentication()
-      throws IOException, ServletException {
+      "void BroadleafAuthenticationSuccessHandler.onAuthenticationSuccess(HttpServletRequest, HttpServletResponse, Authentication)"})
+  void testOnAuthenticationSuccessWithRequestResponseAuthentication() throws IOException, ServletException {
     // Arrange
-    BroadleafAuthenticationSuccessHandler broadleafAuthenticationSuccessHandler =
-        new BroadleafAuthenticationSuccessHandler();
+    BroadleafAuthenticationSuccessHandler broadleafAuthenticationSuccessHandler = new BroadleafAuthenticationSuccessHandler();
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    String[] whiteListParamNames = new String[] {"White List Param Names"};
-
-    XssRequestWrapper request =
-        new XssRequestWrapper(
-            servletRequest, new StandardReactiveWebEnvironment(), whiteListParamNames);
-    SearchRequestWrapper request2 =
-        new SearchRequestWrapper(new HttpServletRequestWrapper(request));
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    broadleafAuthenticationSuccessHandler.onAuthenticationSuccess(
-        request2, response, new TestingAuthenticationToken("Principal", "Credentials"));
+    broadleafAuthenticationSuccessHandler.onAuthenticationSuccess(request, response,
+        new TestingAuthenticationToken("Principal", "Credentials"));
 
     // Assert
     Collection<String> headerNames = response.getHeaderNames();

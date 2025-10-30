@@ -23,14 +23,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.List;
@@ -66,127 +66,88 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd2() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
 
     // Act and Assert
-    assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"createNewPermission"}, "ABC123")));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd3() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"createNewPermission", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_thenReturnTrue() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "org.broadleafcommerce.openadmin.server.security.domain.AdminPermission",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"createNewPermission", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertTrue(adminPermissionCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    assertTrue(adminPermissionCustomPersistenceHandler
+        .canHandleAdd(new PersistencePackage("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission",
+            entity, new PersistencePerspective(), new String[]{"createNewPermission"}, "ABC123")));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(adminPermissionCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
@@ -194,127 +155,88 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate2() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
 
     // Act and Assert
-    assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"createNewPermission"}, "ABC123")));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate3() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"createNewPermission", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{}, "ABC123")));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_thenReturnTrue() {
     // Arrange
     Entity entity = new Entity();
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "org.broadleafcommerce.openadmin.server.security.domain.AdminPermission",
-            entity,
-            new PersistencePerspective(),
-            new String[] {"createNewPermission", "Custom Criteria"},
-            "ABC123");
 
     // Act and Assert
-    assertTrue(adminPermissionCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    assertTrue(adminPermissionCustomPersistenceHandler.canHandleUpdate(
+        new PersistencePackage("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission", entity,
+            new PersistencePerspective(), new String[]{"createNewPermission"}, "ABC123")));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(adminPermissionCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
@@ -322,740 +244,369 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminPermissionCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminPermissionCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(adminPermissionCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
   }
 
   /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return empty string.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenPropertyGetValueReturnEmptyString_thenCallsGetValue()
-      throws ServiceException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminPermissionCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.
-   *   <li>Then calls {@link Property#getValue()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenPropertyGetValueReturnPermission_thenCallsGetValue()
-      throws ServiceException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("PERMISSION_");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminPermissionCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenPropertyGetValueThrowRuntimeException_thenThrowRuntimeException()
-      throws ServiceException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getValue()).thenThrow(new RuntimeException());
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminPermissionCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty("id");
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenPropertyWithNameAndValueIs42() throws ServiceException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "42"));
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminPermissionCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is empty
-   *       string.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenPropertyWithNameAndValueIsEmptyString() throws ServiceException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", ""));
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminPermissionCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.
-   *   <li>Then calls {@link Property#getValue()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"
-  })
-  public void testCheckPermissionName_givenPropertyGetValueReturn42_thenCallsGetValue()
-      throws ServiceException {
+      "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
     // Arrange
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"name"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> adminPermissionCustomPersistenceHandler.checkPermissionName(persistencePackage));
-    verify(entity).findProperty("name");
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+  }
+
+  /**
+   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return empty string.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenPropertyGetValueReturnEmptyString_thenCallsGetValue() throws ServiceException {
+    // Arrange
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
+
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+  }
+
+  /**
+   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenPropertyGetValueReturnPermission_thenCallsGetValue() throws ServiceException {
+    // Arrange
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("PERMISSION_");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
+
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+  }
+
+  /**
+   * Test {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Property#Property()} Value is {@code 42}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminPermissionCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenPropertyValueIs42_whenEntityFindPropertyReturnProperty() throws ServiceException {
+    // Arrange
+    Property property = new Property();
+    property.setValue("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
+
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"})
+  public void testCheckPermissionName_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
+    // Arrange
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    // Act and Assert
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.checkPermissionName(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{"name"}, "ABC123")));
+    verify(entity).findProperty(eq("name"));
     verify(property).getValue();
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"})
   public void testCheckPermissionName_givenPropertyGetValueReturnPermission_thenCallsGetValue()
       throws ServiceException {
     // Arrange
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("PERMISSION_");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"name"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> adminPermissionCustomPersistenceHandler.checkPermissionName(persistencePackage));
-    verify(entity).findProperty("name");
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.checkPermissionName(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{"name"}, "ABC123")));
+    verify(entity).findProperty(eq("name"));
     verify(property).getValue();
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Given {@link Property#Property()} Value is {@code 42}.
+   *   <li>Given {@link Property#Property()} Value is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#checkPermissionName(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Entity AdminPermissionCustomPersistenceHandler.checkPermissionName(PersistencePackage)"})
   public void testCheckPermissionName_givenPropertyValueIs42() throws ServiceException {
     // Arrange
     Property property = new Property();
     property.setValue("42");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"name"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> adminPermissionCustomPersistenceHandler.checkPermissionName(persistencePackage));
-    verify(entity).findProperty("name");
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.checkPermissionName(
+        new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(), new String[]{"name"}, "ABC123")));
+    verify(entity).findProperty(eq("name"));
   }
 
   /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
+      "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testUpdate_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
     // Arrange
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"name"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"name"}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminPermissionCustomPersistenceHandler.update(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).findProperty("name");
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.update(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity).findProperty(eq("name"));
     verify(property).getValue();
   }
 
   /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code PERMISSION_}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenPropertyGetValueReturnPermission_thenCallsGetValue()
-      throws ServiceException {
+      "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyGetValueReturnPermission_thenCallsGetValue() throws ServiceException {
     // Arrange
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("PERMISSION_");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"name"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"name"}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminPermissionCustomPersistenceHandler.update(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).findProperty("name");
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.update(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity).findProperty(eq("name"));
     verify(property).getValue();
   }
 
   /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property#Property()} Value is {@code 42}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link
-   *       Property#Property()}.
+   *   <li>Given {@link Property#Property()} Value is {@code 42}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenPropertyValueIs42_whenEntityFindPropertyReturnProperty()
-      throws ServiceException {
+      "Entity AdminPermissionCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_givenPropertyValueIs42_whenEntityFindPropertyReturnProperty() throws ServiceException {
     // Arrange
     Property property = new Property();
     property.setValue("42");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"name"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"name"}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminPermissionCustomPersistenceHandler.update(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).findProperty("name");
+    assertThrows(ServiceException.class, () -> adminPermissionCustomPersistenceHandler.update(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity).findProperty(eq("name"));
   }
 
   /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria} {@link FilterAndSortCriteria#getSortDirection()}
-   *       return {@code ASCENDING}.
+   *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "DynamicResultSet AdminPermissionCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_givenFilterAndSortCriteriaGetSortDirectionReturnAscending()
-      throws ServiceException {
+      "DynamicResultSet AdminPermissionCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+  public void testFetch_thenReturnDynamicResultSet() throws ServiceException {
     // Arrange
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getSortDirection()).thenReturn(SortDirection.ASCENDING);
-
-    HashMap<String, FilterAndSortCriteria> stringFilterAndSortCriteriaMap = new HashMap<>();
-    stringFilterAndSortCriteriaMap.put("description", filterAndSortCriteria);
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getCriteriaMap()).thenReturn(stringFilterAndSortCriteriaMap);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        adminPermissionCustomPersistenceHandler.fetch(
-            persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto, atLeast(1)).getCriteriaMap();
-    verify(filterAndSortCriteria).getSortDirection();
-    verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    assertSame(dynamicResultSet, actualFetchResult);
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code description} is {@link
-   *       FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet AdminPermissionCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_givenHashMapDescriptionIsFilterAndSortCriteriaWithPropertyIdIs42()
-      throws ServiceException {
-    // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    HashMap<String, FilterAndSortCriteria> stringFilterAndSortCriteriaMap = new HashMap<>();
-    stringFilterAndSortCriteriaMap.put("description", new FilterAndSortCriteria("42"));
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getCriteriaMap()).thenReturn(stringFilterAndSortCriteriaMap);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        adminPermissionCustomPersistenceHandler.fetch(
-            persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto, atLeast(1)).getCriteriaMap();
-    verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    assertSame(dynamicResultSet, actualFetchResult);
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.
-   *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet AdminPermissionCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_givenHashMap_thenReturnDynamicResultSet() throws ServiceException {
-    // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
     RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    DynamicResultSet actualFetchResult =
-        adminPermissionCustomPersistenceHandler.fetch(
-            persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = adminPermissionCustomPersistenceHandler.fetch(persistencePackage, cto,
+        dynamicEntityDao, helper);
 
     // Assert
     verify(cto, atLeast(1)).add(Mockito.<FilterAndSortCriteria>any());
     verify(cto, atLeast(1)).getCriteriaMap();
     verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
     assertSame(dynamicResultSet, actualFetchResult);
   }
 
   /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
    * <ul>
-   *   <li>Then calls {@link FilterAndSortCriteria#setSortAscending(Boolean)}.
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then calls {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminPermissionCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet AdminPermissionCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCallsSetSortAscending() throws ServiceException {
-    // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getSortDirection()).thenReturn(null);
-    doNothing().when(filterAndSortCriteria).setSortAscending(Mockito.<Boolean>any());
-
-    HashMap<String, FilterAndSortCriteria> stringFilterAndSortCriteriaMap = new HashMap<>();
-    stringFilterAndSortCriteriaMap.put("description", filterAndSortCriteria);
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getCriteriaMap()).thenReturn(stringFilterAndSortCriteriaMap);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        adminPermissionCustomPersistenceHandler.fetch(
-            persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto, atLeast(1)).getCriteriaMap();
-    verify(filterAndSortCriteria).getSortDirection();
-    verify(filterAndSortCriteria).setSortAscending(true);
-    verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    assertSame(dynamicResultSet, actualFetchResult);
-  }
-
-  /**
-   * Test {@link
-   * AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.
-   *   <li>Then calls {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminPermissionCustomPersistenceHandler.addFriendlyRestriction(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addFriendlyRestriction(CriteriaTransferObject)"})
   public void testAddFriendlyRestriction_givenHashMap_thenCallsAdd() {
     // Arrange
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
@@ -1071,22 +622,16 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
-   *
+   * Test {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addFriendlyRestriction(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminPermissionCustomPersistenceHandler.addFriendlyRestriction(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addFriendlyRestriction(CriteriaTransferObject)"})
   public void testAddFriendlyRestriction_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
     // Arrange
     CriteriaTransferObject cto = new CriteriaTransferObject();
@@ -1112,51 +657,15 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
-  public void testAddDefaultSort() {
-    // Arrange
-    HashMap<String, FilterAndSortCriteria> stringFilterAndSortCriteriaMap = new HashMap<>();
-    stringFilterAndSortCriteriaMap.put("description", new FilterAndSortCriteria("42"));
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getCriteriaMap()).thenReturn(stringFilterAndSortCriteriaMap);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
-
-    // Act
-    adminPermissionCustomPersistenceHandler.addDefaultSort(cto);
-
-    // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto, atLeast(1)).getCriteriaMap();
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria} {@link FilterAndSortCriteria#getSortDirection()}
-   *       return {@code ASCENDING}.
+   *   <li>Given {@link FilterAndSortCriteria} {@link FilterAndSortCriteria#getSortDirection()} return {@code ASCENDING}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_givenFilterAndSortCriteriaGetSortDirectionReturnAscending() {
     // Arrange
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
@@ -1164,69 +673,54 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
 
     HashMap<String, FilterAndSortCriteria> stringFilterAndSortCriteriaMap = new HashMap<>();
     stringFilterAndSortCriteriaMap.put("description", filterAndSortCriteria);
-
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(stringFilterAndSortCriteriaMap);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
 
     // Act
     adminPermissionCustomPersistenceHandler.addDefaultSort(cto);
 
     // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
     verify(cto).getCriteriaMap();
     verify(filterAndSortCriteria).getSortDirection();
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.
-   *   <li>Then calls {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then calls {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_givenHashMap_thenCallsAdd() {
     // Arrange
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
 
     // Act
     adminPermissionCustomPersistenceHandler.addDefaultSort(cto);
 
     // Assert
-    verify(cto, atLeast(1)).add(Mockito.<FilterAndSortCriteria>any());
+    verify(cto).add(isA(FilterAndSortCriteria.class));
     verify(cto, atLeast(1)).getCriteriaMap();
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
    * <ul>
-   *   <li>Then calls {@link FilterAndSortCriteria#setSortAscending(Boolean)}.
+   *   <li>Then calls {@link FilterAndSortCriteria#setSortAscending(Boolean)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_thenCallsSetSortAscending() {
     // Arrange
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
@@ -1235,38 +729,55 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
 
     HashMap<String, FilterAndSortCriteria> stringFilterAndSortCriteriaMap = new HashMap<>();
     stringFilterAndSortCriteriaMap.put("description", filterAndSortCriteria);
-
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(stringFilterAndSortCriteriaMap);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
 
     // Act
     adminPermissionCustomPersistenceHandler.addDefaultSort(cto);
 
     // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
     verify(cto, atLeast(1)).getCriteriaMap();
     verify(filterAndSortCriteria).getSortDirection();
-    verify(filterAndSortCriteria).setSortAscending(true);
+    verify(filterAndSortCriteria).setSortAscending(eq(true));
   }
 
   /**
    * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap is {@link HashMap#HashMap()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
+  public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapIsHashMap() {
+    // Arrange
+    HashMap<String, FilterAndSortCriteria> criteriaMap = new HashMap<>();
+    criteriaMap.put("description", new FilterAndSortCriteria("42"));
+
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    cto.setCriteriaMap(criteriaMap);
+
+    // Act
+    adminPermissionCustomPersistenceHandler.addDefaultSort(cto);
+
+    // Assert
+    assertSame(criteriaMap, cto.getCriteriaMap());
+  }
+
+  /**
+   * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
+   * <ul>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
     // Arrange
     CriteriaTransferObject cto = new CriteriaTransferObject();
@@ -1281,49 +792,8 @@ public class AdminPermissionCustomPersistenceHandlerDiffblueTest {
     assertEquals("description", getResult.getPropertyId());
     assertNull(getResult.getOrder());
     assertNull(getResult.getRestrictionType());
-    assertEquals(SortDirection.ASCENDING, getResult.getSortDirection());
     assertTrue(getResult.getFilterValues().isEmpty());
     assertTrue(getResult.getSpecialFilterValues().isEmpty());
-    assertTrue(getResult.getSortAscending());
-    assertTrue(getResult.isNullsLast());
-  }
-
-  /**
-   * Test {@link AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminPermissionCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminPermissionCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
-  public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsTwo() {
-    // Arrange
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    cto.add(new FilterAndSortCriteria("42"));
-
-    // Act
-    adminPermissionCustomPersistenceHandler.addDefaultSort(cto);
-
-    // Assert
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(2, criteriaMap.size());
-    FilterAndSortCriteria getResult = criteriaMap.get("description");
-    assertEquals("description", getResult.getPropertyId());
-    assertNull(getResult.getOrder());
-    assertNull(getResult.getRestrictionType());
-    assertEquals(SortDirection.ASCENDING, getResult.getSortDirection());
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult.getSpecialFilterValues().isEmpty());
-    assertTrue(criteriaMap.containsKey("42"));
-    assertTrue(getResult.getSortAscending());
     assertTrue(getResult.isNullsLast());
   }
 }

@@ -21,14 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.HashMap;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.payment.dto.PaymentResponseDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
@@ -40,43 +34,33 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PassthroughPaymentRollbackServiceImplDiffblueTest {
-  @InjectMocks private PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl;
+  @InjectMocks
+  private PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl;
 
   /**
    * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return RawResponse is {@code rollback authorize - successful}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return RawResponse is {@code rollback authorize - successful}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorize(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorize(PaymentRequestDTO)"})
   public void testRollbackAuthorize_given42_thenReturnRawResponseIsRollbackAuthorizeSuccessful()
       throws PaymentException {
     // Arrange
-    HashMap<String, Object> stringObjectMap = new HashMap<>();
-    stringObjectMap.put(PassthroughPaymentConstants.PASSTHROUGH_PAYMENT_TYPE, "Additional Fields");
-    stringObjectMap.put(PassthroughPaymentConstants.PASSTHROUGH_PAYMENT_TYPE, "Additional Fields");
-
-    PaymentRequestDTO transactionToBeRolledBack = mock(PaymentRequestDTO.class);
-    when(transactionToBeRolledBack.getTransactionTotal()).thenReturn("42");
-    when(transactionToBeRolledBack.getAdditionalFields()).thenReturn(stringObjectMap);
+    PaymentRequestDTO transactionToBeRolledBack = new PaymentRequestDTO();
+    transactionToBeRolledBack.transactionTotal("42");
+    transactionToBeRolledBack.additionalField(PassthroughPaymentConstants.PASSTHROUGH_PAYMENT_TYPE, "Value");
 
     // Act
-    PaymentResponseDTO actualRollbackAuthorizeResult =
-        passthroughPaymentRollbackServiceImpl.rollbackAuthorize(transactionToBeRolledBack);
+    PaymentResponseDTO actualRollbackAuthorizeResult = passthroughPaymentRollbackServiceImpl
+        .rollbackAuthorize(transactionToBeRolledBack);
 
     // Assert
-    verify(transactionToBeRolledBack, atLeast(1)).getAdditionalFields();
-    verify(transactionToBeRolledBack).getTransactionTotal();
     assertEquals("rollback authorize - successful", actualRollbackAuthorizeResult.getRawResponse());
     assertNull(actualRollbackAuthorizeResult.getOrderId());
     assertNull(actualRollbackAuthorizeResult.getPaymentToken());
@@ -95,92 +79,67 @@ public class PassthroughPaymentRollbackServiceImplDiffblueTest {
 
   /**
    * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}.
-   *
    * <ul>
-   *   <li>When {@link PaymentRequestDTO} (default constructor).
-   *   <li>Then throw {@link PaymentException}.
+   *   <li>When {@link PaymentRequestDTO} (default constructor).</li>
+   *   <li>Then throw {@link PaymentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorize(PaymentRequestDTO)"
-  })
-  public void testRollbackAuthorize_whenPaymentRequestDTO_thenThrowPaymentException()
-      throws PaymentException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorize(PaymentRequestDTO)"})
+  public void testRollbackAuthorize_whenPaymentRequestDTO_thenThrowPaymentException() throws PaymentException {
     // Arrange, Act and Assert
-    assertThrows(
-        PaymentException.class,
+    assertThrows(PaymentException.class,
         () -> passthroughPaymentRollbackServiceImpl.rollbackAuthorize(new PaymentRequestDTO()));
   }
 
   /**
    * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackCapture(PaymentRequestDTO)}.
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackCapture(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentRollbackServiceImpl#rollbackCapture(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackCapture(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackCapture(PaymentRequestDTO)"})
   public void testRollbackCapture() throws PaymentException {
     // Arrange, Act and Assert
-    assertThrows(
-        PaymentException.class,
+    assertThrows(PaymentException.class,
         () -> passthroughPaymentRollbackServiceImpl.rollbackCapture(new PaymentRequestDTO()));
   }
 
   /**
-   * Test {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackAuthorizeAndCapture(PaymentRequestDTO)}.
-   *
+   * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorizeAndCapture(PaymentRequestDTO)}.
    * <ul>
-   *   <li>When {@link PaymentRequestDTO} (default constructor).
-   *   <li>Then throw {@link PaymentException}.
+   *   <li>When {@link PaymentRequestDTO} (default constructor).</li>
+   *   <li>Then throw {@link PaymentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackAuthorizeAndCapture(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorizeAndCapture(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorizeAndCapture(PaymentRequestDTO)"
-  })
+      "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorizeAndCapture(PaymentRequestDTO)"})
   public void testRollbackAuthorizeAndCapture_whenPaymentRequestDTO_thenThrowPaymentException()
       throws PaymentException {
     // Arrange, Act and Assert
-    assertThrows(
-        PaymentException.class,
-        () ->
-            passthroughPaymentRollbackServiceImpl.rollbackAuthorizeAndCapture(
-                new PaymentRequestDTO()));
+    assertThrows(PaymentException.class,
+        () -> passthroughPaymentRollbackServiceImpl.rollbackAuthorizeAndCapture(new PaymentRequestDTO()));
   }
 
   /**
    * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackRefund(PaymentRequestDTO)}.
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackRefund(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentRollbackServiceImpl#rollbackRefund(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackRefund(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackRefund(PaymentRequestDTO)"})
   public void testRollbackRefund() throws PaymentException {
     // Arrange, Act and Assert
-    assertThrows(
-        PaymentException.class,
+    assertThrows(PaymentException.class,
         () -> passthroughPaymentRollbackServiceImpl.rollbackRefund(new PaymentRequestDTO()));
   }
 }

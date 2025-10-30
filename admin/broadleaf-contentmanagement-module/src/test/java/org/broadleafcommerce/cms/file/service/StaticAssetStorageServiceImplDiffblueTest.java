@@ -32,12 +32,12 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -57,6 +57,7 @@ import org.broadleafcommerce.cms.file.domain.StaticAssetStorageImpl;
 import org.broadleafcommerce.cms.file.service.operation.NamedOperationManager;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
+import org.broadleafcommerce.common.file.domain.FileWorkArea;
 import org.broadleafcommerce.common.file.service.BroadleafFileService;
 import org.broadleafcommerce.common.io.ConcurrentFileOutputStream;
 import org.broadleafcommerce.common.util.StreamCapableTransactionalOperation;
@@ -69,116 +70,113 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StaticAssetStorageServiceImplDiffblueTest {
-  @Mock private BroadleafFileService broadleafFileService;
+  @InjectMocks
+  private StaticAssetStorageServiceImpl staticAssetStorageServiceImpl;
 
-  @Mock private ConcurrentFileOutputStream concurrentFileOutputStream;
+  @Mock
+  private StaticAssetStorageDao staticAssetStorageDao;
 
-  @Mock private Environment environment;
+  @Mock
+  private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
 
-  @Mock private NamedOperationManager namedOperationManager;
+  @Mock
+  private BroadleafFileService broadleafFileService;
 
-  @Mock private StaticAssetService staticAssetService;
+  @Mock
+  private ConcurrentFileOutputStream concurrentFileOutputStream;
 
-  @Mock private StaticAssetServiceExtensionManager staticAssetServiceExtensionManager;
+  @Mock
+  private StaticAssetService staticAssetService;
 
-  @Mock private StaticAssetStorageDao staticAssetStorageDao;
+  @Mock
+  private Environment environment;
 
-  @InjectMocks private StaticAssetStorageServiceImpl staticAssetStorageServiceImpl;
+  @Mock
+  private NamedOperationManager namedOperationManager;
 
-  @Mock private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
+  @Mock
+  private StaticAssetServiceExtensionManager staticAssetServiceExtensionManager;
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#findStaticAsset(String)}.
-   *
    * <ul>
-   *   <li>Then return {@link ImageStaticAssetImpl} (default constructor).
+   *   <li>Then return {@link ImageStaticAssetImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#findStaticAsset(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#findStaticAsset(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"StaticAsset StaticAssetStorageServiceImpl.findStaticAsset(String)"})
   public void testFindStaticAsset_thenReturnImageStaticAssetImpl() {
     // Arrange
     ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(imageStaticAssetImpl);
+    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(imageStaticAssetImpl);
 
     // Act
-    StaticAsset actualFindStaticAssetResult =
-        staticAssetStorageServiceImpl.findStaticAsset("https://example.org/example");
+    StaticAsset actualFindStaticAssetResult = staticAssetStorageServiceImpl
+        .findStaticAsset("https://example.org/example");
 
     // Assert
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
+    verify(staticAssetService).findStaticAssetByFullUrl(eq("https://example.org/example"));
     assertSame(imageStaticAssetImpl, actualFindStaticAssetResult);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#findStaticAsset(String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#findStaticAsset(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#findStaticAsset(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"StaticAsset StaticAssetStorageServiceImpl.findStaticAsset(String)"})
   public void testFindStaticAsset_thenThrowRuntimeException() {
     // Arrange
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
+    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any())).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
+    assertThrows(RuntimeException.class,
         () -> staticAssetStorageServiceImpl.findStaticAsset("https://example.org/example"));
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
+    verify(staticAssetService).findStaticAssetByFullUrl(eq("https://example.org/example"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#shouldUseSharedFile(InputStream)}.
-   *
    * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX}
-   *       Bytes is {@code UTF-8}.
+   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#shouldUseSharedFile(InputStream)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#shouldUseSharedFile(InputStream)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean StaticAssetStorageServiceImpl.shouldUseSharedFile(InputStream)"})
   public void testShouldUseSharedFile_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8()
       throws UnsupportedEncodingException {
     // Arrange, Act and Assert
     assertFalse(
-        staticAssetStorageServiceImpl.shouldUseSharedFile(
-            new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
+        staticAssetStorageServiceImpl.shouldUseSharedFile(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#shouldUseSharedFile(InputStream)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#shouldUseSharedFile(InputStream)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#shouldUseSharedFile(InputStream)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean StaticAssetStorageServiceImpl.shouldUseSharedFile(InputStream)"})
   public void testShouldUseSharedFile_whenNull() {
     // Arrange, Act and Assert
@@ -187,578 +185,334 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"File StaticAssetStorageServiceImpl.getFileFromLocalRepository(String)"})
   public void testGetFileFromLocalRepository() {
     // Arrange
-    when(staticAssetServiceExtensionManager.getProxy()).thenThrow(new RuntimeException());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt"));
-    verify(staticAssetServiceExtensionManager).getProxy();
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"File StaticAssetStorageServiceImpl.getFileFromLocalRepository(String)"})
-  public void testGetFileFromLocalRepository2() {
-    // Arrange
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenThrow(new RuntimeException());
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt"));
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
-    verify(staticAssetServiceExtensionManager).getProxy();
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"File StaticAssetStorageServiceImpl.getFileFromLocalRepository(String)"})
-  public void testGetFileFromLocalRepository3() {
-    // Arrange
+    when(broadleafFileService.getLocalResource(Mockito.<String>any()))
+        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
     when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
         .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
+    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler = mock(
+        StaticAssetServiceExtensionHandler.class);
+    when(staticAssetServiceExtensionHandler.fileExists(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(null);
+    when(staticAssetServiceExtensionManager.getProxy()).thenReturn(staticAssetServiceExtensionHandler);
 
     // Act
-    File actualFileFromLocalRepository =
-        staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt");
+    File actualFileFromLocalRepository = staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt");
 
     // Assert
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
+    verify(staticAssetServiceExtensionHandler).fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
     verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService).getSharedLocalResource("foo.txt");
+    verify(broadleafFileService).getLocalResource(eq("foo.txt"));
+    verify(broadleafFileService).getSharedLocalResource(eq("foo.txt"));
     assertEquals("test.txt", actualFileFromLocalRepository.getName());
     assertTrue(actualFileFromLocalRepository.isAbsolute());
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
+   * <ul>
+   *   <li>Then return Name is {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"File StaticAssetStorageServiceImpl.getFileFromLocalRepository(String)"})
-  public void testGetFileFromLocalRepository4() {
+  public void testGetFileFromLocalRepository_thenReturnNameIsFoo() {
     // Arrange
     when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
+        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "foo").toFile());
+    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler = mock(
+        StaticAssetServiceExtensionHandler.class);
+    when(staticAssetServiceExtensionHandler.fileExists(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(staticAssetServiceExtensionManager.getProxy()).thenReturn(staticAssetServiceExtensionHandler);
 
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
+    // Act
+    File actualFileFromLocalRepository = staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt");
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt"));
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
+    // Assert
+    verify(staticAssetServiceExtensionHandler).fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
     verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService).getSharedLocalResource("foo.txt");
+    verify(broadleafFileService).getSharedLocalResource(eq("foo.txt"));
+    assertEquals("foo", actualFileFromLocalRepository.getName());
+    assertTrue(actualFileFromLocalRepository.isAbsolute());
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
+   * <ul>
+   *   <li>Then return Name is {@code test.txt}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"File StaticAssetStorageServiceImpl.getFileFromLocalRepository(String)"})
-  public void testGetFileFromLocalRepository5() {
+  public void testGetFileFromLocalRepository_thenReturnNameIsTestTxt() {
     // Arrange
     when(broadleafFileService.getLocalResource(Mockito.<String>any()))
         .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
     when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "42").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
+        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
+    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler = mock(
+        StaticAssetServiceExtensionHandler.class);
+    when(staticAssetServiceExtensionHandler.fileExists(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(staticAssetServiceExtensionManager.getProxy()).thenReturn(staticAssetServiceExtensionHandler);
 
     // Act
-    File actualFileFromLocalRepository =
-        staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt");
+    File actualFileFromLocalRepository = staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt");
 
     // Assert
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
+    verify(staticAssetServiceExtensionHandler).fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
     verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService).getLocalResource("foo.txt");
-    verify(broadleafFileService).getSharedLocalResource("foo.txt");
+    verify(broadleafFileService).getLocalResource(eq("foo.txt"));
+    verify(broadleafFileService).getSharedLocalResource(eq("foo.txt"));
     assertEquals("test.txt", actualFileFromLocalRepository.getName());
     assertTrue(actualFileFromLocalRepository.isAbsolute());
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"File StaticAssetStorageServiceImpl.getFileFromLocalRepository(String)"})
-  public void testGetFileFromLocalRepository6() {
+  public void testGetFileFromLocalRepository_thenThrowRuntimeException() {
     // Arrange
-    when(broadleafFileService.getLocalResource(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-    when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "42").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
+    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler = mock(
+        StaticAssetServiceExtensionHandler.class);
+    when(staticAssetServiceExtensionHandler.fileExists(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenThrow(new RuntimeException("foo"));
+    when(staticAssetServiceExtensionManager.getProxy()).thenReturn(staticAssetServiceExtensionHandler);
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt"));
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt"));
+    verify(staticAssetServiceExtensionHandler).fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
     verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService).getLocalResource("foo.txt");
-    verify(broadleafFileService).getSharedLocalResource("foo.txt");
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileFromLocalRepository(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"File StaticAssetStorageServiceImpl.getFileFromLocalRepository(String)"})
-  public void testGetFileFromLocalRepository7() {
-    // Arrange
-    when(broadleafFileService.getLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-    when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "42").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(null);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-
-    // Act
-    File actualFileFromLocalRepository =
-        staticAssetStorageServiceImpl.getFileFromLocalRepository("foo.txt");
-
-    // Assert
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(eq("foo.txt"), isA(ExtensionResultHolder.class));
-    verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService).getLocalResource("foo.txt");
-    verify(broadleafFileService).getSharedLocalResource("foo.txt");
-    assertEquals("test.txt", actualFileFromLocalRepository.getName());
-    assertTrue(actualFileFromLocalRepository.isAbsolute());
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "File StaticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(StaticAsset, File)"
-  })
-  public void testLookupAssetAndCreateLocalFile() throws Throwable {
-    // Arrange
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(
-                new ImageStaticAssetImpl(),
-                Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "File StaticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(StaticAsset, File)"
-  })
-  public void testLookupAssetAndCreateLocalFile2() throws IOException, SQLException {
-    // Arrange
-    when(broadleafFileService.getResource(Mockito.<String>any())).thenThrow(new RuntimeException());
-
-    ImageStaticAssetImpl staticAsset = mock(ImageStaticAssetImpl.class);
-    when(staticAsset.getFullUrl()).thenReturn("https://example.org/example");
-    when(staticAsset.getStorageType()).thenReturn(StorageType.FILESYSTEM);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(
-                staticAsset, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-    verify(staticAsset).getFullUrl();
-    verify(staticAsset).getStorageType();
-    verify(broadleafFileService).getResource("https://example.org/example");
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "File StaticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(StaticAsset, File)"
-  })
-  public void testLookupAssetAndCreateLocalFile3() throws IOException, SQLException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"File StaticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(StaticAsset, File)"})
+  public void testLookupAssetAndCreateLocalFile() throws IOException, SQLException {
     // Arrange
     when(broadleafFileService.getResource(Mockito.<String>any()))
         .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
     ImageStaticAssetImpl staticAsset = mock(ImageStaticAssetImpl.class);
     when(staticAsset.getFullUrl()).thenReturn("https://example.org/example");
     when(staticAsset.getStorageType()).thenReturn(new StorageType("FILESYSTEM", "FILESYSTEM"));
 
     // Act
-    File actualLookupAssetAndCreateLocalFileResult =
-        staticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(
-            staticAsset, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
+    File actualLookupAssetAndCreateLocalFileResult = staticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(
+        staticAsset, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
 
     // Assert
     verify(staticAsset, atLeast(1)).getFullUrl();
     verify(staticAsset).getStorageType();
-    verify(broadleafFileService, atLeast(1)).getResource("https://example.org/example");
+    verify(broadleafFileService, atLeast(1)).getResource(eq("https://example.org/example"));
     assertEquals("test.txt", actualLookupAssetAndCreateLocalFileResult.getName());
     assertTrue(actualLookupAssetAndCreateLocalFileResult.isAbsolute());
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}.
-   *
    * <ul>
-   *   <li>Then return Name is {@code test.txt}.
+   *   <li>Then return Name is {@code test.txt}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "File StaticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(StaticAsset, File)"
-  })
-  public void testLookupAssetAndCreateLocalFile_thenReturnNameIsTestTxt()
-      throws IOException, SQLException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"File StaticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(StaticAsset, File)"})
+  public void testLookupAssetAndCreateLocalFile_thenReturnNameIsTestTxt() throws IOException, SQLException {
     // Arrange
     when(broadleafFileService.getResource(Mockito.<String>any()))
         .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
     ImageStaticAssetImpl staticAsset = mock(ImageStaticAssetImpl.class);
     when(staticAsset.getFullUrl()).thenReturn("https://example.org/example");
     when(staticAsset.getStorageType()).thenReturn(StorageType.FILESYSTEM);
 
     // Act
-    File actualLookupAssetAndCreateLocalFileResult =
-        staticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(
-            staticAsset, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
+    File actualLookupAssetAndCreateLocalFileResult = staticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(
+        staticAsset, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
 
     // Assert
     verify(staticAsset, atLeast(1)).getFullUrl();
     verify(staticAsset).getStorageType();
-    verify(broadleafFileService, atLeast(1)).getResource("https://example.org/example");
+    verify(broadleafFileService, atLeast(1)).getResource(eq("https://example.org/example"));
     assertEquals("test.txt", actualLookupAssetAndCreateLocalFileResult.getName());
     assertTrue(actualLookupAssetAndCreateLocalFileResult.isAbsolute());
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}.
-   *
    * <ul>
-   *   <li>When {@link ImageStaticAssetImpl} (default constructor).
+   *   <li>When {@link ImageStaticAssetImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#lookupAssetAndCreateLocalFile(StaticAsset, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "File StaticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(StaticAsset, File)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"File StaticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(StaticAsset, File)"})
   public void testLookupAssetAndCreateLocalFile_whenImageStaticAssetImpl() throws Throwable {
     // Arrange
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
+    ImageStaticAssetImpl staticAsset = new ImageStaticAssetImpl();
     File baseLocalFile = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile();
 
     // Act
-    File actualLookupAssetAndCreateLocalFileResult =
-        staticAssetStorageServiceImpl.lookupAssetAndCreateLocalFile(
-            new ImageStaticAssetImpl(), baseLocalFile);
+    File actualLookupAssetAndCreateLocalFileResult = staticAssetStorageServiceImpl
+        .lookupAssetAndCreateLocalFile(staticAsset, baseLocalFile);
 
     // Assert
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
     assertSame(baseLocalFile, actualLookupAssetAndCreateLocalFileResult);
   }
 
   /**
-   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset,
-   * File)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
+   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}.
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"})
   public void testCreateLocalFileFromClassPathResource() throws IOException {
     // Arrange
     when(broadleafFileService.getClasspathResource(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
+        .thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any())).thenReturn(19088743);
+    ImageStaticAssetImpl staticAsset = new ImageStaticAssetImpl();
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(
-                new ImageStaticAssetImpl(),
-                Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-    verify(broadleafFileService).getClasspathResource(null);
+    // Act
+    staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(staticAsset,
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
+
+    // Assert
+    verify(broadleafFileService).getClasspathResource(isNull());
+    verify(concurrentFileOutputStream).write(isA(InputStream.class), isA(File.class));
   }
 
   /**
-   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset,
-   * File)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
+   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}.
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"})
   public void testCreateLocalFileFromClassPathResource2() throws IOException {
     // Arrange
-    when(broadleafFileService.getClasspathResource(Mockito.<String>any()))
-        .thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenReturn(19088743);
-
-    // Act
-    staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(
-        new ImageStaticAssetImpl(),
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
-    // Assert
-    verify(broadleafFileService).getClasspathResource(null);
-    verify(concurrentFileOutputStream).write(isA(InputStream.class), isA(File.class));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset,
-   * File)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"
-  })
-  public void testCreateLocalFileFromClassPathResource3() throws IOException {
-    // Arrange
-    when(broadleafFileService.getClasspathResource(Mockito.<String>any()))
-        .thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenThrow(new RuntimeException());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(
-                new ImageStaticAssetImpl(),
-                Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-    verify(broadleafFileService).getClasspathResource(null);
-    verify(concurrentFileOutputStream).write(isA(InputStream.class), isA(File.class));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset,
-   * File)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"
-  })
-  public void testCreateLocalFileFromClassPathResource4() throws IOException {
-    // Arrange
     when(broadleafFileService.getClasspathResource(Mockito.<String>any())).thenReturn(null);
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenReturn(19088743);
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any())).thenReturn(19088743);
+    ImageStaticAssetImpl staticAsset = new ImageStaticAssetImpl();
 
     // Act
-    staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(
-        new ImageStaticAssetImpl(),
+    staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(staticAsset,
         Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
 
     // Assert
-    verify(broadleafFileService).getClasspathResource(null);
+    verify(broadleafFileService).getClasspathResource(isNull());
     verify(concurrentFileOutputStream).write(isNull(), isA(File.class));
   }
 
   /**
-   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset,
-   * File)}.
-   *
+   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}.
    * <ul>
-   *   <li>Then calls {@link DataInputStream#close()}.
+   *   <li>Then calls {@link FilterInputStream#close()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"})
   public void testCreateLocalFileFromClassPathResource_thenCallsClose() throws IOException {
     // Arrange
     DataInputStream dataInputStream = mock(DataInputStream.class);
-    doThrow(new IOException()).when(dataInputStream).close();
-    when(broadleafFileService.getClasspathResource(Mockito.<String>any()))
-        .thenReturn(dataInputStream);
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenReturn(19088743);
+    doThrow(new IOException("foo")).when(dataInputStream).close();
+    when(broadleafFileService.getClasspathResource(Mockito.<String>any())).thenReturn(dataInputStream);
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any())).thenReturn(19088743);
+    ImageStaticAssetImpl staticAsset = new ImageStaticAssetImpl();
 
     // Act
-    staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(
-        new ImageStaticAssetImpl(),
+    staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(staticAsset,
         Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
 
     // Assert
     verify(dataInputStream).close();
-    verify(broadleafFileService).getClasspathResource(null);
+    verify(broadleafFileService).getClasspathResource(isNull());
+    verify(concurrentFileOutputStream).write(isA(InputStream.class), isA(File.class));
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createLocalFileFromClassPathResource(StaticAsset, File)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createLocalFileFromClassPathResource(StaticAsset, File)"})
+  public void testCreateLocalFileFromClassPathResource_thenThrowRuntimeException() throws IOException {
+    // Arrange
+    when(broadleafFileService.getClasspathResource(Mockito.<String>any()))
+        .thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
+        .thenThrow(new RuntimeException("foo"));
+    ImageStaticAssetImpl staticAsset = new ImageStaticAssetImpl();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createLocalFileFromClassPathResource(staticAsset,
+            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    verify(broadleafFileService).getClasspathResource(isNull());
     verify(concurrentFileOutputStream).write(isA(InputStream.class), isA(File.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromInputStream(InputStream, File)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createLocalFileFromInputStream(InputStream, File)"})
   public void testCreateLocalFileFromInputStream() throws IOException {
     // Arrange
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenReturn(19088743);
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any())).thenReturn(19088743);
+    ByteArrayInputStream is = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
 
     // Act
-    staticAssetStorageServiceImpl.createLocalFileFromInputStream(
-        new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")),
+    staticAssetStorageServiceImpl.createLocalFileFromInputStream(is,
         Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
 
     // Assert
@@ -767,33 +521,25 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}.
-   *
    * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   *   <li>Then calls {@link DataInputStream#close()}.
+   *   <li>Given {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Then calls {@link FilterInputStream#close()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromInputStream(InputStream, File)"
-  })
-  public void testCreateLocalFileFromInputStream_givenIOException_thenCallsClose()
-      throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createLocalFileFromInputStream(InputStream, File)"})
+  public void testCreateLocalFileFromInputStream_givenIOExceptionWithFoo_thenCallsClose() throws IOException {
     // Arrange
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenReturn(19088743);
-
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any())).thenReturn(19088743);
     DataInputStream is = mock(DataInputStream.class);
-    doThrow(new IOException()).when(is).close();
+    doThrow(new IOException("foo")).when(is).close();
 
     // Act
-    staticAssetStorageServiceImpl.createLocalFileFromInputStream(
-        is, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
+    staticAssetStorageServiceImpl.createLocalFileFromInputStream(is,
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
 
     // Assert
     verify(is).close();
@@ -802,60 +548,23 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then calls {@link ConcurrentFileOutputStream#write(InputStream, File)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromInputStream(InputStream, File)"
-  })
-  public void testCreateLocalFileFromInputStream_thenThrowRuntimeException() throws IOException {
-    // Arrange
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenThrow(new RuntimeException());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.createLocalFileFromInputStream(
-                new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")),
-                Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
-    verify(concurrentFileOutputStream).write(isA(InputStream.class), isA(File.class));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then calls {@link ConcurrentFileOutputStream#write(InputStream, File)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createLocalFileFromInputStream(InputStream, File)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createLocalFileFromInputStream(InputStream, File)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createLocalFileFromInputStream(InputStream, File)"})
   public void testCreateLocalFileFromInputStream_whenNull_thenCallsWrite() throws IOException {
     // Arrange
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenReturn(19088743);
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any())).thenReturn(19088743);
 
     // Act
-    staticAssetStorageServiceImpl.createLocalFileFromInputStream(
-        null, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
+    staticAssetStorageServiceImpl.createLocalFileFromInputStream(null,
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
 
     // Assert
     verify(concurrentFileOutputStream).write(isNull(), isA(File.class));
@@ -863,281 +572,28 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
   public void testGetCacheFileModel() throws Exception {
-    // Arrange
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.getCacheFileModel(
-                "https://example.org/example", new HashMap<>()));
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
-  public void testGetCacheFileModel2() throws Exception {
-    // Arrange
-    Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile();
-    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
-        .thenThrow(new RuntimeException());
-
-    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
-    staticAssetImpl.setAltText(",");
-    staticAssetImpl.setContentMessageValues(new HashMap<>());
-    staticAssetImpl.setFileExtension(",");
-    staticAssetImpl.setFileSize(3L);
-    staticAssetImpl.setFullUrl("https://example.org/example");
-    staticAssetImpl.setId(1L);
-    staticAssetImpl.setMimeType("text/plain");
-    staticAssetImpl.setName(",");
-    staticAssetImpl.setStorageType(StorageType.DATABASE);
-    staticAssetImpl.setTitle("Dr");
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(staticAssetImpl);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.getCacheFileModel(
-                "https://example.org/example", new HashMap<>()));
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-    verify(namedOperationManager).manageNamedParameters(isA(Map.class));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
-  public void testGetCacheFileModel3() throws Exception {
-    // Arrange
-    when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
-        .thenReturn(new HashMap<>());
-
-    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
-    staticAssetImpl.setAltText(",");
-    staticAssetImpl.setContentMessageValues(new HashMap<>());
-    staticAssetImpl.setFileExtension(",");
-    staticAssetImpl.setFileSize(3L);
-    staticAssetImpl.setFullUrl("https://example.org/example");
-    staticAssetImpl.setId(1L);
-    staticAssetImpl.setMimeType("text/plain");
-    staticAssetImpl.setName(",");
-    staticAssetImpl.setStorageType(StorageType.DATABASE);
-    staticAssetImpl.setTitle("Dr");
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(staticAssetImpl);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.getCacheFileModel(
-                "https://example.org/example", new HashMap<>()));
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(
-            eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"),
-            isA(ExtensionResultHolder.class));
-    verify(namedOperationManager).manageNamedParameters(isA(Map.class));
-    verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService)
-        .getSharedLocalResource("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example");
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
-  public void testGetCacheFileModel4() throws Exception {
-    // Arrange
-    when(broadleafFileService.getLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-    when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), ",").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
-        .thenReturn(new HashMap<>());
-
-    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
-    staticAssetImpl.setAltText(",");
-    staticAssetImpl.setContentMessageValues(new HashMap<>());
-    staticAssetImpl.setFileExtension(",");
-    staticAssetImpl.setFileSize(3L);
-    staticAssetImpl.setFullUrl("https://example.org/example");
-    staticAssetImpl.setId(1L);
-    staticAssetImpl.setMimeType("text/plain");
-    staticAssetImpl.setName(",");
-    staticAssetImpl.setStorageType(StorageType.DATABASE);
-    staticAssetImpl.setTitle("Dr");
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(staticAssetImpl);
-
-    // Act
-    Map<String, String> actualCacheFileModel =
-        staticAssetStorageServiceImpl.getCacheFileModel(
-            "https://example.org/example", new HashMap<>());
-
-    // Assert
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(
-            eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"),
-            isA(ExtensionResultHolder.class));
-    verify(namedOperationManager).manageNamedParameters(isA(Map.class));
-    verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService)
-        .getLocalResource("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example");
-    verify(broadleafFileService)
-        .getSharedLocalResource("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example");
-    assertEquals(2, actualCacheFileModel.size());
-    assertEquals("text/plain", actualCacheFileModel.get("mimeType"));
-    assertEquals(
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toString(),
-        actualCacheFileModel.get("cacheFilePath"));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
-  public void testGetCacheFileModel5() throws Exception {
-    // Arrange
-    when(broadleafFileService.getLocalResource(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-    when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), ",").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
-        .thenReturn(new HashMap<>());
-
-    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
-    staticAssetImpl.setAltText(",");
-    staticAssetImpl.setContentMessageValues(new HashMap<>());
-    staticAssetImpl.setFileExtension(",");
-    staticAssetImpl.setFileSize(3L);
-    staticAssetImpl.setFullUrl("https://example.org/example");
-    staticAssetImpl.setId(1L);
-    staticAssetImpl.setMimeType("text/plain");
-    staticAssetImpl.setName(",");
-    staticAssetImpl.setStorageType(StorageType.DATABASE);
-    staticAssetImpl.setTitle("Dr");
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(staticAssetImpl);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.getCacheFileModel(
-                "https://example.org/example", new HashMap<>()));
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(
-            eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"),
-            isA(ExtensionResultHolder.class));
-    verify(namedOperationManager).manageNamedParameters(isA(Map.class));
-    verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService)
-        .getLocalResource("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example");
-    verify(broadleafFileService)
-        .getSharedLocalResource("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example");
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
-   * <ul>
-   *   <li>Given {@link ConcurrentFileOutputStream} {@link
-   *       ConcurrentFileOutputStream#write(InputStream, File)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
-  public void testGetCacheFileModel_givenConcurrentFileOutputStreamWriteThrowRuntimeException()
-      throws Exception {
     // Arrange
     when(broadleafFileService.getClasspathResource(Mockito.<String>any()))
         .thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
     when(broadleafFileService.checkForResourceOnClassPath(Mockito.<String>any())).thenReturn(true);
     when(broadleafFileService.getLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), ",").toFile());
+        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
     when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
-        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), ",").toFile());
-    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any()))
-        .thenThrow(new RuntimeException());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
-        .thenReturn(new HashMap<>());
+        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any())).thenReturn(19088743);
+    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler = mock(
+        StaticAssetServiceExtensionHandler.class);
+    when(staticAssetServiceExtensionHandler.fileExists(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(staticAssetServiceExtensionManager.getProxy()).thenReturn(staticAssetServiceExtensionHandler);
+    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any())).thenReturn(new HashMap<>());
 
     StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
     staticAssetImpl.setAltText(",");
@@ -1146,67 +602,56 @@ public class StaticAssetStorageServiceImplDiffblueTest {
     staticAssetImpl.setFileSize(3L);
     staticAssetImpl.setFullUrl("https://example.org/example");
     staticAssetImpl.setId(1L);
-    staticAssetImpl.setMimeType("text/plain");
+    staticAssetImpl.setMimeType(",");
     staticAssetImpl.setName(",");
     staticAssetImpl.setStorageType(StorageType.DATABASE);
     staticAssetImpl.setTitle("Dr");
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(staticAssetImpl);
+    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(staticAssetImpl);
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.getCacheFileModel(
-                "https://example.org/example", new HashMap<>()));
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-    verify(staticAssetServiceExtensionHandler, atLeast(1))
-        .fileExists(
-            eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"),
-            Mockito.<ExtensionResultHolder<Object>>any());
+    // Act
+    Map<String, String> actualCacheFileModel = staticAssetStorageServiceImpl
+        .getCacheFileModel("https://example.org/example", new HashMap<>());
+
+    // Assert
+    verify(staticAssetService).findStaticAssetByFullUrl(eq("https://example.org/example"));
+    verify(staticAssetServiceExtensionHandler, atLeast(1)).fileExists(
+        eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"),
+        Mockito.<ExtensionResultHolder<Object>>any());
     verify(namedOperationManager).manageNamedParameters(isA(Map.class));
     verify(staticAssetServiceExtensionManager, atLeast(1)).getProxy();
-    verify(broadleafFileService).checkForResourceOnClassPath("https://example.org/example");
-    verify(broadleafFileService).getClasspathResource("https://example.org/example");
+    verify(broadleafFileService).checkForResourceOnClassPath(eq("https://example.org/example"));
+    verify(broadleafFileService).getClasspathResource(eq("https://example.org/example"));
     verify(broadleafFileService, atLeast(1))
-        .getLocalResource("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example");
+        .getLocalResource(eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"));
     verify(broadleafFileService, atLeast(1))
-        .getSharedLocalResource("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example");
+        .getSharedLocalResource(eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"));
     verify(concurrentFileOutputStream).write(isA(InputStream.class), isA(File.class));
+    assertEquals(2, actualCacheFileModel.size());
+    assertEquals(",", actualCacheFileModel.get("mimeType"));
+    String expectedGetResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toString();
+    assertEquals(expectedGetResult, actualCacheFileModel.get("cacheFilePath"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code ,} is {@code ,}.
-   *   <li>Then return {@code mimeType} is {@code text/plain}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
-  public void testGetCacheFileModel_givenHashMapCommaIsComma_thenReturnMimeTypeIsTextPlain()
-      throws Exception {
+  public void testGetCacheFileModel2() throws Exception {
     // Arrange
+    when(broadleafFileService.getLocalResource(Mockito.<String>any()))
+        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "foo").toFile());
     when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
         .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put(",", ",");
-    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
-        .thenReturn(stringStringMap);
+    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler = mock(
+        StaticAssetServiceExtensionHandler.class);
+    when(staticAssetServiceExtensionHandler.fileExists(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(staticAssetServiceExtensionManager.getProxy()).thenReturn(staticAssetServiceExtensionHandler);
+    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any())).thenReturn(new HashMap<>());
 
     StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
     staticAssetImpl.setAltText(",");
@@ -1215,62 +660,57 @@ public class StaticAssetStorageServiceImplDiffblueTest {
     staticAssetImpl.setFileSize(3L);
     staticAssetImpl.setFullUrl("https://example.org/example");
     staticAssetImpl.setId(1L);
-    staticAssetImpl.setMimeType("text/plain");
+    staticAssetImpl.setMimeType(",");
     staticAssetImpl.setName(",");
     staticAssetImpl.setStorageType(StorageType.DATABASE);
     staticAssetImpl.setTitle("Dr");
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(staticAssetImpl);
+    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(staticAssetImpl);
 
     // Act
-    Map<String, String> actualCacheFileModel =
-        staticAssetStorageServiceImpl.getCacheFileModel(
-            "https://example.org/example", new HashMap<>());
+    Map<String, String> actualCacheFileModel = staticAssetStorageServiceImpl
+        .getCacheFileModel("https://example.org/example", new HashMap<>());
 
     // Assert
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(
-            eq("https://example---ec4c0a214e3a9e5dc5c02968e891dbfb.org/example"),
-            isA(ExtensionResultHolder.class));
+    verify(staticAssetService).findStaticAssetByFullUrl(eq("https://example.org/example"));
+    verify(staticAssetServiceExtensionHandler).fileExists(
+        eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"), isA(ExtensionResultHolder.class));
     verify(namedOperationManager).manageNamedParameters(isA(Map.class));
     verify(staticAssetServiceExtensionManager).getProxy();
+    verify(broadleafFileService).getLocalResource(eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"));
     verify(broadleafFileService)
-        .getSharedLocalResource("https://example---ec4c0a214e3a9e5dc5c02968e891dbfb.org/example");
+        .getSharedLocalResource(eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"));
     assertEquals(2, actualCacheFileModel.size());
-    assertEquals("text/plain", actualCacheFileModel.get("mimeType"));
-    assertEquals(
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toString(),
-        actualCacheFileModel.get("cacheFilePath"));
+    assertEquals(",", actualCacheFileModel.get("mimeType"));
+    String expectedGetResult = Paths.get(System.getProperty("java.io.tmpdir"), "foo").toString();
+    assertEquals(expectedGetResult, actualCacheFileModel.get("cacheFilePath"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
    * <ul>
-   *   <li>Then return {@code mimeType} is {@code image/png}.
+   *   <li>Given {@link BroadleafFileService} {@link BroadleafFileService#getClasspathResource(String)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
-  public void testGetCacheFileModel_thenReturnMimeTypeIsImagePng() throws Exception {
+  public void testGetCacheFileModel_givenBroadleafFileServiceGetClasspathResourceReturnNull() throws Exception {
     // Arrange
+    when(broadleafFileService.getClasspathResource(Mockito.<String>any())).thenReturn(null);
+    when(broadleafFileService.checkForResourceOnClassPath(Mockito.<String>any())).thenReturn(true);
+    when(broadleafFileService.getLocalResource(Mockito.<String>any()))
+        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
     when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
         .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
-        .thenReturn(new HashMap<>());
+    when(concurrentFileOutputStream.write(Mockito.<InputStream>any(), Mockito.<File>any())).thenReturn(19088743);
+    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler = mock(
+        StaticAssetServiceExtensionHandler.class);
+    when(staticAssetServiceExtensionHandler.fileExists(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(staticAssetServiceExtensionManager.getProxy()).thenReturn(staticAssetServiceExtensionHandler);
+    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any())).thenReturn(new HashMap<>());
 
     StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
     staticAssetImpl.setAltText(",");
@@ -1279,62 +719,60 @@ public class StaticAssetStorageServiceImplDiffblueTest {
     staticAssetImpl.setFileSize(3L);
     staticAssetImpl.setFullUrl("https://example.org/example");
     staticAssetImpl.setId(1L);
-    staticAssetImpl.setMimeType("image/png");
+    staticAssetImpl.setMimeType(",");
     staticAssetImpl.setName(",");
     staticAssetImpl.setStorageType(StorageType.DATABASE);
     staticAssetImpl.setTitle("Dr");
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(staticAssetImpl);
+    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(staticAssetImpl);
 
     // Act
-    Map<String, String> actualCacheFileModel =
-        staticAssetStorageServiceImpl.getCacheFileModel(
-            "https://example.org/example", new HashMap<>());
+    Map<String, String> actualCacheFileModel = staticAssetStorageServiceImpl
+        .getCacheFileModel("https://example.org/example", new HashMap<>());
 
     // Assert
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(
-            eq("https://example---085eede51150f1845dff2fcf12c551bd.org/example"),
-            isA(ExtensionResultHolder.class));
+    verify(staticAssetService).findStaticAssetByFullUrl(eq("https://example.org/example"));
+    verify(staticAssetServiceExtensionHandler, atLeast(1)).fileExists(
+        eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"),
+        Mockito.<ExtensionResultHolder<Object>>any());
     verify(namedOperationManager).manageNamedParameters(isA(Map.class));
-    verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService)
-        .getSharedLocalResource("https://example---085eede51150f1845dff2fcf12c551bd.org/example");
+    verify(staticAssetServiceExtensionManager, atLeast(1)).getProxy();
+    verify(broadleafFileService).checkForResourceOnClassPath(eq("https://example.org/example"));
+    verify(broadleafFileService).getClasspathResource(eq("https://example.org/example"));
+    verify(broadleafFileService, atLeast(1))
+        .getLocalResource(eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"));
+    verify(broadleafFileService, atLeast(1))
+        .getSharedLocalResource(eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"));
+    verify(concurrentFileOutputStream).write(isNull(), isA(File.class));
     assertEquals(2, actualCacheFileModel.size());
-    assertEquals("image/png", actualCacheFileModel.get("mimeType"));
-    assertEquals(
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toString(),
-        actualCacheFileModel.get("cacheFilePath"));
+    assertEquals(",", actualCacheFileModel.get("mimeType"));
+    String expectedGetResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toString();
+    assertEquals(expectedGetResult, actualCacheFileModel.get("cacheFilePath"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
-   *
    * <ul>
-   *   <li>Then return {@code mimeType} is {@code text/plain}.
+   *   <li>Then calls {@link StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation, Class)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
-  public void testGetCacheFileModel_thenReturnMimeTypeIsTextPlain() throws Exception {
+  public void testGetCacheFileModel_thenCallsRunTransactionalOperation() throws Throwable {
     // Arrange
+    when(broadleafFileService.checkForResourceOnClassPath(Mockito.<String>any())).thenReturn(false);
+    when(broadleafFileService.getLocalResource(Mockito.<String>any()))
+        .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
     when(broadleafFileService.getSharedLocalResource(Mockito.<String>any()))
         .thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
-    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler =
-        mock(StaticAssetServiceExtensionHandler.class);
-    when(staticAssetServiceExtensionHandler.fileExists(
-            Mockito.<String>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(staticAssetServiceExtensionManager.getProxy())
-        .thenReturn(staticAssetServiceExtensionHandler);
-    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
-        .thenReturn(new HashMap<>());
+    StaticAssetServiceExtensionHandler staticAssetServiceExtensionHandler = mock(
+        StaticAssetServiceExtensionHandler.class);
+    when(staticAssetServiceExtensionHandler.fileExists(Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(staticAssetServiceExtensionManager.getProxy()).thenReturn(staticAssetServiceExtensionHandler);
+    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any())).thenReturn(new HashMap<>());
 
     StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
     staticAssetImpl.setAltText(",");
@@ -1343,170 +781,188 @@ public class StaticAssetStorageServiceImplDiffblueTest {
     staticAssetImpl.setFileSize(3L);
     staticAssetImpl.setFullUrl("https://example.org/example");
     staticAssetImpl.setId(1L);
-    staticAssetImpl.setMimeType("text/plain");
+    staticAssetImpl.setMimeType(",");
     staticAssetImpl.setName(",");
     staticAssetImpl.setStorageType(StorageType.DATABASE);
     staticAssetImpl.setTitle("Dr");
-    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any()))
-        .thenReturn(staticAssetImpl);
+    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(staticAssetImpl);
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
 
     // Act
-    Map<String, String> actualCacheFileModel =
-        staticAssetStorageServiceImpl.getCacheFileModel(
-            "https://example.org/example", new HashMap<>());
+    Map<String, String> actualCacheFileModel = staticAssetStorageServiceImpl
+        .getCacheFileModel("https://example.org/example", new HashMap<>());
 
     // Assert
-    verify(staticAssetService).findStaticAssetByFullUrl("https://example.org/example");
-    verify(staticAssetServiceExtensionHandler)
-        .fileExists(
-            eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"),
-            isA(ExtensionResultHolder.class));
+    verify(staticAssetService).findStaticAssetByFullUrl(eq("https://example.org/example"));
+    verify(staticAssetServiceExtensionHandler, atLeast(1)).fileExists(
+        eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"),
+        Mockito.<ExtensionResultHolder<Object>>any());
     verify(namedOperationManager).manageNamedParameters(isA(Map.class));
-    verify(staticAssetServiceExtensionManager).getProxy();
-    verify(broadleafFileService)
-        .getSharedLocalResource("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example");
+    verify(staticAssetServiceExtensionManager, atLeast(1)).getProxy();
+    verify(broadleafFileService).checkForResourceOnClassPath(eq("https://example.org/example"));
+    verify(broadleafFileService, atLeast(1))
+        .getLocalResource(eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"));
+    verify(broadleafFileService, atLeast(1))
+        .getSharedLocalResource(eq("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example"));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
     assertEquals(2, actualCacheFileModel.size());
-    assertEquals("text/plain", actualCacheFileModel.get("mimeType"));
-    assertEquals(
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toString(),
-        actualCacheFileModel.get("cacheFilePath"));
+    assertEquals(",", actualCacheFileModel.get("mimeType"));
+    String expectedGetResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toString();
+    assertEquals(expectedGetResult, actualCacheFileModel.get("cacheFilePath"));
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getCacheFileModel(String, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.getCacheFileModel(String, Map)"})
+  public void testGetCacheFileModel_thenThrowRuntimeException() throws Exception {
+    // Arrange
+    when(namedOperationManager.manageNamedParameters(Mockito.<Map<String, String>>any()))
+        .thenThrow(new RuntimeException(","));
+
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
+    staticAssetImpl.setAltText(",");
+    staticAssetImpl.setContentMessageValues(new HashMap<>());
+    staticAssetImpl.setFileExtension(",");
+    staticAssetImpl.setFileSize(3L);
+    staticAssetImpl.setFullUrl("https://example.org/example");
+    staticAssetImpl.setId(1L);
+    staticAssetImpl.setMimeType(",");
+    staticAssetImpl.setName(",");
+    staticAssetImpl.setStorageType(StorageType.DATABASE);
+    staticAssetImpl.setTitle("Dr");
+    when(staticAssetService.findStaticAssetByFullUrl(Mockito.<String>any())).thenReturn(staticAssetImpl);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.getCacheFileModel("https://example.org/example", new HashMap<>()));
+    verify(staticAssetService).findStaticAssetByFullUrl(eq("https://example.org/example"));
+    verify(namedOperationManager).manageNamedParameters(isA(Map.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#shouldRecompress(String)}.
-   *
    * <ul>
-   *   <li>When {@code image/png}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code Mime Type}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#shouldRecompress(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#shouldRecompress(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean StaticAssetStorageServiceImpl.shouldRecompress(String)"})
-  public void testShouldRecompress_whenImagePng_thenReturnTrue() {
+  public void testShouldRecompress_whenMimeType_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertTrue(staticAssetStorageServiceImpl.shouldRecompress("image/png"));
+    assertFalse(staticAssetStorageServiceImpl.shouldRecompress("Mime Type"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#shouldRecompress(String)}.
-   *
    * <ul>
-   *   <li>When {@code text/plain}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code png}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#shouldRecompress(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#shouldRecompress(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean StaticAssetStorageServiceImpl.shouldRecompress(String)"})
-  public void testShouldRecompress_whenTextPlain_thenReturnFalse() {
+  public void testShouldRecompress_whenPng_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertFalse(staticAssetStorageServiceImpl.shouldRecompress("text/plain"));
+    assertTrue(staticAssetStorageServiceImpl.shouldRecompress("png"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#buildModel(String, String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#buildModel(String, String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#buildModel(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map StaticAssetStorageServiceImpl.buildModel(String, String)"})
   public void testBuildModel() {
     // Arrange and Act
-    Map<String, String> actualBuildModelResult =
-        staticAssetStorageServiceImpl.buildModel("/directory/foo.txt", "text/plain");
+    Map<String, String> actualBuildModelResult = staticAssetStorageServiceImpl.buildModel("/directory/foo.txt",
+        "Mime Type");
 
     // Assert
     assertEquals(2, actualBuildModelResult.size());
     assertEquals("/directory/foo.txt", actualBuildModelResult.get("cacheFilePath"));
-    assertEquals("text/plain", actualBuildModelResult.get("mimeType"));
+    assertEquals("Mime Type", actualBuildModelResult.get("mimeType"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#findStaticAssetStorageById(Long)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#findStaticAssetStorageById(Long)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#findStaticAssetStorageById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "StaticAssetStorage StaticAssetStorageServiceImpl.findStaticAssetStorageById(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageServiceImpl.findStaticAssetStorageById(Long)"})
   public void testFindStaticAssetStorageById_thenReturnNull() throws Throwable {
     // Arrange
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act
-    StaticAssetStorage actualFindStaticAssetStorageByIdResult =
-        staticAssetStorageServiceImpl.findStaticAssetStorageById(1L);
+    StaticAssetStorage actualFindStaticAssetStorageByIdResult = staticAssetStorageServiceImpl
+        .findStaticAssetStorageById(1L);
 
     // Assert
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
     assertNull(actualFindStaticAssetStorageByIdResult);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#findStaticAssetStorageById(Long)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#findStaticAssetStorageById(Long)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#findStaticAssetStorageById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "StaticAssetStorage StaticAssetStorageServiceImpl.findStaticAssetStorageById(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageServiceImpl.findStaticAssetStorageById(Long)"})
   public void testFindStaticAssetStorageById_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> staticAssetStorageServiceImpl.findStaticAssetStorageById(1L));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.findStaticAssetStorageById(1L));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#create()}.
-   *
    * <ul>
-   *   <li>Then return {@link StaticAssetStorageImpl} (default constructor).
+   *   <li>Then return {@link StaticAssetStorageImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#create()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageServiceImpl.create()"})
   public void testCreate_thenReturnStaticAssetStorageImpl() {
     // Arrange
@@ -1523,20 +979,18 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#create()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#create()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageServiceImpl.create()"})
   public void testCreate_thenThrowRuntimeException() {
     // Arrange
-    when(staticAssetStorageDao.create()).thenThrow(new RuntimeException());
+    when(staticAssetStorageDao.create()).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.create());
@@ -1545,335 +999,231 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#readStaticAssetStorageByStaticAssetId(Long)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#readStaticAssetStorageByStaticAssetId(Long)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#readStaticAssetStorageByStaticAssetId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "StaticAssetStorage StaticAssetStorageServiceImpl.readStaticAssetStorageByStaticAssetId(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageServiceImpl.readStaticAssetStorageByStaticAssetId(Long)"})
   public void testReadStaticAssetStorageByStaticAssetId_thenReturnNull() throws Throwable {
     // Arrange
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act
-    StaticAssetStorage actualReadStaticAssetStorageByStaticAssetIdResult =
-        staticAssetStorageServiceImpl.readStaticAssetStorageByStaticAssetId(1L);
+    StaticAssetStorage actualReadStaticAssetStorageByStaticAssetIdResult = staticAssetStorageServiceImpl
+        .readStaticAssetStorageByStaticAssetId(1L);
 
     // Assert
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
     assertNull(actualReadStaticAssetStorageByStaticAssetIdResult);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#readStaticAssetStorageByStaticAssetId(Long)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#readStaticAssetStorageByStaticAssetId(Long)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#readStaticAssetStorageByStaticAssetId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "StaticAssetStorage StaticAssetStorageServiceImpl.readStaticAssetStorageByStaticAssetId(Long)"
-  })
-  public void testReadStaticAssetStorageByStaticAssetId_thenThrowRuntimeException()
-      throws Throwable {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageServiceImpl.readStaticAssetStorageByStaticAssetId(Long)"})
+  public void testReadStaticAssetStorageByStaticAssetId_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.readStaticAssetStorageByStaticAssetId(1L));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.readStaticAssetStorageByStaticAssetId(1L));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#save(StaticAssetStorage)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#save(StaticAssetStorage)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#save(StaticAssetStorage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageServiceImpl.save(StaticAssetStorage)"})
   public void testSave_thenReturnNull() throws Throwable {
     // Arrange
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act
-    StaticAssetStorage actualSaveResult =
-        staticAssetStorageServiceImpl.save(new StaticAssetStorageImpl());
+    StaticAssetStorage actualSaveResult = staticAssetStorageServiceImpl.save(new StaticAssetStorageImpl());
 
     // Assert
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
     assertNull(actualSaveResult);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#save(StaticAssetStorage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#save(StaticAssetStorage)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#save(StaticAssetStorage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageServiceImpl.save(StaticAssetStorage)"})
   public void testSave_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.save(new StaticAssetStorageImpl()));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.save(new StaticAssetStorageImpl()));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#delete(StaticAssetStorage)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#delete(StaticAssetStorage)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#delete(StaticAssetStorage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StaticAssetStorageServiceImpl.delete(StaticAssetStorage)"})
   public void testDelete() throws Throwable {
     // Arrange
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act
     staticAssetStorageServiceImpl.delete(new StaticAssetStorageImpl());
 
     // Assert
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#delete(StaticAssetStorage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#delete(StaticAssetStorage)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#delete(StaticAssetStorage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StaticAssetStorageServiceImpl.delete(StaticAssetStorage)"})
   public void testDelete_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.delete(new StaticAssetStorageImpl()));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.delete(new StaticAssetStorageImpl()));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
   }
 
   /**
-   * Test {@link StaticAssetStorageServiceImpl#createBlob(InputStream, long)} with {@code
-   * uploadedFileInputStream}, {@code fileSize}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#createBlob(InputStream, long)}
+   * Test {@link StaticAssetStorageServiceImpl#createBlob(MultipartFile)} with {@code uploadedFile}.
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createBlob(MultipartFile)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Blob StaticAssetStorageServiceImpl.createBlob(MultipartFile)"})
+  public void testCreateBlobWithUploadedFile() throws Throwable {
+    // Arrange
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
+
+    // Act
+    Blob actualCreateBlobResult = staticAssetStorageServiceImpl
+        .createBlob(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
+
+    // Assert
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
+    assertNull(actualCreateBlobResult);
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#createBlob(InputStream, long)} with {@code uploadedFileInputStream}, {@code fileSize}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createBlob(InputStream, long)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Blob StaticAssetStorageServiceImpl.createBlob(InputStream, long)"})
   public void testCreateBlobWithUploadedFileInputStreamFileSize_thenReturnNull() throws Throwable {
     // Arrange
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing().when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act
-    Blob actualCreateBlobResult =
-        staticAssetStorageServiceImpl.createBlob(
-            new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), 3L);
+    Blob actualCreateBlobResult = staticAssetStorageServiceImpl
+        .createBlob(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), 3L);
 
     // Assert
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
     assertNull(actualCreateBlobResult);
   }
 
   /**
-   * Test {@link StaticAssetStorageServiceImpl#createBlob(InputStream, long)} with {@code
-   * uploadedFileInputStream}, {@code fileSize}.
-   *
+   * Test {@link StaticAssetStorageServiceImpl#createBlob(InputStream, long)} with {@code uploadedFileInputStream}, {@code fileSize}.
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#createBlob(InputStream, long)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createBlob(InputStream, long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Blob StaticAssetStorageServiceImpl.createBlob(InputStream, long)"})
-  public void testCreateBlobWithUploadedFileInputStreamFileSize_thenThrowRuntimeException()
-      throws Throwable {
+  public void testCreateBlobWithUploadedFileInputStreamFileSize_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
+    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            staticAssetStorageServiceImpl.createBlob(
-                new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), 3L));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#createBlob(MultipartFile)} with {@code uploadedFile}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#createBlob(MultipartFile)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Blob StaticAssetStorageServiceImpl.createBlob(MultipartFile)"})
-  public void testCreateBlobWithUploadedFile_thenReturnNull() throws Throwable {
-    // Arrange
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any());
-    MockMultipartFile uploadedFile =
-        new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
-
-    // Act
-    Blob actualCreateBlobResult = staticAssetStorageServiceImpl.createBlob(uploadedFile);
-
-    // Assert
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
-    assertNull(actualCreateBlobResult);
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#createBlob(MultipartFile)} with {@code uploadedFile}.
-   *
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#createBlob(MultipartFile)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Blob StaticAssetStorageServiceImpl.createBlob(MultipartFile)"})
-  public void testCreateBlobWithUploadedFile_thenThrowRuntimeException() throws Throwable {
-    // Arrange
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any());
-    MockMultipartFile uploadedFile =
-        new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> staticAssetStorageServiceImpl.createBlob(uploadedFile));
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createBlob(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), 3L));
+    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
+        isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset, Map)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset,
-   * Map)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetStorageServiceImpl.constructCacheFileName(StaticAsset, Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetStorageServiceImpl.constructCacheFileName(StaticAsset, Map)"})
   public void testConstructCacheFileName() {
     // Arrange
     StaticAssetImpl staticAsset = new StaticAssetImpl();
@@ -1883,29 +1233,24 @@ public class StaticAssetStorageServiceImplDiffblueTest {
     staticAsset.setFileSize(3L);
     staticAsset.setFullUrl("https://example.org/example");
     staticAsset.setId(1L);
-    staticAsset.setMimeType("text/plain");
+    staticAsset.setMimeType("Mime Type");
     staticAsset.setName("Name");
     staticAsset.setStorageType(StorageType.DATABASE);
     staticAsset.setTitle("Dr");
 
     // Act and Assert
-    assertEquals(
-        "https://example---d41d8cd98f00b204e9800998ecf8427e.org/example",
+    assertEquals("https://example---d41d8cd98f00b204e9800998ecf8427e.org/example",
         staticAssetStorageServiceImpl.constructCacheFileName(staticAsset, new HashMap<>()));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset, Map)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset,
-   * Map)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetStorageServiceImpl.constructCacheFileName(StaticAsset, Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetStorageServiceImpl.constructCacheFileName(StaticAsset, Map)"})
   public void testConstructCacheFileName2() {
     // Arrange
     StaticAssetImpl staticAsset = new StaticAssetImpl();
@@ -1915,32 +1260,27 @@ public class StaticAssetStorageServiceImplDiffblueTest {
     staticAsset.setFileSize(3L);
     staticAsset.setFullUrl("https://example.org/example");
     staticAsset.setId(1L);
-    staticAsset.setMimeType("text/plain");
+    staticAsset.setMimeType("Mime Type");
     staticAsset.setName("Name");
     staticAsset.setStorageType(StorageType.DATABASE);
     staticAsset.setTitle("Dr");
 
     HashMap<String, String> parameterMap = new HashMap<>();
-    parameterMap.put("---", "---");
+    parameterMap.put("yyyy-MM-dd-HH-mm-ss", "yyyy-MM-dd-HH-mm-ss");
 
     // Act and Assert
-    assertEquals(
-        "https://example---9dc5f758e8e773980f07a95bfc8642f1.org/example",
+    assertEquals("https://example---ca177bbac99afc0ed694e01ef6fe343c.org/example",
         staticAssetStorageServiceImpl.constructCacheFileName(staticAsset, parameterMap));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset, Map)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset,
-   * Map)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#constructCacheFileName(StaticAsset, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetStorageServiceImpl.constructCacheFileName(StaticAsset, Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String StaticAssetStorageServiceImpl.constructCacheFileName(StaticAsset, Map)"})
   public void testConstructCacheFileName3() {
     // Arrange
     StaticAssetImpl staticAsset = new StaticAssetImpl();
@@ -1950,33 +1290,31 @@ public class StaticAssetStorageServiceImplDiffblueTest {
     staticAsset.setFileSize(3L);
     staticAsset.setFullUrl("https://example.org/example");
     staticAsset.setId(1L);
-    staticAsset.setMimeType("text/plain");
+    staticAsset.setMimeType("Mime Type");
     staticAsset.setName("Name");
     staticAsset.setStorageType(StorageType.DATABASE);
     staticAsset.setTitle("Dr");
 
     HashMap<String, String> parameterMap = new HashMap<>();
-    parameterMap.put("42", "---");
+    parameterMap.put("MD5", "42");
+    parameterMap.put("yyyy-MM-dd-HH-mm-ss", "yyyy-MM-dd-HH-mm-ss");
 
     // Act and Assert
-    assertEquals(
-        "https://example---0c37ed02b7bae1079ca1789c9920b799.org/example",
+    assertEquals("https://example---0d8b3a82d459f2de663f8a2b3a001ce2.org/example",
         staticAssetStorageServiceImpl.constructCacheFileName(staticAsset, parameterMap));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#pad(String, int, char)}.
-   *
    * <ul>
-   *   <li>When {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>When {@code foo}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#pad(String, int, char)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#pad(String, int, char)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StaticAssetStorageServiceImpl.pad(String, int, char)"})
   public void testPad_whenFoo_thenReturnFoo() {
     // Arrange, Act and Assert
@@ -1985,17 +1323,15 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#pad(String, int, char)}.
-   *
    * <ul>
-   *   <li>When {@code )}.
-   *   <li>Then return {@code AA)}.
+   *   <li>When {@code )}.</li>
+   *   <li>Then return {@code AA)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#pad(String, int, char)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#pad(String, int, char)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StaticAssetStorageServiceImpl.pad(String, int, char)"})
   public void testPad_whenRightParenthesis_thenReturnAa() {
     // Arrange, Act and Assert
@@ -2003,301 +1339,167 @@ public class StaticAssetStorageServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile,
-   * StaticAsset)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorageFromFile() throws IOException {
-    // Arrange
-    when(staticAssetStorageDao.create()).thenThrow(new RuntimeException());
-    MockMultipartFile file =
-        new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
-
-    ImageStaticAssetImpl staticAsset = new ImageStaticAssetImpl();
-    staticAsset.setStorageType(StorageType.DATABASE);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, staticAsset));
-    verify(staticAssetStorageDao).create();
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile,
-   * StaticAsset)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorageFromFile2() throws Throwable {
-    // Arrange
-    when(staticAssetStorageDao.create()).thenReturn(new StaticAssetStorageImpl());
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any());
-    MockMultipartFile file =
-        new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
-
-    StaticAssetImpl staticAsset = new StaticAssetImpl();
-    staticAsset.setAltText("Alt Text");
-    staticAsset.setContentMessageValues(new HashMap<>());
-    staticAsset.setFileExtension("File Extension");
-    staticAsset.setFileSize(3L);
-    staticAsset.setFullUrl("https://example.org/example");
-    staticAsset.setId(1L);
-    staticAsset.setMimeType("text/plain");
-    staticAsset.setName("Name");
-    staticAsset.setStorageType(StorageType.DATABASE);
-    staticAsset.setTitle("Dr");
-    staticAsset.setStorageType(StorageType.DATABASE);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, staticAsset));
-    verify(staticAssetStorageDao).create();
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile,
-   * StaticAsset)}.
-   *
+   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}.
    * <ul>
-   *   <li>Given {@code null}.
+   *   <li>Given {@link StorageType#DATABASE}.</li>
+   *   <li>Then calls {@link StaticAsset#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorageFromFile_givenNull() throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"})
+  public void testCreateStaticAssetStorageFromFile_givenDatabase_thenCallsGetId() throws IOException {
     // Arrange
-    StaticAssetStorageServiceImpl staticAssetStorageServiceImpl =
-        new StaticAssetStorageServiceImpl();
-    MockMultipartFile file =
-        new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    StaticAssetStorage staticAssetStorage = mock(StaticAssetStorage.class);
+    doThrow(new RuntimeException("foo")).when(staticAssetStorage).setStaticAssetId(Mockito.<Long>any());
+    when(staticAssetStorageDao.create()).thenReturn(staticAssetStorage);
+    MockMultipartFile file = new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
 
     StaticAsset staticAsset = mock(StaticAsset.class);
-    when(staticAsset.getStorageType()).thenReturn(null);
+    when(staticAsset.getId()).thenReturn(1L);
+    when(staticAsset.getStorageType()).thenReturn(StorageType.DATABASE);
 
-    // Act
-    staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, staticAsset);
-
-    // Assert
-    verify(staticAsset, atLeast(1)).getStorageType();
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, staticAsset));
+    verify(staticAssetStorageDao).create();
+    verify(staticAsset).getId();
+    verify(staticAsset).getStorageType();
+    verify(staticAssetStorage).setStaticAssetId(eq(1L));
   }
 
   /**
-   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile,
-   * StaticAsset)}.
-   *
+   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}.
    * <ul>
-   *   <li>Given {@link StorageType#StorageType(String, String)} with {@code Type} and {@code
-   *       Friendly Type}.
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorageFromFile_givenStorageTypeWithTypeAndFriendlyType()
-      throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"})
+  public void testCreateStaticAssetStorageFromFile_givenRuntimeExceptionWithFoo() throws IOException {
     // Arrange
-    StaticAssetStorageServiceImpl staticAssetStorageServiceImpl =
-        new StaticAssetStorageServiceImpl();
-    MockMultipartFile file =
-        new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+    when(staticAssetStorageDao.create()).thenReturn(mock(StaticAssetStorage.class));
+    MockMultipartFile file = new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
 
     StaticAsset staticAsset = mock(StaticAsset.class);
-    when(staticAsset.getStorageType()).thenReturn(new StorageType("Type", "Friendly Type"));
+    when(staticAsset.getId()).thenThrow(new RuntimeException("foo"));
+    when(staticAsset.getStorageType()).thenReturn(StorageType.DATABASE);
 
-    // Act
-    staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, staticAsset);
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, staticAsset));
+    verify(staticAssetStorageDao).create();
+    verify(staticAsset).getId();
+    verify(staticAsset).getStorageType();
+  }
 
-    // Assert
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}.
+   * <ul>
+   *   <li>Then calls {@link StaticAsset#getFullUrl()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"})
+  public void testCreateStaticAssetStorageFromFile_thenCallsGetFullUrl() throws IOException {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+    when(broadleafFileService.initializeWorkArea()).thenReturn(fileWorkArea);
+    MockMultipartFile file = new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+
+    StaticAsset staticAsset = mock(StaticAsset.class);
+    when(staticAsset.getFullUrl()).thenThrow(new RuntimeException("DATABASE"));
+    when(staticAsset.getStorageType()).thenReturn(StorageType.FILESYSTEM);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, staticAsset));
+    verify(staticAsset).getFullUrl();
     verify(staticAsset, atLeast(1)).getStorageType();
+    verify(fileWorkArea).getFilePathLocation();
+    verify(broadleafFileService).initializeWorkArea();
   }
 
   /**
-   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile,
-   * StaticAsset)}.
-   *
+   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}.
    * <ul>
-   *   <li>Then calls {@link
-   *       StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation,
-   *       Class)}.
+   *   <li>Then calls {@link StaticAssetStorage#setStaticAssetId(Long)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorageFromFile(MultipartFile, StaticAsset)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorageFromFile_thenCallsRunTransactionalOperation()
-      throws Throwable {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorageFromFile(MultipartFile, StaticAsset)"})
+  public void testCreateStaticAssetStorageFromFile_thenCallsSetStaticAssetId() throws IOException {
     // Arrange
-    when(staticAssetStorageDao.create()).thenReturn(new StaticAssetStorageImpl());
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any());
-    MockMultipartFile file =
-        new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
-
-    StaticAssetImpl staticAsset = new StaticAssetImpl();
-    staticAsset.setAltText("Alt Text");
-    staticAsset.setContentMessageValues(new HashMap<>());
-    staticAsset.setFileExtension("File Extension");
-    staticAsset.setFileSize(3L);
-    staticAsset.setFullUrl("https://example.org/example");
-    staticAsset.setId(1L);
-    staticAsset.setMimeType("text/plain");
-    staticAsset.setName("Name");
-    staticAsset.setStorageType(StorageType.DATABASE);
-    staticAsset.setTitle("Dr");
-    staticAsset.setStorageType(StorageType.DATABASE);
-
-    // Act
-    staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, staticAsset);
-
-    // Assert
-    verify(staticAssetStorageDao).create();
-    verify(streamingTransactionCapableUtil, atLeast(1))
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(), isA(Class.class));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorage() throws IOException {
-    // Arrange
-    when(staticAssetStorageDao.create()).thenThrow(new RuntimeException());
-    ByteArrayInputStream fileInputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
-
-    ImageStaticAssetImpl staticAsset = new ImageStaticAssetImpl();
-    staticAsset.setStorageType(StorageType.DATABASE);
+    StaticAssetStorage staticAssetStorage = mock(StaticAssetStorage.class);
+    doThrow(new RuntimeException("foo")).when(staticAssetStorage).setStaticAssetId(Mockito.<Long>any());
+    when(staticAssetStorageDao.create()).thenReturn(staticAssetStorage);
+    MockMultipartFile file = new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.createStaticAssetStorage(fileInputStream, staticAsset));
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createStaticAssetStorageFromFile(file, new ImageStaticAssetImpl()));
     verify(staticAssetStorageDao).create();
+    verify(staticAssetStorage).setStaticAssetId(isNull());
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
+   * <ul>
+   *   <li>Given {@link StorageType#DATABASE}.</li>
+   *   <li>Then calls {@link StaticAsset#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorage2() throws Throwable {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"})
+  public void testCreateStaticAssetStorage_givenDatabase_thenCallsGetId() throws IOException {
     // Arrange
-    when(staticAssetStorageDao.create()).thenReturn(new StaticAssetStorageImpl());
-    doThrow(new RuntimeException())
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any());
+    StaticAssetStorage staticAssetStorage = mock(StaticAssetStorage.class);
+    doThrow(new RuntimeException("foo")).when(staticAssetStorage).setStaticAssetId(Mockito.<Long>any());
+    when(staticAssetStorageDao.create()).thenReturn(staticAssetStorage);
     ByteArrayInputStream fileInputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
-
-    StaticAssetImpl staticAsset = new StaticAssetImpl();
-    staticAsset.setAltText("Alt Text");
-    staticAsset.setContentMessageValues(new HashMap<>());
-    staticAsset.setFileExtension("File Extension");
-    staticAsset.setFileSize(3L);
-    staticAsset.setFullUrl("https://example.org/example");
-    staticAsset.setId(1L);
-    staticAsset.setMimeType("text/plain");
-    staticAsset.setName("Name");
-    staticAsset.setStorageType(StorageType.DATABASE);
-    staticAsset.setTitle("Dr");
-    staticAsset.setStorageType(StorageType.DATABASE);
+    StaticAsset staticAsset = mock(StaticAsset.class);
+    when(staticAsset.getId()).thenReturn(1L);
+    when(staticAsset.getStorageType()).thenReturn(StorageType.DATABASE);
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
+    assertThrows(RuntimeException.class,
         () -> staticAssetStorageServiceImpl.createStaticAssetStorage(fileInputStream, staticAsset));
     verify(staticAssetStorageDao).create();
-    verify(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(staticAsset).getId();
+    verify(staticAsset).getStorageType();
+    verify(staticAssetStorage).setStaticAssetId(eq(1L));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link StaticAsset} {@link StaticAsset#getStorageType()} return {@code null}.
+   *   <li>Given {@code null}.</li>
+   *   <li>When {@link StaticAsset} {@link StaticAsset#getStorageType()} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorage_givenNull_whenStaticAssetGetStorageTypeReturnNull()
-      throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"})
+  public void testCreateStaticAssetStorage_givenNull_whenStaticAssetGetStorageTypeReturnNull() throws IOException {
     // Arrange
-    StaticAssetStorageServiceImpl staticAssetStorageServiceImpl =
-        new StaticAssetStorageServiceImpl();
     ByteArrayInputStream fileInputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
-
     StaticAsset staticAsset = mock(StaticAsset.class);
     when(staticAsset.getStorageType()).thenReturn(null);
 
@@ -2310,28 +1512,45 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}.
-   *
    * <ul>
-   *   <li>Given {@link StorageType#StorageType(String, String)} with {@code Type} and {@code
-   *       Friendly Type}.
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorage_givenStorageTypeWithTypeAndFriendlyType()
-      throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"})
+  public void testCreateStaticAssetStorage_givenRuntimeExceptionWithFoo() throws IOException {
     // Arrange
-    StaticAssetStorageServiceImpl staticAssetStorageServiceImpl =
-        new StaticAssetStorageServiceImpl();
+    when(staticAssetStorageDao.create()).thenReturn(mock(StaticAssetStorage.class));
     ByteArrayInputStream fileInputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
+    StaticAsset staticAsset = mock(StaticAsset.class);
+    when(staticAsset.getId()).thenThrow(new RuntimeException("foo"));
+    when(staticAsset.getStorageType()).thenReturn(StorageType.DATABASE);
 
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createStaticAssetStorage(fileInputStream, staticAsset));
+    verify(staticAssetStorageDao).create();
+    verify(staticAsset).getId();
+    verify(staticAsset).getStorageType();
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}.
+   * <ul>
+   *   <li>Given {@link StorageType#StorageType(String, String)} with {@code Type} and {@code Friendly Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"})
+  public void testCreateStaticAssetStorage_givenStorageTypeWithTypeAndFriendlyType() throws IOException {
+    // Arrange
+    ByteArrayInputStream fileInputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
     StaticAsset staticAsset = mock(StaticAsset.class);
     when(staticAsset.getStorageType()).thenReturn(new StorageType("Type", "Friendly Type"));
 
@@ -2344,295 +1563,222 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}.
-   *
    * <ul>
-   *   <li>Then calls {@link
-   *       StreamingTransactionCapableUtil#runTransactionalOperation(StreamCapableTransactionalOperation,
-   *       Class)}.
+   *   <li>Then calls {@link StaticAsset#getFullUrl()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"
-  })
-  public void testCreateStaticAssetStorage_thenCallsRunTransactionalOperation() throws Throwable {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"})
+  public void testCreateStaticAssetStorage_thenCallsGetFullUrl() throws IOException {
     // Arrange
-    when(staticAssetStorageDao.create()).thenReturn(new StaticAssetStorageImpl());
-    doNothing()
-        .when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any());
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+    when(broadleafFileService.initializeWorkArea()).thenReturn(fileWorkArea);
+    ByteArrayInputStream fileInputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
+    StaticAsset staticAsset = mock(StaticAsset.class);
+    when(staticAsset.getFullUrl()).thenThrow(new RuntimeException("DATABASE"));
+    when(staticAsset.getStorageType()).thenReturn(StorageType.FILESYSTEM);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createStaticAssetStorage(fileInputStream, staticAsset));
+    verify(staticAsset).getFullUrl();
+    verify(staticAsset, atLeast(1)).getStorageType();
+    verify(fileWorkArea).getFilePathLocation();
+    verify(broadleafFileService).initializeWorkArea();
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}.
+   * <ul>
+   *   <li>When {@link ImageStaticAssetImpl} (default constructor).</li>
+   *   <li>Then calls {@link StaticAssetStorage#setStaticAssetId(Long)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#createStaticAssetStorage(InputStream, StaticAsset)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.createStaticAssetStorage(InputStream, StaticAsset)"})
+  public void testCreateStaticAssetStorage_whenImageStaticAssetImpl_thenCallsSetStaticAssetId() throws IOException {
+    // Arrange
+    StaticAssetStorage staticAssetStorage = mock(StaticAssetStorage.class);
+    doThrow(new RuntimeException("foo")).when(staticAssetStorage).setStaticAssetId(Mockito.<Long>any());
+    when(staticAssetStorageDao.create()).thenReturn(staticAssetStorage);
     ByteArrayInputStream fileInputStream = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
 
-    StaticAssetImpl staticAsset = new StaticAssetImpl();
-    staticAsset.setAltText("Alt Text");
-    staticAsset.setContentMessageValues(new HashMap<>());
-    staticAsset.setFileExtension("File Extension");
-    staticAsset.setFileSize(3L);
-    staticAsset.setFullUrl("https://example.org/example");
-    staticAsset.setId(1L);
-    staticAsset.setMimeType("text/plain");
-    staticAsset.setName("Name");
-    staticAsset.setStorageType(StorageType.DATABASE);
-    staticAsset.setTitle("Dr");
-    staticAsset.setStorageType(StorageType.DATABASE);
-
-    // Act
-    staticAssetStorageServiceImpl.createStaticAssetStorage(fileInputStream, staticAsset);
-
-    // Assert
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> staticAssetStorageServiceImpl.createStaticAssetStorage(fileInputStream, new ImageStaticAssetImpl()));
     verify(staticAssetStorageDao).create();
-    verify(streamingTransactionCapableUtil, atLeast(1))
-        .runTransactionalOperation(
-            Mockito.<StreamCapableTransactionalOperation>any(), isA(Class.class));
+    verify(staticAssetStorage).setStaticAssetId(isNull());
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return one.
-   *   <li>Then return one.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return one.</li>
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadSizeForFile(String)"})
   public void testGetMaxUploadSizeForFile_givenEnvironmentGetPropertyReturnOne_thenReturnOne() {
     // Arrange
     when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any())).thenReturn(1L);
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
         .thenReturn("Property");
 
     // Act
-    long actualMaxUploadSizeForFile =
-        staticAssetStorageServiceImpl.getMaxUploadSizeForFile("foo.txt");
+    long actualMaxUploadSizeForFile = staticAssetStorageServiceImpl.getMaxUploadSizeForFile("foo.txt");
 
     // Assert
     verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
     assertEquals(1L, actualMaxUploadSizeForFile);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} throw
-   *       {@link RuntimeException#RuntimeException()}.
+   *   <li>Then return {@link StaticAssetStorageServiceImpl#DEFAULT_ASSET_UPLOAD_SIZE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadSizeForFile(String)"})
-  public void testGetMaxUploadSizeForFile_givenEnvironmentGetPropertyThrowRuntimeException() {
-    // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.getMaxUploadSizeForFile("foo.txt"));
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadSizeForFile(String)"})
-  public void testGetMaxUploadSizeForFile_givenEnvironmentGetPropertyThrowRuntimeException2() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any()))
-        .thenThrow(new RuntimeException());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
-        .thenReturn("Property");
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> staticAssetStorageServiceImpl.getMaxUploadSizeForFile("foo.txt"));
-    verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
-  }
-
-  /**
-   * Test {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@link StaticAssetStorageServiceImpl#DEFAULT_ASSET_UPLOAD_SIZE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadSizeForFile(String)"})
   public void testGetMaxUploadSizeForFile_thenReturnDefault_asset_upload_size() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any()))
-        .thenReturn(null);
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any())).thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
         .thenReturn("Property");
 
     // Act
-    long actualMaxUploadSizeForFile =
-        staticAssetStorageServiceImpl.getMaxUploadSizeForFile("foo.txt");
+    long actualMaxUploadSizeForFile = staticAssetStorageServiceImpl.getMaxUploadSizeForFile("foo.txt");
 
     // Assert
     verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
-    assertEquals(
-        StaticAssetStorageServiceImpl.DEFAULT_ASSET_UPLOAD_SIZE, actualMaxUploadSizeForFile);
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+    assertEquals(StaticAssetStorageServiceImpl.DEFAULT_ASSET_UPLOAD_SIZE, actualMaxUploadSizeForFile);
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadSizeForFile(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadSizeForFile(String)"})
+  public void testGetMaxUploadSizeForFile_thenThrowRuntimeException() {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any()))
+        .thenThrow(new RuntimeException("."));
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+        .thenReturn("Property");
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.getMaxUploadSizeForFile("foo.txt"));
+    verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#isImageFile(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code 42}.
-   *   <li>When {@code 42}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code 42}.</li>
+   *   <li>When {@code 42}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#isImageFile(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#isImageFile(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean StaticAssetStorageServiceImpl.isImageFile(String)"})
   public void testIsImageFile_givenEnvironmentGetPropertyReturn42_when42_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
         .thenReturn("42");
 
     // Act
     boolean actualIsImageFileResult = staticAssetStorageServiceImpl.isImageFile("42");
 
     // Assert
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
     assertTrue(actualIsImageFileResult);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#isImageFile(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code Property}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code Property}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#isImageFile(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#isImageFile(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean StaticAssetStorageServiceImpl.isImageFile(String)"})
   public void testIsImageFile_givenEnvironmentGetPropertyReturnProperty_thenReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
         .thenReturn("Property");
 
     // Act
     boolean actualIsImageFileResult = staticAssetStorageServiceImpl.isImageFile("foo.txt");
 
     // Assert
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
     assertFalse(actualIsImageFileResult);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#isImageFile(String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#isImageFile(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#isImageFile(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean StaticAssetStorageServiceImpl.isImageFile(String)"})
   public void testIsImageFile_thenThrowRuntimeException() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+        .thenThrow(new RuntimeException("."));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> staticAssetStorageServiceImpl.isImageFile("foo.txt"));
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.isImageFile("foo.txt"));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getFileExtension(String)}.
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileExtension(String)}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getFileExtension(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StaticAssetStorageServiceImpl.getFileExtension(String)"})
   public void testGetFileExtension() {
     // Arrange, Act and Assert
@@ -2641,17 +1787,15 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return one.
-   *   <li>Then return one.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return one.</li>
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadableFileSize()"})
   public void testGetMaxUploadableFileSize_givenEnvironmentGetPropertyReturnOne_thenReturnOne() {
     // Arrange
@@ -2667,68 +1811,59 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}.
-   *
    * <ul>
-   *   <li>Then return {@link StaticAssetStorageServiceImpl#DEFAULT_ASSET_UPLOAD_SIZE}.
+   *   <li>Then return {@link StaticAssetStorageServiceImpl#DEFAULT_ASSET_UPLOAD_SIZE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadableFileSize()"})
   public void testGetMaxUploadableFileSize_thenReturnDefault_asset_upload_size() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any()))
-        .thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any())).thenReturn(null);
 
     // Act
     long actualMaxUploadableFileSize = staticAssetStorageServiceImpl.getMaxUploadableFileSize();
 
     // Assert
     verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
-    assertEquals(
-        StaticAssetStorageServiceImpl.DEFAULT_ASSET_UPLOAD_SIZE, actualMaxUploadableFileSize);
+    assertEquals(StaticAssetStorageServiceImpl.DEFAULT_ASSET_UPLOAD_SIZE, actualMaxUploadableFileSize);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableFileSize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadableFileSize()"})
   public void testGetMaxUploadableFileSize_thenThrowRuntimeException() {
     // Arrange
     when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any()))
-        .thenThrow(new RuntimeException());
+        .thenThrow(new RuntimeException("asset.server.max.uploadable.file.size"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> staticAssetStorageServiceImpl.getMaxUploadableFileSize());
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.getMaxUploadableFileSize());
     verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return one.
-   *   <li>Then return one.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return one.</li>
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadableImageSize()"})
   public void testGetMaxUploadableImageSize_givenEnvironmentGetPropertyReturnOne_thenReturnOne() {
     // Arrange
@@ -2744,169 +1879,247 @@ public class StaticAssetStorageServiceImplDiffblueTest {
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}.
-   *
    * <ul>
-   *   <li>Then return {@link StaticAssetStorageServiceImpl#DEFAULT_ASSET_UPLOAD_SIZE}.
+   *   <li>Then return {@link StaticAssetStorageServiceImpl#DEFAULT_ASSET_UPLOAD_SIZE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadableImageSize()"})
   public void testGetMaxUploadableImageSize_thenReturnDefault_asset_upload_size() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any()))
-        .thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any())).thenReturn(null);
 
     // Act
     long actualMaxUploadableImageSize = staticAssetStorageServiceImpl.getMaxUploadableImageSize();
 
     // Assert
     verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class));
-    assertEquals(
-        StaticAssetStorageServiceImpl.DEFAULT_ASSET_UPLOAD_SIZE, actualMaxUploadableImageSize);
+    assertEquals(StaticAssetStorageServiceImpl.DEFAULT_ASSET_UPLOAD_SIZE, actualMaxUploadableImageSize);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getMaxUploadableImageSize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"long StaticAssetStorageServiceImpl.getMaxUploadableImageSize()"})
   public void testGetMaxUploadableImageSize_thenThrowRuntimeException() {
     // Arrange
     when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any()))
-        .thenThrow(new RuntimeException());
+        .thenThrow(new RuntimeException("asset.server.max.uploadable.image.size"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> staticAssetStorageServiceImpl.getMaxUploadableImageSize());
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.getMaxUploadableImageSize());
     verify(environment).getProperty(eq("asset.server.max.uploadable.image.size"), isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getFileBufferSize()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code 8096}.
-   *   <li>Then return {@code 8096}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code 8096}.</li>
+   *   <li>Then return {@code 8096}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileBufferSize()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getFileBufferSize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int StaticAssetStorageServiceImpl.getFileBufferSize()"})
   public void testGetFileBufferSize_givenEnvironmentGetPropertyReturn8096_thenReturn8096() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(8096);
 
     // Act
     int actualFileBufferSize = staticAssetStorageServiceImpl.getFileBufferSize();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("asset.server.file.buffer.size"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("asset.server.file.buffer.size"), isA(Class.class), isA(Object.class));
     assertEquals(8096, actualFileBufferSize);
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getFileBufferSize()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getFileBufferSize()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getFileBufferSize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int StaticAssetStorageServiceImpl.getFileBufferSize()"})
   public void testGetFileBufferSize_thenThrowRuntimeException() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new RuntimeException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenThrow(new RuntimeException("asset.server.file.buffer.size"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.getFileBufferSize());
-    verify(environment)
-        .getProperty(eq("asset.server.file.buffer.size"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("asset.server.file.buffer.size"), isA(Class.class), isA(Object.class));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getAdminImageFileExtensions()}.
-   *
    * <ul>
-   *   <li>Then return size is one.
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getAdminImageFileExtensions()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getAdminImageFileExtensions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List StaticAssetStorageServiceImpl.getAdminImageFileExtensions()"})
   public void testGetAdminImageFileExtensions_thenReturnSizeIsOne() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
         .thenReturn("Property");
 
     // Act
-    List<String> actualAdminImageFileExtensions =
-        staticAssetStorageServiceImpl.getAdminImageFileExtensions();
+    List<String> actualAdminImageFileExtensions = staticAssetStorageServiceImpl.getAdminImageFileExtensions();
 
     // Assert
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
     assertEquals(1, actualAdminImageFileExtensions.size());
     assertEquals("Property", actualAdminImageFileExtensions.get(0));
   }
 
   /**
    * Test {@link StaticAssetStorageServiceImpl#getAdminImageFileExtensions()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetStorageServiceImpl#getAdminImageFileExtensions()}
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#getAdminImageFileExtensions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List StaticAssetStorageServiceImpl.getAdminImageFileExtensions()"})
   public void testGetAdminImageFileExtensions_thenThrowRuntimeException() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+        .thenThrow(new RuntimeException("admin.image.file.extensions"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> staticAssetStorageServiceImpl.getAdminImageFileExtensions());
-    verify(environment)
-        .getProperty(
-            eq("admin.image.file.extensions"),
-            isA(Class.class),
-            eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl.getAdminImageFileExtensions());
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#validateFileSize(MultipartFile)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return eight.</li>
+   *   <li>Then calls {@link PropertyResolver#getProperty(String, Class)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#validateFileSize(MultipartFile)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.validateFileSize(MultipartFile)"})
+  public void testValidateFileSize_givenEnvironmentGetPropertyReturnEight_thenCallsGetProperty() throws IOException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any())).thenReturn(8L);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+        .thenReturn("Property");
+
+    // Act
+    staticAssetStorageServiceImpl
+        .validateFileSize(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
+
+    // Assert
+    verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#validateFileSize(MultipartFile)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code null}.</li>
+   *   <li>Then calls {@link PropertyResolver#getProperty(String, Class)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#validateFileSize(MultipartFile)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.validateFileSize(MultipartFile)"})
+  public void testValidateFileSize_givenEnvironmentGetPropertyReturnNull_thenCallsGetProperty() throws IOException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any())).thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+        .thenReturn("Property");
+
+    // Act
+    staticAssetStorageServiceImpl
+        .validateFileSize(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
+
+    // Assert
+    verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#validateFileSize(MultipartFile)}.
+   * <ul>
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return one.</li>
+   *   <li>Then throw {@link IOException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#validateFileSize(MultipartFile)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.validateFileSize(MultipartFile)"})
+  public void testValidateFileSize_givenEnvironmentGetPropertyReturnOne_thenThrowIOException() throws IOException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any())).thenReturn(1L);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+        .thenReturn("Property");
+
+    // Act and Assert
+    assertThrows(IOException.class, () -> staticAssetStorageServiceImpl
+        .validateFileSize(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")))));
+    verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
+  }
+
+  /**
+   * Test {@link StaticAssetStorageServiceImpl#validateFileSize(MultipartFile)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StaticAssetStorageServiceImpl#validateFileSize(MultipartFile)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StaticAssetStorageServiceImpl.validateFileSize(MultipartFile)"})
+  public void testValidateFileSize_thenThrowRuntimeException() throws IOException {
+    // Arrange
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any()))
+        .thenThrow(new RuntimeException("."));
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+        .thenReturn("Property");
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> staticAssetStorageServiceImpl
+        .validateFileSize(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")))));
+    verify(environment).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
+    verify(environment).getProperty(eq("admin.image.file.extensions"), isA(Class.class),
+        eq("bmp,jpg,jpeg,png,img,tiff,gif"));
   }
 }

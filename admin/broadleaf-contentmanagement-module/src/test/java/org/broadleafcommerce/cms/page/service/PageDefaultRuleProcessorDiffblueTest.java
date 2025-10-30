@@ -23,8 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,17 +39,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {PageDefaultRuleProcessor.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PageDefaultRuleProcessorDiffblueTest {
-  @Autowired private PageDefaultRuleProcessor pageDefaultRuleProcessor;
+  @Autowired
+  private PageDefaultRuleProcessor pageDefaultRuleProcessor;
 
   /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
   public void testCheckForMatchWithPageDTOMap() {
     // Arrange
@@ -58,8 +56,7 @@ public class PageDefaultRuleProcessorDiffblueTest {
     when(page.getRuleExpression()).thenReturn("getCategoryAttributesMap()[UU]");
 
     // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
 
     // Assert
     verify(page).getRuleExpression();
@@ -67,43 +64,16 @@ public class PageDefaultRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap2() {
-    // Arrange
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("");
-
-    // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertTrue(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link NullPageDTO} {@link NullPageDTO#getRuleExpression()} return {@code 42}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link NullPageDTO} {@link PageDTO#getRuleExpression()} return {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
   public void testCheckForMatchWithPageDTOMap_given42_whenNullPageDTOGetRuleExpressionReturn42() {
     // Arrange
@@ -111,8 +81,7 @@ public class PageDefaultRuleProcessorDiffblueTest {
     when(page.getRuleExpression()).thenReturn("42");
 
     // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
 
     // Assert
     verify(page).getRuleExpression();
@@ -120,262 +89,23 @@ public class PageDefaultRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>Given empty string.
-   *   <li>When {@link HashMap#HashMap()} empty string is {@code 42}.
+   *   <li>Given empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenEmptyString_whenHashMapEmptyStringIs42() {
-    // Arrange
-    PageDefaultRuleProcessor pageDefaultRuleProcessor = new PageDefaultRuleProcessor();
-
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("foo");
-
-    HashMap<String, Object> vars = new HashMap<>();
-    vars.put("", "42");
-
-    // Act
-    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, vars);
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertFalse(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>Given {@code getAdditionalAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenGetAdditionalAttributesUu() {
+  public void testCheckForMatchWithPageDTOMap_givenEmptyString() {
     // Arrange
     NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("getAdditionalAttributes()[UU]");
+    when(page.getRuleExpression()).thenReturn("");
 
     // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertFalse(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>Given {@code getAdditionalFields()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenGetAdditionalFieldsUu() {
-    // Arrange
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("getAdditionalFields()[UU]");
-
-    // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertFalse(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>Given {@code getCustomerAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenGetCustomerAttributesUu() {
-    // Arrange
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("getCustomerAttributes()[UU]");
-
-    // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertFalse(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>Given {@code getOrderItemAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenGetOrderItemAttributesUu() {
-    // Arrange
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("getOrderItemAttributes()[UU]");
-
-    // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertFalse(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>Given {@code getProductAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenGetProductAttributesUu() {
-    // Arrange
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("getProductAttributes()[UU]");
-
-    // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertFalse(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>Given {@code getSkuAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenGetSkuAttributesUu() {
-    // Arrange
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("getSkuAttributes()[UU]");
-
-    // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertFalse(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>Given {@code MVEL}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenMvel() {
-    // Arrange
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("MVEL");
-
-    // Act
-    boolean actualCheckForMatchResult =
-        pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertFalse(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@code null}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenNull_whenHashMapFooIsNull_thenReturnTrue() {
-    // Arrange
-    PageDefaultRuleProcessor pageDefaultRuleProcessor = new PageDefaultRuleProcessor();
-
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("foo");
-
-    HashMap<String, Object> vars = new HashMap<>();
-    vars.put("foo", null);
-
-    // Act
-    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, vars);
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
 
     // Assert
     verify(page).getRuleExpression();
@@ -383,19 +113,184 @@ public class PageDefaultRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>Given {@code Page}.
-   *   <li>When {@link PageDTO} (default constructor) RuleExpression is {@code Page}.
+   *   <li>Given {@code getAdditionalAttributes()[UU]}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenGetAdditionalAttributesUu() {
+    // Arrange
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getRuleExpression()).thenReturn("getAdditionalAttributes()[UU]");
+
+    // Act
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+
+    // Assert
+    verify(page).getRuleExpression();
+    assertFalse(actualCheckForMatchResult);
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
+   * <ul>
+   *   <li>Given {@code getAdditionalFields()[UU]}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenGetAdditionalFieldsUu() {
+    // Arrange
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getRuleExpression()).thenReturn("getAdditionalFields()[UU]");
+
+    // Act
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+
+    // Assert
+    verify(page).getRuleExpression();
+    assertFalse(actualCheckForMatchResult);
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
+   * <ul>
+   *   <li>Given {@code getCustomerAttributes()[UU]}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenGetCustomerAttributesUu() {
+    // Arrange
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getRuleExpression()).thenReturn("getCustomerAttributes()[UU]");
+
+    // Act
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+
+    // Assert
+    verify(page).getRuleExpression();
+    assertFalse(actualCheckForMatchResult);
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
+   * <ul>
+   *   <li>Given {@code getOrderItemAttributes()[UU]}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenGetOrderItemAttributesUu() {
+    // Arrange
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getRuleExpression()).thenReturn("getOrderItemAttributes()[UU]");
+
+    // Act
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+
+    // Assert
+    verify(page).getRuleExpression();
+    assertFalse(actualCheckForMatchResult);
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
+   * <ul>
+   *   <li>Given {@code getProductAttributes()[UU]}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenGetProductAttributesUu() {
+    // Arrange
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getRuleExpression()).thenReturn("getProductAttributes()[UU]");
+
+    // Act
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+
+    // Assert
+    verify(page).getRuleExpression();
+    assertFalse(actualCheckForMatchResult);
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
+   * <ul>
+   *   <li>Given {@code getSkuAttributes()[UU]}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenGetSkuAttributesUu() {
+    // Arrange
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getRuleExpression()).thenReturn("getSkuAttributes()[UU]");
+
+    // Act
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+
+    // Assert
+    verify(page).getRuleExpression();
+    assertFalse(actualCheckForMatchResult);
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
+   * <ul>
+   *   <li>Given {@code MVEL}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
+  public void testCheckForMatchWithPageDTOMap_givenMvel() {
+    // Arrange
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getRuleExpression()).thenReturn("MVEL");
+
+    // Act
+    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>());
+
+    // Assert
+    verify(page).getRuleExpression();
+    assertFalse(actualCheckForMatchResult);
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
+   * <ul>
+   *   <li>Given {@code Page}.</li>
+   *   <li>When {@link PageDTO} (default constructor) RuleExpression is {@code Page}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
   public void testCheckForMatchWithPageDTOMap_givenPage_whenPageDTORuleExpressionIsPage() {
     // Arrange
@@ -407,52 +302,15 @@ public class PageDefaultRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@link HashMap#HashMap()} {@code getCategoryAttributesMap()[UU]} is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_givenTrue_whenHashMapFooIsTrue_thenReturnTrue() {
-    // Arrange
-    PageDefaultRuleProcessor pageDefaultRuleProcessor = new PageDefaultRuleProcessor();
-
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getRuleExpression()).thenReturn("foo");
-
-    HashMap<String, Object> vars = new HashMap<>();
-    vars.put("foo", true);
-
-    // Act
-    boolean actualCheckForMatchResult = pageDefaultRuleProcessor.checkForMatch(page, vars);
-
-    // Assert
-    verify(page).getRuleExpression();
-    assertTrue(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@code getCategoryAttributesMap()[UU]} is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
   public void testCheckForMatchWithPageDTOMap_whenHashMapGetCategoryAttributesMapUuIs42() {
     // Arrange
@@ -471,19 +329,16 @@ public class PageDefaultRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>When {@link PageDTO} (default constructor).
-   *   <li>Then return {@code true}.
+   *   <li>When {@link PageDTO} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageDefaultRuleProcessor.checkForMatch(PageDTO, Map)"})
   public void testCheckForMatchWithPageDTOMap_whenPageDTO_thenReturnTrue() {
     // Arrange
@@ -495,12 +350,11 @@ public class PageDefaultRuleProcessorDiffblueTest {
 
   /**
    * Test {@link PageDefaultRuleProcessor#getContextClassNames()}.
-   *
-   * <p>Method under test: {@link PageDefaultRuleProcessor#getContextClassNames()}
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#getContextClassNames()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map PageDefaultRuleProcessor.getContextClassNames()"})
   public void testGetContextClassNames() {
     // Arrange and Act
@@ -510,8 +364,6 @@ public class PageDefaultRuleProcessorDiffblueTest {
     assertEquals(3, actualContextClassNames.size());
     assertEquals("org.broadleafcommerce.common.RequestDTO", actualContextClassNames.get("request"));
     assertEquals("org.broadleafcommerce.common.TimeDTO", actualContextClassNames.get("time"));
-    assertEquals(
-        "org.broadleafcommerce.profile.core.domain.Customer",
-        actualContextClassNames.get("customer"));
+    assertEquals("org.broadleafcommerce.profile.core.domain.Customer", actualContextClassNames.get("customer"));
   }
 }

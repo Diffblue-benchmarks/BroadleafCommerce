@@ -20,7 +20,6 @@ package org.broadleafcommerce.profile.web.core.security;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -30,24 +29,21 @@ import org.junit.jupiter.api.Test;
 
 class CustomerAuthenticatedFromCookieEventDiffblueTest {
   /**
-   * Test {@link CustomerAuthenticatedFromCookieEvent#CustomerAuthenticatedFromCookieEvent(Customer,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * CustomerAuthenticatedFromCookieEvent#CustomerAuthenticatedFromCookieEvent(Customer, Object)}
+   * Test {@link CustomerAuthenticatedFromCookieEvent#CustomerAuthenticatedFromCookieEvent(Customer, Object)}.
+   * <p>
+   * Method under test: {@link CustomerAuthenticatedFromCookieEvent#CustomerAuthenticatedFromCookieEvent(Customer, Object)}
    */
   @Test
   @DisplayName("Test new CustomerAuthenticatedFromCookieEvent(Customer, Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CustomerAuthenticatedFromCookieEvent.<init>(Customer, Object)"})
   void testNewCustomerAuthenticatedFromCookieEvent() {
     // Arrange
     CustomerImpl customer = new CustomerImpl();
 
     // Act
-    CustomerAuthenticatedFromCookieEvent actualCustomerAuthenticatedFromCookieEvent =
-        new CustomerAuthenticatedFromCookieEvent(customer, "Source");
+    CustomerAuthenticatedFromCookieEvent actualCustomerAuthenticatedFromCookieEvent = new CustomerAuthenticatedFromCookieEvent(
+        customer, "Source");
 
     // Assert
     Customer customer2 = actualCustomerAuthenticatedFromCookieEvent.getCustomer();
@@ -58,9 +54,8 @@ class CustomerAuthenticatedFromCookieEventDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAuthenticatedFromCookieEvent#setCustomer(Customer)}
    *   <li>{@link CustomerAuthenticatedFromCookieEvent#getCustomer()}
@@ -68,16 +63,13 @@ class CustomerAuthenticatedFromCookieEventDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Customer CustomerAuthenticatedFromCookieEvent.getCustomer()",
-    "void CustomerAuthenticatedFromCookieEvent.setCustomer(Customer)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"Customer CustomerAuthenticatedFromCookieEvent.getCustomer()",
+      "void CustomerAuthenticatedFromCookieEvent.setCustomer(Customer)"})
   void testGettersAndSetters() {
     // Arrange
-    CustomerAuthenticatedFromCookieEvent customerAuthenticatedFromCookieEvent =
-        new CustomerAuthenticatedFromCookieEvent(new CustomerImpl(), "Source");
+    CustomerAuthenticatedFromCookieEvent customerAuthenticatedFromCookieEvent = new CustomerAuthenticatedFromCookieEvent(
+        new CustomerImpl(), "Source");
     CustomerImpl customer = new CustomerImpl();
 
     // Act

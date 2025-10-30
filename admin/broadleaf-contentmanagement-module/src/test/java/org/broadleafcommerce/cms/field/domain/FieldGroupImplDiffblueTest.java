@@ -19,20 +19,25 @@ package org.broadleafcommerce.cms.field.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.cms.structure.domain.StructuredContentFieldGroupXref;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
@@ -40,27 +45,23 @@ import org.mockito.Mockito;
 public class FieldGroupImplDiffblueTest {
   /**
    * Test {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldGroupImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse FieldGroupImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     FieldGroupImpl fieldGroupImpl = new FieldGroupImpl();
-
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new FieldGroupImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<FieldGroup> actualCreateOrRetrieveCopyInstanceResult =
-        fieldGroupImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<FieldGroup> actualCreateOrRetrieveCopyInstanceResult = fieldGroupImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -69,53 +70,57 @@ public class FieldGroupImplDiffblueTest {
 
   /**
    * Test {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <ul>
+   *   <li>Then Clone return {@link FieldGroupImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldGroupImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse FieldGroupImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance_thenCloneReturnFieldGroupImpl() throws CloneNotSupportedException {
     // Arrange
     FieldGroupImpl fieldGroupImpl = new FieldGroupImpl();
-
-    FieldGroupImpl fieldGroupImpl2 = new FieldGroupImpl();
-    fieldGroupImpl2.setFieldDefinitions(new ArrayList<>());
-    fieldGroupImpl2.setFieldGroupXrefs(new ArrayList<>());
-    fieldGroupImpl2.setId(1L);
-    fieldGroupImpl2.setInitCollapsedFlag(true);
-    fieldGroupImpl2.setIsMasterFieldGroup(true);
-    fieldGroupImpl2.setName("Name");
-    CreateResponse<Object> createResponse = new CreateResponse<>(fieldGroupImpl2, false);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<FieldGroup> actualCreateOrRetrieveCopyInstanceResult =
-        fieldGroupImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<FieldGroup> actualCreateOrRetrieveCopyInstanceResult = fieldGroupImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.cms.field.domain.FieldGroupImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    FieldGroup clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof FieldGroupImpl);
+    assertNull(clone.getId());
+    assertNull(clone.getName());
+    assertFalse(clone.getInitCollapsedFlag());
+    assertFalse(clone.isMasterFieldGroup());
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertFalse(((FieldGroupImpl) clone).isMasterFieldGroup);
+    assertTrue(clone.getFieldDefinitions().isEmpty());
+    assertTrue(clone.getFieldGroupXrefs().isEmpty());
   }
 
   /**
    * Test {@link FieldGroupImpl#isMasterFieldGroup()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroupImpl} (default constructor) IsMasterFieldGroup is {@code null}.
+   *   <li>Given {@link FieldGroupImpl} (default constructor) IsMasterFieldGroup is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
+   * <p>
+   * Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroupImpl.isMasterFieldGroup()"})
   public void testIsMasterFieldGroup_givenFieldGroupImplIsMasterFieldGroupIsNull() {
     // Arrange
@@ -133,35 +138,31 @@ public class FieldGroupImplDiffblueTest {
 
   /**
    * Test {@link FieldGroupImpl#isMasterFieldGroup()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroupImpl} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroupImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
+   * <p>
+   * Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroupImpl.isMasterFieldGroup()"})
   public void testIsMasterFieldGroup_givenFieldGroupImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new FieldGroupImpl().isMasterFieldGroup());
+    assertFalse((new FieldGroupImpl()).isMasterFieldGroup());
   }
 
   /**
    * Test {@link FieldGroupImpl#isMasterFieldGroup()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
+   * <p>
+   * Method under test: {@link FieldGroupImpl#isMasterFieldGroup()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroupImpl.isMasterFieldGroup()"})
   public void testIsMasterFieldGroup_thenReturnTrue() {
     // Arrange
@@ -179,9 +180,8 @@ public class FieldGroupImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldGroupImpl}
    *   <li>{@link FieldGroupImpl#setFieldDefinitions(List)}
@@ -198,22 +198,13 @@ public class FieldGroupImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FieldGroupImpl.<init>()",
-    "List FieldGroupImpl.getFieldDefinitions()",
-    "List FieldGroupImpl.getFieldGroupXrefs()",
-    "Long FieldGroupImpl.getId()",
-    "Boolean FieldGroupImpl.getInitCollapsedFlag()",
-    "String FieldGroupImpl.getName()",
-    "void FieldGroupImpl.setFieldDefinitions(List)",
-    "void FieldGroupImpl.setFieldGroupXrefs(List)",
-    "void FieldGroupImpl.setId(Long)",
-    "void FieldGroupImpl.setInitCollapsedFlag(Boolean)",
-    "void FieldGroupImpl.setIsMasterFieldGroup(Boolean)",
-    "void FieldGroupImpl.setName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldGroupImpl.<init>()", "List FieldGroupImpl.getFieldDefinitions()",
+      "List FieldGroupImpl.getFieldGroupXrefs()", "Long FieldGroupImpl.getId()",
+      "Boolean FieldGroupImpl.getInitCollapsedFlag()", "String FieldGroupImpl.getName()",
+      "void FieldGroupImpl.setFieldDefinitions(List)", "void FieldGroupImpl.setFieldGroupXrefs(List)",
+      "void FieldGroupImpl.setId(Long)", "void FieldGroupImpl.setInitCollapsedFlag(Boolean)",
+      "void FieldGroupImpl.setIsMasterFieldGroup(Boolean)", "void FieldGroupImpl.setName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldGroupImpl actualFieldGroupImpl = new FieldGroupImpl();
@@ -226,8 +217,7 @@ public class FieldGroupImplDiffblueTest {
     actualFieldGroupImpl.setIsMasterFieldGroup(true);
     actualFieldGroupImpl.setName("Name");
     List<FieldDefinition> actualFieldDefinitions = actualFieldGroupImpl.getFieldDefinitions();
-    List<StructuredContentFieldGroupXref> actualFieldGroupXrefs =
-        actualFieldGroupImpl.getFieldGroupXrefs();
+    List<StructuredContentFieldGroupXref> actualFieldGroupXrefs = actualFieldGroupImpl.getFieldGroupXrefs();
     Long actualId = actualFieldGroupImpl.getId();
     Boolean actualInitCollapsedFlag = actualFieldGroupImpl.getInitCollapsedFlag();
 

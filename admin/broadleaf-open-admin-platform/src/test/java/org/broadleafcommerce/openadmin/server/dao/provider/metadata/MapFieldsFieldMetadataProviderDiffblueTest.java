@@ -18,24 +18,77 @@
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.HashMap;
+import java.util.Map;
+import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
+import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class MapFieldsFieldMetadataProviderDiffblueTest {
   /**
-   * Test {@link MapFieldsFieldMetadataProvider#getOrder()}.
-   *
-   * <p>Method under test: {@link MapFieldsFieldMetadataProvider#getOrder()}
+   * Test {@link MapFieldsFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
+   * <p>
+   * Method under test: {@link MapFieldsFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse MapFieldsFieldMetadataProvider.overrideViaAnnotation(OverrideViaAnnotationRequest, Map)"})
+  public void testOverrideViaAnnotation() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider = new MapFieldsFieldMetadataProvider();
+    Class<Object> requestedEntity = Object.class;
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        mapFieldsFieldMetadataProvider.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link MapFieldsFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * <p>
+   * Method under test: {@link MapFieldsFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse MapFieldsFieldMetadataProvider.overrideViaXml(OverrideViaXmlRequest, Map)"})
+  public void testOverrideViaXml() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider = new MapFieldsFieldMetadataProvider();
+    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
+        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        mapFieldsFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link MapFieldsFieldMetadataProvider#getOrder()}.
+   * <p>
+   * Method under test: {@link MapFieldsFieldMetadataProvider#getOrder()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int MapFieldsFieldMetadataProvider.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(FieldMetadataProvider.MAP_FIELD, new MapFieldsFieldMetadataProvider().getOrder());
+    assertEquals(FieldMetadataProvider.MAP_FIELD, (new MapFieldsFieldMetadataProvider()).getOrder());
   }
 }

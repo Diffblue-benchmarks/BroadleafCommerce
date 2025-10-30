@@ -18,24 +18,29 @@
 package org.broadleafcommerce.core.web.resolver;
 
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DatabaseResourceResolverExtensionManagerDiffblueTest {
+  @InjectMocks
+  private DatabaseResourceResolverExtensionManager databaseResourceResolverExtensionManager;
+
   /**
    * Test {@link DatabaseResourceResolverExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link DatabaseResourceResolverExtensionManager#continueOnHandled()}
+   * <p>
+   * Method under test: {@link DatabaseResourceResolverExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DatabaseResourceResolverExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
     // Arrange, Act and Assert
-    assertFalse(new DatabaseResourceResolverExtensionManager().continueOnHandled());
+    assertFalse(databaseResourceResolverExtensionManager.continueOnHandled());
   }
 }

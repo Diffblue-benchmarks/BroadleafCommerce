@@ -18,49 +18,16 @@
 package org.broadleafcommerce.profile.core.event;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class ForgotPasswordEventDiffblueTest {
   /**
-   * Test {@link ForgotPasswordEvent#ForgotPasswordEvent(Object, Long, String, String)}.
-   *
-   * <p>Method under test: {@link ForgotPasswordEvent#ForgotPasswordEvent(Object, Long, String,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ForgotPasswordEvent.<init>(Object, Long, String, String)"})
-  public void testNewForgotPasswordEvent() {
-    // Arrange and Act
-    ForgotPasswordEvent actualForgotPasswordEvent =
-        new ForgotPasswordEvent("Source", 1L, "ABC123", "https://example.org/example");
-
-    // Assert
-    assertEquals("ABC123", actualForgotPasswordEvent.getToken());
-    assertEquals("Source", actualForgotPasswordEvent.getSource());
-    assertEquals("https://example.org/example", actualForgotPasswordEvent.getResetPasswordUrl());
-    assertNull(actualForgotPasswordEvent.getCatalogId());
-    assertNull(actualForgotPasswordEvent.getProfileId());
-    assertNull(actualForgotPasswordEvent.getSiteId());
-    assertNull(actualForgotPasswordEvent.getCurrencyCode());
-    assertNull(actualForgotPasswordEvent.getLocaleCode());
-    assertNull(actualForgotPasswordEvent.getTimeZoneId());
-    assertEquals(1L, actualForgotPasswordEvent.getCustomerId().longValue());
-    assertTrue(actualForgotPasswordEvent.getContext().isEmpty());
-  }
-
-  /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForgotPasswordEvent#setCustomerId(Long)}
    *   <li>{@link ForgotPasswordEvent#setResetPasswordUrl(String)}
@@ -71,20 +38,14 @@ public class ForgotPasswordEventDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long ForgotPasswordEvent.getCustomerId()",
-    "String ForgotPasswordEvent.getResetPasswordUrl()",
-    "String ForgotPasswordEvent.getToken()",
-    "void ForgotPasswordEvent.setCustomerId(Long)",
-    "void ForgotPasswordEvent.setResetPasswordUrl(String)",
-    "void ForgotPasswordEvent.setToken(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long ForgotPasswordEvent.getCustomerId()", "String ForgotPasswordEvent.getResetPasswordUrl()",
+      "String ForgotPasswordEvent.getToken()", "void ForgotPasswordEvent.setCustomerId(Long)",
+      "void ForgotPasswordEvent.setResetPasswordUrl(String)", "void ForgotPasswordEvent.setToken(String)"})
   public void testGettersAndSetters() {
     // Arrange
-    ForgotPasswordEvent forgotPasswordEvent =
-        new ForgotPasswordEvent("Source", 1L, "ABC123", "https://example.org/example");
+    ForgotPasswordEvent forgotPasswordEvent = new ForgotPasswordEvent("Source", 1L, "ABC123",
+        "https://example.org/example");
 
     // Act
     forgotPasswordEvent.setCustomerId(1L);

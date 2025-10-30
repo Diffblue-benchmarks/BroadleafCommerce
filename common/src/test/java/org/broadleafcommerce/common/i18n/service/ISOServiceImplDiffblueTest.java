@@ -19,11 +19,11 @@ package org.broadleafcommerce.common.i18n.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +40,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ISOServiceImplDiffblueTest {
-  @Mock private ISODao iSODao;
+  @Mock
+  private ISODao iSODao;
 
-  @InjectMocks private ISOServiceImpl iSOServiceImpl;
+  @InjectMocks
+  private ISOServiceImpl iSOServiceImpl;
 
   /**
    * Test {@link ISOServiceImpl#findISOCountries()}.
-   *
-   * <p>Method under test: {@link ISOServiceImpl#findISOCountries()}
+   * <p>
+   * Method under test: {@link ISOServiceImpl#findISOCountries()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List ISOServiceImpl.findISOCountries()"})
   public void testFindISOCountries() {
     // Arrange
@@ -67,12 +68,11 @@ public class ISOServiceImplDiffblueTest {
 
   /**
    * Test {@link ISOServiceImpl#findISOCountryByAlpha2Code(String)}.
-   *
-   * <p>Method under test: {@link ISOServiceImpl#findISOCountryByAlpha2Code(String)}
+   * <p>
+   * Method under test: {@link ISOServiceImpl#findISOCountryByAlpha2Code(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ISOCountry ISOServiceImpl.findISOCountryByAlpha2Code(String)"})
   public void testFindISOCountryByAlpha2Code() {
     // Arrange
@@ -80,22 +80,20 @@ public class ISOServiceImplDiffblueTest {
     when(iSODao.findISOCountryByAlpha2Code(Mockito.<String>any())).thenReturn(isoCountryImpl);
 
     // Act
-    ISOCountry actualFindISOCountryByAlpha2CodeResult =
-        iSOServiceImpl.findISOCountryByAlpha2Code("Alpha2");
+    ISOCountry actualFindISOCountryByAlpha2CodeResult = iSOServiceImpl.findISOCountryByAlpha2Code("Alpha2");
 
     // Assert
-    verify(iSODao).findISOCountryByAlpha2Code("Alpha2");
+    verify(iSODao).findISOCountryByAlpha2Code(eq("Alpha2"));
     assertSame(isoCountryImpl, actualFindISOCountryByAlpha2CodeResult);
   }
 
   /**
    * Test {@link ISOServiceImpl#save(ISOCountry)}.
-   *
-   * <p>Method under test: {@link ISOServiceImpl#save(ISOCountry)}
+   * <p>
+   * Method under test: {@link ISOServiceImpl#save(ISOCountry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ISOCountry ISOServiceImpl.save(ISOCountry)"})
   public void testSave() {
     // Arrange

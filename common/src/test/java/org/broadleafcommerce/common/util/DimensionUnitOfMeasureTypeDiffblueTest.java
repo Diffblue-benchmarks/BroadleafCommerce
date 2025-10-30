@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DimensionUnitOfMeasureType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DimensionUnitOfMeasureTypeDiffblueTest {
-  @Autowired private DimensionUnitOfMeasureType dimensionUnitOfMeasureType;
+  @Autowired
+  private DimensionUnitOfMeasureType dimensionUnitOfMeasureType;
 
   /**
    * Test {@link DimensionUnitOfMeasureType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link DimensionUnitOfMeasureType#getInstance(String)}
+   * <p>
+   * Method under test: {@link DimensionUnitOfMeasureType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"DimensionUnitOfMeasureType DimensionUnitOfMeasureType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,9 +54,8 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DimensionUnitOfMeasureType#DimensionUnitOfMeasureType()}
    *   <li>{@link DimensionUnitOfMeasureType#getFriendlyType()}
@@ -65,13 +63,9 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void DimensionUnitOfMeasureType.<init>()",
-    "String DimensionUnitOfMeasureType.getFriendlyType()",
-    "String DimensionUnitOfMeasureType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DimensionUnitOfMeasureType.<init>()", "String DimensionUnitOfMeasureType.getFriendlyType()",
+      "String DimensionUnitOfMeasureType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DimensionUnitOfMeasureType actualDimensionUnitOfMeasureType = new DimensionUnitOfMeasureType();
@@ -84,18 +78,42 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
 
   /**
    * Test {@link DimensionUnitOfMeasureType#DimensionUnitOfMeasureType(String, String)}.
-   *
-   * <p>Method under test: {@link DimensionUnitOfMeasureType#DimensionUnitOfMeasureType(String,
-   * String)}
+   * <ul>
+   *   <li>When {@code Feet}.</li>
+   *   <li>Then return Type is {@code Feet}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DimensionUnitOfMeasureType#DimensionUnitOfMeasureType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DimensionUnitOfMeasureType.<init>(String, String)"})
-  public void testNewDimensionUnitOfMeasureType() {
+  public void testNewDimensionUnitOfMeasureType_whenFeet_thenReturnTypeIsFeet() {
     // Arrange and Act
-    DimensionUnitOfMeasureType actualDimensionUnitOfMeasureType =
-        new DimensionUnitOfMeasureType("Type", "Friendly Type");
+    DimensionUnitOfMeasureType actualDimensionUnitOfMeasureType = new DimensionUnitOfMeasureType("Feet",
+        "Friendly Type");
+
+    // Assert
+    assertEquals("Feet", actualDimensionUnitOfMeasureType.getType());
+    assertEquals("Friendly Type", actualDimensionUnitOfMeasureType.getFriendlyType());
+  }
+
+  /**
+   * Test {@link DimensionUnitOfMeasureType#DimensionUnitOfMeasureType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   *   <li>Then return {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DimensionUnitOfMeasureType#DimensionUnitOfMeasureType(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DimensionUnitOfMeasureType.<init>(String, String)"})
+  public void testNewDimensionUnitOfMeasureType_whenType_thenReturnType() {
+    // Arrange and Act
+    DimensionUnitOfMeasureType actualDimensionUnitOfMeasureType = new DimensionUnitOfMeasureType("Type",
+        "Friendly Type");
 
     // Assert
     assertEquals("Friendly Type", actualDimensionUnitOfMeasureType.getFriendlyType());
@@ -103,28 +121,21 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
   }
 
   /**
-   * Test {@link DimensionUnitOfMeasureType#equals(Object)}, and {@link
-   * DimensionUnitOfMeasureType#hashCode()}.
-   *
+   * Test {@link DimensionUnitOfMeasureType#equals(Object)}, and {@link DimensionUnitOfMeasureType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DimensionUnitOfMeasureType#equals(Object)}
    *   <li>{@link DimensionUnitOfMeasureType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DimensionUnitOfMeasureType.equals(Object)",
-    "int DimensionUnitOfMeasureType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DimensionUnitOfMeasureType.equals(Object)", "int DimensionUnitOfMeasureType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     DimensionUnitOfMeasureType dimensionUnitOfMeasureType = DimensionUnitOfMeasureType.CENTIMETERS;
@@ -132,99 +143,81 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(dimensionUnitOfMeasureType, dimensionUnitOfMeasureType2);
-    assertEquals(dimensionUnitOfMeasureType.hashCode(), dimensionUnitOfMeasureType2.hashCode());
+    int expectedHashCodeResult = dimensionUnitOfMeasureType.hashCode();
+    assertEquals(expectedHashCodeResult, dimensionUnitOfMeasureType2.hashCode());
   }
 
   /**
-   * Test {@link DimensionUnitOfMeasureType#equals(Object)}, and {@link
-   * DimensionUnitOfMeasureType#hashCode()}.
-   *
+   * Test {@link DimensionUnitOfMeasureType#equals(Object)}, and {@link DimensionUnitOfMeasureType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DimensionUnitOfMeasureType#equals(Object)}
    *   <li>{@link DimensionUnitOfMeasureType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DimensionUnitOfMeasureType.equals(Object)",
-    "int DimensionUnitOfMeasureType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DimensionUnitOfMeasureType.equals(Object)", "int DimensionUnitOfMeasureType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    DimensionUnitOfMeasureType dimensionUnitOfMeasureType = DimensionUnitOfMeasureType.FEET;
-    DimensionUnitOfMeasureType dimensionUnitOfMeasureType2 =
-        new DimensionUnitOfMeasureType("FEET", "FEET");
-
-    // Act and Assert
-    assertEquals(dimensionUnitOfMeasureType, dimensionUnitOfMeasureType2);
-    assertEquals(dimensionUnitOfMeasureType.hashCode(), dimensionUnitOfMeasureType2.hashCode());
-  }
-
-  /**
-   * Test {@link DimensionUnitOfMeasureType#equals(Object)}, and {@link
-   * DimensionUnitOfMeasureType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link DimensionUnitOfMeasureType#equals(Object)}
-   *   <li>{@link DimensionUnitOfMeasureType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DimensionUnitOfMeasureType.equals(Object)",
-    "int DimensionUnitOfMeasureType.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     DimensionUnitOfMeasureType dimensionUnitOfMeasureType = new DimensionUnitOfMeasureType();
     DimensionUnitOfMeasureType dimensionUnitOfMeasureType2 = new DimensionUnitOfMeasureType();
 
     // Act and Assert
     assertEquals(dimensionUnitOfMeasureType, dimensionUnitOfMeasureType2);
-    assertEquals(dimensionUnitOfMeasureType.hashCode(), dimensionUnitOfMeasureType2.hashCode());
+    int expectedHashCodeResult = dimensionUnitOfMeasureType.hashCode();
+    assertEquals(expectedHashCodeResult, dimensionUnitOfMeasureType2.hashCode());
   }
 
   /**
-   * Test {@link DimensionUnitOfMeasureType#equals(Object)}, and {@link
-   * DimensionUnitOfMeasureType#hashCode()}.
-   *
+   * Test {@link DimensionUnitOfMeasureType#equals(Object)}, and {@link DimensionUnitOfMeasureType#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DimensionUnitOfMeasureType#equals(Object)}
    *   <li>{@link DimensionUnitOfMeasureType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DimensionUnitOfMeasureType.equals(Object)",
-    "int DimensionUnitOfMeasureType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DimensionUnitOfMeasureType.equals(Object)", "int DimensionUnitOfMeasureType.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    DimensionUnitOfMeasureType dimensionUnitOfMeasureType = new DimensionUnitOfMeasureType("CENTIMETERS",
+        "Friendly Type");
+    DimensionUnitOfMeasureType dimensionUnitOfMeasureType2 = DimensionUnitOfMeasureType.CENTIMETERS;
+
+    // Act and Assert
+    assertEquals(dimensionUnitOfMeasureType, dimensionUnitOfMeasureType2);
+    int expectedHashCodeResult = dimensionUnitOfMeasureType.hashCode();
+    assertEquals(expectedHashCodeResult, dimensionUnitOfMeasureType2.hashCode());
+  }
+
+  /**
+   * Test {@link DimensionUnitOfMeasureType#equals(Object)}, and {@link DimensionUnitOfMeasureType#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link DimensionUnitOfMeasureType#equals(Object)}
+   *   <li>{@link DimensionUnitOfMeasureType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DimensionUnitOfMeasureType.equals(Object)", "int DimensionUnitOfMeasureType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     DimensionUnitOfMeasureType dimensionUnitOfMeasureType = DimensionUnitOfMeasureType.CENTIMETERS;
@@ -237,21 +230,16 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
 
   /**
    * Test {@link DimensionUnitOfMeasureType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DimensionUnitOfMeasureType#equals(Object)}
+   * <p>
+   * Method under test: {@link DimensionUnitOfMeasureType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DimensionUnitOfMeasureType.equals(Object)",
-    "int DimensionUnitOfMeasureType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DimensionUnitOfMeasureType.equals(Object)", "int DimensionUnitOfMeasureType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(DimensionUnitOfMeasureType.FEET, DimensionUnitOfMeasureType.CENTIMETERS);
@@ -259,21 +247,16 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
 
   /**
    * Test {@link DimensionUnitOfMeasureType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DimensionUnitOfMeasureType#equals(Object)}
+   * <p>
+   * Method under test: {@link DimensionUnitOfMeasureType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DimensionUnitOfMeasureType.equals(Object)",
-    "int DimensionUnitOfMeasureType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DimensionUnitOfMeasureType.equals(Object)", "int DimensionUnitOfMeasureType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new DimensionUnitOfMeasureType(), DimensionUnitOfMeasureType.CENTIMETERS);
@@ -281,21 +264,16 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
 
   /**
    * Test {@link DimensionUnitOfMeasureType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DimensionUnitOfMeasureType#equals(Object)}
+   * <p>
+   * Method under test: {@link DimensionUnitOfMeasureType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DimensionUnitOfMeasureType.equals(Object)",
-    "int DimensionUnitOfMeasureType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DimensionUnitOfMeasureType.equals(Object)", "int DimensionUnitOfMeasureType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(DimensionUnitOfMeasureType.CENTIMETERS, null);
@@ -303,24 +281,18 @@ public class DimensionUnitOfMeasureTypeDiffblueTest {
 
   /**
    * Test {@link DimensionUnitOfMeasureType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DimensionUnitOfMeasureType#equals(Object)}
+   * <p>
+   * Method under test: {@link DimensionUnitOfMeasureType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DimensionUnitOfMeasureType.equals(Object)",
-    "int DimensionUnitOfMeasureType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DimensionUnitOfMeasureType.equals(Object)", "int DimensionUnitOfMeasureType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        DimensionUnitOfMeasureType.CENTIMETERS, "Different type to DimensionUnitOfMeasureType");
+    assertNotEquals(DimensionUnitOfMeasureType.CENTIMETERS, "Different type to DimensionUnitOfMeasureType");
   }
 }

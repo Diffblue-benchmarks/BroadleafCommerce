@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import java.util.Map;
@@ -40,16 +39,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {PaymentRequestDTO.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PaymentRequestDTODiffblueTest {
-  @Autowired private PaymentRequestDTO paymentRequestDTO;
+  @Autowired
+  private PaymentRequestDTO paymentRequestDTO;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PaymentRequestDTO}
    *   <li>{@link PaymentRequestDTO#completeCheckoutOnCallback(boolean)}
@@ -84,70 +83,48 @@ public class PaymentRequestDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentRequestDTO.<init>()",
-    "PaymentRequestDTO PaymentRequestDTO.completeCheckoutOnCallback(boolean)",
-    "PaymentRequestDTO PaymentRequestDTO.gatewayRequestType(PaymentGatewayRequestType)",
-    "Map PaymentRequestDTO.getAdditionalFields()",
-    "AddressDTO PaymentRequestDTO.getBillTo()",
-    "CreditCardDTO PaymentRequestDTO.getCreditCard()",
-    "GatewayCustomerDTO PaymentRequestDTO.getCustomer()",
-    "List PaymentRequestDTO.getCustomerCredits()",
-    "PaymentGatewayRequestType PaymentRequestDTO.getGatewayRequestType()",
-    "List PaymentRequestDTO.getGiftCards()",
-    "List PaymentRequestDTO.getLineItems()",
-    "String PaymentRequestDTO.getOrderCurrencyCode()",
-    "String PaymentRequestDTO.getOrderDescription()",
-    "String PaymentRequestDTO.getOrderId()",
-    "String PaymentRequestDTO.getOrderSubtotal()",
-    "PaymentType PaymentRequestDTO.getPaymentType()",
-    "AddressDTO PaymentRequestDTO.getShipTo()",
-    "String PaymentRequestDTO.getShippingTotal()",
-    "SubscriptionDTO PaymentRequestDTO.getSubscription()",
-    "String PaymentRequestDTO.getTaxTotal()",
-    "String PaymentRequestDTO.getTransactionTotal()",
-    "boolean PaymentRequestDTO.isCompleteCheckoutOnCallback()",
-    "PaymentRequestDTO PaymentRequestDTO.orderCurrencyCode(String)",
-    "PaymentRequestDTO PaymentRequestDTO.orderDescription(String)",
-    "PaymentRequestDTO PaymentRequestDTO.orderId(String)",
-    "PaymentRequestDTO PaymentRequestDTO.orderSubtotal(String)",
-    "PaymentRequestDTO PaymentRequestDTO.paymentType(PaymentType)",
-    "PaymentRequestDTO PaymentRequestDTO.shippingTotal(String)",
-    "PaymentRequestDTO PaymentRequestDTO.taxTotal(String)",
-    "PaymentRequestDTO PaymentRequestDTO.transactionTotal(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentRequestDTO.<init>()",
+      "PaymentRequestDTO PaymentRequestDTO.completeCheckoutOnCallback(boolean)",
+      "PaymentRequestDTO PaymentRequestDTO.gatewayRequestType(PaymentGatewayRequestType)",
+      "Map PaymentRequestDTO.getAdditionalFields()", "AddressDTO PaymentRequestDTO.getBillTo()",
+      "CreditCardDTO PaymentRequestDTO.getCreditCard()", "GatewayCustomerDTO PaymentRequestDTO.getCustomer()",
+      "List PaymentRequestDTO.getCustomerCredits()",
+      "PaymentGatewayRequestType PaymentRequestDTO.getGatewayRequestType()", "List PaymentRequestDTO.getGiftCards()",
+      "List PaymentRequestDTO.getLineItems()", "String PaymentRequestDTO.getOrderCurrencyCode()",
+      "String PaymentRequestDTO.getOrderDescription()", "String PaymentRequestDTO.getOrderId()",
+      "String PaymentRequestDTO.getOrderSubtotal()", "PaymentType PaymentRequestDTO.getPaymentType()",
+      "AddressDTO PaymentRequestDTO.getShipTo()", "String PaymentRequestDTO.getShippingTotal()",
+      "SubscriptionDTO PaymentRequestDTO.getSubscription()", "String PaymentRequestDTO.getTaxTotal()",
+      "String PaymentRequestDTO.getTransactionTotal()", "boolean PaymentRequestDTO.isCompleteCheckoutOnCallback()",
+      "PaymentRequestDTO PaymentRequestDTO.orderCurrencyCode(String)",
+      "PaymentRequestDTO PaymentRequestDTO.orderDescription(String)",
+      "PaymentRequestDTO PaymentRequestDTO.orderId(String)",
+      "PaymentRequestDTO PaymentRequestDTO.orderSubtotal(String)",
+      "PaymentRequestDTO PaymentRequestDTO.paymentType(PaymentType)",
+      "PaymentRequestDTO PaymentRequestDTO.shippingTotal(String)",
+      "PaymentRequestDTO PaymentRequestDTO.taxTotal(String)",
+      "PaymentRequestDTO PaymentRequestDTO.transactionTotal(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PaymentRequestDTO actualPaymentRequestDTO = new PaymentRequestDTO();
-    PaymentRequestDTO actualCompleteCheckoutOnCallbackResult =
-        actualPaymentRequestDTO.completeCheckoutOnCallback(true);
-    PaymentRequestDTO actualGatewayRequestTypeResult =
-        actualPaymentRequestDTO.gatewayRequestType(
-            PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR);
-    PaymentRequestDTO actualOrderCurrencyCodeResult =
-        actualPaymentRequestDTO.orderCurrencyCode("GBP");
-    PaymentRequestDTO actualOrderDescriptionResult =
-        actualPaymentRequestDTO.orderDescription("Order Description");
+    PaymentRequestDTO actualCompleteCheckoutOnCallbackResult = actualPaymentRequestDTO.completeCheckoutOnCallback(true);
+    PaymentRequestDTO actualGatewayRequestTypeResult = actualPaymentRequestDTO
+        .gatewayRequestType(PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR);
+    PaymentRequestDTO actualOrderCurrencyCodeResult = actualPaymentRequestDTO.orderCurrencyCode("GBP");
+    PaymentRequestDTO actualOrderDescriptionResult = actualPaymentRequestDTO.orderDescription("Order Description");
     PaymentRequestDTO actualOrderIdResult = actualPaymentRequestDTO.orderId("42");
-    PaymentRequestDTO actualOrderSubtotalResult =
-        actualPaymentRequestDTO.orderSubtotal("Order Subtotal");
-    PaymentRequestDTO actualPaymentTypeResult =
-        actualPaymentRequestDTO.paymentType(PaymentType.APPLE_PAY);
-    PaymentRequestDTO actualShippingTotalResult =
-        actualPaymentRequestDTO.shippingTotal("Shipping Total");
+    PaymentRequestDTO actualOrderSubtotalResult = actualPaymentRequestDTO.orderSubtotal("Order Subtotal");
+    PaymentRequestDTO actualPaymentTypeResult = actualPaymentRequestDTO.paymentType(PaymentType.APPLE_PAY);
+    PaymentRequestDTO actualShippingTotalResult = actualPaymentRequestDTO.shippingTotal("Shipping Total");
     PaymentRequestDTO actualTaxTotalResult = actualPaymentRequestDTO.taxTotal("Tax Total");
-    PaymentRequestDTO actualTransactionTotalResult =
-        actualPaymentRequestDTO.transactionTotal("Transaction Total");
+    PaymentRequestDTO actualTransactionTotalResult = actualPaymentRequestDTO.transactionTotal("Transaction Total");
     Map<String, Object> actualAdditionalFields = actualPaymentRequestDTO.getAdditionalFields();
     AddressDTO<PaymentRequestDTO> actualBillTo = actualPaymentRequestDTO.getBillTo();
     CreditCardDTO<PaymentRequestDTO> actualCreditCard = actualPaymentRequestDTO.getCreditCard();
     GatewayCustomerDTO<PaymentRequestDTO> actualCustomer = actualPaymentRequestDTO.getCustomer();
-    List<CustomerCreditDTO<PaymentRequestDTO>> actualCustomerCredits =
-        actualPaymentRequestDTO.getCustomerCredits();
-    PaymentGatewayRequestType actualGatewayRequestType =
-        actualPaymentRequestDTO.getGatewayRequestType();
+    List<CustomerCreditDTO<PaymentRequestDTO>> actualCustomerCredits = actualPaymentRequestDTO.getCustomerCredits();
+    PaymentGatewayRequestType actualGatewayRequestType = actualPaymentRequestDTO.getGatewayRequestType();
     List<GiftCardDTO<PaymentRequestDTO>> actualGiftCards = actualPaymentRequestDTO.getGiftCards();
     List<LineItemDTO> actualLineItems = actualPaymentRequestDTO.getLineItems();
     String actualOrderCurrencyCode = actualPaymentRequestDTO.getOrderCurrencyCode();
@@ -157,12 +134,10 @@ public class PaymentRequestDTODiffblueTest {
     PaymentType actualPaymentType = actualPaymentRequestDTO.getPaymentType();
     AddressDTO<PaymentRequestDTO> actualShipTo = actualPaymentRequestDTO.getShipTo();
     String actualShippingTotal = actualPaymentRequestDTO.getShippingTotal();
-    SubscriptionDTO<PaymentRequestDTO> actualSubscription =
-        actualPaymentRequestDTO.getSubscription();
+    SubscriptionDTO<PaymentRequestDTO> actualSubscription = actualPaymentRequestDTO.getSubscription();
     String actualTaxTotal = actualPaymentRequestDTO.getTaxTotal();
     String actualTransactionTotal = actualPaymentRequestDTO.getTransactionTotal();
-    boolean actualIsCompleteCheckoutOnCallbackResult =
-        actualPaymentRequestDTO.isCompleteCheckoutOnCallback();
+    boolean actualIsCompleteCheckoutOnCallbackResult = actualPaymentRequestDTO.isCompleteCheckoutOnCallback();
 
     // Assert
     assertEquals("42", actualOrderId);
@@ -192,22 +167,21 @@ public class PaymentRequestDTODiffblueTest {
     assertSame(actualPaymentRequestDTO, actualShippingTotalResult);
     assertSame(actualPaymentRequestDTO, actualTaxTotalResult);
     assertSame(actualPaymentRequestDTO, actualTransactionTotalResult);
-    assertSame(PaymentGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR, actualGatewayRequestType);
-    assertSame(PaymentType.APPLE_PAY, actualPaymentType);
+    assertSame(actualGatewayRequestType.CREATE_CUSTOMER_PAYMENT_TR, actualGatewayRequestType);
+    assertSame(actualPaymentType.APPLE_PAY, actualPaymentType);
   }
 
   /**
    * Test {@link PaymentRequestDTO#customer()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#customer()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#customer()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"GatewayCustomerDTO PaymentRequestDTO.customer()"})
   public void testCustomer() {
     // Arrange and Act
-    GatewayCustomerDTO<PaymentRequestDTO> actualCustomerResult = new PaymentRequestDTO().customer();
+    GatewayCustomerDTO<PaymentRequestDTO> actualCustomerResult = (new PaymentRequestDTO()).customer();
 
     // Assert
     assertNull(actualCustomerResult.getCompanyName());
@@ -224,16 +198,15 @@ public class PaymentRequestDTODiffblueTest {
 
   /**
    * Test {@link PaymentRequestDTO#creditCard()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#creditCard()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#creditCard()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreditCardDTO PaymentRequestDTO.creditCard()"})
   public void testCreditCard() {
     // Arrange and Act
-    CreditCardDTO<PaymentRequestDTO> actualCreditCardResult = new PaymentRequestDTO().creditCard();
+    CreditCardDTO<PaymentRequestDTO> actualCreditCardResult = (new PaymentRequestDTO()).creditCard();
 
     // Assert
     assertNull(actualCreditCardResult.getCreditCardCvv());
@@ -249,17 +222,15 @@ public class PaymentRequestDTODiffblueTest {
 
   /**
    * Test {@link PaymentRequestDTO#subscription()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#subscription()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#subscription()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SubscriptionDTO PaymentRequestDTO.subscription()"})
   public void testSubscription() {
     // Arrange and Act
-    SubscriptionDTO<PaymentRequestDTO> actualSubscriptionResult =
-        new PaymentRequestDTO().subscription();
+    SubscriptionDTO<PaymentRequestDTO> actualSubscriptionResult = (new PaymentRequestDTO()).subscription();
 
     // Assert
     assertNull(actualSubscriptionResult.getFrequency());
@@ -271,16 +242,15 @@ public class PaymentRequestDTODiffblueTest {
 
   /**
    * Test {@link PaymentRequestDTO#shipTo()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#shipTo()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#shipTo()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"AddressDTO PaymentRequestDTO.shipTo()"})
   public void testShipTo() {
     // Arrange and Act
-    AddressDTO<PaymentRequestDTO> actualShipToResult = new PaymentRequestDTO().shipTo();
+    AddressDTO<PaymentRequestDTO> actualShipToResult = (new PaymentRequestDTO()).shipTo();
 
     // Assert
     assertNull(actualShipToResult.getAddressCityLocality());
@@ -301,16 +271,15 @@ public class PaymentRequestDTODiffblueTest {
 
   /**
    * Test {@link PaymentRequestDTO#billTo()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#billTo()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#billTo()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"AddressDTO PaymentRequestDTO.billTo()"})
   public void testBillTo() {
     // Arrange and Act
-    AddressDTO<PaymentRequestDTO> actualBillToResult = new PaymentRequestDTO().billTo();
+    AddressDTO<PaymentRequestDTO> actualBillToResult = (new PaymentRequestDTO()).billTo();
 
     // Assert
     assertNull(actualBillToResult.getAddressCityLocality());
@@ -331,16 +300,15 @@ public class PaymentRequestDTODiffblueTest {
 
   /**
    * Test {@link PaymentRequestDTO#giftCard()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#giftCard()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#giftCard()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"GiftCardDTO PaymentRequestDTO.giftCard()"})
   public void testGiftCard() {
     // Arrange and Act
-    GiftCardDTO<PaymentRequestDTO> actualGiftCardResult = new PaymentRequestDTO().giftCard();
+    GiftCardDTO<PaymentRequestDTO> actualGiftCardResult = (new PaymentRequestDTO()).giftCard();
 
     // Assert
     assertNull(actualGiftCardResult.giftCardMasked);
@@ -350,17 +318,15 @@ public class PaymentRequestDTODiffblueTest {
 
   /**
    * Test {@link PaymentRequestDTO#customerCredit()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#customerCredit()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#customerCredit()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerCreditDTO PaymentRequestDTO.customerCredit()"})
   public void testCustomerCredit() {
     // Arrange and Act
-    CustomerCreditDTO<PaymentRequestDTO> actualCustomerCreditResult =
-        new PaymentRequestDTO().customerCredit();
+    CustomerCreditDTO<PaymentRequestDTO> actualCustomerCreditResult = (new PaymentRequestDTO()).customerCredit();
 
     // Assert
     assertNull(actualCustomerCreditResult.customerCreditAccountMasked);
@@ -370,16 +336,15 @@ public class PaymentRequestDTODiffblueTest {
 
   /**
    * Test {@link PaymentRequestDTO#lineItem()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#lineItem()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#lineItem()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"LineItemDTO PaymentRequestDTO.lineItem()"})
   public void testLineItem() {
     // Arrange and Act
-    LineItemDTO actualLineItemResult = new PaymentRequestDTO().lineItem();
+    LineItemDTO actualLineItemResult = (new PaymentRequestDTO()).lineItem();
 
     // Assert
     assertNull(actualLineItemResult.getAmount());
@@ -397,89 +362,79 @@ public class PaymentRequestDTODiffblueTest {
 
   /**
    * Test {@link PaymentRequestDTO#additionalField(String, Object)}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#additionalField(String, Object)}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#additionalField(String, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PaymentRequestDTO PaymentRequestDTO.additionalField(String, Object)"})
   public void testAdditionalField() {
-    // Arrange and Act
-    PaymentRequestDTO actualAdditionalFieldResult =
-        paymentRequestDTO.additionalField("Key", BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    assertSame(paymentRequestDTO, actualAdditionalFieldResult);
+    // Arrange, Act and Assert
+    assertSame(paymentRequestDTO, paymentRequestDTO.additionalField("Key", BLCFieldUtils.NULL_FIELD));
   }
 
   /**
    * Test {@link PaymentRequestDTO#shipToPopulated()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#shipToPopulated()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#shipToPopulated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentRequestDTO.shipToPopulated()"})
   public void testShipToPopulated() {
     // Arrange, Act and Assert
-    assertFalse(new PaymentRequestDTO().shipToPopulated());
+    assertFalse((new PaymentRequestDTO()).shipToPopulated());
   }
 
   /**
    * Test {@link PaymentRequestDTO#billToPopulated()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#billToPopulated()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#billToPopulated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentRequestDTO.billToPopulated()"})
   public void testBillToPopulated() {
     // Arrange, Act and Assert
-    assertFalse(new PaymentRequestDTO().billToPopulated());
+    assertFalse((new PaymentRequestDTO()).billToPopulated());
   }
 
   /**
    * Test {@link PaymentRequestDTO#creditCardPopulated()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#creditCardPopulated()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#creditCardPopulated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentRequestDTO.creditCardPopulated()"})
   public void testCreditCardPopulated() {
     // Arrange, Act and Assert
-    assertFalse(new PaymentRequestDTO().creditCardPopulated());
+    assertFalse((new PaymentRequestDTO()).creditCardPopulated());
   }
 
   /**
    * Test {@link PaymentRequestDTO#customerPopulated()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#customerPopulated()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#customerPopulated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentRequestDTO.customerPopulated()"})
   public void testCustomerPopulated() {
     // Arrange, Act and Assert
-    assertFalse(new PaymentRequestDTO().customerPopulated());
+    assertFalse((new PaymentRequestDTO()).customerPopulated());
   }
 
   /**
    * Test {@link PaymentRequestDTO#subscriptionPopulated()}.
-   *
-   * <p>Method under test: {@link PaymentRequestDTO#subscriptionPopulated()}
+   * <p>
+   * Method under test: {@link PaymentRequestDTO#subscriptionPopulated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentRequestDTO.subscriptionPopulated()"})
   public void testSubscriptionPopulated() {
     // Arrange, Act and Assert
-    assertFalse(new PaymentRequestDTO().subscriptionPopulated());
+    assertFalse((new PaymentRequestDTO()).subscriptionPopulated());
   }
 }

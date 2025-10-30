@@ -23,13 +23,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +38,7 @@ import javax.cache.CacheManager;
 import org.broadleafcommerce.cms.url.dao.URLHandlerDao;
 import org.broadleafcommerce.cms.url.domain.NullURLHandler;
 import org.broadleafcommerce.cms.url.domain.URLHandler;
+import org.broadleafcommerce.cms.url.domain.URLHandlerDTO;
 import org.broadleafcommerce.cms.url.domain.URLHandlerImpl;
 import org.broadleafcommerce.cms.url.type.URLRedirectType;
 import org.broadleafcommerce.common.site.domain.Site;
@@ -54,122 +53,115 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class URLHandlerServiceImplDiffblueTest {
-  @Mock private CacheManager cacheManager;
+  @InjectMocks
+  private URLHandlerServiceImpl uRLHandlerServiceImpl;
 
-  @Mock private URLHandlerDao uRLHandlerDao;
+  @Mock
+  private URLHandlerDao uRLHandlerDao;
 
-  @InjectMocks private URLHandlerServiceImpl uRLHandlerServiceImpl;
+  @Mock
+  private CacheManager cacheManager;
 
   /**
    * Test {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.findURLHandlerByURI(String)"})
   public void testFindURLHandlerByURI_thenThrowRuntimeException() {
     // Arrange
-    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException());
+    when(cacheManager.getCache(Mockito.<String>any()))
+        .thenThrow(new RuntimeException("ThreadLocalManager.notify.orphans"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
+    assertThrows(RuntimeException.class,
         () -> uRLHandlerServiceImpl.findURLHandlerByURI("https://example.org/example"));
-    verify(cacheManager).getCache("cmsUrlHandlerCache");
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findURLHandlerByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.findURLHandlerByURI(String)"})
   public void testFindURLHandlerByURI_whenNull_thenThrowRuntimeException() {
     // Arrange
-    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException());
+    when(cacheManager.getCache(Mockito.<String>any()))
+        .thenThrow(new RuntimeException("ThreadLocalManager.notify.orphans"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.findURLHandlerByURI(null));
-    verify(cacheManager).getCache("cmsUrlHandlerCache");
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#findURLHandlerById(Long)}.
-   *
    * <ul>
-   *   <li>Then return {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.
+   *   <li>Then return {@link URLHandlerServiceImpl} {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#findURLHandlerById(Long)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findURLHandlerById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.findURLHandlerById(Long)"})
-  public void testFindURLHandlerById_thenReturnNull_url_handler() {
+  public void testFindURLHandlerById_thenReturnURLHandlerServiceImplNull_url_handler() {
     // Arrange
-    when(uRLHandlerDao.findURLHandlerById(Mockito.<Long>any()))
-        .thenReturn(URLHandlerServiceImpl.NULL_URL_HANDLER);
+    when(uRLHandlerDao.findURLHandlerById(Mockito.<Long>any())).thenReturn(URLHandlerServiceImpl.NULL_URL_HANDLER);
 
     // Act
     URLHandler actualFindURLHandlerByIdResult = uRLHandlerServiceImpl.findURLHandlerById(1L);
 
     // Assert
-    verify(uRLHandlerDao).findURLHandlerById(1L);
-    assertSame(URLHandlerServiceImpl.NULL_URL_HANDLER, actualFindURLHandlerByIdResult);
+    verify(uRLHandlerDao).findURLHandlerById(eq(1L));
+    assertSame(uRLHandlerServiceImpl.NULL_URL_HANDLER, actualFindURLHandlerByIdResult);
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#findURLHandlerById(Long)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#findURLHandlerById(Long)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findURLHandlerById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.findURLHandlerById(Long)"})
   public void testFindURLHandlerById_thenThrowRuntimeException() {
     // Arrange
-    when(uRLHandlerDao.findURLHandlerById(Mockito.<Long>any())).thenThrow(new RuntimeException());
+    when(uRLHandlerDao.findURLHandlerById(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.findURLHandlerById(1L));
-    verify(uRLHandlerDao).findURLHandlerById(1L);
+    verify(uRLHandlerDao).findURLHandlerById(eq(1L));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#findAllURLHandlers()}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#findAllURLHandlers()}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findAllURLHandlers()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List URLHandlerServiceImpl.findAllURLHandlers()"})
   public void testFindAllURLHandlers_thenReturnEmpty() {
     // Arrange
@@ -185,20 +177,18 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#findAllURLHandlers()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#findAllURLHandlers()}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findAllURLHandlers()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List URLHandlerServiceImpl.findAllURLHandlers()"})
   public void testFindAllURLHandlers_thenThrowRuntimeException() {
     // Arrange
-    when(uRLHandlerDao.findAllURLHandlers()).thenThrow(new RuntimeException());
+    when(uRLHandlerDao.findAllURLHandlers()).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.findAllURLHandlers());
@@ -207,24 +197,21 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List URLHandlerServiceImpl.findAllRegexURLHandlers()"})
   public void testFindAllRegexURLHandlers_thenReturnEmpty() {
     // Arrange
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(new ArrayList<>());
 
     // Act
-    List<URLHandler> actualFindAllRegexURLHandlersResult =
-        uRLHandlerServiceImpl.findAllRegexURLHandlers();
+    List<URLHandler> actualFindAllRegexURLHandlersResult = uRLHandlerServiceImpl.findAllRegexURLHandlers();
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
@@ -233,20 +220,18 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#findAllRegexURLHandlers()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List URLHandlerServiceImpl.findAllRegexURLHandlers()"})
   public void testFindAllRegexURLHandlers_thenThrowRuntimeException() {
     // Arrange
-    when(uRLHandlerDao.findAllRegexURLHandlers()).thenThrow(new RuntimeException());
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.findAllRegexURLHandlers());
@@ -255,21 +240,18 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}.
-   *
    * <ul>
-   *   <li>Then return {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.
+   *   <li>Then return {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.saveURLHandler(URLHandler)"})
   public void testSaveURLHandler_thenReturnNull_url_handler() {
     // Arrange
-    when(uRLHandlerDao.saveURLHandler(Mockito.<URLHandler>any()))
-        .thenReturn(URLHandlerServiceImpl.NULL_URL_HANDLER);
+    when(uRLHandlerDao.saveURLHandler(Mockito.<URLHandler>any())).thenReturn(URLHandlerServiceImpl.NULL_URL_HANDLER);
     NullURLHandler handler = URLHandlerServiceImpl.NULL_URL_HANDLER;
 
     // Act
@@ -282,44 +264,39 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#saveURLHandler(URLHandler)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.saveURLHandler(URLHandler)"})
   public void testSaveURLHandler_thenThrowRuntimeException() {
     // Arrange
-    when(uRLHandlerDao.saveURLHandler(Mockito.<URLHandler>any())).thenThrow(new RuntimeException());
+    when(uRLHandlerDao.saveURLHandler(Mockito.<URLHandler>any())).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
+    assertThrows(RuntimeException.class,
         () -> uRLHandlerServiceImpl.saveURLHandler(URLHandlerServiceImpl.NULL_URL_HANDLER));
     verify(uRLHandlerDao).saveURLHandler(isA(URLHandler.class));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches() {
     // Arrange
-    when(uRLHandlerDao.findAllRegexURLHandlers()).thenThrow(new RuntimeException());
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenThrow(new RuntimeException("foo"));
 
     // Act
-    URLHandler actualCheckForMatchesResult =
-        uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
@@ -329,12 +306,11 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches2() {
     // Arrange
@@ -350,44 +326,106 @@ public class URLHandlerServiceImplDiffblueTest {
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
 
     // Act
-    URLHandler actualCheckForMatchesResult =
-        uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
     Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
     assertEquals(1, stringPatternMap.size());
-    assertEquals(
-        "^/https://example.org/example$",
-        stringPatternMap.get("^/https://example.org/example$").pattern());
+    assertEquals("^/https://example.org/example$", stringPatternMap.get("^/https://example.org/example$").pattern());
     assertNull(actualCheckForMatchesResult);
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches3() {
     // Arrange
-    URLHandler urlHandler = mock(URLHandler.class);
-    when(urlHandler.getIncomingURL()).thenReturn("^");
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL(" ");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
 
     ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
-    urlHandlerList.add(urlHandler);
+    urlHandlerList.add(urlHandlerImpl);
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
 
     // Act
-    URLHandler actualCheckForMatchesResult =
-        uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
-    verify(urlHandler).getIncomingURL();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^ $", stringPatternMap.get("^ $").pattern());
+    assertNull(actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches4() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("/https://exampleUorg/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^/https://exampleUorg/example$", stringPatternMap.get("^/https://exampleUorg/example$").pattern());
+    assertNull(actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches5() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("^");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
     Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
     assertEquals(1, stringPatternMap.size());
     assertEquals("^$", stringPatternMap.get("^$").pattern());
@@ -396,29 +434,63 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
-  public void testCheckForMatches4() {
+  public void testCheckForMatches6() {
     // Arrange
-    URLHandler urlHandler = mock(URLHandler.class);
-    when(urlHandler.getIncomingURL()).thenReturn("$");
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
 
     ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
-    urlHandlerList.add(urlHandler);
+    urlHandlerList.add(urlHandlerImpl);
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
 
     // Act
-    URLHandler actualCheckForMatchesResult =
-        uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
-    verify(urlHandler).getIncomingURL();
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])$",
+        stringPatternMap.get("^([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])$").pattern());
+    assertNull(actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches7() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("$");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
     Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
     assertEquals(1, stringPatternMap.size());
     assertEquals("^/$", stringPatternMap.get("^/$").pattern());
@@ -427,16 +499,14 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code null}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches_givenArrayListAddNull() {
     // Arrange
@@ -445,8 +515,7 @@ public class URLHandlerServiceImplDiffblueTest {
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
 
     // Act
-    URLHandler actualCheckForMatchesResult =
-        uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
@@ -456,16 +525,14 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link URLHandlerServiceImpl#NULL_URL_HANDLER}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches_givenArrayListAddNull_url_handler() {
     // Arrange
@@ -474,8 +541,7 @@ public class URLHandlerServiceImplDiffblueTest {
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
 
     // Act
-    URLHandler actualCheckForMatchesResult =
-        uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
@@ -485,134 +551,129 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
    * <ul>
-   *   <li>Given {@link URLHandler} {@link URLHandler#getNewURL()} return {@code $}.
-   *   <li>Then calls {@link URLHandler#getNewURL()}.
+   *   <li>Given {@link URLHandlerImpl} (default constructor) IncomingURL is {@code (}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
-  public void testCheckForMatches_givenURLHandlerGetNewURLReturnDollarSign_thenCallsGetNewURL() {
+  public void testCheckForMatches_givenURLHandlerImplIncomingURLIsLeftParenthesis() {
     // Arrange
-    URLHandler urlHandler = mock(URLHandler.class);
-    when(urlHandler.getNewURL()).thenReturn("$");
-    when(urlHandler.getIncomingURL()).thenReturn("^");
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("(");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
 
     ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
-    urlHandlerList.add(urlHandler);
+    urlHandlerList.add(urlHandlerImpl);
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
 
     // Act
-    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
-    verify(urlHandler).getIncomingURL();
-    verify(urlHandler).getNewURL();
-    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
-    assertEquals(1, stringPatternMap.size());
-    assertEquals("^$", stringPatternMap.get("^$").pattern());
     assertNull(actualCheckForMatchesResult);
+    assertTrue(uRLHandlerServiceImpl.urlPatternMap.isEmpty());
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
    * <ul>
-   *   <li>Given {@link URLHandler} {@link URLHandler#getNewURL()} return {@code
-   *       https://example.org/example}.
+   *   <li>Given {@link URLHandlerImpl} (default constructor) IncomingURL is {@code )}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
-  public void testCheckForMatches_givenURLHandlerGetNewURLReturnHttpsExampleOrgExample() {
+  public void testCheckForMatches_givenURLHandlerImplIncomingURLIsRightParenthesis() {
     // Arrange
-    URLHandler urlHandler = mock(URLHandler.class);
-    when(urlHandler.getNewURL()).thenReturn("https://example.org/example");
-    when(urlHandler.getIncomingURL()).thenReturn("^");
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL(")");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
 
     ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
-    urlHandlerList.add(urlHandler);
+    urlHandlerList.add(urlHandlerImpl);
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
 
     // Act
-    uRLHandlerServiceImpl.checkForMatches("");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
-    verify(urlHandler).getIncomingURL();
-    verify(urlHandler, atLeast(1)).getNewURL();
-    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
-    assertEquals(1, stringPatternMap.size());
-    assertEquals("^$", stringPatternMap.get("^$").pattern());
-  }
-
-  /**
-   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link URLHandler} {@link URLHandler#getNewURL()} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
-  public void testCheckForMatches_givenURLHandlerGetNewURLThrowRuntimeException() {
-    // Arrange
-    URLHandler urlHandler = mock(URLHandler.class);
-    when(urlHandler.getNewURL()).thenThrow(new RuntimeException());
-    when(urlHandler.getIncomingURL()).thenReturn("^");
-
-    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
-    urlHandlerList.add(urlHandler);
-    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
-
-    // Act
-    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("");
-
-    // Assert
-    verify(uRLHandlerDao).findAllRegexURLHandlers();
-    verify(urlHandler).getIncomingURL();
-    verify(urlHandler).getNewURL();
-    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
-    assertEquals(1, stringPatternMap.size());
-    assertEquals("^$", stringPatternMap.get("^$").pattern());
     assertNull(actualCheckForMatchesResult);
+    assertTrue(uRLHandlerServiceImpl.urlPatternMap.isEmpty());
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
    * <ul>
-   *   <li>Then {@link URLHandlerServiceImpl} {@link URLHandlerServiceImpl#urlPatternMap} Empty.
+   *   <li>Then return {@link URLHandlerDTO}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_thenReturnURLHandlerDTO() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("*");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertTrue(actualCheckForMatchesResult instanceof URLHandlerDTO);
+    assertEquals("", actualCheckForMatchesResult.getIncomingURL());
+    URLRedirectType urlRedirectType = actualCheckForMatchesResult.getUrlRedirectType();
+    assertEquals("FORWARD", urlRedirectType.getType());
+    assertEquals("Forward URI", urlRedirectType.getFriendlyType());
+    Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
+    assertEquals(1, stringPatternMap.size());
+    assertEquals("^*$", stringPatternMap.get("^*$").pattern());
+    assertEquals("https://example.org/examplehttps://example.org/example", actualCheckForMatchesResult.getNewURL());
+    assertNull(actualCheckForMatchesResult.getId());
+    assertFalse(actualCheckForMatchesResult.isRegexHandler());
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>Then {@link URLHandlerServiceImpl} {@link URLHandlerServiceImpl#urlPatternMap} Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches_thenURLHandlerServiceImplUrlPatternMapEmpty() {
     // Arrange
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(new ArrayList<>());
 
     // Act
-    URLHandler actualCheckForMatchesResult =
-        uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("https://example.org/example");
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
@@ -622,24 +683,59 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code /https://exampleUorg/example}.</li>
+   *   <li>Then return {@link URLHandlerImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
+  public void testCheckForMatches_whenHttpsExampleUorgExample_thenReturnURLHandlerImpl() {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("https://example.org/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
+    urlHandlerList.add(urlHandlerImpl);
+    when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
+
+    // Act
+    URLHandler actualCheckForMatchesResult = uRLHandlerServiceImpl.checkForMatches("/https://exampleUorg/example");
+
+    // Assert
+    verify(uRLHandlerDao).findAllRegexURLHandlers();
+    assertSame(urlHandlerImpl, actualCheckForMatchesResult);
+  }
+
+  /**
+   * Test {@link URLHandlerServiceImpl#checkForMatches(String)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#checkForMatches(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.checkForMatches(String)"})
   public void testCheckForMatches_whenNull() {
     // Arrange
-    URLHandler urlHandler = mock(URLHandler.class);
-    when(urlHandler.getIncomingURL()).thenReturn("^");
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("https://example.org/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
 
     ArrayList<URLHandler> urlHandlerList = new ArrayList<>();
-    urlHandlerList.add(urlHandler);
+    urlHandlerList.add(urlHandlerImpl);
     when(uRLHandlerDao.findAllRegexURLHandlers()).thenReturn(urlHandlerList);
 
     // Act
@@ -647,50 +743,44 @@ public class URLHandlerServiceImplDiffblueTest {
 
     // Assert
     verify(uRLHandlerDao).findAllRegexURLHandlers();
-    verify(urlHandler).getIncomingURL();
     Map<String, Pattern> stringPatternMap = uRLHandlerServiceImpl.urlPatternMap;
     assertEquals(1, stringPatternMap.size());
-    assertEquals("^$", stringPatternMap.get("^$").pattern());
+    assertEquals("^/https://example.org/example$", stringPatternMap.get("^/https://example.org/example$").pattern());
     assertNull(actualCheckForMatchesResult);
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Boolean URLHandlerServiceImpl.removeURLHandlerFromCache(String)"})
   public void testRemoveURLHandlerFromCache_thenThrowRuntimeException() {
     // Arrange
-    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException());
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException("cmsUrlHandlerCache"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
+    assertThrows(RuntimeException.class,
         () -> uRLHandlerServiceImpl.removeURLHandlerFromCache("https://example.org/example"));
-    verify(cacheManager).getCache("cmsUrlHandlerCache");
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#removeURLHandlerFromCache(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Boolean URLHandlerServiceImpl.removeURLHandlerFromCache(String)"})
   public void testRemoveURLHandlerFromCache_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -699,57 +789,49 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#manipulateUri(String)}.
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#manipulateUri(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#manipulateUri(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String URLHandlerServiceImpl.manipulateUri(String)"})
   public void testManipulateUri() {
     // Arrange, Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        uRLHandlerServiceImpl.manipulateUri("https://example.org/example"));
+    assertEquals("https://example.org/example", uRLHandlerServiceImpl.manipulateUri("https://example.org/example"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#getUrlHandlerFromCache(String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#getUrlHandlerFromCache(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#getUrlHandlerFromCache(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URLHandler URLHandlerServiceImpl.getUrlHandlerFromCache(String)"})
   public void testGetUrlHandlerFromCache_thenThrowRuntimeException() {
     // Arrange
-    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException());
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException("cmsUrlHandlerCache"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
+    assertThrows(RuntimeException.class,
         () -> uRLHandlerServiceImpl.getUrlHandlerFromCache("https://example.org/example"));
-    verify(cacheManager).getCache("cmsUrlHandlerCache");
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#getUrlHandlerCache()}.
-   *
    * <ul>
-   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#getUrlHandlerCache()}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#getUrlHandlerCache()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Cache URLHandlerServiceImpl.getUrlHandlerCache()"})
   public void testGetUrlHandlerCache_givenCacheManagerGetCacheReturnNull_thenReturnNull() {
     // Arrange
@@ -759,66 +841,58 @@ public class URLHandlerServiceImplDiffblueTest {
     Cache<String, URLHandler> actualUrlHandlerCache = uRLHandlerServiceImpl.getUrlHandlerCache();
 
     // Assert
-    verify(cacheManager).getCache("cmsUrlHandlerCache");
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
     assertNull(actualUrlHandlerCache);
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#getUrlHandlerCache()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#getUrlHandlerCache()}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#getUrlHandlerCache()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Cache URLHandlerServiceImpl.getUrlHandlerCache()"})
   public void testGetUrlHandlerCache_thenThrowRuntimeException() {
     // Arrange
-    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException());
+    when(cacheManager.getCache(Mockito.<String>any())).thenThrow(new RuntimeException("cmsUrlHandlerCache"));
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> uRLHandlerServiceImpl.getUrlHandlerCache());
-    verify(cacheManager).getCache("cmsUrlHandlerCache");
+    verify(cacheManager).getCache(eq("cmsUrlHandlerCache"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}.
-   *
    * <ul>
-   *   <li>Then return {@code site:null_https://example.org/example}.
+   *   <li>Then return {@code site:null_https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String URLHandlerServiceImpl.buildURLHandlerCacheKey(Site, String)"})
   public void testBuildURLHandlerCacheKey_thenReturnSiteNullHttpsExampleOrgExample() {
     // Arrange, Act and Assert
-    assertEquals(
-        "site:null_https://example.org/example",
-        uRLHandlerServiceImpl.buildURLHandlerCacheKey(
-            new SiteImpl(), "https://example.org/example"));
+    assertEquals("site:null_https://example.org/example",
+        uRLHandlerServiceImpl.buildURLHandlerCacheKey(new SiteImpl(), "https://example.org/example"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#buildURLHandlerCacheKey(Site, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String URLHandlerServiceImpl.buildURLHandlerCacheKey(Site, String)"})
   public void testBuildURLHandlerCacheKey_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -827,33 +901,28 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}.
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors() {
     // Arrange, Act and Assert
-    assertEquals(
-        "^([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])$",
-        uRLHandlerServiceImpl.wrapStringsWithAnchors(
-            "([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])"));
+    assertEquals("^([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])$", uRLHandlerServiceImpl
+        .wrapStringsWithAnchors("([\\[\\]\\.\\|\\?\\*\\+\\(\\)\\\\~`\\!@#%&\\-_+={}'\"\"<>:;, \\/])"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code ^$}.
+   *   <li>Then return {@code ^$}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors_thenReturnCircumflexAccentDollarSign() {
     // Arrange, Act and Assert
@@ -862,16 +931,14 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code ^/$}.
+   *   <li>Then return {@code ^/$}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors_thenReturnCircumflexAccentSlashDollarSign() {
     // Arrange, Act and Assert
@@ -880,37 +947,32 @@ public class URLHandlerServiceImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code ^/https://example.org/example$}.
+   *   <li>Then return {@code ^/https://example.org/example$}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors_thenReturnHttpsExampleOrgExample() {
     // Arrange, Act and Assert
-    assertEquals(
-        "^/https://example.org/example$",
+    assertEquals("^/https://example.org/example$",
         uRLHandlerServiceImpl.wrapStringsWithAnchors("https://example.org/example"));
   }
 
   /**
    * Test {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}.
-   *
    * <ul>
-   *   <li>When space.
-   *   <li>Then return {@code ^ $}.
+   *   <li>When space.</li>
+   *   <li>Then return {@code ^ $}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
+   * <p>
+   * Method under test: {@link URLHandlerServiceImpl#wrapStringsWithAnchors(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String URLHandlerServiceImpl.wrapStringsWithAnchors(String)"})
   public void testWrapStringsWithAnchors_whenSpace_thenReturnCircumflexAccentSpaceDollarSign() {
     // Arrange, Act and Assert

@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.i18n.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {ISOCodeStatusType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ISOCodeStatusTypeDiffblueTest {
-  @Autowired private ISOCodeStatusType iSOCodeStatusType;
+  @Autowired
+  private ISOCodeStatusType iSOCodeStatusType;
 
   /**
    * Test {@link ISOCodeStatusType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link ISOCodeStatusType#getInstance(String)}
+   * <p>
+   * Method under test: {@link ISOCodeStatusType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ISOCodeStatusType ISOCodeStatusType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,9 +54,8 @@ public class ISOCodeStatusTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ISOCodeStatusType#ISOCodeStatusType()}
    *   <li>{@link ISOCodeStatusType#getFriendlyType()}
@@ -65,13 +63,9 @@ public class ISOCodeStatusTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ISOCodeStatusType.<init>()",
-    "String ISOCodeStatusType.getFriendlyType()",
-    "String ISOCodeStatusType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ISOCodeStatusType.<init>()", "String ISOCodeStatusType.getFriendlyType()",
+      "String ISOCodeStatusType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ISOCodeStatusType actualIsoCodeStatusType = new ISOCodeStatusType();
@@ -84,12 +78,11 @@ public class ISOCodeStatusTypeDiffblueTest {
 
   /**
    * Test {@link ISOCodeStatusType#ISOCodeStatusType(String, String)}.
-   *
-   * <p>Method under test: {@link ISOCodeStatusType#ISOCodeStatusType(String, String)}
+   * <p>
+   * Method under test: {@link ISOCodeStatusType#ISOCodeStatusType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ISOCodeStatusType.<init>(String, String)"})
   public void testNewISOCodeStatusType() {
     // Arrange and Act
@@ -102,26 +95,20 @@ public class ISOCodeStatusTypeDiffblueTest {
 
   /**
    * Test {@link ISOCodeStatusType#equals(Object)}, and {@link ISOCodeStatusType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ISOCodeStatusType#equals(Object)}
    *   <li>{@link ISOCodeStatusType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ISOCodeStatusType.equals(Object)",
-    "int ISOCodeStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ISOCodeStatusType.equals(Object)", "int ISOCodeStatusType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ISOCodeStatusType isoCodeStatusType = ISOCodeStatusType.EXCEPTIONALLY_RESERVED;
@@ -129,96 +116,80 @@ public class ISOCodeStatusTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(isoCodeStatusType, isoCodeStatusType2);
-    assertEquals(isoCodeStatusType.hashCode(), isoCodeStatusType2.hashCode());
+    int expectedHashCodeResult = isoCodeStatusType.hashCode();
+    assertEquals(expectedHashCodeResult, isoCodeStatusType2.hashCode());
   }
 
   /**
    * Test {@link ISOCodeStatusType#equals(Object)}, and {@link ISOCodeStatusType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ISOCodeStatusType#equals(Object)}
    *   <li>{@link ISOCodeStatusType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ISOCodeStatusType.equals(Object)",
-    "int ISOCodeStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ISOCodeStatusType.equals(Object)", "int ISOCodeStatusType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    ISOCodeStatusType isoCodeStatusType = ISOCodeStatusType.INDETERMINATELY_RESERVED;
-    ISOCodeStatusType isoCodeStatusType2 =
-        new ISOCodeStatusType("INDETERMINATELY_RESERVED", "INDETERMINATELY_RESERVED");
-
-    // Act and Assert
-    assertEquals(isoCodeStatusType, isoCodeStatusType2);
-    assertEquals(isoCodeStatusType.hashCode(), isoCodeStatusType2.hashCode());
-  }
-
-  /**
-   * Test {@link ISOCodeStatusType#equals(Object)}, and {@link ISOCodeStatusType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link ISOCodeStatusType#equals(Object)}
-   *   <li>{@link ISOCodeStatusType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ISOCodeStatusType.equals(Object)",
-    "int ISOCodeStatusType.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     ISOCodeStatusType isoCodeStatusType = new ISOCodeStatusType();
     ISOCodeStatusType isoCodeStatusType2 = new ISOCodeStatusType();
 
     // Act and Assert
     assertEquals(isoCodeStatusType, isoCodeStatusType2);
-    assertEquals(isoCodeStatusType.hashCode(), isoCodeStatusType2.hashCode());
+    int expectedHashCodeResult = isoCodeStatusType.hashCode();
+    assertEquals(expectedHashCodeResult, isoCodeStatusType2.hashCode());
   }
 
   /**
    * Test {@link ISOCodeStatusType#equals(Object)}, and {@link ISOCodeStatusType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ISOCodeStatusType#equals(Object)}
    *   <li>{@link ISOCodeStatusType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ISOCodeStatusType.equals(Object)",
-    "int ISOCodeStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ISOCodeStatusType.equals(Object)", "int ISOCodeStatusType.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    ISOCodeStatusType isoCodeStatusType = new ISOCodeStatusType("EXCEPTIONALLY_RESERVED", "Friendly Type");
+    ISOCodeStatusType isoCodeStatusType2 = ISOCodeStatusType.EXCEPTIONALLY_RESERVED;
+
+    // Act and Assert
+    assertEquals(isoCodeStatusType, isoCodeStatusType2);
+    int expectedHashCodeResult = isoCodeStatusType.hashCode();
+    assertEquals(expectedHashCodeResult, isoCodeStatusType2.hashCode());
+  }
+
+  /**
+   * Test {@link ISOCodeStatusType#equals(Object)}, and {@link ISOCodeStatusType#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ISOCodeStatusType#equals(Object)}
+   *   <li>{@link ISOCodeStatusType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ISOCodeStatusType.equals(Object)", "int ISOCodeStatusType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ISOCodeStatusType isoCodeStatusType = ISOCodeStatusType.EXCEPTIONALLY_RESERVED;
@@ -231,44 +202,33 @@ public class ISOCodeStatusTypeDiffblueTest {
 
   /**
    * Test {@link ISOCodeStatusType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ISOCodeStatusType#equals(Object)}
+   * <p>
+   * Method under test: {@link ISOCodeStatusType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ISOCodeStatusType.equals(Object)",
-    "int ISOCodeStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ISOCodeStatusType.equals(Object)", "int ISOCodeStatusType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        ISOCodeStatusType.INDETERMINATELY_RESERVED, ISOCodeStatusType.EXCEPTIONALLY_RESERVED);
+    assertNotEquals(ISOCodeStatusType.INDETERMINATELY_RESERVED, ISOCodeStatusType.EXCEPTIONALLY_RESERVED);
   }
 
   /**
    * Test {@link ISOCodeStatusType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ISOCodeStatusType#equals(Object)}
+   * <p>
+   * Method under test: {@link ISOCodeStatusType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ISOCodeStatusType.equals(Object)",
-    "int ISOCodeStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ISOCodeStatusType.equals(Object)", "int ISOCodeStatusType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new ISOCodeStatusType(), ISOCodeStatusType.EXCEPTIONALLY_RESERVED);
@@ -276,21 +236,16 @@ public class ISOCodeStatusTypeDiffblueTest {
 
   /**
    * Test {@link ISOCodeStatusType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ISOCodeStatusType#equals(Object)}
+   * <p>
+   * Method under test: {@link ISOCodeStatusType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ISOCodeStatusType.equals(Object)",
-    "int ISOCodeStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ISOCodeStatusType.equals(Object)", "int ISOCodeStatusType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ISOCodeStatusType.EXCEPTIONALLY_RESERVED, null);
@@ -298,24 +253,18 @@ public class ISOCodeStatusTypeDiffblueTest {
 
   /**
    * Test {@link ISOCodeStatusType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ISOCodeStatusType#equals(Object)}
+   * <p>
+   * Method under test: {@link ISOCodeStatusType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ISOCodeStatusType.equals(Object)",
-    "int ISOCodeStatusType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ISOCodeStatusType.equals(Object)", "int ISOCodeStatusType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        ISOCodeStatusType.EXCEPTIONALLY_RESERVED, "Different type to ISOCodeStatusType");
+    assertNotEquals(ISOCodeStatusType.EXCEPTIONALLY_RESERVED, "Different type to ISOCodeStatusType");
   }
 }

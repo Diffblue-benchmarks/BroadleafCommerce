@@ -23,8 +23,7 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -36,18 +35,15 @@ import org.junit.experimental.categories.Category;
 
 public class BroadleafCurrencyUtilsDiffblueTest {
   /**
-   * Test {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)} with {@code
-   * amount}, {@code currency}.
-   *
+   * Test {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)} with {@code amount}, {@code currency}.
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money BroadleafCurrencyUtils.getMoney(BigDecimal, BroadleafCurrency)"})
   public void testGetMoneyWithAmountCurrency_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
@@ -65,58 +61,21 @@ public class BroadleafCurrencyUtilsDiffblueTest {
     assertEquals("GBP", currency2.toString());
     assertEquals("£", currency2.getSymbol());
     assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualMoney.abs();
-    assertEquals(actualMoney, actualAbsResult);
-    Money actualZeroResult = actualMoney.zero();
-    assertEquals(actualMoney, actualZeroResult);
+    assertEquals(actualMoney, actualMoney.abs());
+    assertEquals(actualMoney, actualMoney.zero());
   }
 
   /**
-   * Test {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)} with {@code
-   * amount}, {@code currency}.
-   *
+   * Test {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)} with {@code amount}, {@code currency}.
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return Currency Symbol is {@code $}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money BroadleafCurrencyUtils.getMoney(BigDecimal, BroadleafCurrency)"})
-  public void testGetMoneyWithAmountCurrency_whenNull_thenReturnCurrencySymbolIsDollarSign() {
-    // Arrange and Act
-    Money actualMoney = BroadleafCurrencyUtils.getMoney(BankersRounding.ZERO, null);
-
-    // Assert
-    Currency currency = actualMoney.getCurrency();
-    assertEquals("$", currency.getSymbol());
-    assertEquals("US Dollar", currency.getDisplayName());
-    assertEquals("USD", currency.getCurrencyCode());
-    assertEquals("USD", currency.toString());
-    assertEquals(840, currency.getNumericCode());
-    Money actualAbsResult = actualMoney.abs();
-    assertEquals(actualMoney, actualAbsResult);
-    Money actualZeroResult = actualMoney.zero();
-    assertEquals(actualMoney, actualZeroResult);
-  }
-
-  /**
-   * Test {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)} with {@code
-   * amount}, {@code currency}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getMoney(BigDecimal, BroadleafCurrency)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money BroadleafCurrencyUtils.getMoney(BigDecimal, BroadleafCurrency)"})
   public void testGetMoneyWithAmountCurrency_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -125,17 +84,15 @@ public class BroadleafCurrencyUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafCurrencyUtils#getMoney(BigDecimal)} with {@code amount}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getMoney(BigDecimal)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#getMoney(BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money BroadleafCurrencyUtils.getMoney(BigDecimal)"})
   public void testGetMoneyWithAmount_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -143,51 +100,16 @@ public class BroadleafCurrencyUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafCurrencyUtils#getMoney(BigDecimal)} with {@code amount}.
-   *
-   * <ul>
-   *   <li>When {@link BankersRounding#ZERO}.
-   *   <li>Then return Currency Symbol is {@code $}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getMoney(BigDecimal)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money BroadleafCurrencyUtils.getMoney(BigDecimal)"})
-  public void testGetMoneyWithAmount_whenZero_thenReturnCurrencySymbolIsDollarSign() {
-    // Arrange and Act
-    Money actualMoney = BroadleafCurrencyUtils.getMoney(BankersRounding.ZERO);
-
-    // Assert
-    Currency currency = actualMoney.getCurrency();
-    assertEquals("$", currency.getSymbol());
-    assertEquals("US Dollar", currency.getDisplayName());
-    assertEquals("USD", currency.getCurrencyCode());
-    assertEquals("USD", currency.toString());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(840, currency.getNumericCode());
-    assertEquals(new BigDecimal("0.00"), actualMoney.getAmount());
-    Money actualAbsResult = actualMoney.abs();
-    assertEquals(actualMoney, actualAbsResult);
-    Money actualZeroResult = actualMoney.zero();
-    assertEquals(actualMoney, actualZeroResult);
-  }
-
-  /**
    * Test {@link BroadleafCurrencyUtils#getMoney(BroadleafCurrency)} with {@code currency}.
-   *
    * <ul>
-   *   <li>Given {@code GBP}.
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Given {@code GBP}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getMoney(BroadleafCurrency)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#getMoney(BroadleafCurrency)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money BroadleafCurrencyUtils.getMoney(BroadleafCurrency)"})
   public void testGetMoneyWithCurrency_givenGbp_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
@@ -205,56 +127,21 @@ public class BroadleafCurrencyUtilsDiffblueTest {
     assertEquals("GBP", currency2.toString());
     assertEquals("£", currency2.getSymbol());
     assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualMoney.abs();
-    assertEquals(actualMoney, actualAbsResult);
-    Money actualZeroResult = actualMoney.zero();
-    assertEquals(actualMoney, actualZeroResult);
-  }
-
-  /**
-   * Test {@link BroadleafCurrencyUtils#getMoney(BroadleafCurrency)} with {@code currency}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return Currency Symbol is {@code $}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getMoney(BroadleafCurrency)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money BroadleafCurrencyUtils.getMoney(BroadleafCurrency)"})
-  public void testGetMoneyWithCurrency_whenNull_thenReturnCurrencySymbolIsDollarSign() {
-    // Arrange and Act
-    Money actualMoney = BroadleafCurrencyUtils.getMoney((BroadleafCurrency) null);
-
-    // Assert
-    Currency currency = actualMoney.getCurrency();
-    assertEquals("$", currency.getSymbol());
-    assertEquals("US Dollar", currency.getDisplayName());
-    assertEquals("USD", currency.getCurrencyCode());
-    assertEquals("USD", currency.toString());
-    assertEquals(840, currency.getNumericCode());
-    Money actualAbsResult = actualMoney.abs();
-    assertEquals(actualMoney, actualAbsResult);
-    Money actualZeroResult = actualMoney.zero();
-    assertEquals(actualMoney, actualZeroResult);
+    assertEquals(actualMoney, actualMoney.abs());
+    assertEquals(actualMoney, actualMoney.zero());
   }
 
   /**
    * Test {@link BroadleafCurrencyUtils#getCurrency(BroadleafCurrency)} with {@code currency}.
-   *
    * <ul>
-   *   <li>Given {@code GBP}.
-   *   <li>Then return DisplayName is {@code British Pound}.
+   *   <li>Given {@code GBP}.</li>
+   *   <li>Then return DisplayName is {@code British Pound}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getCurrency(BroadleafCurrency)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#getCurrency(BroadleafCurrency)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Currency BroadleafCurrencyUtils.getCurrency(BroadleafCurrency)"})
   public void testGetCurrencyWithCurrency_givenGbp_thenReturnDisplayNameIsBritishPound() {
     // Arrange
@@ -274,69 +161,15 @@ public class BroadleafCurrencyUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafCurrencyUtils#getCurrency(BroadleafCurrency)} with {@code currency}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return Symbol is {@code $}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getCurrency(BroadleafCurrency)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Currency BroadleafCurrencyUtils.getCurrency(BroadleafCurrency)"})
-  public void testGetCurrencyWithCurrency_whenNull_thenReturnSymbolIsDollarSign() {
-    // Arrange and Act
-    Currency actualCurrency = BroadleafCurrencyUtils.getCurrency((BroadleafCurrency) null);
-
-    // Assert
-    assertEquals("$", actualCurrency.getSymbol());
-    assertEquals("US Dollar", actualCurrency.getDisplayName());
-    assertEquals("USD", actualCurrency.getCurrencyCode());
-    assertEquals("USD", actualCurrency.toString());
-    assertEquals(840, actualCurrency.getNumericCode());
-  }
-
-  /**
    * Test {@link BroadleafCurrencyUtils#getCurrency(Money)} with {@code money}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@link Money#ZERO}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getCurrency(Money)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#getCurrency(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Currency BroadleafCurrencyUtils.getCurrency(Money)"})
-  public void testGetCurrencyWithMoney_whenNull() {
-    // Arrange and Act
-    Currency actualCurrency = BroadleafCurrencyUtils.getCurrency((Money) null);
-
-    // Assert
-    assertEquals("$", actualCurrency.getSymbol());
-    assertEquals("US Dollar", actualCurrency.getDisplayName());
-    assertEquals("USD", actualCurrency.getCurrencyCode());
-    assertEquals("USD", actualCurrency.toString());
-    assertEquals(2, actualCurrency.getDefaultFractionDigits());
-    assertEquals(840, actualCurrency.getNumericCode());
-  }
-
-  /**
-   * Test {@link BroadleafCurrencyUtils#getCurrency(Money)} with {@code money}.
-   *
-   * <ul>
-   *   <li>When {@link Money#ZERO}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getCurrency(Money)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Currency BroadleafCurrencyUtils.getCurrency(Money)"})
   public void testGetCurrencyWithMoney_whenZero() {
     // Arrange and Act
@@ -353,16 +186,14 @@ public class BroadleafCurrencyUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafCurrencyUtils#getUnitAmount(BroadleafCurrency)} with {@code blCurrency}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getUnitAmount(BroadleafCurrency)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#getUnitAmount(BroadleafCurrency)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money BroadleafCurrencyUtils.getUnitAmount(BroadleafCurrency)"})
   public void testGetUnitAmountWithBlCurrency_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
@@ -382,148 +213,45 @@ public class BroadleafCurrencyUtilsDiffblueTest {
     assertEquals(826, currency.getNumericCode());
     Money zeroResult = actualUnitAmount.zero();
     assertEquals(zeroResult.zero(), zeroResult.zero());
-    Money actualAbsResult = zeroResult.abs();
-    assertEquals(zeroResult, actualAbsResult);
+    assertEquals(zeroResult, zeroResult.abs());
     assertEquals(actualUnitAmount, actualUnitAmount.abs().abs());
     assertSame(currency, zeroResult.getCurrency());
   }
 
   /**
-   * Test {@link BroadleafCurrencyUtils#getUnitAmount(BroadleafCurrency)} with {@code blCurrency}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return Currency Symbol is {@code $}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getUnitAmount(BroadleafCurrency)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money BroadleafCurrencyUtils.getUnitAmount(BroadleafCurrency)"})
-  public void testGetUnitAmountWithBlCurrency_whenNull_thenReturnCurrencySymbolIsDollarSign() {
-    // Arrange and Act
-    Money actualUnitAmount = BroadleafCurrencyUtils.getUnitAmount((BroadleafCurrency) null);
-
-    // Assert
-    Currency currency = actualUnitAmount.getCurrency();
-    assertEquals("$", currency.getSymbol());
-    assertEquals("US Dollar", currency.getDisplayName());
-    assertEquals("USD", currency.getCurrencyCode());
-    assertEquals("USD", currency.toString());
-    assertEquals(840, currency.getNumericCode());
-    Money actualAbsResult = actualUnitAmount.abs();
-    assertEquals(actualUnitAmount, actualAbsResult);
-    assertEquals(Money.ZERO, actualUnitAmount.zero());
-  }
-
-  /**
    * Test {@link BroadleafCurrencyUtils#getUnitAmount(Money)} with {@code difference}.
-   *
    * <ul>
-   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with {@code -0.01}.
+   *   <li>When {@link Money#ZERO}.</li>
+   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with {@code 0.01}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getUnitAmount(Money)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#getUnitAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money BroadleafCurrencyUtils.getUnitAmount(Money)"})
-  public void testGetUnitAmountWithDifference_thenReturnAmountIsBigDecimalWith001() {
-    // Arrange and Act
-    Money actualUnitAmount = BroadleafCurrencyUtils.getUnitAmount(new Money(-0.5d));
-
-    // Assert
-    assertEquals(new BigDecimal("-0.01"), actualUnitAmount.getAmount());
-    BigDecimal expectedAmount = new BigDecimal("0.01");
-    Money absResult = actualUnitAmount.abs();
-    assertEquals(expectedAmount, absResult.getAmount());
-    assertEquals(absResult.abs(), absResult.abs());
-    Money zeroResult = actualUnitAmount.zero();
-    BigDecimal amount = zeroResult.zero().getAmount();
-    assertSame(amount, zeroResult.abs().getAmount());
-    assertSame(amount, absResult.zero().getAmount());
-    assertSame(amount, amount);
-  }
-
-  /**
-   * Test {@link BroadleafCurrencyUtils#getUnitAmount(Money)} with {@code difference}.
-   *
-   * <ul>
-   *   <li>When {@link Money#ZERO}.
-   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with {@code 0.01}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#getUnitAmount(Money)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money BroadleafCurrencyUtils.getUnitAmount(Money)"})
   public void testGetUnitAmountWithDifference_whenZero_thenReturnAmountIsBigDecimalWith001() {
     // Arrange and Act
     Money actualUnitAmount = BroadleafCurrencyUtils.getUnitAmount(Money.ZERO);
 
     // Assert
-    assertEquals(new BigDecimal("0.01"), actualUnitAmount.getAmount());
-    Money actualAbsResult = actualUnitAmount.abs();
-    assertEquals(actualUnitAmount, actualAbsResult);
-    Money zeroResult = actualUnitAmount.zero();
-    BigDecimal amount = zeroResult.zero().getAmount();
-    assertSame(amount, zeroResult.abs().getAmount());
-    assertSame(amount, amount);
+    BigDecimal expectedAmount = new BigDecimal("0.01");
+    assertEquals(expectedAmount, actualUnitAmount.getAmount());
+    assertEquals(actualUnitAmount, actualUnitAmount.abs());
+    Money expectedZeroResult = actualUnitAmount.ZERO;
+    assertEquals(expectedZeroResult, actualUnitAmount.zero());
   }
 
   /**
    * Test {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}.
-   *
    * <ul>
-   *   <li>When {@link Money#Money(double)} with amount is ten.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int BroadleafCurrencyUtils.calculateRemainder(Money, int)"})
-  public void testCalculateRemainder_whenMoneyWithAmountIsTen() {
-    // Arrange, Act and Assert
-    assertEquals(0, BroadleafCurrencyUtils.calculateRemainder(new Money(10.0d), 1));
-  }
-
-  /**
-   * Test {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}.
-   *
-   * <ul>
-   *   <li>When {@link Money#Money(double)} with amount is ten.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int BroadleafCurrencyUtils.calculateRemainder(Money, int)"})
-  public void testCalculateRemainder_whenMoneyWithAmountIsTen2() {
-    // Arrange, Act and Assert
-    assertEquals(0, BroadleafCurrencyUtils.calculateRemainder(new Money(10.0d), 0));
-  }
-
-  /**
-   * Test {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int BroadleafCurrencyUtils.calculateRemainder(Money, int)"})
   public void testCalculateRemainder_whenNull() {
     // Arrange, Act and Assert
@@ -532,16 +260,14 @@ public class BroadleafCurrencyUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}.
-   *
    * <ul>
-   *   <li>When {@link Money#ZERO}.
+   *   <li>When {@link Money#ZERO}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyUtils#calculateRemainder(Money, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int BroadleafCurrencyUtils.calculateRemainder(Money, int)"})
   public void testCalculateRemainder_whenZero() {
     // Arrange, Act and Assert

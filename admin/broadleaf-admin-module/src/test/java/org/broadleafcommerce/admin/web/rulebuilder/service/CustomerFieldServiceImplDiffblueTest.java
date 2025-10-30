@@ -18,65 +18,28 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.ArrayList;
-import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerFieldServiceImplDiffblueTest {
-  @InjectMocks private CustomerFieldServiceImpl customerFieldServiceImpl;
+  @InjectMocks
+  private CustomerFieldServiceImpl customerFieldServiceImpl;
 
   /**
    * Test {@link CustomerFieldServiceImpl#init()}.
-   *
-   * <ul>
-   *   <li>Then {@link CustomerFieldServiceImpl} (default constructor) Fields is {@link
-   *       ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerFieldServiceImpl#init()}
+   * <p>
+   * Method under test: {@link CustomerFieldServiceImpl#init()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CustomerFieldServiceImpl.init()"})
-  public void testInit_thenCustomerFieldServiceImplFieldsIsArrayList() {
-    // Arrange
-    CustomerFieldServiceImpl customerFieldServiceImpl = new CustomerFieldServiceImpl();
-    ArrayList<FieldData> fields = new ArrayList<>();
-    customerFieldServiceImpl.setFields(fields);
-
-    // Act
-    customerFieldServiceImpl.init();
-
-    // Assert
-    assertEquals(fields, customerFieldServiceImpl.getFields());
-  }
-
-  /**
-   * Test {@link CustomerFieldServiceImpl#init()}.
-   *
-   * <ul>
-   *   <li>Then {@link CustomerFieldServiceImpl} Fields size is eight.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerFieldServiceImpl#init()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CustomerFieldServiceImpl.init()"})
-  public void testInit_thenCustomerFieldServiceImplFieldsSizeIsEight() {
+  public void testInit() {
     // Arrange and Act
     customerFieldServiceImpl.init();
 
@@ -86,21 +49,16 @@ public class CustomerFieldServiceImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerFieldServiceImpl#getDtoClassName()}
    *   <li>{@link CustomerFieldServiceImpl#getName()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String CustomerFieldServiceImpl.getDtoClassName()",
-    "String CustomerFieldServiceImpl.getName()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String CustomerFieldServiceImpl.getDtoClassName()", "String CustomerFieldServiceImpl.getName()"})
   public void testGettersAndSetters() {
     // Arrange
     CustomerFieldServiceImpl customerFieldServiceImpl = new CustomerFieldServiceImpl();

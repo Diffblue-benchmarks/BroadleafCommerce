@@ -27,8 +27,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,25 +58,26 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {PersistencePackageRequest.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PersistencePackageRequestDiffblueTest {
-  @Autowired private PersistencePackageRequest persistencePackageRequest;
+  @Autowired
+  private PersistencePackageRequest persistencePackageRequest;
 
   /**
    * Test {@link PersistencePackageRequest#standard()}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#standard()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#standard()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.standard()"})
   public void testStandard() {
     // Arrange and Act
     PersistencePackageRequest actualStandardResult = PersistencePackageRequest.standard();
 
     // Assert
+    assertNull(actualStandardResult.getSectionCrumbs());
     assertNull(actualStandardResult.getPresentationFetch());
     assertNull(actualStandardResult.getLowerCount());
     assertNull(actualStandardResult.getMaxIndex());
@@ -100,7 +100,6 @@ public class PersistencePackageRequestDiffblueTest {
     assertNull(actualStandardResult.getForeignKey());
     assertNull(actualStandardResult.getMapStructure());
     assertNull(actualStandardResult.getOperationTypesOverride());
-    assertNull(actualStandardResult.getSectionCrumbs());
     assertEquals(0, actualStandardResult.getAdditionalForeignKeys().length);
     assertEquals(0, actualStandardResult.getCustomCriteria().length);
     assertEquals(0, actualStandardResult.getFilterAndSortCriteria().length);
@@ -119,18 +118,18 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#adorned()}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#adorned()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#adorned()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.adorned()"})
   public void testAdorned() {
     // Arrange and Act
     PersistencePackageRequest actualAdornedResult = PersistencePackageRequest.adorned();
 
     // Assert
+    assertNull(actualAdornedResult.getSectionCrumbs());
     assertNull(actualAdornedResult.getPresentationFetch());
     assertNull(actualAdornedResult.getLowerCount());
     assertNull(actualAdornedResult.getMaxIndex());
@@ -153,7 +152,6 @@ public class PersistencePackageRequestDiffblueTest {
     assertNull(actualAdornedResult.getForeignKey());
     assertNull(actualAdornedResult.getMapStructure());
     assertNull(actualAdornedResult.getOperationTypesOverride());
-    assertNull(actualAdornedResult.getSectionCrumbs());
     assertEquals(0, actualAdornedResult.getAdditionalForeignKeys().length);
     assertEquals(0, actualAdornedResult.getCustomCriteria().length);
     assertEquals(0, actualAdornedResult.getFilterAndSortCriteria().length);
@@ -172,18 +170,18 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#map()}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#map()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#map()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.map()"})
   public void testMap() {
     // Arrange and Act
     PersistencePackageRequest actualMapResult = PersistencePackageRequest.map();
 
     // Assert
+    assertNull(actualMapResult.getSectionCrumbs());
     assertNull(actualMapResult.getPresentationFetch());
     assertNull(actualMapResult.getLowerCount());
     assertNull(actualMapResult.getMaxIndex());
@@ -206,7 +204,6 @@ public class PersistencePackageRequestDiffblueTest {
     assertNull(actualMapResult.getForeignKey());
     assertNull(actualMapResult.getMapStructure());
     assertNull(actualMapResult.getOperationTypesOverride());
-    assertNull(actualMapResult.getSectionCrumbs());
     assertEquals(0, actualMapResult.getAdditionalForeignKeys().length);
     assertEquals(0, actualMapResult.getCustomCriteria().length);
     assertEquals(0, actualMapResult.getFilterAndSortCriteria().length);
@@ -225,15 +222,12 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"})
   public void testFromMetadata() {
     // Arrange
     AdornedTargetCollectionMetadata md = mock(AdornedTargetCollectionMetadata.class);
@@ -254,8 +248,7 @@ public class PersistencePackageRequestDiffblueTest {
     sectionCrumbs.add(sectionCrumb);
 
     // Act
-    PersistencePackageRequest actualFromMetadataResult =
-        PersistencePackageRequest.fromMetadata(md, sectionCrumbs);
+    PersistencePackageRequest actualFromMetadataResult = PersistencePackageRequest.fromMetadata(md, sectionCrumbs);
 
     // Assert
     verify(md).accept(isA(MetadataVisitor.class));
@@ -270,19 +263,15 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}.
-   *
    * <ul>
-   *   <li>Then return first element OriginalSectionIdentifier is {@code 42}.
+   *   <li>Then return first element OriginalSectionIdentifier is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"})
   public void testFromMetadata_thenReturnFirstElementOriginalSectionIdentifierIs42() {
     // Arrange
     AdornedTargetCollectionMetadata md = mock(AdornedTargetCollectionMetadata.class);
@@ -297,8 +286,7 @@ public class PersistencePackageRequestDiffblueTest {
     sectionCrumbs.add(sectionCrumb);
 
     // Act
-    PersistencePackageRequest actualFromMetadataResult =
-        PersistencePackageRequest.fromMetadata(md, sectionCrumbs);
+    PersistencePackageRequest actualFromMetadataResult = PersistencePackageRequest.fromMetadata(md, sectionCrumbs);
 
     // Assert
     verify(md).accept(isA(MetadataVisitor.class));
@@ -312,27 +300,22 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}.
-   *
    * <ul>
-   *   <li>Then return OperationTypesOverride AddType is {@code BASIC}.
+   *   <li>Then return OperationTypesOverride AddType is {@code BASIC}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"})
   public void testFromMetadata_thenReturnOperationTypesOverrideAddTypeIsBasic() {
     // Arrange
     AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
     md.setPersistencePerspective(new PersistencePerspective());
 
     // Act
-    PersistencePackageRequest actualFromMetadataResult =
-        PersistencePackageRequest.fromMetadata(md, new ArrayList<>());
+    PersistencePackageRequest actualFromMetadataResult = PersistencePackageRequest.fromMetadata(md, new ArrayList<>());
 
     // Assert
     OperationTypes operationTypesOverride = actualFromMetadataResult.getOperationTypesOverride();
@@ -346,27 +329,22 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}.
-   *
    * <ul>
-   *   <li>Then return Type is {@code null}.
+   *   <li>Then return Type is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"})
   public void testFromMetadata_thenReturnTypeIsNull() {
     // Arrange
     AdornedTargetCollectionMetadata md = mock(AdornedTargetCollectionMetadata.class);
     doNothing().when(md).accept(Mockito.<MetadataVisitor>any());
 
     // Act
-    PersistencePackageRequest actualFromMetadataResult =
-        PersistencePackageRequest.fromMetadata(md, new ArrayList<>());
+    PersistencePackageRequest actualFromMetadataResult = PersistencePackageRequest.fromMetadata(md, new ArrayList<>());
 
     // Assert
     verify(md).accept(isA(MetadataVisitor.class));
@@ -411,27 +389,22 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}.
-   *
    * <ul>
-   *   <li>When {@link BasicFieldMetadata} (default constructor).
-   *   <li>Then return Type is {@code STANDARD}.
+   *   <li>When {@link BasicFieldMetadata} (default constructor).</li>
+   *   <li>Then return Type is {@code STANDARD}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#fromMetadata(FieldMetadata, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.fromMetadata(FieldMetadata, List)"})
   public void testFromMetadata_whenBasicFieldMetadata_thenReturnTypeIsStandard() {
     // Arrange
     BasicFieldMetadata md = new BasicFieldMetadata();
 
     // Act
-    PersistencePackageRequest actualFromMetadataResult =
-        PersistencePackageRequest.fromMetadata(md, new ArrayList<>());
+    PersistencePackageRequest actualFromMetadataResult = PersistencePackageRequest.fromMetadata(md, new ArrayList<>());
 
     // Assert
     assertNull(actualFromMetadataResult.getPresentationFetch());
@@ -475,9 +448,8 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PersistencePackageRequest#PersistencePackageRequest()}
    *   <li>{@link PersistencePackageRequest#setAddOperationInspect(boolean)}
@@ -542,71 +514,50 @@ public class PersistencePackageRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistencePackageRequest.<init>()",
-    "void PersistencePackageRequest.<init>(Type)",
-    "AdornedTargetList PersistencePackageRequest.getAdornedList()",
-    "String PersistencePackageRequest.getCeilingEntityClassname()",
-    "String PersistencePackageRequest.getConfigKey()",
-    "Entity PersistencePackageRequest.getEntity()",
-    "Long PersistencePackageRequest.getFirstId()",
-    "Long PersistencePackageRequest.getFolderId()",
-    "ForeignKey PersistencePackageRequest.getForeignKey()",
-    "Long PersistencePackageRequest.getLastId()",
-    "Integer PersistencePackageRequest.getLowerCount()",
-    "MapStructure PersistencePackageRequest.getMapStructure()",
-    "Integer PersistencePackageRequest.getMaxIndex()",
-    "Integer PersistencePackageRequest.getMaxResults()",
-    "String PersistencePackageRequest.getMsg()",
-    "OperationTypes PersistencePackageRequest.getOperationTypesOverride()",
-    "Integer PersistencePackageRequest.getPageSize()",
-    "Boolean PersistencePackageRequest.getPresentationFetch()",
-    "String PersistencePackageRequest.getRequestingEntityName()",
-    "SectionCrumb[] PersistencePackageRequest.getSectionCrumbs()",
-    "String PersistencePackageRequest.getSectionEntityField()",
-    "Integer PersistencePackageRequest.getStartIndex()",
-    "Map PersistencePackageRequest.getSubRequests()",
-    "Type PersistencePackageRequest.getType()",
-    "Integer PersistencePackageRequest.getUpperCount()",
-    "boolean PersistencePackageRequest.isAddOperationInspect()",
-    "boolean PersistencePackageRequest.isFolderedLookup()",
-    "boolean PersistencePackageRequest.isTreeCollection()",
-    "boolean PersistencePackageRequest.isUpdateLookupType()",
-    "boolean PersistencePackageRequest.isValidateUnsubmittedProperties()",
-    "void PersistencePackageRequest.setAddOperationInspect(boolean)",
-    "void PersistencePackageRequest.setAdornedList(AdornedTargetList)",
-    "void PersistencePackageRequest.setCeilingEntityClassname(String)",
-    "void PersistencePackageRequest.setConfigKey(String)",
-    "void PersistencePackageRequest.setEntity(Entity)",
-    "void PersistencePackageRequest.setFirstId(Long)",
-    "void PersistencePackageRequest.setFolderId(Long)",
-    "void PersistencePackageRequest.setFolderedLookup(boolean)",
-    "void PersistencePackageRequest.setForeignKey(ForeignKey)",
-    "void PersistencePackageRequest.setIsTreeCollection(boolean)",
-    "void PersistencePackageRequest.setLastId(Long)",
-    "void PersistencePackageRequest.setLowerCount(Integer)",
-    "void PersistencePackageRequest.setMapStructure(MapStructure)",
-    "void PersistencePackageRequest.setMaxIndex(Integer)",
-    "void PersistencePackageRequest.setMaxResults(Integer)",
-    "void PersistencePackageRequest.setMsg(String)",
-    "void PersistencePackageRequest.setOperationTypesOverride(OperationTypes)",
-    "void PersistencePackageRequest.setPageSize(Integer)",
-    "void PersistencePackageRequest.setPresentationFetch(Boolean)",
-    "void PersistencePackageRequest.setRequestingEntityName(String)",
-    "void PersistencePackageRequest.setSectionCrumbs(SectionCrumb[])",
-    "void PersistencePackageRequest.setSectionEntityField(String)",
-    "void PersistencePackageRequest.setSecurityCeilingEntityClassname(String)",
-    "void PersistencePackageRequest.setStartIndex(Integer)",
-    "void PersistencePackageRequest.setSubRequests(Map)",
-    "void PersistencePackageRequest.setType(Type)",
-    "void PersistencePackageRequest.setUpdateLookupType(boolean)",
-    "void PersistencePackageRequest.setUpperCount(Integer)",
-    "void PersistencePackageRequest.setValidateUnsubmittedProperties(boolean)",
-    "PersistencePackageRequest PersistencePackageRequest.withFolderId(Long)",
-    "PersistencePackageRequest PersistencePackageRequest.withIsFolderedLookup(boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePackageRequest.<init>()", "void PersistencePackageRequest.<init>(Type)",
+      "AdornedTargetList PersistencePackageRequest.getAdornedList()",
+      "String PersistencePackageRequest.getCeilingEntityClassname()", "String PersistencePackageRequest.getConfigKey()",
+      "Entity PersistencePackageRequest.getEntity()", "Long PersistencePackageRequest.getFirstId()",
+      "Long PersistencePackageRequest.getFolderId()", "ForeignKey PersistencePackageRequest.getForeignKey()",
+      "Long PersistencePackageRequest.getLastId()", "Integer PersistencePackageRequest.getLowerCount()",
+      "MapStructure PersistencePackageRequest.getMapStructure()", "Integer PersistencePackageRequest.getMaxIndex()",
+      "Integer PersistencePackageRequest.getMaxResults()", "String PersistencePackageRequest.getMsg()",
+      "OperationTypes PersistencePackageRequest.getOperationTypesOverride()",
+      "Integer PersistencePackageRequest.getPageSize()", "Boolean PersistencePackageRequest.getPresentationFetch()",
+      "String PersistencePackageRequest.getRequestingEntityName()",
+      "SectionCrumb[] PersistencePackageRequest.getSectionCrumbs()",
+      "String PersistencePackageRequest.getSectionEntityField()", "Integer PersistencePackageRequest.getStartIndex()",
+      "Map PersistencePackageRequest.getSubRequests()", "Type PersistencePackageRequest.getType()",
+      "Integer PersistencePackageRequest.getUpperCount()", "boolean PersistencePackageRequest.isAddOperationInspect()",
+      "boolean PersistencePackageRequest.isFolderedLookup()", "boolean PersistencePackageRequest.isTreeCollection()",
+      "boolean PersistencePackageRequest.isUpdateLookupType()",
+      "boolean PersistencePackageRequest.isValidateUnsubmittedProperties()",
+      "void PersistencePackageRequest.setAddOperationInspect(boolean)",
+      "void PersistencePackageRequest.setAdornedList(AdornedTargetList)",
+      "void PersistencePackageRequest.setCeilingEntityClassname(String)",
+      "void PersistencePackageRequest.setConfigKey(String)", "void PersistencePackageRequest.setEntity(Entity)",
+      "void PersistencePackageRequest.setFirstId(Long)", "void PersistencePackageRequest.setFolderId(Long)",
+      "void PersistencePackageRequest.setFolderedLookup(boolean)",
+      "void PersistencePackageRequest.setForeignKey(ForeignKey)",
+      "void PersistencePackageRequest.setIsTreeCollection(boolean)", "void PersistencePackageRequest.setLastId(Long)",
+      "void PersistencePackageRequest.setLowerCount(Integer)",
+      "void PersistencePackageRequest.setMapStructure(MapStructure)",
+      "void PersistencePackageRequest.setMaxIndex(Integer)", "void PersistencePackageRequest.setMaxResults(Integer)",
+      "void PersistencePackageRequest.setMsg(String)",
+      "void PersistencePackageRequest.setOperationTypesOverride(OperationTypes)",
+      "void PersistencePackageRequest.setPageSize(Integer)",
+      "void PersistencePackageRequest.setPresentationFetch(Boolean)",
+      "void PersistencePackageRequest.setRequestingEntityName(String)",
+      "void PersistencePackageRequest.setSectionCrumbs(SectionCrumb[])",
+      "void PersistencePackageRequest.setSectionEntityField(String)",
+      "void PersistencePackageRequest.setSecurityCeilingEntityClassname(String)",
+      "void PersistencePackageRequest.setStartIndex(Integer)", "void PersistencePackageRequest.setSubRequests(Map)",
+      "void PersistencePackageRequest.setType(Type)", "void PersistencePackageRequest.setUpdateLookupType(boolean)",
+      "void PersistencePackageRequest.setUpperCount(Integer)",
+      "void PersistencePackageRequest.setValidateUnsubmittedProperties(boolean)",
+      "PersistencePackageRequest PersistencePackageRequest.withFolderId(Long)",
+      "PersistencePackageRequest PersistencePackageRequest.withIsFolderedLookup(boolean)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PersistencePackageRequest actualPersistencePackageRequest = new PersistencePackageRequest();
@@ -639,11 +590,10 @@ public class PersistencePackageRequestDiffblueTest {
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-    SectionCrumb[] sectionCrumbs = new SectionCrumb[] {sectionCrumb};
+    SectionCrumb[] sectionCrumbs = new SectionCrumb[]{sectionCrumb};
     actualPersistencePackageRequest.setSectionCrumbs(sectionCrumbs);
     actualPersistencePackageRequest.setSectionEntityField("Section Entity Field");
-    actualPersistencePackageRequest.setSecurityCeilingEntityClassname(
-        "Security Ceiling Entity Classname");
+    actualPersistencePackageRequest.setSecurityCeilingEntityClassname("Security Ceiling Entity Classname");
     actualPersistencePackageRequest.setStartIndex(1);
     HashMap<String, PersistencePackageRequest> subRequests = new HashMap<>();
     actualPersistencePackageRequest.setSubRequests(subRequests);
@@ -651,13 +601,11 @@ public class PersistencePackageRequestDiffblueTest {
     actualPersistencePackageRequest.setUpdateLookupType(true);
     actualPersistencePackageRequest.setUpperCount(3);
     actualPersistencePackageRequest.setValidateUnsubmittedProperties(true);
-    PersistencePackageRequest actualWithFolderIdResult =
-        actualPersistencePackageRequest.withFolderId(1L);
-    PersistencePackageRequest actualWithIsFolderedLookupResult =
-        actualPersistencePackageRequest.withIsFolderedLookup(true);
+    PersistencePackageRequest actualWithFolderIdResult = actualPersistencePackageRequest.withFolderId(1L);
+    PersistencePackageRequest actualWithIsFolderedLookupResult = actualPersistencePackageRequest
+        .withIsFolderedLookup(true);
     AdornedTargetList actualAdornedList = actualPersistencePackageRequest.getAdornedList();
-    String actualCeilingEntityClassname =
-        actualPersistencePackageRequest.getCeilingEntityClassname();
+    String actualCeilingEntityClassname = actualPersistencePackageRequest.getCeilingEntityClassname();
     String actualConfigKey = actualPersistencePackageRequest.getConfigKey();
     Entity actualEntity = actualPersistencePackageRequest.getEntity();
     Long actualFirstId = actualPersistencePackageRequest.getFirstId();
@@ -669,25 +617,22 @@ public class PersistencePackageRequestDiffblueTest {
     Integer actualMaxIndex = actualPersistencePackageRequest.getMaxIndex();
     Integer actualMaxResults = actualPersistencePackageRequest.getMaxResults();
     String actualMsg = actualPersistencePackageRequest.getMsg();
-    OperationTypes actualOperationTypesOverride =
-        actualPersistencePackageRequest.getOperationTypesOverride();
+    OperationTypes actualOperationTypesOverride = actualPersistencePackageRequest.getOperationTypesOverride();
     Integer actualPageSize = actualPersistencePackageRequest.getPageSize();
     Boolean actualPresentationFetch = actualPersistencePackageRequest.getPresentationFetch();
     String actualRequestingEntityName = actualPersistencePackageRequest.getRequestingEntityName();
     SectionCrumb[] actualSectionCrumbs = actualPersistencePackageRequest.getSectionCrumbs();
     String actualSectionEntityField = actualPersistencePackageRequest.getSectionEntityField();
     Integer actualStartIndex = actualPersistencePackageRequest.getStartIndex();
-    Map<String, PersistencePackageRequest> actualSubRequests =
-        actualPersistencePackageRequest.getSubRequests();
+    Map<String, PersistencePackageRequest> actualSubRequests = actualPersistencePackageRequest.getSubRequests();
     Type actualType = actualPersistencePackageRequest.getType();
     Integer actualUpperCount = actualPersistencePackageRequest.getUpperCount();
-    boolean actualIsAddOperationInspectResult =
-        actualPersistencePackageRequest.isAddOperationInspect();
+    boolean actualIsAddOperationInspectResult = actualPersistencePackageRequest.isAddOperationInspect();
     boolean actualIsFolderedLookupResult = actualPersistencePackageRequest.isFolderedLookup();
     boolean actualIsTreeCollectionResult = actualPersistencePackageRequest.isTreeCollection();
     boolean actualIsUpdateLookupTypeResult = actualPersistencePackageRequest.isUpdateLookupType();
-    boolean actualIsValidateUnsubmittedPropertiesResult =
-        actualPersistencePackageRequest.isValidateUnsubmittedProperties();
+    boolean actualIsValidateUnsubmittedPropertiesResult = actualPersistencePackageRequest
+        .isValidateUnsubmittedProperties();
 
     // Assert
     assertEquals("Ceiling Entity Classname", actualCeilingEntityClassname);
@@ -728,13 +673,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code STANDARD}.
+   *   <li>When {@code STANDARD}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PersistencePackageRequest#PersistencePackageRequest(Type)}
    *   <li>{@link PersistencePackageRequest#setAddOperationInspect(boolean)}
@@ -799,75 +742,53 @@ public class PersistencePackageRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistencePackageRequest.<init>()",
-    "void PersistencePackageRequest.<init>(Type)",
-    "AdornedTargetList PersistencePackageRequest.getAdornedList()",
-    "String PersistencePackageRequest.getCeilingEntityClassname()",
-    "String PersistencePackageRequest.getConfigKey()",
-    "Entity PersistencePackageRequest.getEntity()",
-    "Long PersistencePackageRequest.getFirstId()",
-    "Long PersistencePackageRequest.getFolderId()",
-    "ForeignKey PersistencePackageRequest.getForeignKey()",
-    "Long PersistencePackageRequest.getLastId()",
-    "Integer PersistencePackageRequest.getLowerCount()",
-    "MapStructure PersistencePackageRequest.getMapStructure()",
-    "Integer PersistencePackageRequest.getMaxIndex()",
-    "Integer PersistencePackageRequest.getMaxResults()",
-    "String PersistencePackageRequest.getMsg()",
-    "OperationTypes PersistencePackageRequest.getOperationTypesOverride()",
-    "Integer PersistencePackageRequest.getPageSize()",
-    "Boolean PersistencePackageRequest.getPresentationFetch()",
-    "String PersistencePackageRequest.getRequestingEntityName()",
-    "SectionCrumb[] PersistencePackageRequest.getSectionCrumbs()",
-    "String PersistencePackageRequest.getSectionEntityField()",
-    "Integer PersistencePackageRequest.getStartIndex()",
-    "Map PersistencePackageRequest.getSubRequests()",
-    "Type PersistencePackageRequest.getType()",
-    "Integer PersistencePackageRequest.getUpperCount()",
-    "boolean PersistencePackageRequest.isAddOperationInspect()",
-    "boolean PersistencePackageRequest.isFolderedLookup()",
-    "boolean PersistencePackageRequest.isTreeCollection()",
-    "boolean PersistencePackageRequest.isUpdateLookupType()",
-    "boolean PersistencePackageRequest.isValidateUnsubmittedProperties()",
-    "void PersistencePackageRequest.setAddOperationInspect(boolean)",
-    "void PersistencePackageRequest.setAdornedList(AdornedTargetList)",
-    "void PersistencePackageRequest.setCeilingEntityClassname(String)",
-    "void PersistencePackageRequest.setConfigKey(String)",
-    "void PersistencePackageRequest.setEntity(Entity)",
-    "void PersistencePackageRequest.setFirstId(Long)",
-    "void PersistencePackageRequest.setFolderId(Long)",
-    "void PersistencePackageRequest.setFolderedLookup(boolean)",
-    "void PersistencePackageRequest.setForeignKey(ForeignKey)",
-    "void PersistencePackageRequest.setIsTreeCollection(boolean)",
-    "void PersistencePackageRequest.setLastId(Long)",
-    "void PersistencePackageRequest.setLowerCount(Integer)",
-    "void PersistencePackageRequest.setMapStructure(MapStructure)",
-    "void PersistencePackageRequest.setMaxIndex(Integer)",
-    "void PersistencePackageRequest.setMaxResults(Integer)",
-    "void PersistencePackageRequest.setMsg(String)",
-    "void PersistencePackageRequest.setOperationTypesOverride(OperationTypes)",
-    "void PersistencePackageRequest.setPageSize(Integer)",
-    "void PersistencePackageRequest.setPresentationFetch(Boolean)",
-    "void PersistencePackageRequest.setRequestingEntityName(String)",
-    "void PersistencePackageRequest.setSectionCrumbs(SectionCrumb[])",
-    "void PersistencePackageRequest.setSectionEntityField(String)",
-    "void PersistencePackageRequest.setSecurityCeilingEntityClassname(String)",
-    "void PersistencePackageRequest.setStartIndex(Integer)",
-    "void PersistencePackageRequest.setSubRequests(Map)",
-    "void PersistencePackageRequest.setType(Type)",
-    "void PersistencePackageRequest.setUpdateLookupType(boolean)",
-    "void PersistencePackageRequest.setUpperCount(Integer)",
-    "void PersistencePackageRequest.setValidateUnsubmittedProperties(boolean)",
-    "PersistencePackageRequest PersistencePackageRequest.withFolderId(Long)",
-    "PersistencePackageRequest PersistencePackageRequest.withIsFolderedLookup(boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePackageRequest.<init>()", "void PersistencePackageRequest.<init>(Type)",
+      "AdornedTargetList PersistencePackageRequest.getAdornedList()",
+      "String PersistencePackageRequest.getCeilingEntityClassname()", "String PersistencePackageRequest.getConfigKey()",
+      "Entity PersistencePackageRequest.getEntity()", "Long PersistencePackageRequest.getFirstId()",
+      "Long PersistencePackageRequest.getFolderId()", "ForeignKey PersistencePackageRequest.getForeignKey()",
+      "Long PersistencePackageRequest.getLastId()", "Integer PersistencePackageRequest.getLowerCount()",
+      "MapStructure PersistencePackageRequest.getMapStructure()", "Integer PersistencePackageRequest.getMaxIndex()",
+      "Integer PersistencePackageRequest.getMaxResults()", "String PersistencePackageRequest.getMsg()",
+      "OperationTypes PersistencePackageRequest.getOperationTypesOverride()",
+      "Integer PersistencePackageRequest.getPageSize()", "Boolean PersistencePackageRequest.getPresentationFetch()",
+      "String PersistencePackageRequest.getRequestingEntityName()",
+      "SectionCrumb[] PersistencePackageRequest.getSectionCrumbs()",
+      "String PersistencePackageRequest.getSectionEntityField()", "Integer PersistencePackageRequest.getStartIndex()",
+      "Map PersistencePackageRequest.getSubRequests()", "Type PersistencePackageRequest.getType()",
+      "Integer PersistencePackageRequest.getUpperCount()", "boolean PersistencePackageRequest.isAddOperationInspect()",
+      "boolean PersistencePackageRequest.isFolderedLookup()", "boolean PersistencePackageRequest.isTreeCollection()",
+      "boolean PersistencePackageRequest.isUpdateLookupType()",
+      "boolean PersistencePackageRequest.isValidateUnsubmittedProperties()",
+      "void PersistencePackageRequest.setAddOperationInspect(boolean)",
+      "void PersistencePackageRequest.setAdornedList(AdornedTargetList)",
+      "void PersistencePackageRequest.setCeilingEntityClassname(String)",
+      "void PersistencePackageRequest.setConfigKey(String)", "void PersistencePackageRequest.setEntity(Entity)",
+      "void PersistencePackageRequest.setFirstId(Long)", "void PersistencePackageRequest.setFolderId(Long)",
+      "void PersistencePackageRequest.setFolderedLookup(boolean)",
+      "void PersistencePackageRequest.setForeignKey(ForeignKey)",
+      "void PersistencePackageRequest.setIsTreeCollection(boolean)", "void PersistencePackageRequest.setLastId(Long)",
+      "void PersistencePackageRequest.setLowerCount(Integer)",
+      "void PersistencePackageRequest.setMapStructure(MapStructure)",
+      "void PersistencePackageRequest.setMaxIndex(Integer)", "void PersistencePackageRequest.setMaxResults(Integer)",
+      "void PersistencePackageRequest.setMsg(String)",
+      "void PersistencePackageRequest.setOperationTypesOverride(OperationTypes)",
+      "void PersistencePackageRequest.setPageSize(Integer)",
+      "void PersistencePackageRequest.setPresentationFetch(Boolean)",
+      "void PersistencePackageRequest.setRequestingEntityName(String)",
+      "void PersistencePackageRequest.setSectionCrumbs(SectionCrumb[])",
+      "void PersistencePackageRequest.setSectionEntityField(String)",
+      "void PersistencePackageRequest.setSecurityCeilingEntityClassname(String)",
+      "void PersistencePackageRequest.setStartIndex(Integer)", "void PersistencePackageRequest.setSubRequests(Map)",
+      "void PersistencePackageRequest.setType(Type)", "void PersistencePackageRequest.setUpdateLookupType(boolean)",
+      "void PersistencePackageRequest.setUpperCount(Integer)",
+      "void PersistencePackageRequest.setValidateUnsubmittedProperties(boolean)",
+      "PersistencePackageRequest PersistencePackageRequest.withFolderId(Long)",
+      "PersistencePackageRequest PersistencePackageRequest.withIsFolderedLookup(boolean)"})
   public void testGettersAndSetters_whenStandard() {
     // Arrange and Act
-    PersistencePackageRequest actualPersistencePackageRequest =
-        new PersistencePackageRequest(Type.STANDARD);
+    PersistencePackageRequest actualPersistencePackageRequest = new PersistencePackageRequest(Type.STANDARD);
     actualPersistencePackageRequest.setAddOperationInspect(true);
     AdornedTargetList adornedList = new AdornedTargetList();
     actualPersistencePackageRequest.setAdornedList(adornedList);
@@ -897,11 +818,10 @@ public class PersistencePackageRequestDiffblueTest {
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-    SectionCrumb[] sectionCrumbs = new SectionCrumb[] {sectionCrumb};
+    SectionCrumb[] sectionCrumbs = new SectionCrumb[]{sectionCrumb};
     actualPersistencePackageRequest.setSectionCrumbs(sectionCrumbs);
     actualPersistencePackageRequest.setSectionEntityField("Section Entity Field");
-    actualPersistencePackageRequest.setSecurityCeilingEntityClassname(
-        "Security Ceiling Entity Classname");
+    actualPersistencePackageRequest.setSecurityCeilingEntityClassname("Security Ceiling Entity Classname");
     actualPersistencePackageRequest.setStartIndex(1);
     HashMap<String, PersistencePackageRequest> subRequests = new HashMap<>();
     actualPersistencePackageRequest.setSubRequests(subRequests);
@@ -909,13 +829,11 @@ public class PersistencePackageRequestDiffblueTest {
     actualPersistencePackageRequest.setUpdateLookupType(true);
     actualPersistencePackageRequest.setUpperCount(3);
     actualPersistencePackageRequest.setValidateUnsubmittedProperties(true);
-    PersistencePackageRequest actualWithFolderIdResult =
-        actualPersistencePackageRequest.withFolderId(1L);
-    PersistencePackageRequest actualWithIsFolderedLookupResult =
-        actualPersistencePackageRequest.withIsFolderedLookup(true);
+    PersistencePackageRequest actualWithFolderIdResult = actualPersistencePackageRequest.withFolderId(1L);
+    PersistencePackageRequest actualWithIsFolderedLookupResult = actualPersistencePackageRequest
+        .withIsFolderedLookup(true);
     AdornedTargetList actualAdornedList = actualPersistencePackageRequest.getAdornedList();
-    String actualCeilingEntityClassname =
-        actualPersistencePackageRequest.getCeilingEntityClassname();
+    String actualCeilingEntityClassname = actualPersistencePackageRequest.getCeilingEntityClassname();
     String actualConfigKey = actualPersistencePackageRequest.getConfigKey();
     Entity actualEntity = actualPersistencePackageRequest.getEntity();
     Long actualFirstId = actualPersistencePackageRequest.getFirstId();
@@ -927,25 +845,22 @@ public class PersistencePackageRequestDiffblueTest {
     Integer actualMaxIndex = actualPersistencePackageRequest.getMaxIndex();
     Integer actualMaxResults = actualPersistencePackageRequest.getMaxResults();
     String actualMsg = actualPersistencePackageRequest.getMsg();
-    OperationTypes actualOperationTypesOverride =
-        actualPersistencePackageRequest.getOperationTypesOverride();
+    OperationTypes actualOperationTypesOverride = actualPersistencePackageRequest.getOperationTypesOverride();
     Integer actualPageSize = actualPersistencePackageRequest.getPageSize();
     Boolean actualPresentationFetch = actualPersistencePackageRequest.getPresentationFetch();
     String actualRequestingEntityName = actualPersistencePackageRequest.getRequestingEntityName();
     SectionCrumb[] actualSectionCrumbs = actualPersistencePackageRequest.getSectionCrumbs();
     String actualSectionEntityField = actualPersistencePackageRequest.getSectionEntityField();
     Integer actualStartIndex = actualPersistencePackageRequest.getStartIndex();
-    Map<String, PersistencePackageRequest> actualSubRequests =
-        actualPersistencePackageRequest.getSubRequests();
+    Map<String, PersistencePackageRequest> actualSubRequests = actualPersistencePackageRequest.getSubRequests();
     Type actualType = actualPersistencePackageRequest.getType();
     Integer actualUpperCount = actualPersistencePackageRequest.getUpperCount();
-    boolean actualIsAddOperationInspectResult =
-        actualPersistencePackageRequest.isAddOperationInspect();
+    boolean actualIsAddOperationInspectResult = actualPersistencePackageRequest.isAddOperationInspect();
     boolean actualIsFolderedLookupResult = actualPersistencePackageRequest.isFolderedLookup();
     boolean actualIsTreeCollectionResult = actualPersistencePackageRequest.isTreeCollection();
     boolean actualIsUpdateLookupTypeResult = actualPersistencePackageRequest.isUpdateLookupType();
-    boolean actualIsValidateUnsubmittedPropertiesResult =
-        actualPersistencePackageRequest.isValidateUnsubmittedProperties();
+    boolean actualIsValidateUnsubmittedPropertiesResult = actualPersistencePackageRequest
+        .isValidateUnsubmittedProperties();
 
     // Assert
     assertEquals("Ceiling Entity Classname", actualCeilingEntityClassname);
@@ -986,12 +901,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withType(Type)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withType(Type)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withType(Type)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withType(Type)"})
   public void testWithType() {
     // Arrange
@@ -1007,19 +921,16 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withCeilingEntityClassname(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withCeilingEntityClassname(String)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withCeilingEntityClassname(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withCeilingEntityClassname(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withCeilingEntityClassname(String)"})
   public void testWithCeilingEntityClassname() {
     // Arrange and Act
-    PersistencePackageRequest actualWithCeilingEntityClassnameResult =
-        persistencePackageRequest.withCeilingEntityClassname("Class Name");
+    PersistencePackageRequest actualWithCeilingEntityClassnameResult = persistencePackageRequest
+        .withCeilingEntityClassname("Class Name");
 
     // Assert
     assertEquals("Class Name", persistencePackageRequest.getCeilingEntityClassname());
@@ -1029,20 +940,16 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withSecurityCeilingEntityClassname(String)}.
-   *
-   * <p>Method under test: {@link
-   * PersistencePackageRequest#withSecurityCeilingEntityClassname(String)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withSecurityCeilingEntityClassname(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withSecurityCeilingEntityClassname(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withSecurityCeilingEntityClassname(String)"})
   public void testWithSecurityCeilingEntityClassname() {
     // Arrange and Act
-    PersistencePackageRequest actualWithSecurityCeilingEntityClassnameResult =
-        persistencePackageRequest.withSecurityCeilingEntityClassname("Class Name");
+    PersistencePackageRequest actualWithSecurityCeilingEntityClassnameResult = persistencePackageRequest
+        .withSecurityCeilingEntityClassname("Class Name");
 
     // Assert
     assertEquals("Class Name", persistencePackageRequest.getSecurityCeilingEntityClassname());
@@ -1052,15 +959,12 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withForeignKey(ForeignKey)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withForeignKey(ForeignKey)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withForeignKey(ForeignKey)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withForeignKey(ForeignKey)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withForeignKey(ForeignKey)"})
   public void testWithForeignKey() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
@@ -1076,17 +980,15 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withConfigKey(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withConfigKey(String)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withConfigKey(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withConfigKey(String)"})
   public void testWithConfigKey() {
     // Arrange and Act
-    PersistencePackageRequest actualWithConfigKeyResult =
-        persistencePackageRequest.withConfigKey("Config Key");
+    PersistencePackageRequest actualWithConfigKeyResult = persistencePackageRequest.withConfigKey("Config Key");
 
     // Assert
     assertEquals("Config Key", persistencePackageRequest.getConfigKey());
@@ -1095,38 +997,31 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withFilterAndSortCriteria(FilterAndSortCriteria[])}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistencePackageRequest#filterAndSortCriteria} size is one.
+   *   <li>Then return {@link PersistencePackageRequest#filterAndSortCriteria} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PersistencePackageRequest#withFilterAndSortCriteria(FilterAndSortCriteria[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withFilterAndSortCriteria(FilterAndSortCriteria[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withFilterAndSortCriteria(FilterAndSortCriteria[])"
-  })
+      "PersistencePackageRequest PersistencePackageRequest.withFilterAndSortCriteria(FilterAndSortCriteria[])"})
   public void testWithFilterAndSortCriteria_thenReturnFilterAndSortCriteriaSizeIsOne() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
     FilterAndSortCriteria filterAndSortCriteria = new FilterAndSortCriteria("42");
 
     // Act
-    PersistencePackageRequest actualWithFilterAndSortCriteriaResult =
-        adornedResult.withFilterAndSortCriteria(
-            new FilterAndSortCriteria[] {filterAndSortCriteria});
+    PersistencePackageRequest actualWithFilterAndSortCriteriaResult = adornedResult
+        .withFilterAndSortCriteria(new FilterAndSortCriteria[]{filterAndSortCriteria});
 
     // Assert
-    List<FilterAndSortCriteria> filterAndSortCriteriaList =
-        actualWithFilterAndSortCriteriaResult.filterAndSortCriteria;
+    List<FilterAndSortCriteria> filterAndSortCriteriaList = actualWithFilterAndSortCriteriaResult.filterAndSortCriteria;
     assertEquals(1, filterAndSortCriteriaList.size());
     List<FilterAndSortCriteria> filterAndSortCriteriaList2 = adornedResult.filterAndSortCriteria;
     assertEquals(1, filterAndSortCriteriaList2.size());
-    FilterAndSortCriteria[] filterAndSortCriteria2 =
-        actualWithFilterAndSortCriteriaResult.getFilterAndSortCriteria();
+    FilterAndSortCriteria[] filterAndSortCriteria2 = actualWithFilterAndSortCriteriaResult.getFilterAndSortCriteria();
     assertEquals(1, filterAndSortCriteria2.length);
     FilterAndSortCriteria[] filterAndSortCriteria3 = adornedResult.getFilterAndSortCriteria();
     assertEquals(1, filterAndSortCriteria3.length);
@@ -1138,28 +1033,23 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withFilterAndSortCriteria(FilterAndSortCriteria[])}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return array length is zero.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PersistencePackageRequest#withFilterAndSortCriteria(FilterAndSortCriteria[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withFilterAndSortCriteria(FilterAndSortCriteria[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withFilterAndSortCriteria(FilterAndSortCriteria[])"
-  })
+      "PersistencePackageRequest PersistencePackageRequest.withFilterAndSortCriteria(FilterAndSortCriteria[])"})
   public void testWithFilterAndSortCriteria_whenNull_thenReturnArrayLengthIsZero() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualWithFilterAndSortCriteriaResult =
-        adornedResult.withFilterAndSortCriteria(null);
+    PersistencePackageRequest actualWithFilterAndSortCriteriaResult = adornedResult.withFilterAndSortCriteria(null);
 
     // Assert
     assertEquals(0, actualWithFilterAndSortCriteriaResult.getFilterAndSortCriteria().length);
@@ -1170,23 +1060,19 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withAdornedList(AdornedTargetList)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withAdornedList(AdornedTargetList)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withAdornedList(AdornedTargetList)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withAdornedList(AdornedTargetList)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withAdornedList(AdornedTargetList)"})
   public void testWithAdornedList() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
     AdornedTargetList adornedList = new AdornedTargetList();
 
     // Act
-    PersistencePackageRequest actualWithAdornedListResult =
-        adornedResult.withAdornedList(adornedList);
+    PersistencePackageRequest actualWithAdornedListResult = adornedResult.withAdornedList(adornedList);
 
     // Assert
     assertSame(adornedList, adornedResult.getAdornedList());
@@ -1195,23 +1081,19 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withMapStructure(MapStructure)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withMapStructure(MapStructure)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withMapStructure(MapStructure)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withMapStructure(MapStructure)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withMapStructure(MapStructure)"})
   public void testWithMapStructure() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
     MapStructure mapStructure = new MapStructure();
 
     // Act
-    PersistencePackageRequest actualWithMapStructureResult =
-        adornedResult.withMapStructure(mapStructure);
+    PersistencePackageRequest actualWithMapStructureResult = adornedResult.withMapStructure(mapStructure);
 
     // Assert
     assertSame(mapStructure, adornedResult.getMapStructure());
@@ -1220,26 +1102,22 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withCustomCriteria(String[])}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistencePackageRequest#customCriteria} size is one.
+   *   <li>Then return {@link PersistencePackageRequest#customCriteria} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withCustomCriteria(String[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withCustomCriteria(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withCustomCriteria(String[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withCustomCriteria(String[])"})
   public void testWithCustomCriteria_thenReturnCustomCriteriaSizeIsOne() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualWithCustomCriteriaResult =
-        adornedResult.withCustomCriteria(new String[] {"Custom Criteria"});
+    PersistencePackageRequest actualWithCustomCriteriaResult = adornedResult
+        .withCustomCriteria(new String[]{"Custom Criteria"});
 
     // Assert
     List<String> stringList = actualWithCustomCriteriaResult.customCriteria;
@@ -1248,34 +1126,28 @@ public class PersistencePackageRequestDiffblueTest {
     List<String> stringList2 = adornedResult.customCriteria;
     assertEquals(1, stringList2.size());
     assertEquals("Custom Criteria", stringList2.get(0));
-    assertArrayEquals(
-        new String[] {"Custom Criteria"}, actualWithCustomCriteriaResult.getCustomCriteria());
-    assertArrayEquals(new String[] {"Custom Criteria"}, adornedResult.getCustomCriteria());
+    assertArrayEquals(new String[]{"Custom Criteria"}, actualWithCustomCriteriaResult.getCustomCriteria());
+    assertArrayEquals(new String[]{"Custom Criteria"}, adornedResult.getCustomCriteria());
   }
 
   /**
    * Test {@link PersistencePackageRequest#withCustomCriteria(String[])}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return array length is zero.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withCustomCriteria(String[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withCustomCriteria(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withCustomCriteria(String[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withCustomCriteria(String[])"})
   public void testWithCustomCriteria_whenNull_thenReturnArrayLengthIsZero() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualWithCustomCriteriaResult =
-        adornedResult.withCustomCriteria(null);
+    PersistencePackageRequest actualWithCustomCriteriaResult = adornedResult.withCustomCriteria(null);
 
     // Assert
     assertEquals(0, actualWithCustomCriteriaResult.getCustomCriteria().length);
@@ -1286,12 +1158,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withEntity(Entity)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withEntity(Entity)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withEntity(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withEntity(Entity)"})
   public void testWithEntity() {
     // Arrange
@@ -1308,12 +1179,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withStartIndex(Integer)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withStartIndex(Integer)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withStartIndex(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withStartIndex(Integer)"})
   public void testWithStartIndex() {
     // Arrange
@@ -1329,12 +1199,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withMaxIndex(Integer)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withMaxIndex(Integer)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withMaxIndex(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withMaxIndex(Integer)"})
   public void testWithMaxIndex() {
     // Arrange
@@ -1350,12 +1219,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withMaxResults(Integer)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withMaxResults(Integer)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withMaxResults(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withMaxResults(Integer)"})
   public void testWithMaxResults() {
     // Arrange
@@ -1371,12 +1239,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withLastId(Long)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withLastId(Long)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withLastId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withLastId(Long)"})
   public void testWithLastId() {
     // Arrange
@@ -1392,12 +1259,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withFirstId(Long)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withFirstId(Long)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withFirstId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withFirstId(Long)"})
   public void testWithFirstId() {
     // Arrange
@@ -1413,12 +1279,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withUpperCount(Integer)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withUpperCount(Integer)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withUpperCount(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withUpperCount(Integer)"})
   public void testWithUpperCount() {
     // Arrange
@@ -1434,12 +1299,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withLowerCount(Integer)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withLowerCount(Integer)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withLowerCount(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withLowerCount(Integer)"})
   public void testWithLowerCount() {
     // Arrange
@@ -1455,12 +1319,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withPageSize(Integer)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withPageSize(Integer)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withPageSize(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withPageSize(Integer)"})
   public void testWithPageSize() {
     // Arrange
@@ -1476,22 +1339,18 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withPresentationFetch(Boolean)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withPresentationFetch(Boolean)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withPresentationFetch(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withPresentationFetch(Boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withPresentationFetch(Boolean)"})
   public void testWithPresentationFetch() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualWithPresentationFetchResult =
-        adornedResult.withPresentationFetch(true);
+    PersistencePackageRequest actualWithPresentationFetchResult = adornedResult.withPresentationFetch(true);
 
     // Assert
     assertTrue(adornedResult.getPresentationFetch());
@@ -1500,12 +1359,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withSectionCrumbs(List)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withSectionCrumbs(List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withSectionCrumbs(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withSectionCrumbs(List)"})
   public void testWithSectionCrumbs() {
     // Arrange
@@ -1524,8 +1382,7 @@ public class PersistencePackageRequestDiffblueTest {
     sectionCrumbs.add(sectionCrumb);
 
     // Act and Assert
-    SectionCrumb[] sectionCrumbs2 =
-        persistencePackageRequest.withSectionCrumbs(sectionCrumbs).getSectionCrumbs();
+    SectionCrumb[] sectionCrumbs2 = persistencePackageRequest.withSectionCrumbs(sectionCrumbs).getSectionCrumbs();
     SectionCrumb sectionCrumb3 = sectionCrumbs2[0];
     assertEquals("Original Section Identifier", sectionCrumb3.getOriginalSectionIdentifier());
     assertEquals("Section Id", sectionCrumb3.getSectionId());
@@ -1536,16 +1393,14 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withSectionCrumbs(List)}.
-   *
    * <ul>
-   *   <li>Then return first element OriginalSectionIdentifier is {@code 42}.
+   *   <li>Then return first element OriginalSectionIdentifier is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withSectionCrumbs(List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withSectionCrumbs(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withSectionCrumbs(List)"})
   public void testWithSectionCrumbs_thenReturnFirstElementOriginalSectionIdentifierIs42() {
     // Arrange
@@ -1558,8 +1413,7 @@ public class PersistencePackageRequestDiffblueTest {
     sectionCrumbs.add(sectionCrumb);
 
     // Act and Assert
-    SectionCrumb[] sectionCrumbs2 =
-        persistencePackageRequest.withSectionCrumbs(sectionCrumbs).getSectionCrumbs();
+    SectionCrumb[] sectionCrumbs2 = persistencePackageRequest.withSectionCrumbs(sectionCrumbs).getSectionCrumbs();
     SectionCrumb sectionCrumb2 = sectionCrumbs2[0];
     assertEquals("42", sectionCrumb2.getOriginalSectionIdentifier());
     assertEquals("42", sectionCrumb2.getSectionId());
@@ -1569,43 +1423,37 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withSectionCrumbs(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return array length is zero.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withSectionCrumbs(List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withSectionCrumbs(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withSectionCrumbs(List)"})
   public void testWithSectionCrumbs_whenArrayList_thenReturnArrayLengthIsZero() {
     // Arrange
     ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
 
     // Act and Assert
-    assertEquals(
-        0, persistencePackageRequest.withSectionCrumbs(sectionCrumbs).getSectionCrumbs().length);
+    assertEquals(0, persistencePackageRequest.withSectionCrumbs(sectionCrumbs).getSectionCrumbs().length);
     assertTrue(sectionCrumbs.isEmpty());
   }
 
   /**
    * Test {@link PersistencePackageRequest#withSectionEntityField(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withSectionEntityField(String)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withSectionEntityField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withSectionEntityField(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withSectionEntityField(String)"})
   public void testWithSectionEntityField() {
     // Arrange and Act
-    PersistencePackageRequest actualWithSectionEntityFieldResult =
-        persistencePackageRequest.withSectionEntityField("Section Entity Field");
+    PersistencePackageRequest actualWithSectionEntityFieldResult = persistencePackageRequest
+        .withSectionEntityField("Section Entity Field");
 
     // Assert
     assertEquals("Section Entity Field", persistencePackageRequest.getSectionEntityField());
@@ -1614,19 +1462,16 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withRequestingEntityName(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withRequestingEntityName(String)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withRequestingEntityName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withRequestingEntityName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withRequestingEntityName(String)"})
   public void testWithRequestingEntityName() {
     // Arrange and Act
-    PersistencePackageRequest actualWithRequestingEntityNameResult =
-        persistencePackageRequest.withRequestingEntityName("Requesting Entity Name");
+    PersistencePackageRequest actualWithRequestingEntityNameResult = persistencePackageRequest
+        .withRequestingEntityName("Requesting Entity Name");
 
     // Assert
     assertEquals("Requesting Entity Name", persistencePackageRequest.getRequestingEntityName());
@@ -1635,12 +1480,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withMsg(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withMsg(String)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withMsg(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withMsg(String)"})
   public void testWithMsg() {
     // Arrange and Act
@@ -1653,22 +1497,18 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#withIsUpdateLookupType(boolean)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#withIsUpdateLookupType(boolean)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#withIsUpdateLookupType(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.withIsUpdateLookupType(boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.withIsUpdateLookupType(boolean)"})
   public void testWithIsUpdateLookupType() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualWithIsUpdateLookupTypeResult =
-        adornedResult.withIsUpdateLookupType(true);
+    PersistencePackageRequest actualWithIsUpdateLookupTypeResult = adornedResult.withIsUpdateLookupType(true);
 
     // Assert
     assertTrue(adornedResult.isUpdateLookupType());
@@ -1677,22 +1517,19 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#addAdditionalForeignKey(ForeignKey)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addAdditionalForeignKey(ForeignKey)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addAdditionalForeignKey(ForeignKey)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addAdditionalForeignKey(ForeignKey)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addAdditionalForeignKey(ForeignKey)"})
   public void testAddAdditionalForeignKey() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualAddAdditionalForeignKeyResult =
-        adornedResult.addAdditionalForeignKey(new ForeignKey());
+    PersistencePackageRequest actualAddAdditionalForeignKeyResult = adornedResult
+        .addAdditionalForeignKey(new ForeignKey());
 
     // Assert
     assertEquals(1, adornedResult.additionalForeignKeys.size());
@@ -1702,106 +1539,63 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#addSubRequest(String, PersistencePackageRequest)}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addSubRequest(String,
-   * PersistencePackageRequest)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addSubRequest(String, PersistencePackageRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addSubRequest(String, PersistencePackageRequest)"
-  })
+      "PersistencePackageRequest PersistencePackageRequest.addSubRequest(String, PersistencePackageRequest)"})
   public void testAddSubRequest() {
-    // Arrange and Act
-    PersistencePackageRequest actualAddSubRequestResult =
-        persistencePackageRequest.addSubRequest("Info Property Name", persistencePackageRequest);
-
-    // Assert
-    assertSame(persistencePackageRequest, actualAddSubRequestResult);
+    // Arrange, Act and Assert
+    assertSame(persistencePackageRequest,
+        persistencePackageRequest.addSubRequest("Info Property Name", persistencePackageRequest));
   }
 
   /**
-   * Test {@link PersistencePackageRequest#addCustomCriteria(String[])} with {@code
-   * customCriteriaList}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addCustomCriteria(String[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String[])"
-  })
-  public void testAddCustomCriteriaWithCustomCriteriaList() {
-    // Arrange
-    PersistencePackageRequest persistencePackageRequest =
-        new PersistencePackageRequest(Type.STANDARD);
-    persistencePackageRequest.setCustomCriteria(null);
-
-    // Act
-    PersistencePackageRequest actualAddCustomCriteriaResult =
-        persistencePackageRequest.addCustomCriteria((String[]) null);
-
-    // Assert
-    assertEquals(0, persistencePackageRequest.getCustomCriteria().length);
-    assertTrue(persistencePackageRequest.customCriteria.isEmpty());
-    assertSame(persistencePackageRequest, actualAddCustomCriteriaResult);
-  }
-
-  /**
-   * Test {@link PersistencePackageRequest#addCustomCriteria(String[])} with {@code
-   * customCriteriaList}.
-   *
+   * Test {@link PersistencePackageRequest#addCustomCriteria(String[])} with {@code customCriteriaList}.
    * <ul>
-   *   <li>Then adorned {@link PersistencePackageRequest#customCriteria} Empty.
+   *   <li>Given adorned CustomCriteria is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addCustomCriteria(String[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addCustomCriteria(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String[])"
-  })
-  public void testAddCustomCriteriaWithCustomCriteriaList_thenAdornedCustomCriteriaEmpty() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String[])"})
+  public void testAddCustomCriteriaWithCustomCriteriaList_givenAdornedCustomCriteriaIsNull() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
+    adornedResult.setCustomCriteria(null);
 
     // Act
-    PersistencePackageRequest actualAddCustomCriteriaResult =
-        adornedResult.addCustomCriteria(new String[] {});
+    PersistencePackageRequest actualAddCustomCriteriaResult = adornedResult.addCustomCriteria((String[]) null);
 
     // Assert
+    assertEquals(0, actualAddCustomCriteriaResult.getCustomCriteria().length);
     assertEquals(0, adornedResult.getCustomCriteria().length);
+    assertTrue(actualAddCustomCriteriaResult.customCriteria.isEmpty());
     assertTrue(adornedResult.customCriteria.isEmpty());
-    assertSame(adornedResult, actualAddCustomCriteriaResult);
   }
 
   /**
-   * Test {@link PersistencePackageRequest#addCustomCriteria(String[])} with {@code
-   * customCriteriaList}.
-   *
+   * Test {@link PersistencePackageRequest#addCustomCriteria(String[])} with {@code customCriteriaList}.
    * <ul>
-   *   <li>Then return {@link PersistencePackageRequest#customCriteria} size is one.
+   *   <li>Then return {@link PersistencePackageRequest#customCriteria} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addCustomCriteria(String[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addCustomCriteria(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String[])"})
   public void testAddCustomCriteriaWithCustomCriteriaList_thenReturnCustomCriteriaSizeIsOne() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualAddCustomCriteriaResult =
-        adornedResult.addCustomCriteria(new String[] {"Custom Criteria List"});
+    PersistencePackageRequest actualAddCustomCriteriaResult = adornedResult
+        .addCustomCriteria(new String[]{"Custom Criteria List"});
 
     // Assert
     List<String> stringList = actualAddCustomCriteriaResult.customCriteria;
@@ -1810,30 +1604,76 @@ public class PersistencePackageRequestDiffblueTest {
     List<String> stringList2 = adornedResult.customCriteria;
     assertEquals(1, stringList2.size());
     assertEquals("Custom Criteria List", stringList2.get(0));
-    assertArrayEquals(
-        new String[] {"Custom Criteria List"}, actualAddCustomCriteriaResult.getCustomCriteria());
-    assertArrayEquals(new String[] {"Custom Criteria List"}, adornedResult.getCustomCriteria());
+    assertArrayEquals(new String[]{"Custom Criteria List"}, actualAddCustomCriteriaResult.getCustomCriteria());
+    assertArrayEquals(new String[]{"Custom Criteria List"}, adornedResult.getCustomCriteria());
+  }
+
+  /**
+   * Test {@link PersistencePackageRequest#addCustomCriteria(String[])} with {@code customCriteriaList}.
+   * <ul>
+   *   <li>When empty array of {@link String}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addCustomCriteria(String[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String[])"})
+  public void testAddCustomCriteriaWithCustomCriteriaList_whenEmptyArrayOfString() {
+    // Arrange
+    PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
+
+    // Act
+    PersistencePackageRequest actualAddCustomCriteriaResult = adornedResult.addCustomCriteria(new String[]{});
+
+    // Assert
+    assertEquals(0, actualAddCustomCriteriaResult.getCustomCriteria().length);
+    assertEquals(0, adornedResult.getCustomCriteria().length);
+    assertTrue(actualAddCustomCriteriaResult.customCriteria.isEmpty());
+    assertTrue(adornedResult.customCriteria.isEmpty());
   }
 
   /**
    * Test {@link PersistencePackageRequest#addCustomCriteria(String)} with {@code customCriteria}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistencePackageRequest#customCriteria} size is one.
+   *   <li>Then return array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addCustomCriteria(String)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addCustomCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String)"})
+  public void testAddCustomCriteriaWithCustomCriteria_thenReturnArrayLengthIsZero() {
+    // Arrange
+    persistencePackageRequest.setCustomCriteria(null);
+
+    // Act
+    PersistencePackageRequest actualAddCustomCriteriaResult = persistencePackageRequest
+        .addCustomCriteria((String) null);
+
+    // Assert
+    assertEquals(0, actualAddCustomCriteriaResult.getCustomCriteria().length);
+    assertEquals(0, persistencePackageRequest.getCustomCriteria().length);
+    assertTrue(actualAddCustomCriteriaResult.customCriteria.isEmpty());
+    assertTrue(persistencePackageRequest.customCriteria.isEmpty());
+  }
+
+  /**
+   * Test {@link PersistencePackageRequest#addCustomCriteria(String)} with {@code customCriteria}.
+   * <ul>
+   *   <li>Then return {@link PersistencePackageRequest#customCriteria} size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addCustomCriteria(String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String)"})
   public void testAddCustomCriteriaWithCustomCriteria_thenReturnCustomCriteriaSizeIsOne() {
     // Arrange and Act
-    PersistencePackageRequest actualAddCustomCriteriaResult =
-        persistencePackageRequest.addCustomCriteria("Custom Criteria");
+    PersistencePackageRequest actualAddCustomCriteriaResult = persistencePackageRequest
+        .addCustomCriteria("Custom Criteria");
 
     // Assert
     List<String> stringList = actualAddCustomCriteriaResult.customCriteria;
@@ -1842,94 +1682,26 @@ public class PersistencePackageRequestDiffblueTest {
     List<String> stringList2 = persistencePackageRequest.customCriteria;
     assertEquals(1, stringList2.size());
     assertEquals("Custom Criteria", stringList2.get(0));
-    assertArrayEquals(
-        new String[] {"Custom Criteria"}, actualAddCustomCriteriaResult.getCustomCriteria());
-    assertArrayEquals(
-        new String[] {"Custom Criteria"}, persistencePackageRequest.getCustomCriteria());
+    assertArrayEquals(new String[]{"Custom Criteria"}, actualAddCustomCriteriaResult.getCustomCriteria());
+    assertArrayEquals(new String[]{"Custom Criteria"}, persistencePackageRequest.getCustomCriteria());
   }
 
   /**
-   * Test {@link PersistencePackageRequest#addCustomCriteria(String)} with {@code customCriteria}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addCustomCriteria(String)}
+   * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria)} with {@code FilterAndSortCriteria}.
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String)"
-  })
-  public void testAddCustomCriteriaWithCustomCriteria_whenNull_thenReturnArrayLengthIsZero() {
-    // Arrange
-    persistencePackageRequest.setCustomCriteria(null);
-
-    // Act
-    PersistencePackageRequest actualAddCustomCriteriaResult =
-        persistencePackageRequest.addCustomCriteria((String) null);
-
-    // Assert
-    assertEquals(0, actualAddCustomCriteriaResult.getCustomCriteria().length);
-    assertEquals(0, persistencePackageRequest.getCustomCriteria().length);
-    assertTrue(actualAddCustomCriteriaResult.customCriteria.isEmpty());
-    assertTrue(persistencePackageRequest.customCriteria.isEmpty());
-  }
-
-  /**
-   * Test {@link PersistencePackageRequest#addCustomCriteria(String)} with {@code customCriteria}.
-   *
-   * <ul>
-   *   <li>When space.
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addCustomCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addCustomCriteria(String)"
-  })
-  public void testAddCustomCriteriaWithCustomCriteria_whenSpace_thenReturnArrayLengthIsZero() {
-    // Arrange
-    persistencePackageRequest.setCustomCriteria(null);
-
-    // Act
-    PersistencePackageRequest actualAddCustomCriteriaResult =
-        persistencePackageRequest.addCustomCriteria(" ");
-
-    // Assert
-    assertEquals(0, actualAddCustomCriteriaResult.getCustomCriteria().length);
-    assertEquals(0, persistencePackageRequest.getCustomCriteria().length);
-    assertTrue(actualAddCustomCriteriaResult.customCriteria.isEmpty());
-    assertTrue(persistencePackageRequest.customCriteria.isEmpty());
-  }
-
-  /**
-   * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria)} with
-   * {@code FilterAndSortCriteria}.
-   *
-   * <p>Method under test: {@link
-   * PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(FilterAndSortCriteria)"
-  })
+      "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(FilterAndSortCriteria)"})
   public void testAddFilterAndSortCriteriaWithFilterAndSortCriteria() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualAddFilterAndSortCriteriaResult =
-        adornedResult.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
+    PersistencePackageRequest actualAddFilterAndSortCriteriaResult = adornedResult
+        .addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
 
     // Assert
     assertEquals(1, adornedResult.filterAndSortCriteria.size());
@@ -1938,35 +1710,29 @@ public class PersistencePackageRequestDiffblueTest {
   }
 
   /**
-   * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria[])} with
-   * {@code FilterAndSortCriteria[]}.
-   *
-   * <p>Method under test: {@link
-   * PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria[])}
+   * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria[])} with {@code FilterAndSortCriteria[]}.
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(FilterAndSortCriteria[])"
-  })
+      "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(FilterAndSortCriteria[])"})
   public void testAddFilterAndSortCriteriaWithFilterAndSortCriteria2() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
     FilterAndSortCriteria filterAndSortCriteria = new FilterAndSortCriteria("42");
 
     // Act
-    PersistencePackageRequest actualAddFilterAndSortCriteriaResult =
-        adornedResult.addFilterAndSortCriteria(new FilterAndSortCriteria[] {filterAndSortCriteria});
+    PersistencePackageRequest actualAddFilterAndSortCriteriaResult = adornedResult
+        .addFilterAndSortCriteria(new FilterAndSortCriteria[]{filterAndSortCriteria});
 
     // Assert
-    List<FilterAndSortCriteria> filterAndSortCriteriaList =
-        actualAddFilterAndSortCriteriaResult.filterAndSortCriteria;
+    List<FilterAndSortCriteria> filterAndSortCriteriaList = actualAddFilterAndSortCriteriaResult.filterAndSortCriteria;
     assertEquals(1, filterAndSortCriteriaList.size());
     List<FilterAndSortCriteria> filterAndSortCriteriaList2 = adornedResult.filterAndSortCriteria;
     assertEquals(1, filterAndSortCriteriaList2.size());
-    FilterAndSortCriteria[] filterAndSortCriteria2 =
-        actualAddFilterAndSortCriteriaResult.getFilterAndSortCriteria();
+    FilterAndSortCriteria[] filterAndSortCriteria2 = actualAddFilterAndSortCriteriaResult.getFilterAndSortCriteria();
     assertEquals(1, filterAndSortCriteria2.length);
     FilterAndSortCriteria[] filterAndSortCriteria3 = adornedResult.getFilterAndSortCriteria();
     assertEquals(1, filterAndSortCriteria3.length);
@@ -1977,25 +1743,21 @@ public class PersistencePackageRequestDiffblueTest {
   }
 
   /**
-   * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria[])} with
-   * {@code FilterAndSortCriteria[]}.
-   *
-   * <p>Method under test: {@link
-   * PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria[])}
+   * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria[])} with {@code FilterAndSortCriteria[]}.
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(FilterAndSortCriteria[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(FilterAndSortCriteria[])"
-  })
+      "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(FilterAndSortCriteria[])"})
   public void testAddFilterAndSortCriteriaWithFilterAndSortCriteria3() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualAddFilterAndSortCriteriaResult =
-        adornedResult.addFilterAndSortCriteria((FilterAndSortCriteria[]) null);
+    PersistencePackageRequest actualAddFilterAndSortCriteriaResult = adornedResult
+        .addFilterAndSortCriteria((FilterAndSortCriteria[]) null);
 
     // Assert
     assertEquals(0, actualAddFilterAndSortCriteriaResult.getFilterAndSortCriteria().length);
@@ -2006,27 +1768,23 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(List)} with {@code List}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistencePackageRequest#filterAndSortCriteria} size is one.
+   *   <li>Then return {@link PersistencePackageRequest#filterAndSortCriteria} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(List)"})
   public void testAddFilterAndSortCriteriaWithList_thenReturnFilterAndSortCriteriaSizeIsOne() {
     // Arrange
     ArrayList<FilterAndSortCriteria> filterAndSortCriteria = new ArrayList<>();
     filterAndSortCriteria.add(new FilterAndSortCriteria("42"));
 
     // Act
-    PersistencePackageRequest actualAddFilterAndSortCriteriaResult =
-        persistencePackageRequest.addFilterAndSortCriteria(filterAndSortCriteria);
+    PersistencePackageRequest actualAddFilterAndSortCriteriaResult = persistencePackageRequest
+        .addFilterAndSortCriteria(filterAndSortCriteria);
 
     // Assert
     assertEquals(1, actualAddFilterAndSortCriteriaResult.filterAndSortCriteria.size());
@@ -2037,19 +1795,15 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(List)} with {@code List}.
-   *
    * <ul>
-   *   <li>Then return {@link PersistencePackageRequest#filterAndSortCriteria} size is two.
+   *   <li>Then return {@link PersistencePackageRequest#filterAndSortCriteria} size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(List)"})
   public void testAddFilterAndSortCriteriaWithList_thenReturnFilterAndSortCriteriaSizeIsTwo() {
     // Arrange
     ArrayList<FilterAndSortCriteria> filterAndSortCriteria = new ArrayList<>();
@@ -2058,21 +1812,17 @@ public class PersistencePackageRequestDiffblueTest {
     filterAndSortCriteria.add(filterAndSortCriteria2);
 
     // Act
-    PersistencePackageRequest actualAddFilterAndSortCriteriaResult =
-        persistencePackageRequest.addFilterAndSortCriteria(filterAndSortCriteria);
+    PersistencePackageRequest actualAddFilterAndSortCriteriaResult = persistencePackageRequest
+        .addFilterAndSortCriteria(filterAndSortCriteria);
 
     // Assert
-    List<FilterAndSortCriteria> filterAndSortCriteriaList =
-        actualAddFilterAndSortCriteriaResult.filterAndSortCriteria;
+    List<FilterAndSortCriteria> filterAndSortCriteriaList = actualAddFilterAndSortCriteriaResult.filterAndSortCriteria;
     assertEquals(2, filterAndSortCriteriaList.size());
-    List<FilterAndSortCriteria> filterAndSortCriteriaList2 =
-        persistencePackageRequest.filterAndSortCriteria;
+    List<FilterAndSortCriteria> filterAndSortCriteriaList2 = persistencePackageRequest.filterAndSortCriteria;
     assertEquals(2, filterAndSortCriteriaList2.size());
-    FilterAndSortCriteria[] filterAndSortCriteria3 =
-        actualAddFilterAndSortCriteriaResult.getFilterAndSortCriteria();
+    FilterAndSortCriteria[] filterAndSortCriteria3 = actualAddFilterAndSortCriteriaResult.getFilterAndSortCriteria();
     assertEquals(2, filterAndSortCriteria3.length);
-    FilterAndSortCriteria[] filterAndSortCriteria4 =
-        persistencePackageRequest.getFilterAndSortCriteria();
+    FilterAndSortCriteria[] filterAndSortCriteria4 = persistencePackageRequest.getFilterAndSortCriteria();
     assertEquals(2, filterAndSortCriteria4.length);
     assertSame(filterAndSortCriteria2, filterAndSortCriteriaList.get(1));
     assertSame(filterAndSortCriteria2, filterAndSortCriteriaList2.get(1));
@@ -2082,27 +1832,23 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#addFilterAndSortCriteria(List)} with {@code List}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return array length is zero.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(List)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#addFilterAndSortCriteria(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.addFilterAndSortCriteria(List)"})
   public void testAddFilterAndSortCriteriaWithList_whenArrayList_thenReturnArrayLengthIsZero() {
     // Arrange
     ArrayList<FilterAndSortCriteria> filterAndSortCriteria = new ArrayList<>();
 
     // Act
-    PersistencePackageRequest actualAddFilterAndSortCriteriaResult =
-        persistencePackageRequest.addFilterAndSortCriteria(filterAndSortCriteria);
+    PersistencePackageRequest actualAddFilterAndSortCriteriaResult = persistencePackageRequest
+        .addFilterAndSortCriteria(filterAndSortCriteria);
 
     // Assert
     assertEquals(0, actualAddFilterAndSortCriteriaResult.getFilterAndSortCriteria().length);
@@ -2114,114 +1860,32 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#removeFilterAndSortCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#removeFilterAndSortCriteria(String)}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#removeFilterAndSortCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.removeFilterAndSortCriteria(String)"
-  })
-  public void testRemoveFilterAndSortCriteria_thenReturnArrayLengthIsZero() {
-    // Arrange
-    PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
-    adornedResult.addFilterAndSortCriteria(new FilterAndSortCriteria("Name"));
-
-    // Act
-    PersistencePackageRequest actualRemoveFilterAndSortCriteriaResult =
-        adornedResult.removeFilterAndSortCriteria("Name");
-
-    // Assert
-    assertEquals(0, actualRemoveFilterAndSortCriteriaResult.getFilterAndSortCriteria().length);
-    assertEquals(0, adornedResult.getFilterAndSortCriteria().length);
-    assertTrue(actualRemoveFilterAndSortCriteriaResult.filterAndSortCriteria.isEmpty());
-    assertTrue(adornedResult.filterAndSortCriteria.isEmpty());
-  }
-
-  /**
-   * Test {@link PersistencePackageRequest#removeFilterAndSortCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@link PersistencePackageRequest#filterAndSortCriteria} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#removeFilterAndSortCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.removeFilterAndSortCriteria(String)"
-  })
-  public void testRemoveFilterAndSortCriteria_thenReturnFilterAndSortCriteriaSizeIsOne() {
-    // Arrange
-    PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
-    FilterAndSortCriteria filterAndSortCriteria = new FilterAndSortCriteria("42");
-    adornedResult.addFilterAndSortCriteria(filterAndSortCriteria);
-
-    // Act
-    PersistencePackageRequest actualRemoveFilterAndSortCriteriaResult =
-        adornedResult.removeFilterAndSortCriteria("Name");
-
-    // Assert
-    List<FilterAndSortCriteria> filterAndSortCriteriaList =
-        actualRemoveFilterAndSortCriteriaResult.filterAndSortCriteria;
-    assertEquals(1, filterAndSortCriteriaList.size());
-    FilterAndSortCriteria[] filterAndSortCriteria2 =
-        actualRemoveFilterAndSortCriteriaResult.getFilterAndSortCriteria();
-    assertEquals(1, filterAndSortCriteria2.length);
-    assertSame(filterAndSortCriteria, filterAndSortCriteriaList.get(0));
-    assertSame(filterAndSortCriteria, filterAndSortCriteria2[0]);
-  }
-
-  /**
-   * Test {@link PersistencePackageRequest#removeFilterAndSortCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@link PersistencePackageRequest}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#removeFilterAndSortCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.removeFilterAndSortCriteria(String)"
-  })
-  public void testRemoveFilterAndSortCriteria_thenReturnPersistencePackageRequest() {
-    // Arrange and Act
-    PersistencePackageRequest actualRemoveFilterAndSortCriteriaResult =
-        persistencePackageRequest.removeFilterAndSortCriteria("Name");
-
-    // Assert
-    assertSame(persistencePackageRequest, actualRemoveFilterAndSortCriteriaResult);
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.removeFilterAndSortCriteria(String)"})
+  public void testRemoveFilterAndSortCriteria() {
+    // Arrange, Act and Assert
+    assertSame(persistencePackageRequest, persistencePackageRequest.removeFilterAndSortCriteria("Name"));
   }
 
   /**
    * Test {@link PersistencePackageRequest#clearFilterAndSortCriteria()}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#clearFilterAndSortCriteria()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#clearFilterAndSortCriteria()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.clearFilterAndSortCriteria()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.clearFilterAndSortCriteria()"})
   public void testClearFilterAndSortCriteria() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
     adornedResult.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
 
     // Act
-    PersistencePackageRequest actualClearFilterAndSortCriteriaResult =
-        adornedResult.clearFilterAndSortCriteria();
+    PersistencePackageRequest actualClearFilterAndSortCriteriaResult = adornedResult.clearFilterAndSortCriteria();
 
     // Assert
     assertEquals(0, adornedResult.getFilterAndSortCriteria().length);
@@ -2231,26 +1895,21 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#clearFilterAndSortCriteria()}.
-   *
    * <ul>
-   *   <li>Given adorned.
+   *   <li>Given adorned.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#clearFilterAndSortCriteria()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#clearFilterAndSortCriteria()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePackageRequest PersistencePackageRequest.clearFilterAndSortCriteria()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PersistencePackageRequest PersistencePackageRequest.clearFilterAndSortCriteria()"})
   public void testClearFilterAndSortCriteria_givenAdorned() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    PersistencePackageRequest actualClearFilterAndSortCriteriaResult =
-        adornedResult.clearFilterAndSortCriteria();
+    PersistencePackageRequest actualClearFilterAndSortCriteriaResult = adornedResult.clearFilterAndSortCriteria();
 
     // Assert
     assertEquals(0, adornedResult.getFilterAndSortCriteria().length);
@@ -2260,17 +1919,15 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#hasSortCriteria()}.
-   *
    * <ul>
-   *   <li>Given adorned.
-   *   <li>Then return {@code false}.
+   *   <li>Given adorned.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#hasSortCriteria()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#hasSortCriteria()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PersistencePackageRequest.hasSortCriteria()"})
   public void testHasSortCriteria_givenAdorned_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -2279,16 +1936,14 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#hasSortCriteria()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#hasSortCriteria()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#hasSortCriteria()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PersistencePackageRequest.hasSortCriteria()"})
   public void testHasSortCriteria_thenReturnFalse() {
     // Arrange
@@ -2301,22 +1956,19 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#hasSortCriteria()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#hasSortCriteria()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#hasSortCriteria()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PersistencePackageRequest.hasSortCriteria()"})
   public void testHasSortCriteria_thenReturnTrue() {
     // Arrange
     FilterAndSortCriteria filterAndSortCriteria = new FilterAndSortCriteria("42");
     filterAndSortCriteria.setSortAscending(true);
-
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
     adornedResult.addFilterAndSortCriteria(filterAndSortCriteria);
 
@@ -2326,12 +1978,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#getCustomCriteria()}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#getCustomCriteria()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#getCustomCriteria()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String[] PersistencePackageRequest.getCustomCriteria()"})
   public void testGetCustomCriteria() {
     // Arrange, Act and Assert
@@ -2340,12 +1991,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#getAdditionalForeignKeys()}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#getAdditionalForeignKeys()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#getAdditionalForeignKeys()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ForeignKey[] PersistencePackageRequest.getAdditionalForeignKeys()"})
   public void testGetAdditionalForeignKeys() {
     // Arrange, Act and Assert
@@ -2354,12 +2004,11 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#setAdditionalForeignKeys(ForeignKey[])}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#setAdditionalForeignKeys(ForeignKey[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#setAdditionalForeignKeys(ForeignKey[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackageRequest.setAdditionalForeignKeys(ForeignKey[])"})
   public void testSetAdditionalForeignKeys() {
     // Arrange
@@ -2367,7 +2016,7 @@ public class PersistencePackageRequestDiffblueTest {
     ForeignKey foreignKey = new ForeignKey();
 
     // Act
-    adornedResult.setAdditionalForeignKeys(new ForeignKey[] {foreignKey});
+    adornedResult.setAdditionalForeignKeys(new ForeignKey[]{foreignKey});
 
     // Assert
     List<ForeignKey> foreignKeyList = adornedResult.additionalForeignKeys;
@@ -2380,51 +2029,47 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#setCustomCriteria(String[])}.
-   *
    * <ul>
-   *   <li>Then adorned {@link PersistencePackageRequest#customCriteria} size is one.
+   *   <li>Then adorned {@link PersistencePackageRequest#customCriteria} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#setCustomCriteria(String[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#setCustomCriteria(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackageRequest.setCustomCriteria(String[])"})
   public void testSetCustomCriteria_thenAdornedCustomCriteriaSizeIsOne() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    adornedResult.setCustomCriteria(new String[] {"Custom Criteria"});
+    adornedResult.setCustomCriteria(new String[]{"Custom Criteria"});
 
     // Assert
     List<String> stringList = adornedResult.customCriteria;
     assertEquals(1, stringList.size());
     assertEquals("Custom Criteria", stringList.get(0));
-    assertArrayEquals(new String[] {"Custom Criteria"}, adornedResult.getCustomCriteria());
+    assertArrayEquals(new String[]{"Custom Criteria"}, adornedResult.getCustomCriteria());
   }
 
   /**
    * Test {@link PersistencePackageRequest#setCustomCriteria(String[])}.
-   *
    * <ul>
-   *   <li>When empty array of {@link String}.
-   *   <li>Then array length is zero.
+   *   <li>When empty array of {@link String}.</li>
+   *   <li>Then array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#setCustomCriteria(String[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#setCustomCriteria(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackageRequest.setCustomCriteria(String[])"})
   public void testSetCustomCriteria_whenEmptyArrayOfString_thenArrayLengthIsZero() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
 
     // Act
-    adornedResult.setCustomCriteria(new String[] {});
+    adornedResult.setCustomCriteria(new String[]{});
 
     // Assert that nothing has changed
     assertEquals(0, adornedResult.getCustomCriteria().length);
@@ -2433,17 +2078,15 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#setCustomCriteria(String[])}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then array length is zero.
+   *   <li>When {@code null}.</li>
+   *   <li>Then array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#setCustomCriteria(String[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#setCustomCriteria(String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackageRequest.setCustomCriteria(String[])"})
   public void testSetCustomCriteria_whenNull_thenArrayLengthIsZero() {
     // Arrange
@@ -2459,15 +2102,12 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#getFilterAndSortCriteria()}.
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#getFilterAndSortCriteria()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#getFilterAndSortCriteria()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FilterAndSortCriteria[] PersistencePackageRequest.getFilterAndSortCriteria()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FilterAndSortCriteria[] PersistencePackageRequest.getFilterAndSortCriteria()"})
   public void testGetFilterAndSortCriteria() {
     // Arrange, Act and Assert
     assertEquals(0, PersistencePackageRequest.adorned().getFilterAndSortCriteria().length);
@@ -2475,23 +2115,19 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#setFilterAndSortCriteria(FilterAndSortCriteria[])}.
-   *
-   * <p>Method under test: {@link
-   * PersistencePackageRequest#setFilterAndSortCriteria(FilterAndSortCriteria[])}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#setFilterAndSortCriteria(FilterAndSortCriteria[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistencePackageRequest.setFilterAndSortCriteria(FilterAndSortCriteria[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePackageRequest.setFilterAndSortCriteria(FilterAndSortCriteria[])"})
   public void testSetFilterAndSortCriteria() {
     // Arrange
     PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
     FilterAndSortCriteria filterAndSortCriteria = new FilterAndSortCriteria("42");
 
     // Act
-    adornedResult.setFilterAndSortCriteria(new FilterAndSortCriteria[] {filterAndSortCriteria});
+    adornedResult.setFilterAndSortCriteria(new FilterAndSortCriteria[]{filterAndSortCriteria});
 
     // Assert
     List<FilterAndSortCriteria> filterAndSortCriteriaList = adornedResult.filterAndSortCriteria;
@@ -2504,17 +2140,15 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#getSecurityCeilingEntityClassname()}.
-   *
    * <ul>
-   *   <li>Given adorned.
-   *   <li>Then return {@code null}.
+   *   <li>Given adorned.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#getSecurityCeilingEntityClassname()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#getSecurityCeilingEntityClassname()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PersistencePackageRequest.getSecurityCeilingEntityClassname()"})
   public void testGetSecurityCeilingEntityClassname_givenAdorned_thenReturnNull() {
     // Arrange, Act and Assert
@@ -2523,24 +2157,21 @@ public class PersistencePackageRequestDiffblueTest {
 
   /**
    * Test {@link PersistencePackageRequest#getSecurityCeilingEntityClassname()}.
-   *
    * <ul>
-   *   <li>Then return {@code foo}.
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackageRequest#getSecurityCeilingEntityClassname()}
+   * <p>
+   * Method under test: {@link PersistencePackageRequest#getSecurityCeilingEntityClassname()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PersistencePackageRequest.getSecurityCeilingEntityClassname()"})
   public void testGetSecurityCeilingEntityClassname_thenReturnFoo() {
     // Arrange
-    PersistencePackageRequest persistencePackageRequest =
-        new PersistencePackageRequest(Type.STANDARD);
-    persistencePackageRequest.setSecurityCeilingEntityClassname("foo");
+    PersistencePackageRequest adornedResult = PersistencePackageRequest.adorned();
+    adornedResult.setSecurityCeilingEntityClassname("foo");
 
     // Act and Assert
-    assertEquals("foo", persistencePackageRequest.getSecurityCeilingEntityClassname());
+    assertEquals("foo", adornedResult.getSecurityCeilingEntityClassname());
   }
 }

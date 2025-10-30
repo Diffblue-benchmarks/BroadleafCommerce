@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.inventory.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,9 +28,8 @@ import org.junit.experimental.categories.Category;
 public class InventoryTypeDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link InventoryType#InventoryType()}
    *   <li>{@link InventoryType#getFriendlyType()}
@@ -39,13 +37,9 @@ public class InventoryTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void InventoryType.<init>()",
-    "String InventoryType.getFriendlyType()",
-    "String InventoryType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryType.<init>()", "String InventoryType.getFriendlyType()",
+      "String InventoryType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     InventoryType actualInventoryType = new InventoryType();
@@ -58,22 +52,19 @@ public class InventoryTypeDiffblueTest {
 
   /**
    * Test {@link InventoryType#equals(Object)}, and {@link InventoryType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link InventoryType#equals(Object)}
    *   <li>{@link InventoryType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean InventoryType.equals(Object)", "int InventoryType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -82,27 +73,25 @@ public class InventoryTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(inventoryType, inventoryType2);
-    assertEquals(inventoryType.hashCode(), inventoryType2.hashCode());
+    int expectedHashCodeResult = inventoryType.hashCode();
+    assertEquals(expectedHashCodeResult, inventoryType2.hashCode());
   }
 
   /**
    * Test {@link InventoryType#equals(Object)}, and {@link InventoryType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link InventoryType#equals(Object)}
    *   <li>{@link InventoryType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean InventoryType.equals(Object)", "int InventoryType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -111,27 +100,25 @@ public class InventoryTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(inventoryType, inventoryType2);
-    assertEquals(inventoryType.hashCode(), inventoryType2.hashCode());
+    int expectedHashCodeResult = inventoryType.hashCode();
+    assertEquals(expectedHashCodeResult, inventoryType2.hashCode());
   }
 
   /**
    * Test {@link InventoryType#equals(Object)}, and {@link InventoryType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link InventoryType#equals(Object)}
    *   <li>{@link InventoryType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean InventoryType.equals(Object)", "int InventoryType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -145,17 +132,15 @@ public class InventoryTypeDiffblueTest {
 
   /**
    * Test {@link InventoryType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link InventoryType#equals(Object)}
+   * <p>
+   * Method under test: {@link InventoryType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean InventoryType.equals(Object)", "int InventoryType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -164,17 +149,15 @@ public class InventoryTypeDiffblueTest {
 
   /**
    * Test {@link InventoryType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link InventoryType#equals(Object)}
+   * <p>
+   * Method under test: {@link InventoryType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean InventoryType.equals(Object)", "int InventoryType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -183,17 +166,15 @@ public class InventoryTypeDiffblueTest {
 
   /**
    * Test {@link InventoryType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link InventoryType#equals(Object)}
+   * <p>
+   * Method under test: {@link InventoryType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean InventoryType.equals(Object)", "int InventoryType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -202,17 +183,15 @@ public class InventoryTypeDiffblueTest {
 
   /**
    * Test {@link InventoryType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link InventoryType#equals(Object)}
+   * <p>
+   * Method under test: {@link InventoryType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean InventoryType.equals(Object)", "int InventoryType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

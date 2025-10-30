@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.order.service.call;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,9 +28,8 @@ import org.junit.experimental.categories.Category;
 public class OrderItemRequestDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderItemRequest#OrderItemRequest()}
    *   <li>{@link OrderItemRequest#setItemName(String)}
@@ -39,13 +37,9 @@ public class OrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemRequest.<init>()",
-    "String OrderItemRequest.getItemName()",
-    "void OrderItemRequest.setItemName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderItemRequest.<init>()", "String OrderItemRequest.getItemName()",
+      "void OrderItemRequest.setItemName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemRequest actualOrderItemRequest = new OrderItemRequest();
@@ -67,17 +61,15 @@ public class OrderItemRequestDiffblueTest {
 
   /**
    * Test {@link OrderItemRequest#OrderItemRequest(AbstractOrderItemRequest)}.
-   *
    * <ul>
-   *   <li>When {@link DiscreteOrderItemRequest#DiscreteOrderItemRequest()}.
-   *   <li>Then return ItemName is {@code null}.
+   *   <li>When {@link DiscreteOrderItemRequest#DiscreteOrderItemRequest()}.</li>
+   *   <li>Then return ItemName is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequest#OrderItemRequest(AbstractOrderItemRequest)}
+   * <p>
+   * Method under test: {@link OrderItemRequest#OrderItemRequest(AbstractOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderItemRequest.<init>(AbstractOrderItemRequest)"})
   public void testNewOrderItemRequest_whenDiscreteOrderItemRequest_thenReturnItemNameIsNull() {
     // Arrange and Act
@@ -99,21 +91,17 @@ public class OrderItemRequestDiffblueTest {
 
   /**
    * Test {@link OrderItemRequest#clone()}.
-   *
-   * <p>Method under test: {@link OrderItemRequest#clone()}
+   * <p>
+   * Method under test: {@link OrderItemRequest#clone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderItemRequest OrderItemRequest.clone()"})
   public void testClone() {
     // Arrange
     OrderItemRequest orderItemRequest = new OrderItemRequest();
 
-    // Act
-    OrderItemRequest actualCloneResult = orderItemRequest.clone();
-
-    // Assert
-    assertEquals(orderItemRequest, actualCloneResult);
+    // Act and Assert
+    assertEquals(orderItemRequest, orderItemRequest.clone());
   }
 }

@@ -20,7 +20,6 @@ package org.broadleafcommerce.core.web.checkout.section;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -29,9 +28,8 @@ import org.junit.jupiter.api.Test;
 class CheckoutSectionViewTypeDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CheckoutSectionViewType#CheckoutSectionViewType()}
    *   <li>{@link CheckoutSectionViewType#getFriendlyType()}
@@ -40,13 +38,9 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CheckoutSectionViewType.<init>()",
-    "String CheckoutSectionViewType.getFriendlyType()",
-    "String CheckoutSectionViewType.getType()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CheckoutSectionViewType.<init>()", "String CheckoutSectionViewType.getFriendlyType()",
+      "String CheckoutSectionViewType.getType()"})
   void testGettersAndSetters() {
     // Arrange and Act
     CheckoutSectionViewType actualCheckoutSectionViewType = new CheckoutSectionViewType();
@@ -59,18 +53,16 @@ class CheckoutSectionViewTypeDiffblueTest {
 
   /**
    * Test {@link CheckoutSectionViewType#CheckoutSectionViewType(String, String)}.
-   *
-   * <p>Method under test: {@link CheckoutSectionViewType#CheckoutSectionViewType(String, String)}
+   * <p>
+   * Method under test: {@link CheckoutSectionViewType#CheckoutSectionViewType(String, String)}
    */
   @Test
   @DisplayName("Test new CheckoutSectionViewType(String, String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CheckoutSectionViewType.<init>(String, String)"})
   void testNewCheckoutSectionViewType() {
     // Arrange and Act
-    CheckoutSectionViewType actualCheckoutSectionViewType =
-        new CheckoutSectionViewType("Type", "Friendly Type");
+    CheckoutSectionViewType actualCheckoutSectionViewType = new CheckoutSectionViewType("Type", "Friendly Type");
 
     // Assert
     assertEquals("Friendly Type", actualCheckoutSectionViewType.getFriendlyType());
@@ -78,16 +70,13 @@ class CheckoutSectionViewTypeDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link
-   * CheckoutSectionViewType#hashCode()}.
-   *
+   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link CheckoutSectionViewType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CheckoutSectionViewType#equals(Object)}
    *   <li>{@link CheckoutSectionViewType#hashCode()}
@@ -95,12 +84,8 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CheckoutSectionViewType.equals(Object)",
-    "int CheckoutSectionViewType.hashCode()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CheckoutSectionViewType checkoutSectionViewType = CheckoutSectionViewType.BILLING_INFO;
@@ -108,20 +93,18 @@ class CheckoutSectionViewTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(checkoutSectionViewType, checkoutSectionViewType2);
-    assertEquals(checkoutSectionViewType.hashCode(), checkoutSectionViewType2.hashCode());
+    int expectedHashCodeResult = checkoutSectionViewType.hashCode();
+    assertEquals(expectedHashCodeResult, checkoutSectionViewType2.hashCode());
   }
 
   /**
-   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link
-   * CheckoutSectionViewType#hashCode()}.
-   *
+   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link CheckoutSectionViewType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CheckoutSectionViewType#equals(Object)}
    *   <li>{@link CheckoutSectionViewType#hashCode()}
@@ -129,68 +112,55 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CheckoutSectionViewType.equals(Object)",
-    "int CheckoutSectionViewType.hashCode()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    CheckoutSectionViewType checkoutSectionViewType = CheckoutSectionViewType.ORDER_INFO;
-    CheckoutSectionViewType checkoutSectionViewType2 =
-        new CheckoutSectionViewType("ORDER_INFO", "ORDER_INFO");
-
-    // Act and Assert
-    assertEquals(checkoutSectionViewType, checkoutSectionViewType2);
-    assertEquals(checkoutSectionViewType.hashCode(), checkoutSectionViewType2.hashCode());
-  }
-
-  /**
-   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link
-   * CheckoutSectionViewType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link CheckoutSectionViewType#equals(Object)}
-   *   <li>{@link CheckoutSectionViewType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CheckoutSectionViewType.equals(Object)",
-    "int CheckoutSectionViewType.hashCode()"
-  })
-  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CheckoutSectionViewType checkoutSectionViewType = new CheckoutSectionViewType();
     CheckoutSectionViewType checkoutSectionViewType2 = new CheckoutSectionViewType();
 
     // Act and Assert
     assertEquals(checkoutSectionViewType, checkoutSectionViewType2);
-    assertEquals(checkoutSectionViewType.hashCode(), checkoutSectionViewType2.hashCode());
+    int expectedHashCodeResult = checkoutSectionViewType.hashCode();
+    assertEquals(expectedHashCodeResult, checkoutSectionViewType2.hashCode());
   }
 
   /**
-   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link
-   * CheckoutSectionViewType#hashCode()}.
-   *
+   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link CheckoutSectionViewType#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link CheckoutSectionViewType#equals(Object)}
+   *   <li>{@link CheckoutSectionViewType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
+  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    CheckoutSectionViewType checkoutSectionViewType = new CheckoutSectionViewType("BILLING_INFO", "Friendly Type");
+    CheckoutSectionViewType checkoutSectionViewType2 = CheckoutSectionViewType.BILLING_INFO;
+
+    // Act and Assert
+    assertEquals(checkoutSectionViewType, checkoutSectionViewType2);
+    int expectedHashCodeResult = checkoutSectionViewType.hashCode();
+    assertEquals(expectedHashCodeResult, checkoutSectionViewType2.hashCode());
+  }
+
+  /**
+   * Test {@link CheckoutSectionViewType#equals(Object)}, and {@link CheckoutSectionViewType#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CheckoutSectionViewType#equals(Object)}
    *   <li>{@link CheckoutSectionViewType#hashCode()}
@@ -198,12 +168,8 @@ class CheckoutSectionViewTypeDiffblueTest {
    */
   @Test
   @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CheckoutSectionViewType.equals(Object)",
-    "int CheckoutSectionViewType.hashCode()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CheckoutSectionViewType checkoutSectionViewType = CheckoutSectionViewType.BILLING_INFO;
@@ -216,22 +182,17 @@ class CheckoutSectionViewTypeDiffblueTest {
 
   /**
    * Test {@link CheckoutSectionViewType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutSectionViewType#equals(Object)}
+   * <p>
+   * Method under test: {@link CheckoutSectionViewType#equals(Object)}
    */
   @Test
   @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CheckoutSectionViewType.equals(Object)",
-    "int CheckoutSectionViewType.hashCode()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CheckoutSectionViewType.ORDER_INFO, CheckoutSectionViewType.BILLING_INFO);
@@ -239,22 +200,17 @@ class CheckoutSectionViewTypeDiffblueTest {
 
   /**
    * Test {@link CheckoutSectionViewType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutSectionViewType#equals(Object)}
+   * <p>
+   * Method under test: {@link CheckoutSectionViewType#equals(Object)}
    */
   @Test
   @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CheckoutSectionViewType.equals(Object)",
-    "int CheckoutSectionViewType.hashCode()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new CheckoutSectionViewType(), CheckoutSectionViewType.BILLING_INFO);
@@ -262,22 +218,17 @@ class CheckoutSectionViewTypeDiffblueTest {
 
   /**
    * Test {@link CheckoutSectionViewType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutSectionViewType#equals(Object)}
+   * <p>
+   * Method under test: {@link CheckoutSectionViewType#equals(Object)}
    */
   @Test
   @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CheckoutSectionViewType.equals(Object)",
-    "int CheckoutSectionViewType.hashCode()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CheckoutSectionViewType.BILLING_INFO, null);
@@ -285,25 +236,19 @@ class CheckoutSectionViewTypeDiffblueTest {
 
   /**
    * Test {@link CheckoutSectionViewType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutSectionViewType#equals(Object)}
+   * <p>
+   * Method under test: {@link CheckoutSectionViewType#equals(Object)}
    */
   @Test
   @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CheckoutSectionViewType.equals(Object)",
-    "int CheckoutSectionViewType.hashCode()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean CheckoutSectionViewType.equals(Object)", "int CheckoutSectionViewType.hashCode()"})
   void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        CheckoutSectionViewType.BILLING_INFO, "Different type to CheckoutSectionViewType");
+    assertNotEquals(CheckoutSectionViewType.BILLING_INFO, "Different type to CheckoutSectionViewType");
   }
 }

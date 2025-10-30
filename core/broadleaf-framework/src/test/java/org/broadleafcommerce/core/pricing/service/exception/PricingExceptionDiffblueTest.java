@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.pricing.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,22 +28,16 @@ import org.junit.experimental.categories.Category;
 public class PricingExceptionDiffblueTest {
   /**
    * Test {@link PricingException#PricingException()}.
-   *
    * <ul>
-   *   <li>Then return Message is {@code null}.
+   *   <li>Then return Message is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PricingException#PricingException()}
+   * <p>
+   * Method under test: {@link PricingException#PricingException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PricingException.<init>()",
-    "void PricingException.<init>(String)",
-    "void PricingException.<init>(String, Throwable)",
-    "void PricingException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PricingException.<init>()", "void PricingException.<init>(String)",
+      "void PricingException.<init>(String, Throwable)", "void PricingException.<init>(Throwable)"})
   public void testNewPricingException_thenReturnMessageIsNull() {
     // Arrange and Act
     PricingException actualPricingException = new PricingException();
@@ -57,23 +50,17 @@ public class PricingExceptionDiffblueTest {
 
   /**
    * Test {@link PricingException#PricingException(String)}.
-   *
    * <ul>
-   *   <li>When {@code An error occurred}.
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>When {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PricingException#PricingException(String)}
+   * <p>
+   * Method under test: {@link PricingException#PricingException(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PricingException.<init>()",
-    "void PricingException.<init>(String)",
-    "void PricingException.<init>(String, Throwable)",
-    "void PricingException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PricingException.<init>()", "void PricingException.<init>(String)",
+      "void PricingException.<init>(String, Throwable)", "void PricingException.<init>(Throwable)"})
   public void testNewPricingException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     PricingException actualPricingException = new PricingException("An error occurred");
@@ -86,23 +73,17 @@ public class PricingExceptionDiffblueTest {
 
   /**
    * Test {@link PricingException#PricingException(String, Throwable)}.
-   *
    * <ul>
-   *   <li>When {@code An error occurred}.
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>When {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PricingException#PricingException(String, Throwable)}
+   * <p>
+   * Method under test: {@link PricingException#PricingException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PricingException.<init>()",
-    "void PricingException.<init>(String)",
-    "void PricingException.<init>(String, Throwable)",
-    "void PricingException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PricingException.<init>()", "void PricingException.<init>(String)",
+      "void PricingException.<init>(String, Throwable)", "void PricingException.<init>(Throwable)"})
   public void testNewPricingException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -118,23 +99,17 @@ public class PricingExceptionDiffblueTest {
 
   /**
    * Test {@link PricingException#PricingException(Throwable)}.
-   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.
-   *   <li>Then return Message is {@code Throwable}.
+   *   <li>When {@link Throwable#Throwable()}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PricingException#PricingException(Throwable)}
+   * <p>
+   * Method under test: {@link PricingException#PricingException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PricingException.<init>()",
-    "void PricingException.<init>(String)",
-    "void PricingException.<init>(String, Throwable)",
-    "void PricingException.<init>(Throwable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PricingException.<init>()", "void PricingException.<init>(String)",
+      "void PricingException.<init>(String, Throwable)", "void PricingException.<init>(Throwable)"})
   public void testNewPricingException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

@@ -21,206 +21,140 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.template.TemplateType;
-import org.broadleafcommerce.core.catalog.domain.Product;
-import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
-import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
-import org.broadleafcommerce.core.order.service.OrderItemService;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.web.controller.catalog.BroadleafProductController.ResourceNotFoundException;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 @ExtendWith(MockitoExtension.class)
 class BroadleafProductControllerDiffblueTest {
-  @InjectMocks private BroadleafProductController broadleafProductController;
-
-  @Mock private OrderItemService orderItemService;
-
-  /**
-   * Test {@link BroadleafProductController#handleRequest(HttpServletRequest, HttpServletResponse)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link ResourceNotFoundException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafProductController#handleRequest(HttpServletRequest,
-   * HttpServletResponse)}
-   */
-  @Test
-  @DisplayName(
-      "Test handleRequest(HttpServletRequest, HttpServletResponse); then throw ResourceNotFoundException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.springframework.web.servlet.ModelAndView BroadleafProductController.handleRequest(HttpServletRequest, HttpServletResponse)"
-  })
-  void testHandleRequest_thenThrowResourceNotFoundException() throws Exception {
-    // Arrange
-    when(orderItemService.createConfigurableOrderItemRequestFromProduct(Mockito.<Product>any()))
-        .thenThrow(new BroadleafProductController().new ResourceNotFoundException());
-
-    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
-    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
-    doNothing().when(servletRequest).setCharacterEncoding(Mockito.<String>any());
-    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(new ProductBundleImpl());
-    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
-    servletRequest.addParameter("https://example.org/example", "https://example.org/example");
-
-    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest);
-    request.setAttribute("currentProduct", "42");
-    request.setCharacterEncoding("currentProduct");
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertThrows(
-        ResourceNotFoundException.class,
-        () -> broadleafProductController.handleRequest(request2, new MockHttpServletResponse()));
-    verify(orderItemService).createConfigurableOrderItemRequestFromProduct(isA(Product.class));
-    verify(servletRequest)
-        .addParameter("https://example.org/example", "https://example.org/example");
-    verify(servletRequest).getAttribute("currentProduct");
-    verify(servletRequest).setAttribute(eq("currentProduct"), isA(Object.class));
-    verify(servletRequest).setCharacterEncoding("currentProduct");
-  }
+  @InjectMocks
+  private BroadleafProductController broadleafProductController;
 
   /**
    * Test {@link BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}.
-   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}
+   * <p>
+   * Method under test: {@link BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}
    */
   @Test
-  @DisplayName(
-      "Test orderItemBelongsToCurrentCustomer(OrderItem); given NullOrderImpl (default constructor); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafProductController.orderItemBelongsToCurrentCustomer(OrderItem)"
-  })
-  void testOrderItemBelongsToCurrentCustomer_givenNullOrderImpl_thenReturnTrue() {
+  @DisplayName("Test orderItemBelongsToCurrentCustomer(OrderItem); given Auditable (default constructor) CreatedBy is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean BroadleafProductController.orderItemBelongsToCurrentCustomer(OrderItem)"})
+  void testOrderItemBelongsToCurrentCustomer_givenAuditableCreatedByIsOne() {
     // Arrange
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(new NullOrderImpl());
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
-    // Act and Assert
-    assertTrue(broadleafProductController.orderItemBelongsToCurrentCustomer(orderItem));
-  }
-
-  /**
-   * Test {@link BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Order#getCustomer()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}
-   */
-  @Test
-  @DisplayName("Test orderItemBelongsToCurrentCustomer(OrderItem); then calls getCustomer()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafProductController.orderItemBelongsToCurrentCustomer(OrderItem)"
-  })
-  void testOrderItemBelongsToCurrentCustomer_thenCallsGetCustomer() {
-    // Arrange
-    Order order = mock(Order.class);
-    when(order.getCustomer()).thenReturn(new CustomerImpl());
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(order);
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("ThreadLocalManager.notify.orphans");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(new OrderStatus("ThreadLocalManager.notify.orphans", "ThreadLocalManager.notify.orphans"));
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalShipping(new Money());
+    orderImpl.setTotalTax(new Money());
+    OrderItem orderItem = mock(OrderItem.class);
+    when(orderItem.getOrder()).thenReturn(orderImpl);
 
     // Act
-    boolean actualOrderItemBelongsToCurrentCustomerResult =
-        broadleafProductController.orderItemBelongsToCurrentCustomer(orderItem);
+    boolean actualOrderItemBelongsToCurrentCustomerResult = broadleafProductController
+        .orderItemBelongsToCurrentCustomer(orderItem);
 
     // Assert
-    verify(order).getCustomer();
+    verify(orderItem).getOrder();
     assertFalse(actualOrderItemBelongsToCurrentCustomerResult);
   }
 
   /**
    * Test {@link BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}.
-   *
    * <ul>
-   *   <li>Then throw {@link ResourceNotFoundException}.
+   *   <li>Given {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}
+   * <p>
+   * Method under test: {@link BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}
    */
   @Test
-  @DisplayName(
-      "Test orderItemBelongsToCurrentCustomer(OrderItem); then throw ResourceNotFoundException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafProductController.orderItemBelongsToCurrentCustomer(OrderItem)"
-  })
-  void testOrderItemBelongsToCurrentCustomer_thenThrowResourceNotFoundException() {
+  @DisplayName("Test orderItemBelongsToCurrentCustomer(OrderItem); given NullOrderImpl (default constructor); then return 'true'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean BroadleafProductController.orderItemBelongsToCurrentCustomer(OrderItem)"})
+  void testOrderItemBelongsToCurrentCustomer_givenNullOrderImpl_thenReturnTrue() {
     // Arrange
     OrderItem orderItem = mock(OrderItem.class);
-    when(orderItem.getOrder())
-        .thenThrow(new BroadleafProductController().new ResourceNotFoundException());
+    when(orderItem.getOrder()).thenReturn(new NullOrderImpl());
 
-    // Act and Assert
-    assertThrows(
-        ResourceNotFoundException.class,
-        () -> broadleafProductController.orderItemBelongsToCurrentCustomer(orderItem));
+    // Act
+    boolean actualOrderItemBelongsToCurrentCustomerResult = broadleafProductController
+        .orderItemBelongsToCurrentCustomer(orderItem);
+
+    // Assert
     verify(orderItem).getOrder();
+    assertTrue(actualOrderItemBelongsToCurrentCustomerResult);
   }
 
   /**
    * Test {@link BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}
+   * <p>
+   * Method under test: {@link BroadleafProductController#orderItemBelongsToCurrentCustomer(OrderItem)}
    */
   @Test
-  @DisplayName(
-      "Test orderItemBelongsToCurrentCustomer(OrderItem); when 'null'; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafProductController.orderItemBelongsToCurrentCustomer(OrderItem)"
-  })
+  @DisplayName("Test orderItemBelongsToCurrentCustomer(OrderItem); when 'null'; then return 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"boolean BroadleafProductController.orderItemBelongsToCurrentCustomer(OrderItem)"})
   void testOrderItemBelongsToCurrentCustomer_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(broadleafProductController.orderItemBelongsToCurrentCustomer(null));
@@ -228,27 +162,30 @@ class BroadleafProductControllerDiffblueTest {
 
   /**
    * Test {@link BroadleafProductController#getTemplateType(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link BroadleafProductController#getTemplateType(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link BroadleafProductController#getTemplateType(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getTemplateType(HttpServletRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"TemplateType BroadleafProductController.getTemplateType(HttpServletRequest)"})
   void testGetTemplateType() {
-    // Arrange, Act and Assert
-    assertSame(
-        TemplateType.PRODUCT,
-        broadleafProductController.getTemplateType(
-            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()))));
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act
+    TemplateType actualTemplateType = broadleafProductController
+        .getTemplateType(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
+
+    // Assert
+    assertSame(actualTemplateType.PRODUCT, actualTemplateType);
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafProductController}
    *   <li>{@link BroadleafProductController#setDefaultProductView(String)}
@@ -257,13 +194,10 @@ class BroadleafProductControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafProductController.<init>()",
-    "String BroadleafProductController.getDefaultProductView()",
-    "void BroadleafProductController.setDefaultProductView(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafProductController.<init>()",
+      "String BroadleafProductController.getDefaultProductView()",
+      "void BroadleafProductController.setDefaultProductView(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     BroadleafProductController actualBroadleafProductController = new BroadleafProductController();
@@ -274,22 +208,17 @@ class BroadleafProductControllerDiffblueTest {
   }
 
   /**
-   * Test ResourceNotFoundException {@link
-   * ResourceNotFoundException#ResourceNotFoundException(BroadleafProductController)}.
-   *
-   * <p>Method under test: {@link
-   * ResourceNotFoundException#ResourceNotFoundException(BroadleafProductController)}
+   * Test ResourceNotFoundException {@link ResourceNotFoundException#ResourceNotFoundException(BroadleafProductController)}.
+   * <p>
+   * Method under test: {@link ResourceNotFoundException#ResourceNotFoundException(BroadleafProductController)}
    */
   @Test
-  @DisplayName(
-      "Test ResourceNotFoundException new ResourceNotFoundException(BroadleafProductController)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test ResourceNotFoundException new ResourceNotFoundException(BroadleafProductController)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void ResourceNotFoundException.<init>(BroadleafProductController)"})
   void testResourceNotFoundExceptionNewResourceNotFoundException() {
     // Arrange and Act
-    ResourceNotFoundException actualResourceNotFoundException =
-        new BroadleafProductController().new ResourceNotFoundException();
+    ResourceNotFoundException actualResourceNotFoundException = (new BroadleafProductController()).new ResourceNotFoundException();
 
     // Assert
     assertNull(actualResourceNotFoundException.getMessage());

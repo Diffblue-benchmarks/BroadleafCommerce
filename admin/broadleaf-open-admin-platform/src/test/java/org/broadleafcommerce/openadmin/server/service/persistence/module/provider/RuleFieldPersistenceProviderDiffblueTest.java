@@ -22,38 +22,30 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper.Builder;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
-import org.broadleafcommerce.common.extension.ExtensionResultHolder;
-import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.common.rule.QuantityBasedRule;
 import org.broadleafcommerce.common.rule.SimpleRule;
-import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
@@ -64,632 +56,299 @@ import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceMan
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldNotAvailableException;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.extension.RuleFieldPersistenceProviderExtensionHandler;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.extension.RuleFieldPersistenceProviderExtensionManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.AddFilterPropertiesRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
 import org.broadleafcommerce.openadmin.web.rulebuilder.DataDTOToMVELTranslator;
 import org.broadleafcommerce.openadmin.web.rulebuilder.MVELToDataWrapperTranslator;
-import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataDTO;
-import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataWrapper;
-import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService;
-import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceFactory;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RuleFieldPersistenceProviderDiffblueTest {
-  @Mock private RuleBuilderFieldServiceFactory ruleBuilderFieldServiceFactory;
-
-  @Mock private RuleFieldExtractionUtility ruleFieldExtractionUtility;
-
-  @InjectMocks private RuleFieldPersistenceProvider ruleFieldPersistenceProvider;
-
-  @Mock
-  private RuleFieldPersistenceProviderExtensionManager ruleFieldPersistenceProviderExtensionManager;
-
-  @Mock private SandBoxHelper sandBoxHelper;
-
   /**
-   * Test {@link RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
+   * Test {@link RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"})
   public void testCanHandlePersistence() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_WITH_QUANTITY);
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
 
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualCanHandlePersistenceResult =
-        ruleFieldPersistenceProvider.canHandlePersistence(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(metadata).getFieldType();
-    assertTrue(actualCanHandlePersistenceResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"
-  })
-  public void testCanHandlePersistence2() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_SIMPLE_TIME);
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualCanHandlePersistenceResult =
-        ruleFieldPersistenceProvider.canHandlePersistence(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(metadata, atLeast(1)).getFieldType();
-    assertTrue(actualCanHandlePersistenceResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"
-  })
-  public void testCanHandlePersistence_thenReturnFalse() {
-    // Arrange
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    // Act and Assert
+    assertFalse(
+        ruleFieldPersistenceProvider.canHandlePersistence(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Then calls {@link BasicFieldMetadata#getFieldType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"})
+  public void testCanHandlePersistence_thenCallsGetFieldType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getFieldType()).thenReturn(SupportedFieldType.UNKNOWN);
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
 
     // Act
-    boolean actualCanHandlePersistenceResult =
-        ruleFieldPersistenceProvider.canHandlePersistence(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    boolean actualCanHandlePersistenceResult = ruleFieldPersistenceProvider.canHandlePersistence(populateValueRequest,
+        new SimpleDateFormat("yyyy/mm/dd"));
 
     // Assert
+    verify(basicFieldMetadata, atLeast(1)).getFieldType();
+    verify(populateValueRequest, atLeast(1)).getMetadata();
     assertFalse(actualCanHandlePersistenceResult);
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>When {@link BasicFieldMetadata} {@link BasicFieldMetadata#getFieldType()} return {@link
-   *       SupportedFieldType#RULE_SIMPLE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"
-  })
-  public void testCanHandlePersistence_whenBasicFieldMetadataGetFieldTypeReturnRule_simple() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_SIMPLE);
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualCanHandlePersistenceResult =
-        ruleFieldPersistenceProvider.canHandlePersistence(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(metadata, atLeast(1)).getFieldType();
-    assertTrue(actualCanHandlePersistenceResult);
-  }
-
-  /**
    * Test {@link RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"})
   public void testCanHandleExtraction() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_WITH_QUANTITY);
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act
-    boolean actualCanHandleExtractionResult =
-        ruleFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property());
-
-    // Assert
-    verify(metadata).getFieldType();
-    assertTrue(actualCanHandleExtractionResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
-  public void testCanHandleExtraction_thenReturnFalse() {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
     // Act and Assert
-    assertFalse(
-        ruleFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property()));
+    assertFalse(ruleFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property()));
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   *
    * <ul>
-   *   <li>When {@link BasicFieldMetadata} {@link BasicFieldMetadata#getFieldType()} return {@link
-   *       SupportedFieldType#RULE_SIMPLE}.
+   *   <li>Then calls {@link BasicFieldMetadata#getFieldType()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
-  public void testCanHandleExtraction_whenBasicFieldMetadataGetFieldTypeReturnRule_simple() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_SIMPLE);
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"})
+  public void testCanHandleExtraction_thenCallsGetFieldType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getFieldType()).thenReturn(SupportedFieldType.UNKNOWN);
+    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
+    when(extractValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
 
     // Act
-    boolean actualCanHandleExtractionResult =
-        ruleFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property());
+    boolean actualCanHandleExtractionResult = ruleFieldPersistenceProvider.canHandleExtraction(extractValueRequest,
+        new Property());
 
     // Assert
-    verify(metadata, atLeast(1)).getFieldType();
-    assertTrue(actualCanHandleExtractionResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>When {@link BasicFieldMetadata} {@link BasicFieldMetadata#getFieldType()} return {@link
-   *       SupportedFieldType#RULE_SIMPLE_TIME}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
-  public void testCanHandleExtraction_whenBasicFieldMetadataGetFieldTypeReturnRule_simple_time() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_SIMPLE_TIME);
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act
-    boolean actualCanHandleExtractionResult =
-        ruleFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property());
-
-    // Assert
-    verify(metadata, atLeast(1)).getFieldType();
-    assertTrue(actualCanHandleExtractionResult);
+    verify(basicFieldMetadata, atLeast(1)).getFieldType();
+    verify(extractValueRequest, atLeast(1)).getMetadata();
+    assertFalse(actualCanHandleExtractionResult);
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
-   *
-   * <ul>
-   *   <li>Given {@code UNKNOWN}.
-   *   <li>Then calls {@link BasicFieldMetadata#getFieldType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#populateValue(PopulateValueRequest,
-   * Serializable)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateValue_givenUnknown_thenCallsGetFieldType() throws PersistenceException {
+      "MetadataProviderResponse RuleFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
+  public void testPopulateValue() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.UNKNOWN);
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
 
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    MetadataProviderResponse actualPopulateValueResult =
-        ruleFieldPersistenceProvider.populateValue(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(metadata, atLeast(1)).getFieldType();
-    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualPopulateValueResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#populateValue(PopulateValueRequest,
-   * Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateValue_thenReturnNotHandled() throws PersistenceException {
-    // Arrange
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        ruleFieldPersistenceProvider.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Then calls {@link BasicFieldMetadata#getFieldType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse RuleFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
+  public void testPopulateValue_thenCallsGetFieldType() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getFieldType()).thenReturn(SupportedFieldType.UNKNOWN);
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
 
     // Act
-    MetadataProviderResponse actualPopulateValueResult =
-        ruleFieldPersistenceProvider.populateValue(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    MetadataProviderResponse actualPopulateValueResult = ruleFieldPersistenceProvider
+        .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
 
     // Assert
+    verify(basicFieldMetadata, atLeast(1)).getFieldType();
+    verify(populateValueRequest, atLeast(1)).getMetadata();
     assertEquals(MetadataProviderResponse.NOT_HANDLED, actualPopulateValueResult);
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@code UNKNOWN}.
-   *   <li>Then calls {@link BasicFieldMetadata#getFieldType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_givenUnknown_thenCallsGetFieldType() throws PersistenceException {
+      "MetadataProviderResponse RuleFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+  public void testExtractValue() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.UNKNOWN);
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act
-    MetadataProviderResponse actualExtractValueResult =
-        ruleFieldPersistenceProvider.extractValue(extractValueRequest, new Property());
-
-    // Assert
-    verify(metadata, atLeast(1)).getFieldType();
-    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualExtractValueResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_thenReturnNotHandled() throws PersistenceException {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
     // Act and Assert
-    assertEquals(
-        MetadataProviderResponse.NOT_HANDLED,
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
         ruleFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}.
-   *
+   * Test {@link RuleFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
    * <ul>
-   *   <li>Given array of {@link Property} with {@link Property#Property(String, String)} with
-   *       {@code Name} and value is {@code 42}.
+   *   <li>Then calls {@link BasicFieldMetadata#getFieldType()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"
-  })
+      "MetadataProviderResponse RuleFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+  public void testExtractValue_thenCallsGetFieldType() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getFieldType()).thenReturn(SupportedFieldType.UNKNOWN);
+    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
+    when(extractValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
+
+    // Act
+    MetadataProviderResponse actualExtractValueResult = ruleFieldPersistenceProvider.extractValue(extractValueRequest,
+        new Property());
+
+    // Assert
+    verify(basicFieldMetadata, atLeast(1)).getFieldType();
+    verify(extractValueRequest, atLeast(1)).getMetadata();
+    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualExtractValueResult);
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}.
+   * <ul>
+   *   <li>Given array of {@link Property} with {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"})
   public void testFilterProperties_givenArrayOfPropertyWithPropertyWithNameAndValueIs42() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     Entity entity = mock(Entity.class);
     doNothing().when(entity).setProperties(Mockito.<Property[]>any());
-    when(entity.getProperties()).thenReturn(new Property[] {new Property("Name", "42")});
+    when(entity.getProperties()).thenReturn(new Property[]{new Property("Name", "42")});
     AddFilterPropertiesRequest addFilterPropertiesRequest = new AddFilterPropertiesRequest(entity);
 
     // Act
-    MetadataProviderResponse actualFilterPropertiesResult =
-        ruleFieldPersistenceProvider.filterProperties(addFilterPropertiesRequest, new HashMap<>());
+    MetadataProviderResponse actualFilterPropertiesResult = ruleFieldPersistenceProvider
+        .filterProperties(addFilterPropertiesRequest, new HashMap<>());
 
     // Assert
     verify(entity).getProperties();
@@ -699,31 +358,31 @@ public class RuleFieldPersistenceProviderDiffblueTest {
 
   /**
    * Test {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}.
-   *
    * <ul>
-   *   <li>Given array of {@link Property} with {@link Property#Property(String, String)} with name
-   *       is {@code Json} and value is {@code 42}.
+   *   <li>Given array of {@link Property} with {@link Property#Property(String, String)} with name is {@code Json} and value is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"
-  })
+      "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"})
   public void testFilterProperties_givenArrayOfPropertyWithPropertyWithNameIsJsonAndValueIs42() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     Entity entity = mock(Entity.class);
     doNothing().when(entity).setProperties(Mockito.<Property[]>any());
-    when(entity.getProperties()).thenReturn(new Property[] {new Property("Json", "42")});
+    when(entity.getProperties()).thenReturn(new Property[]{new Property("Json", "42")});
     AddFilterPropertiesRequest addFilterPropertiesRequest = new AddFilterPropertiesRequest(entity);
 
     // Act
-    MetadataProviderResponse actualFilterPropertiesResult =
-        ruleFieldPersistenceProvider.filterProperties(addFilterPropertiesRequest, new HashMap<>());
+    MetadataProviderResponse actualFilterPropertiesResult = ruleFieldPersistenceProvider
+        .filterProperties(addFilterPropertiesRequest, new HashMap<>());
 
     // Assert
     verify(entity).getProperties();
@@ -733,36 +392,36 @@ public class RuleFieldPersistenceProviderDiffblueTest {
 
   /**
    * Test {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}.
-   *
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getName()} return {@code Json}.
+   *   <li>Given {@link Property} {@link Property#getName()} return {@code Json}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"
-  })
+      "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"})
   public void testFilterProperties_givenPropertyGetNameReturnJson() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Json");
-
     Entity entity = mock(Entity.class);
     doNothing().when(entity).setProperties(Mockito.<Property[]>any());
-    when(entity.getProperties()).thenReturn(new Property[] {property});
+    when(entity.getProperties()).thenReturn(new Property[]{property});
     AddFilterPropertiesRequest addFilterPropertiesRequest = new AddFilterPropertiesRequest(entity);
 
     HashMap<String, FieldMetadata> properties = new HashMap<>();
     properties.put("42", new AdornedTargetCollectionMetadata());
 
     // Act
-    MetadataProviderResponse actualFilterPropertiesResult =
-        ruleFieldPersistenceProvider.filterProperties(addFilterPropertiesRequest, properties);
+    MetadataProviderResponse actualFilterPropertiesResult = ruleFieldPersistenceProvider
+        .filterProperties(addFilterPropertiesRequest, properties);
 
     // Assert
     verify(entity).getProperties();
@@ -773,34 +432,34 @@ public class RuleFieldPersistenceProviderDiffblueTest {
 
   /**
    * Test {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}.
-   *
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getName()} return {@code Name}.
-   *   <li>Then calls {@link Property#getName()}.
+   *   <li>Given {@link Property} {@link Property#getName()} return {@code Name}.</li>
+   *   <li>Then calls {@link Property#getName()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"
-  })
+      "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"})
   public void testFilterProperties_givenPropertyGetNameReturnName_thenCallsGetName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Name");
-
     Entity entity = mock(Entity.class);
     doNothing().when(entity).setProperties(Mockito.<Property[]>any());
-    when(entity.getProperties()).thenReturn(new Property[] {property});
+    when(entity.getProperties()).thenReturn(new Property[]{property});
     AddFilterPropertiesRequest addFilterPropertiesRequest = new AddFilterPropertiesRequest(entity);
 
     // Act
-    MetadataProviderResponse actualFilterPropertiesResult =
-        ruleFieldPersistenceProvider.filterProperties(addFilterPropertiesRequest, new HashMap<>());
+    MetadataProviderResponse actualFilterPropertiesResult = ruleFieldPersistenceProvider
+        .filterProperties(addFilterPropertiesRequest, new HashMap<>());
 
     // Assert
     verify(entity).getProperties();
@@ -810,1660 +469,399 @@ public class RuleFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}.
-   *
+   * Test {@link RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)}.
    * <ul>
-   *   <li>Then throw {@link PersistenceException}.
+   *   <li>Given one.</li>
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#filterProperties(AddFilterPropertiesRequest, Map)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse RuleFieldPersistenceProvider.filterProperties(AddFilterPropertiesRequest, Map)"
-  })
-  public void testFilterProperties_thenThrowPersistenceException() {
+      "void RuleFieldPersistenceProvider.extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)"})
+  public void testExtractSimpleRule_givenOne_thenThrowUnsupportedOperationException() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    Entity entity = mock(Entity.class);
-    doThrow(new PersistenceException("An error occurred"))
-        .when(entity)
-        .setProperties(Mockito.<Property[]>any());
-    when(entity.getProperties()).thenReturn(new Property[] {new Property("Json", "42")});
-    AddFilterPropertiesRequest addFilterPropertiesRequest = new AddFilterPropertiesRequest(entity);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.filterProperties(
-                addFilterPropertiesRequest, new HashMap<>()));
-    verify(entity).getProperties();
-    verify(entity).setProperties(isA(Property[].class));
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property,
-   * ObjectMapper, MVELToDataWrapperTranslator)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractSimpleRule() {
-    // Arrange
-    Property property = new Property();
-    when(ruleFieldExtractionUtility.convertSimpleRuleToJson(
-            Mockito.<MVELToDataWrapperTranslator>any(),
-            Mockito.<ObjectMapper>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any()))
-        .thenReturn(property);
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-    Property property2 = new Property();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act
-    ruleFieldPersistenceProvider.extractSimpleRule(
-        extractValueRequest, property2, mapper, new MVELToDataWrapperTranslator());
-
-    // Assert
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleRuleToJson(
-            isA(MVELToDataWrapperTranslator.class),
-            isA(ObjectMapper.class),
-            eq("Requested Value"),
-            eq("nullJson"),
-            isNull());
-    List<Property> props2 = extractValueRequest.getProps();
-    assertEquals(1, props2.size());
-    Property getResult = props2.get(0);
-    assertTrue(getResult.getMetadata() instanceof BasicFieldMetadata);
-    assertNull(getResult.getDisplayValue());
-    assertNull(getResult.getName());
-    assertNull(getResult.getOriginalDisplayValue());
-    assertNull(getResult.getOriginalValue());
-    assertNull(getResult.getRawValue());
-    assertNull(getResult.getUnHtmlEncodedValue());
-    assertNull(getResult.getValue());
-    assertNull(getResult.getDeployDate());
-    assertFalse(getResult.getIsDirty());
-    assertFalse(getResult.isAdvancedCollection());
-    assertTrue(getResult.getEnabled());
-    assertEquals(property, property2);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property,
-   * ObjectMapper, MVELToDataWrapperTranslator)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractSimpleRule2() {
-    // Arrange
-    Property property = new Property();
-    when(ruleFieldExtractionUtility.convertSimpleRuleToJson(
-            Mockito.<MVELToDataWrapperTranslator>any(),
-            Mockito.<ObjectMapper>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any()))
-        .thenReturn(property);
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            null,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-    Property property2 = new Property();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act
-    ruleFieldPersistenceProvider.extractSimpleRule(
-        extractValueRequest, property2, mapper, new MVELToDataWrapperTranslator());
-
-    // Assert
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleRuleToJson(
-            isA(MVELToDataWrapperTranslator.class),
-            isA(ObjectMapper.class),
-            isNull(),
-            eq("nullJson"),
-            isNull());
-    List<Property> props2 = extractValueRequest.getProps();
-    assertEquals(1, props2.size());
-    assertEquals(property, property2);
-    assertSame(props, props2);
-    assertSame(property, props2.get(0));
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property,
-   * ObjectMapper, MVELToDataWrapperTranslator)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractSimpleRule3() {
-    // Arrange
-    when(ruleFieldExtractionUtility.convertSimpleRuleToJson(
-            Mockito.<MVELToDataWrapperTranslator>any(),
-            Mockito.<ObjectMapper>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any()))
-        .thenReturn(new Property());
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            null,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("Name");
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act
-    ruleFieldPersistenceProvider.extractSimpleRule(
-        extractValueRequest, property, mapper, new MVELToDataWrapperTranslator());
-
-    // Assert
-    verify(property).getName();
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleRuleToJson(
-            isA(MVELToDataWrapperTranslator.class),
-            isA(ObjectMapper.class),
-            isNull(),
-            eq("NameJson"),
-            isNull());
-    List<Property> props2 = extractValueRequest.getProps();
-    assertEquals(1, props2.size());
-    Property getResult = props2.get(0);
-    assertTrue(getResult.getMetadata() instanceof BasicFieldMetadata);
-    assertNull(getResult.getDisplayValue());
-    assertNull(getResult.getName());
-    assertNull(getResult.getOriginalDisplayValue());
-    assertNull(getResult.getOriginalValue());
-    assertNull(getResult.getRawValue());
-    assertNull(getResult.getUnHtmlEncodedValue());
-    assertNull(getResult.getValue());
-    assertNull(getResult.getDeployDate());
-    assertFalse(getResult.getIsDirty());
-    assertFalse(getResult.isAdvancedCollection());
-    assertTrue(getResult.getEnabled());
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property,
-   * ObjectMapper, MVELToDataWrapperTranslator)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Property#setDisplayValue(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractSimpleRule_thenCallsSetDisplayValue() {
-    // Arrange
-    when(ruleFieldExtractionUtility.convertSimpleRuleToJson(
-            Mockito.<MVELToDataWrapperTranslator>any(),
-            Mockito.<ObjectMapper>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any()))
-        .thenReturn(new Property());
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("Name");
-    doNothing().when(property).setDisplayValue(Mockito.<String>any());
-    doNothing().when(property).setValue(Mockito.<String>any());
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act
-    ruleFieldPersistenceProvider.extractSimpleRule(
-        extractValueRequest, property, mapper, new MVELToDataWrapperTranslator());
-
-    // Assert
-    verify(property).getName();
-    verify(property).setDisplayValue("Display Val");
-    verify(property).setValue("Requested Value");
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleRuleToJson(
-            isA(MVELToDataWrapperTranslator.class),
-            isA(ObjectMapper.class),
-            eq("Requested Value"),
-            eq("NameJson"),
-            isNull());
-    List<Property> props2 = extractValueRequest.getProps();
-    assertEquals(1, props2.size());
-    Property getResult = props2.get(0);
-    assertTrue(getResult.getMetadata() instanceof BasicFieldMetadata);
-    assertNull(getResult.getDisplayValue());
-    assertNull(getResult.getName());
-    assertNull(getResult.getOriginalDisplayValue());
-    assertNull(getResult.getOriginalValue());
-    assertNull(getResult.getRawValue());
-    assertNull(getResult.getUnHtmlEncodedValue());
-    assertNull(getResult.getValue());
-    assertNull(getResult.getDeployDate());
-    assertFalse(getResult.getIsDirty());
-    assertFalse(getResult.isAdvancedCollection());
-    assertTrue(getResult.getEnabled());
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property,
-   * ObjectMapper, MVELToDataWrapperTranslator)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link PersistenceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractSimpleRule_thenThrowPersistenceException() {
-    // Arrange
-    when(ruleFieldExtractionUtility.convertSimpleRuleToJson(
-            Mockito.<MVELToDataWrapperTranslator>any(),
-            Mockito.<ObjectMapper>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any()))
-        .thenThrow(new PersistenceException("An error occurred"));
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
+    when(extractValueRequest.getRequestedValue()).thenReturn(1);
     Property property = new Property();
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
     // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.extractSimpleRule(
-                extractValueRequest, property, mapper, new MVELToDataWrapperTranslator()));
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleRuleToJson(
-            isA(MVELToDataWrapperTranslator.class),
-            isA(ObjectMapper.class),
-            eq("Requested Value"),
-            eq("nullJson"),
-            isNull());
+    assertThrows(UnsupportedOperationException.class, () -> ruleFieldPersistenceProvider
+        .extractSimpleRule(extractValueRequest, property, mapper, new MVELToDataWrapperTranslator()));
+    verify(extractValueRequest, atLeast(1)).getRequestedValue();
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property,
-   * ObjectMapper, MVELToDataWrapperTranslator)}.
-   *
+   * Test {@link RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper, MVELToDataWrapperTranslator)}.
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.
+   *   <li>Then throw {@link UnsupportedOperationException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractSimpleRule(ExtractValueRequest, Property, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper, MVELToDataWrapperTranslator)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractSimpleRule(ExtractValueRequest, Property, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractSimpleRule_thenThrowUnsupportedOperationException() {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            42,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-    Property property = new Property();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class,
-        () ->
-            ruleFieldPersistenceProvider.extractSimpleRule(
-                extractValueRequest, property, mapper, new MVELToDataWrapperTranslator()));
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper,
-   * MVELToDataWrapperTranslator)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractQuantityRule(ExtractValueRequest, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractQuantityRule() {
-    // Arrange
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    ArrayList<Object> objectList = new ArrayList<>();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            objectList,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act
-    ruleFieldPersistenceProvider.extractQuantityRule(
-        extractValueRequest, mapper, new MVELToDataWrapperTranslator());
-
-    // Assert
-    verify(ruleBuilderFieldServiceFactory).createInstance(null);
-    assertSame(props, extractValueRequest.getProps());
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper,
-   * MVELToDataWrapperTranslator)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractQuantityRule(ExtractValueRequest, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractQuantityRule2() {
-    // Arrange
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenThrow(new PersistenceException("An error occurred"));
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    ArrayList<Object> objectList = new ArrayList<>();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            objectList,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.extractQuantityRule(
-                extractValueRequest, mapper, new MVELToDataWrapperTranslator()));
-    verify(ruleBuilderFieldServiceFactory).createInstance(null);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper,
-   * MVELToDataWrapperTranslator)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BasicFieldMetadata#getName()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractQuantityRule(ExtractValueRequest, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
-  public void testExtractQuantityRule_thenCallsGetName() {
-    // Arrange
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenThrow(new UnsupportedOperationException());
-
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getName()).thenReturn("Name");
-    when(metadata.getRuleIdentifier()).thenReturn("42");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    ArrayList<Object> objectList = new ArrayList<>();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            objectList,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.extractQuantityRule(
-                extractValueRequest, mapper, new MVELToDataWrapperTranslator()));
-    verify(metadata).getName();
-    verify(metadata).getRuleIdentifier();
-    verify(ruleBuilderFieldServiceFactory).createInstance("42");
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper,
-   * MVELToDataWrapperTranslator)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#extractQuantityRule(ExtractValueRequest, ObjectMapper,
-   * MVELToDataWrapperTranslator)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.extractQuantityRule(ExtractValueRequest, ObjectMapper, MVELToDataWrapperTranslator)"
-  })
+      "void RuleFieldPersistenceProvider.extractQuantityRule(ExtractValueRequest, ObjectMapper, MVELToDataWrapperTranslator)"})
   public void testExtractQuantityRule_thenThrowUnsupportedOperationException() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class,
-        () ->
-            ruleFieldPersistenceProvider.extractQuantityRule(
-                extractValueRequest, mapper, new MVELToDataWrapperTranslator()));
+    assertThrows(UnsupportedOperationException.class, () -> ruleFieldPersistenceProvider
+        .extractQuantityRule(extractValueRequest, mapper, new MVELToDataWrapperTranslator()));
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule() throws Exception {
-    // Arrange
-    when(ruleFieldExtractionUtility.convertSimpleMatchRuleJsonToMvel(
-            Mockito.<DataDTOToMVELTranslator>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<DataWrapper>any()))
-        .thenReturn("Convert Simple Match Rule Json To Mvel");
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(new DataWrapper());
-
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualPopulateSimpleRuleResult =
-        ruleFieldPersistenceProvider.populateSimpleRule(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(property, atLeast(1)).getName();
-    verify(property).getUnHtmlEncodedValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("secret");
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleMatchRuleJsonToMvel(
-            isA(DataDTOToMVELTranslator.class), isNull(), isNull(), isA(DataWrapper.class));
-    assertFalse(actualPopulateSimpleRuleResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule2() throws Exception {
-    // Arrange
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenThrow(new PersistenceException("An error occurred"));
-
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.populateSimpleRule(
-                populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
-    verify(property).getName();
-    verify(property).getUnHtmlEncodedValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("secret");
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule3() throws Exception {
-    // Arrange
-    when(ruleFieldExtractionUtility.convertSimpleMatchRuleJsonToMvel(
-            Mockito.<DataDTOToMVELTranslator>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<DataWrapper>any()))
-        .thenReturn("Convert Simple Match Rule Json To Mvel");
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(null);
-
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualPopulateSimpleRuleResult =
-        ruleFieldPersistenceProvider.populateSimpleRule(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(property, atLeast(1)).getName();
-    verify(property).getUnHtmlEncodedValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("secret");
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleMatchRuleJsonToMvel(
-            isA(DataDTOToMVELTranslator.class), isNull(), isNull(), isNull());
-    assertFalse(actualPopulateSimpleRuleResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule4() throws Exception {
-    // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenThrow(new PersistenceException("An error occurred"));
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.populateSimpleRule(
-                populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
-    verify(property).getName();
-    verify(property).getUnHtmlEncodedValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("secret");
-    verify(dataWrapper).getError();
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
+   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}.
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then calls {@link BasicFieldMetadata#getRuleIdentifier()}.
+   *   <li>Then throw {@link PersistenceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule_given42_thenCallsGetRuleIdentifier() throws Exception {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"})
+  public void testPopulateSimpleRule_thenThrowPersistenceException() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("");
-    when(ruleFieldExtractionUtility.convertSimpleMatchRuleJsonToMvel(
-            Mockito.<DataDTOToMVELTranslator>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<DataWrapper>any()))
-        .thenReturn("Convert Simple Match Rule Json To Mvel");
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getName()).thenReturn("Name");
-
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getRuleIdentifier()).thenReturn("42");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualPopulateSimpleRuleResult =
-        ruleFieldPersistenceProvider.populateSimpleRule(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(metadata, atLeast(1)).getRuleIdentifier();
-    verify(property, atLeast(1)).getName();
-    verify(property).getUnHtmlEncodedValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("secret");
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleMatchRuleJsonToMvel(
-            isA(DataDTOToMVELTranslator.class), isNull(), eq("42"), isA(DataWrapper.class));
-    verify(dataWrapper).getError();
-    assertFalse(actualPopulateSimpleRuleResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>Given {@link DataWrapper} {@link DataWrapper#getError()} return {@code An error
-   *       occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule_givenDataWrapperGetErrorReturnAnErrorOccurred()
-      throws Exception {
-    // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("An error occurred");
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualPopulateSimpleRuleResult =
-        ruleFieldPersistenceProvider.populateSimpleRule(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(property).getName();
-    verify(property).getUnHtmlEncodedValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("secret");
-    verify(dataWrapper).getError();
-    assertFalse(actualPopulateSimpleRuleResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>Given {@link DataWrapper} {@link DataWrapper#getError()} return empty string.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule_givenDataWrapperGetErrorReturnEmptyString_thenReturnFalse()
-      throws Exception {
-    // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("");
-    when(ruleFieldExtractionUtility.convertSimpleMatchRuleJsonToMvel(
-            Mockito.<DataDTOToMVELTranslator>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<DataWrapper>any()))
-        .thenReturn("Convert Simple Match Rule Json To Mvel");
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualPopulateSimpleRuleResult =
-        ruleFieldPersistenceProvider.populateSimpleRule(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(property, atLeast(1)).getName();
-    verify(property).getUnHtmlEncodedValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("secret");
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleMatchRuleJsonToMvel(
-            isA(DataDTOToMVELTranslator.class), isNull(), isNull(), isA(DataWrapper.class));
-    verify(dataWrapper).getError();
-    assertFalse(actualPopulateSimpleRuleResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistenceException#PersistenceException(String)} with message is {@code An
-   *       error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule_givenPersistenceExceptionWithMessageIsAnErrorOccurred()
-      throws Exception {
-    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     Property property = mock(Property.class);
     when(property.getUnHtmlEncodedValue()).thenThrow(new PersistenceException("An error occurred"));
     when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getProperty()).thenReturn(property);
 
     // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.populateSimpleRule(
-                populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
+    assertThrows(PersistenceException.class, () -> ruleFieldPersistenceProvider.populateSimpleRule(populateValueRequest,
+        new SimpleDateFormat("yyyy/mm/dd")));
     verify(property).getName();
     verify(property).getUnHtmlEncodedValue();
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalAccessException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateSimpleRule(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateSimpleRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateSimpleRule_thenThrowIllegalAccessException() throws Exception {
-    // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("");
-    when(ruleFieldExtractionUtility.convertSimpleMatchRuleJsonToMvel(
-            Mockito.<DataDTOToMVELTranslator>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<DataWrapper>any()))
-        .thenReturn("Convert Simple Match Rule Json To Mvel");
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            null,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act and Assert
-    assertThrows(
-        IllegalAccessException.class,
-        () ->
-            ruleFieldPersistenceProvider.populateSimpleRule(
-                populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
-    verify(property, atLeast(1)).getName();
-    verify(property).getUnHtmlEncodedValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("secret");
-    verify(ruleFieldExtractionUtility)
-        .convertSimpleMatchRuleJsonToMvel(
-            isA(DataDTOToMVELTranslator.class), isNull(), isNull(), isA(DataWrapper.class));
-    verify(dataWrapper).getError();
+    verify(populateValueRequest, atLeast(1)).getProperty();
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#getContainedRuleId(SimpleRule, EntityManager)}.
-   *
    * <ul>
-   *   <li>When {@link SimpleRule}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@link SimpleRule}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#getContainedRuleId(SimpleRule,
-   * EntityManager)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#getContainedRuleId(SimpleRule, EntityManager)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long RuleFieldPersistenceProvider.getContainedRuleId(SimpleRule, EntityManager)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long RuleFieldPersistenceProvider.getContainedRuleId(SimpleRule, EntityManager)"})
   public void testGetContainedRuleId_whenSimpleRule_thenReturnNull() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange, Act and Assert
-    assertNull(ruleFieldPersistenceProvider.getContainedRuleId(mock(SimpleRule.class), null));
+    assertNull((new RuleFieldPersistenceProvider()).getContainedRuleId(mock(SimpleRule.class), null));
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#transformId(Long, Object)}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#transformId(Long, Object)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#transformId(Long, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long RuleFieldPersistenceProvider.transformId(Long, Object)"})
   public void testTransformId() {
-    // Arrange
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenThrow(new PersistenceException("An error occurred"));
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class, () -> ruleFieldPersistenceProvider.transformId(1L, "Rule"));
-    verify(ruleFieldPersistenceProviderExtensionManager).getProxy();
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#transformId(Long, Object)}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#transformId(Long, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long RuleFieldPersistenceProvider.transformId(Long, Object)"})
-  public void testTransformId2() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-
-    // Act
-    Long actualTransformIdResult = ruleFieldPersistenceProvider.transformId(1L, "Rule");
-
-    // Assert
-    verify(ruleFieldPersistenceProviderExtensionManager).getProxy();
-    verify(ruleFieldPersistenceProviderExtensionHandler)
-        .transformId(isA(Object.class), isA(ExtensionResultHolder.class));
-    assertEquals(1L, actualTransformIdResult.longValue());
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#transformId(Long, Object)}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#transformId(Long, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long RuleFieldPersistenceProvider.transformId(Long, Object)"})
-  public void testTransformId3() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenThrow(new PersistenceException("An error occurred"));
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class, () -> ruleFieldPersistenceProvider.transformId(1L, "Rule"));
-    verify(ruleFieldPersistenceProviderExtensionManager).getProxy();
-    verify(ruleFieldPersistenceProviderExtensionHandler)
-        .transformId(isA(Object.class), isA(ExtensionResultHolder.class));
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#transformId(Long, Object)}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#transformId(Long, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long RuleFieldPersistenceProvider.transformId(Long, Object)"})
-  public void testTransformId4() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.NOT_HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-
-    // Act
-    Long actualTransformIdResult = ruleFieldPersistenceProvider.transformId(1L, "Rule");
-
-    // Assert
-    verify(ruleFieldPersistenceProviderExtensionManager).getProxy();
-    verify(ruleFieldPersistenceProviderExtensionHandler)
-        .transformId(isA(Object.class), isA(ExtensionResultHolder.class));
-    assertEquals(1L, actualTransformIdResult.longValue());
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#transformId(Long, Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link RuleFieldPersistenceProvider} (default constructor).
-   *   <li>Then return longValue is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#transformId(Long, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long RuleFieldPersistenceProvider.transformId(Long, Object)"})
-  public void testTransformId_givenRuleFieldPersistenceProvider_thenReturnLongValueIsOne() {
     // Arrange, Act and Assert
-    assertEquals(1L, new RuleFieldPersistenceProvider().transformId(1L, "Rule").longValue());
+    assertEquals(1L, (new RuleFieldPersistenceProvider()).transformId(1L, "Rule").longValue());
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
+   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"
-  })
-  public void testRecursivelyExtractParent()
-      throws IllegalAccessException, FieldNotAvailableException {
+      "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"})
+  public void testRecursivelyExtractParent() throws IllegalAccessException, FieldNotAvailableException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+
+    // Act and Assert
+    assertSame(instance, ruleFieldPersistenceProvider.recursivelyExtractParent(populateValueRequest, instance));
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"})
+  public void testRecursivelyExtractParent2() throws IllegalAccessException, FieldNotAvailableException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    Property property = mock(Property.class);
+    when(property.getName()).thenReturn(".");
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getFieldManager()).thenReturn(new FieldManager(new EntityConfiguration(), null));
+    when(populateValueRequest.getProperty()).thenReturn(property);
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
 
     // Act
-    Object actualRecursivelyExtractParentResult =
-        ruleFieldPersistenceProvider.recursivelyExtractParent(populateValueRequest, instance);
+    Object actualRecursivelyExtractParentResult = ruleFieldPersistenceProvider
+        .recursivelyExtractParent(populateValueRequest, instance);
 
     // Assert
+    verify(property).getName();
+    verify(populateValueRequest).getFieldManager();
+    verify(populateValueRequest).getProperty();
     assertSame(instance, actualRecursivelyExtractParentResult);
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest,
-   * Serializable)}.
-   *
+   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}.
    * <ul>
-   *   <li>Given {@code Field Value}.
-   *   <li>Then return {@code Field Value}.
+   *   <li>Given {@link FieldManager} {@link FieldManager#getFieldValue(Object, String)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"
-  })
-  public void testRecursivelyExtractParent_givenFieldValue_thenReturnFieldValue()
+      "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"})
+  public void testRecursivelyExtractParent_givenFieldManagerGetFieldValueReturnNull()
       throws IllegalAccessException, FieldNotAvailableException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
     RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
-
-    FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any()))
-        .thenReturn("Field Value");
-
     Property property = mock(Property.class);
-    when(property.getName()).thenReturn("org.broadleafcommerce.openadmin.dto.BasicFieldMetadata");
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    when(property.getName()).thenReturn(".");
+    FieldManager fieldManager = mock(FieldManager.class);
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn(null);
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getFieldManager()).thenReturn(fieldManager);
+    when(populateValueRequest.getProperty()).thenReturn(property);
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
 
     // Act
-    Object actualRecursivelyExtractParentResult =
-        ruleFieldPersistenceProvider.recursivelyExtractParent(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    Object actualRecursivelyExtractParentResult = ruleFieldPersistenceProvider
+        .recursivelyExtractParent(populateValueRequest, instance);
 
     // Assert
     verify(property).getName();
-    verify(fieldManager)
-        .getFieldValue(isA(Object.class), eq("org.broadleafcommerce.openadmin.dto"));
+    verify(fieldManager).getFieldValue(isA(Object.class), eq(""));
+    verify(populateValueRequest).getFieldManager();
+    verify(populateValueRequest).getProperty();
+    assertSame(instance, actualRecursivelyExtractParentResult);
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getName()} return {@code Name}.</li>
+   *   <li>Then calls {@link Property#getName()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"})
+  public void testRecursivelyExtractParent_givenPropertyGetNameReturnName_thenCallsGetName()
+      throws IllegalAccessException, FieldNotAvailableException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    Property property = mock(Property.class);
+    when(property.getName()).thenReturn("Name");
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getProperty()).thenReturn(property);
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+
+    // Act
+    Object actualRecursivelyExtractParentResult = ruleFieldPersistenceProvider
+        .recursivelyExtractParent(populateValueRequest, instance);
+
+    // Assert
+    verify(property).getName();
+    verify(populateValueRequest).getProperty();
+    assertSame(instance, actualRecursivelyExtractParentResult);
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"})
+  public void testRecursivelyExtractParent_givenPropertyWithNameAndValueIs42()
+      throws IllegalAccessException, FieldNotAvailableException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getProperty()).thenReturn(new Property("Name", "42"));
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+
+    // Act
+    Object actualRecursivelyExtractParentResult = ruleFieldPersistenceProvider
+        .recursivelyExtractParent(populateValueRequest, instance);
+
+    // Assert
+    verify(populateValueRequest).getProperty();
+    assertSame(instance, actualRecursivelyExtractParentResult);
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Then return {@code Field Value}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"})
+  public void testRecursivelyExtractParent_thenReturnFieldValue()
+      throws IllegalAccessException, FieldNotAvailableException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    Property property = mock(Property.class);
+    when(property.getName()).thenReturn(".");
+    FieldManager fieldManager = mock(FieldManager.class);
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn("Field Value");
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getFieldManager()).thenReturn(fieldManager);
+    when(populateValueRequest.getProperty()).thenReturn(property);
+
+    // Act
+    Object actualRecursivelyExtractParentResult = ruleFieldPersistenceProvider
+        .recursivelyExtractParent(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    verify(property).getName();
+    verify(fieldManager).getFieldValue(isA(Object.class), eq(""));
+    verify(populateValueRequest).getFieldManager();
+    verify(populateValueRequest).getProperty();
     assertEquals("Field Value", actualRecursivelyExtractParentResult);
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>Given {@code Name}.
-   *   <li>When {@link Property} {@link Property#getName()} return {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"
-  })
-  public void testRecursivelyExtractParent_givenName_whenPropertyGetNameReturnName()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-
-    // Act
-    Object actualRecursivelyExtractParentResult =
-        ruleFieldPersistenceProvider.recursivelyExtractParent(populateValueRequest, instance);
-
-    // Assert
-    verify(property).getName();
-    assertSame(instance, actualRecursivelyExtractParentResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link FieldManager} {@link FieldManager#getFieldValue(Object, String)} return
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"
-  })
-  public void testRecursivelyExtractParent_givenNull_whenFieldManagerGetFieldValueReturnNull()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
-
-    FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn(null);
-
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("org.broadleafcommerce.openadmin.dto.BasicFieldMetadata");
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-
-    // Act
-    Object actualRecursivelyExtractParentResult =
-        ruleFieldPersistenceProvider.recursivelyExtractParent(populateValueRequest, instance);
-
-    // Assert
-    verify(property).getName();
-    verify(fieldManager, atLeast(1)).getFieldValue(isA(Object.class), Mockito.<String>any());
-    assertSame(instance, actualRecursivelyExtractParentResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest,
-   * Serializable)}.
-   *
-   * <ul>
-   *   <li>When {@link Property#Property(String, String)} with name is {@code .} and value is {@code
-   *       42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#recursivelyExtractParent(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object RuleFieldPersistenceProvider.recursivelyExtractParent(PopulateValueRequest, Serializable)"
-  })
-  public void testRecursivelyExtractParent_whenPropertyWithNameIsDotAndValueIs42()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property(".", "42");
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-
-    // Act
-    Object actualRecursivelyExtractParentResult =
-        ruleFieldPersistenceProvider.recursivelyExtractParent(populateValueRequest, instance);
-
-    // Assert
-    assertSame(instance, actualRecursivelyExtractParentResult);
-  }
-
-  /**
    * Test {@link RuleFieldPersistenceProvider#parseParentProperty(String)}.
-   *
    * <ul>
-   *   <li>When {@code .}.
-   *   <li>Then return empty string.
+   *   <li>When {@code .}.</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#parseParentProperty(String)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#parseParentProperty(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String RuleFieldPersistenceProvider.parseParentProperty(String)"})
   public void testParseParentProperty_whenDot_thenReturnEmptyString() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange, Act and Assert
-    assertEquals("", ruleFieldPersistenceProvider.parseParentProperty("."));
+    assertEquals("", (new RuleFieldPersistenceProvider()).parseParentProperty("."));
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#isEmbeddable(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#isEmbeddable(Class)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#isEmbeddable(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean RuleFieldPersistenceProvider.isEmbeddable(Class)"})
   public void testIsEmbeddable_whenJavaLangObject_thenReturnFalse() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     Class<Object> clazz = Object.class;
 
     // Act and Assert
@@ -2471,1935 +869,331 @@ public class RuleFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#populateQuantityRule(PopulateValueRequest,
-   * Serializable)}.
-   *
+   * Test {@link RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)}.
    * <ul>
-   *   <li>Given {@code Name}.
-   *   <li>Then throw {@link PersistenceException}.
+   *   <li>Then throw {@link PersistenceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#populateQuantityRule(PopulateValueRequest, Serializable)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.populateQuantityRule(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateQuantityRule_givenName_thenThrowPersistenceException()
-      throws IllegalAccessException, IllegalStateException, FieldNotAvailableException {
+      "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"})
+  public void testConvertQuantityBasedRuleToJson_thenThrowPersistenceException() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getField(Mockito.<Class<?>>any(), Mockito.<String>any()))
-        .thenThrow(new PersistenceException("An error occurred"));
-
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("Name");
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.populateQuantityRule(
-                populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
-    verify(property).getName();
-    verify(fieldManager).getField(isA(Class.class), eq("Name"));
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson() {
-    // Arrange
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenThrow(new PersistenceException("An error occurred"));
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     MVELToDataWrapperTranslator translator = new MVELToDataWrapperTranslator();
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, new ArrayList<>(), "Json Prop", "Field Service"));
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson2() {
-    // Arrange
-    MVELToDataWrapperTranslator translator = new MVELToDataWrapperTranslator();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getMatchRule()).thenThrow(new PersistenceException("An error occurred"));
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(quantityBasedRule).getMatchRule();
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson3() {
-    // Arrange
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenThrow(new PersistenceException("An error occurred"));
-    MVELToDataWrapperTranslator translator = new MVELToDataWrapperTranslator();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
     QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
     when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(quantityBasedRule).getMatchRule();
-    verify(ruleFieldExtractionUtility).unescapeSpecialCharacters("Match Rule");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson4() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getData()).thenThrow(new PersistenceException("An error occurred"));
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(dataWrapper);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
     QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
     when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
+    QuantityBasedRule quantityBasedRule3 = mock(QuantityBasedRule.class);
+    when(quantityBasedRule3.getMatchRule()).thenThrow(new PersistenceException("An error occurred"));
 
     ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
+    quantityBasedRules.add(quantityBasedRule3);
     quantityBasedRules.add(quantityBasedRule2);
     quantityBasedRules.add(quantityBasedRule);
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(dataWrapper).getData();
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
+    assertThrows(PersistenceException.class, () -> ruleFieldPersistenceProvider
+        .convertQuantityBasedRuleToJson(translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
+    verify(quantityBasedRule3).getMatchRule();
   }
 
   /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson5() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn(null);
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("An error occurred");
-    when(dataWrapper.getRawMvel()).thenReturn("Raw Mvel");
-    when(dataWrapper.getData()).thenReturn(new ArrayList<>());
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(dataWrapper);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
-    when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule2);
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(dataWrapper).getData();
-    verify(dataWrapper).getError();
-    verify(dataWrapper).getRawMvel();
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson6() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getData()).thenThrow(new PersistenceException((String) null));
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(dataWrapper);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
-    when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule2);
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(dataWrapper).getData();
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson7() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getData()).thenThrow(new PersistenceException(""));
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(dataWrapper);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
-    when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule2);
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(dataWrapper).getData();
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson8() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.NOT_HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("An error occurred");
-    when(dataWrapper.getRawMvel()).thenReturn("Raw Mvel");
-    when(dataWrapper.getData()).thenReturn(new ArrayList<>());
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(dataWrapper);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
-    when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule2);
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(dataWrapper).getData();
-    verify(dataWrapper).getError();
-    verify(dataWrapper).getRawMvel();
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
+   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
    * <ul>
-   *   <li>Given {@link DataDTO} (default constructor) Condition is {@code matchRule}.
+   *   <li>When empty string.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson_givenDataDTOConditionIsMatchRule() {
+      "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"})
+  public void testUpdateQuantityRule_whenEmptyString_thenReturnFalse() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-
-    DataDTO dataDTO = new DataDTO();
-    dataDTO.setCondition("matchRule");
-    dataDTO.setContainedPk(1L);
-    dataDTO.setCreatedFromSubGroup(true);
-    dataDTO.setPk(1L);
-    dataDTO.setPreviousContainedPk(1L);
-    dataDTO.setPreviousPk(1L);
-    dataDTO.setQuantity(1);
-    dataDTO.setRules(new ArrayList<>());
-
-    ArrayList<DataDTO> dataDTOList = new ArrayList<>();
-    dataDTOList.add(dataDTO);
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("An error occurred");
-    when(dataWrapper.getRawMvel()).thenReturn("Raw Mvel");
-    when(dataWrapper.getData()).thenReturn(dataDTOList);
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(dataWrapper);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
-    when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule2);
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(dataWrapper).getData();
-    verify(dataWrapper).getError();
-    verify(dataWrapper).getRawMvel();
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code Object}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson_givenJavaLangObject() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("An error occurred");
-    when(dataWrapper.getRawMvel()).thenReturn("Raw Mvel");
-    when(dataWrapper.getData()).thenReturn(new ArrayList<>());
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(dataWrapper);
-
-    Builder builderResult = JsonMapper.builder();
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-
-    builderResult.addMixIn(target, mixinSource);
-    JsonMapper mapper = builderResult.findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
-    when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule2);
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(dataWrapper).getData();
-    verify(dataWrapper).getError();
-    verify(dataWrapper).getRawMvel();
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link DataWrapper#getError()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson_thenCallsGetError() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("An error occurred");
-    when(dataWrapper.getRawMvel()).thenReturn("Raw Mvel");
-    when(dataWrapper.getData()).thenReturn(new ArrayList<>());
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(dataWrapper);
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
-    when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule2);
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-                translator, mapper, quantityBasedRules, "Json Prop", "Field Service"));
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(dataWrapper).getData();
-    verify(dataWrapper).getError();
-    verify(dataWrapper).getRawMvel();
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <ul>
-   *   <li>Then return RawValue is a string.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson_thenReturnRawValueIsAString() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-    MVELToDataWrapperTranslator translator = new MVELToDataWrapperTranslator();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act
-    Property actualConvertQuantityBasedRuleToJsonResult =
-        ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-            translator, mapper, quantityBasedRules, "Json Prop", "Field Service");
-
-    // Assert
-    verify(ruleFieldPersistenceProviderExtensionManager).getProxy();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler)
-        .transformId(isA(Object.class), isA(ExtensionResultHolder.class));
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-    assertTrue(
-        actualConvertQuantityBasedRuleToJsonResult.getMetadata() instanceof BasicFieldMetadata);
-    assertEquals("Json Prop", actualConvertQuantityBasedRuleToJsonResult.getName());
-    assertEquals(
-        "{\"data\":[],\"error\":\"Could not parse the MVEL expression to a compatible form for the rules builder"
-            + " (Unescape Special Characters)\",\"rawMvel\":\"Unescape Special Characters\"}",
-        actualConvertQuantityBasedRuleToJsonResult.getRawValue());
-    assertEquals(
-        "{\"data\":[],\"error\":\"Could not parse the MVEL expression to a compatible form for the rules builder"
-            + " (Unescape Special Characters)\",\"rawMvel\":\"Unescape Special Characters\"}",
-        actualConvertQuantityBasedRuleToJsonResult.getUnHtmlEncodedValue());
-    assertEquals(
-        "{\"data\":[],\"error\":\"Could not parse the MVEL expression to a compatible form for the rules builder"
-            + " (Unescape Special Characters)\",\"rawMvel\":\"Unescape Special Characters\"}",
-        actualConvertQuantityBasedRuleToJsonResult.getValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getDisplayValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getOriginalDisplayValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getOriginalValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getDeployDate());
-    assertFalse(actualConvertQuantityBasedRuleToJsonResult.getIsDirty());
-    assertFalse(actualConvertQuantityBasedRuleToJsonResult.isAdvancedCollection());
-    assertTrue(actualConvertQuantityBasedRuleToJsonResult.getEnabled());
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <ul>
-   *   <li>Then return RawValue is {@code {"data":[],"error":null,"rawMvel":null}}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson_thenReturnRawValueIsDataErrorNullRawMvelNull() {
-    // Arrange
-    RuleFieldPersistenceProviderExtensionHandler ruleFieldPersistenceProviderExtensionHandler =
-        mock(RuleFieldPersistenceProviderExtensionHandler.class);
-    when(ruleFieldPersistenceProviderExtensionHandler.transformId(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(ruleFieldPersistenceProviderExtensionManager.getProxy())
-        .thenReturn(ruleFieldPersistenceProviderExtensionHandler);
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    when(ruleFieldExtractionUtility.unescapeSpecialCharacters(Mockito.<String>any()))
-        .thenReturn("Unescape Special Characters");
-
-    MVELToDataWrapperTranslator translator = mock(MVELToDataWrapperTranslator.class);
-    when(translator.createRuleData(
-            Mockito.<Entity[]>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<RuleBuilderFieldService>any()))
-        .thenReturn(new DataWrapper());
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenReturn(1);
-    when(quantityBasedRule.getId()).thenReturn(1L);
-    when(quantityBasedRule.getMatchRule()).thenReturn("Match Rule");
-
-    QuantityBasedRule quantityBasedRule2 = mock(QuantityBasedRule.class);
-    when(quantityBasedRule2.getQuantity()).thenReturn(1);
-    when(quantityBasedRule2.getId()).thenReturn(1L);
-    when(quantityBasedRule2.getMatchRule()).thenReturn("Match Rule");
-
-    ArrayList<QuantityBasedRule> quantityBasedRules = new ArrayList<>();
-    quantityBasedRules.add(quantityBasedRule2);
-    quantityBasedRules.add(quantityBasedRule);
-
-    // Act
-    Property actualConvertQuantityBasedRuleToJsonResult =
-        ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-            translator, mapper, quantityBasedRules, "Json Prop", "Field Service");
-
-    // Assert
-    verify(ruleFieldPersistenceProviderExtensionManager, atLeast(1)).getProxy();
-    verify(quantityBasedRule2).getId();
-    verify(quantityBasedRule).getId();
-    verify(quantityBasedRule2).getMatchRule();
-    verify(quantityBasedRule).getMatchRule();
-    verify(quantityBasedRule2).getQuantity();
-    verify(quantityBasedRule).getQuantity();
-    verify(ruleFieldExtractionUtility, atLeast(1)).unescapeSpecialCharacters("Match Rule");
-    verify(ruleFieldPersistenceProviderExtensionHandler, atLeast(1))
-        .transformId(Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Long>>any());
-    verify(translator)
-        .createRuleData(
-            isA(Entity[].class),
-            eq("matchRule"),
-            eq("quantity"),
-            eq("id"),
-            eq("containedId"),
-            isA(RuleBuilderFieldService.class));
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-    assertTrue(
-        actualConvertQuantityBasedRuleToJsonResult.getMetadata() instanceof BasicFieldMetadata);
-    assertEquals("Json Prop", actualConvertQuantityBasedRuleToJsonResult.getName());
-    assertEquals(
-        "{\"data\":[],\"error\":null,\"rawMvel\":null}",
-        actualConvertQuantityBasedRuleToJsonResult.getRawValue());
-    assertEquals(
-        "{\"data\":[],\"error\":null,\"rawMvel\":null}",
-        actualConvertQuantityBasedRuleToJsonResult.getUnHtmlEncodedValue());
-    assertEquals(
-        "{\"data\":[],\"error\":null,\"rawMvel\":null}",
-        actualConvertQuantityBasedRuleToJsonResult.getValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getDisplayValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getOriginalDisplayValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getOriginalValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getDeployDate());
-    assertFalse(actualConvertQuantityBasedRuleToJsonResult.getIsDirty());
-    assertFalse(actualConvertQuantityBasedRuleToJsonResult.isAdvancedCollection());
-    assertTrue(actualConvertQuantityBasedRuleToJsonResult.getEnabled());
-  }
-
-  /**
-   * Test {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return RawValue is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator,
-   * ObjectMapper, Collection, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property RuleFieldPersistenceProvider.convertQuantityBasedRuleToJson(MVELToDataWrapperTranslator, ObjectMapper, Collection, String, String)"
-  })
-  public void testConvertQuantityBasedRuleToJson_whenArrayList_thenReturnRawValueIsNull() {
-    // Arrange
-    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
-        .thenReturn(mock(RuleBuilderFieldService.class));
-    MVELToDataWrapperTranslator translator = new MVELToDataWrapperTranslator();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act
-    Property actualConvertQuantityBasedRuleToJsonResult =
-        ruleFieldPersistenceProvider.convertQuantityBasedRuleToJson(
-            translator, mapper, new ArrayList<>(), "Json Prop", "Field Service");
-
-    // Assert
-    verify(ruleBuilderFieldServiceFactory).createInstance("Field Service");
-    assertTrue(
-        actualConvertQuantityBasedRuleToJsonResult.getMetadata() instanceof BasicFieldMetadata);
-    assertEquals("Json Prop", actualConvertQuantityBasedRuleToJsonResult.getName());
-    assertEquals("null", actualConvertQuantityBasedRuleToJsonResult.getRawValue());
-    assertEquals("null", actualConvertQuantityBasedRuleToJsonResult.getUnHtmlEncodedValue());
-    assertEquals("null", actualConvertQuantityBasedRuleToJsonResult.getValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getDisplayValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getOriginalDisplayValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getOriginalValue());
-    assertNull(actualConvertQuantityBasedRuleToJsonResult.getDeployDate());
-    assertFalse(actualConvertQuantityBasedRuleToJsonResult.getIsDirty());
-    assertFalse(actualConvertQuantityBasedRuleToJsonResult.isAdvancedCollection());
-    assertTrue(actualConvertQuantityBasedRuleToJsonResult.getEnabled());
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule() {
-    // Arrange
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenThrow(new PersistenceException("An error occurred"));
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(mock(QuantityBasedRule.class));
+    ArrayList<QuantityBasedRule> criteriaList = new ArrayList<>();
     Class<Object> memberType = Object.class;
 
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
     // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.updateQuantityRule(
-                null, translator, "", "", "42", criteriaList, memberType, "", "", property));
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("42");
+    assertFalse(ruleFieldPersistenceProvider.updateQuantityRule(null, translator, "Entity Key", "Field Service", "",
+        criteriaList, memberType, "Parent", "Mapped By", new Property()));
   }
 
   /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule2() {
-    // Arrange
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(null);
-    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(mock(QuantityBasedRule.class));
-    Class<Object> memberType = Object.class;
-
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
-    // Act
-    boolean actualUpdateQuantityRuleResult =
-        ruleFieldPersistenceProvider.updateQuantityRule(
-            null, translator, "", "", "42", criteriaList, memberType, "", "", property);
-
-    // Assert
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("42");
-    assertFalse(actualUpdateQuantityRuleResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule3() {
-    // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenThrow(new PersistenceException("An error occurred"));
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(mock(QuantityBasedRule.class));
-    Class<Object> memberType = Object.class;
-
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.updateQuantityRule(
-                null, translator, "", "", "42", criteriaList, memberType, "", "", property));
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("42");
-    verify(dataWrapper).getError();
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule4() {
-    // Arrange
-    DataDTO dataDTO = new DataDTO();
-    dataDTO.setCondition("otherChangeSetProps");
-    dataDTO.setContainedPk(0L);
-    dataDTO.setCreatedFromSubGroup(false);
-    dataDTO.setPk(0L);
-    dataDTO.setPreviousContainedPk(0L);
-    dataDTO.setPreviousPk(0L);
-    dataDTO.setQuantity(0);
-    dataDTO.setRules(new ArrayList<>());
-
-    ArrayList<DataDTO> dataDTOList = new ArrayList<>();
-    dataDTOList.add(dataDTO);
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn(null);
-    when(dataWrapper.getData()).thenReturn(dataDTOList);
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-    when(sandBoxHelper.isRelatedToParentCatalogIds(Mockito.<Object>any(), (Long[]) Mockito.any()))
-        .thenThrow(new PersistenceException("An error occurred"));
-    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(mock(QuantityBasedRule.class));
-    Class<Object> memberType = Object.class;
-
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.updateQuantityRule(
-                null, translator, "", "", "42", criteriaList, memberType, "", "", property));
-    verify(sandBoxHelper).isRelatedToParentCatalogIds(isA(Object.class), (Long[]) Mockito.any());
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("42");
-    verify(dataWrapper).getData();
-    verify(dataWrapper).getError();
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
+   * Test {@link RuleFieldPersistenceProvider#updateSimpleRule(PopulateValueRequest, String, boolean, SimpleRule)}.
    * <ul>
-   *   <li>Given {@link DataWrapper} {@link DataWrapper#getError()} return {@code An error
-   *       occurred}.
+   *   <li>Then throw {@link PersistenceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#updateSimpleRule(PopulateValueRequest, String, boolean, SimpleRule)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule_givenDataWrapperGetErrorReturnAnErrorOccurred() {
-    // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("An error occurred");
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(mock(QuantityBasedRule.class));
-    Class<Object> memberType = Object.class;
-
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
-    // Act
-    boolean actualUpdateQuantityRuleResult =
-        ruleFieldPersistenceProvider.updateQuantityRule(
-            null, translator, "", "", "42", criteriaList, memberType, "", "", property);
-
-    // Assert
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("42");
-    verify(dataWrapper).getError();
-    assertFalse(actualUpdateQuantityRuleResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@link DataWrapper} {@link DataWrapper#getError()} return {@code An error
-   *       occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule_givenDataWrapperGetErrorReturnAnErrorOccurred2() {
-    // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn("An error occurred");
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(mock(QuantityBasedRule.class));
-    criteriaList.add(mock(QuantityBasedRule.class));
-    Class<Object> memberType = Object.class;
-
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
-    // Act
-    boolean actualUpdateQuantityRuleResult =
-        ruleFieldPersistenceProvider.updateQuantityRule(
-            null, translator, "", "", "42", criteriaList, memberType, "", "", property);
-
-    // Assert
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("42");
-    verify(dataWrapper).getError();
-    assertFalse(actualUpdateQuantityRuleResult);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@link QuantityBasedRule}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule_givenQuantityBasedRule_thenReturnFalse() {
-    // Arrange
-    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(mock(QuantityBasedRule.class));
-    Class<Object> memberType = Object.class;
-
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
-    // Act and Assert
-    assertFalse(
-        ruleFieldPersistenceProvider.updateQuantityRule(
-            null, translator, "", "", "", criteriaList, memberType, "", "", property));
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@link QuantityBasedRule}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule_givenQuantityBasedRule_thenReturnFalse2() {
-    // Arrange
-    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(mock(QuantityBasedRule.class));
-    Class<Object> memberType = Object.class;
-
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
-    // Act and Assert
-    assertFalse(
-        ruleFieldPersistenceProvider.updateQuantityRule(
-            null, translator, "", "", null, criteriaList, memberType, "", "", property));
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link QuantityBasedRule#getQuantity()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#updateQuantityRule(EntityManager,
-   * DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RuleFieldPersistenceProvider.updateQuantityRule(EntityManager, DataDTOToMVELTranslator, String, String, String, Collection, Class, Object, String, Property)"
-  })
-  public void testUpdateQuantityRule_thenCallsGetQuantity() {
-    // Arrange
-    DataDTO dataDTO = new DataDTO();
-    dataDTO.setCondition("otherChangeSetProps");
-    dataDTO.setContainedPk(0L);
-    dataDTO.setCreatedFromSubGroup(false);
-    dataDTO.setPk(0L);
-    dataDTO.setPreviousContainedPk(0L);
-    dataDTO.setPreviousPk(0L);
-    dataDTO.setQuantity(0);
-    dataDTO.setRules(new ArrayList<>());
-
-    ArrayList<DataDTO> dataDTOList = new ArrayList<>();
-    dataDTOList.add(dataDTO);
-
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getError()).thenReturn(null);
-    when(dataWrapper.getData()).thenReturn(dataDTOList);
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
-        .thenReturn(dataWrapper);
-    when(sandBoxHelper.isRelatedToParentCatalogIds(Mockito.<Object>any(), (Long[]) Mockito.any()))
-        .thenReturn(true);
-    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-
-    QuantityBasedRule quantityBasedRule = mock(QuantityBasedRule.class);
-    when(quantityBasedRule.getQuantity()).thenThrow(new PersistenceException("An error occurred"));
-
-    LinkedHashSet<QuantityBasedRule> criteriaList = new LinkedHashSet<>();
-    criteriaList.add(quantityBasedRule);
-    criteriaList.add(mock(QuantityBasedRule.class));
-    Class<Object> memberType = Object.class;
-
-    Property property = new Property("Name", "42");
-    property.setUnHtmlEncodedValue(null);
-    property.setRawValue(null);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.updateQuantityRule(
-                null, translator, "", "", "42", criteriaList, memberType, "", "", property));
-    verify(quantityBasedRule).getQuantity();
-    verify(sandBoxHelper).isRelatedToParentCatalogIds(isA(Object.class), (Long[]) Mockito.any());
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("42");
-    verify(dataWrapper).getData();
-    verify(dataWrapper).getError();
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#updateSimpleRule(PopulateValueRequest, String,
-   * boolean, SimpleRule)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link PersistenceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#updateSimpleRule(PopulateValueRequest, String, boolean,
-   * SimpleRule)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RuleFieldPersistenceProvider.updateSimpleRule(PopulateValueRequest, String, boolean, SimpleRule)"
-  })
+      "void RuleFieldPersistenceProvider.updateSimpleRule(PopulateValueRequest, String, boolean, SimpleRule)"})
   public void testUpdateSimpleRule_thenThrowPersistenceException()
       throws IllegalAccessException, FieldNotAvailableException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
     SimpleRule rule = mock(SimpleRule.class);
-    doThrow(new PersistenceException("An error occurred"))
-        .when(rule)
-        .setMatchRule(Mockito.<String>any());
+    doThrow(new PersistenceException("An error occurred")).when(rule).setMatchRule(Mockito.<String>any());
 
     // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            ruleFieldPersistenceProvider.updateSimpleRule(
-                populateValueRequest, "Mvel", true, rule));
-    verify(rule).setMatchRule("Mvel");
+    assertThrows(PersistenceException.class,
+        () -> ruleFieldPersistenceProvider.updateSimpleRule(populateValueRequest, "Mvel", true, rule));
+    verify(rule).setMatchRule(eq("Mvel"));
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"
-  })
-  public void testGetStartingValueType() throws ClassNotFoundException, IllegalAccessException {
-    // Arrange
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property("---", "42");
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    Class<?> actualStartingValueType =
-        ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
-
-    // Assert
-    Class<Object> expectedStartingValueType = Object.class;
-    assertEquals(expectedStartingValueType, actualStartingValueType);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"
-  })
-  public void testGetStartingValueType2() throws ClassNotFoundException, IllegalAccessException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("---");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    Class<?> actualStartingValueType =
-        ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
-
-    // Assert
-    verify(property).getName();
-    Class<Object> expectedStartingValueType = Object.class;
-    assertEquals(expectedStartingValueType, actualStartingValueType);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"
-  })
-  public void testGetStartingValueType3() throws ClassNotFoundException, IllegalAccessException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("---");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            null,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act and Assert
-    assertThrows(
-        IllegalAccessException.class,
-        () -> ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest));
-    verify(property, atLeast(1)).getName();
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
-   *
    * <ul>
-   *   <li>Given {@code List}.
-   *   <li>Then return {@link List}.
+   *   <li>Given {@link BasicFieldMetadata} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"
-  })
-  public void testGetStartingValueType_givenJavaUtilList_thenReturnList()
-      throws ClassNotFoundException, IllegalAccessException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
+  public void testGetStartingValueType_givenBasicFieldMetadata() throws ClassNotFoundException, IllegalAccessException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("---");
-
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getMapFieldValueClass()).thenReturn("java.util.List");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getMetadata()).thenReturn(new BasicFieldMetadata());
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(populateValueRequest.getReturnType()).thenReturn(forNameResult);
+    when(populateValueRequest.getProperty()).thenReturn(new Property("---", "42"));
 
     // Act
-    Class<?> actualStartingValueType =
-        ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
+    Class<?> actualStartingValueType = ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
 
     // Assert
-    verify(metadata).getMapFieldValueClass();
+    verify(populateValueRequest).getMetadata();
+    verify(populateValueRequest).getProperty();
+    verify(populateValueRequest).getReturnType();
+    Class<Object> expectedStartingValueType = Object.class;
+    assertEquals(expectedStartingValueType, actualStartingValueType);
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getName()} return {@code Name}.</li>
+   *   <li>Then calls {@link Property#getName()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
+  public void testGetStartingValueType_givenPropertyGetNameReturnName_thenCallsGetName()
+      throws ClassNotFoundException, IllegalAccessException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    Property property = mock(Property.class);
+    when(property.getName()).thenReturn("Name");
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(populateValueRequest.getReturnType()).thenReturn(forNameResult);
+    when(populateValueRequest.getProperty()).thenReturn(property);
+
+    // Act
+    Class<?> actualStartingValueType = ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
+
+    // Assert
     verify(property).getName();
+    verify(populateValueRequest).getProperty();
+    verify(populateValueRequest).getReturnType();
+    Class<Object> expectedStartingValueType = Object.class;
+    assertEquals(expectedStartingValueType, actualStartingValueType);
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
+   * <ul>
+   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
+  public void testGetStartingValueType_givenPropertyWithNameAndValueIs42()
+      throws ClassNotFoundException, IllegalAccessException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(populateValueRequest.getReturnType()).thenReturn(forNameResult);
+    when(populateValueRequest.getProperty()).thenReturn(new Property("Name", "42"));
+
+    // Act
+    Class<?> actualStartingValueType = ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
+
+    // Assert
+    verify(populateValueRequest).getProperty();
+    verify(populateValueRequest).getReturnType();
+    Class<Object> expectedStartingValueType = Object.class;
+    assertEquals(expectedStartingValueType, actualStartingValueType);
+  }
+
+  /**
+   * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
+   * <ul>
+   *   <li>Then return {@link List}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
+  public void testGetStartingValueType_thenReturnList() throws ClassNotFoundException, IllegalAccessException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getMapFieldValueClass()).thenReturn("java.util.List");
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    when(populateValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
+    when(populateValueRequest.getProperty()).thenReturn(new Property("---", "42"));
+
+    // Act
+    Class<?> actualStartingValueType = ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
+
+    // Assert
+    verify(basicFieldMetadata).getMapFieldValueClass();
+    verify(populateValueRequest).getMetadata();
+    verify(populateValueRequest).getProperty();
     Class<List> expectedStartingValueType = List.class;
     assertEquals(expectedStartingValueType, actualStartingValueType);
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
-   *
    * <ul>
-   *   <li>Given {@code Name}.
-   *   <li>When {@link Property} {@link Property#getName()} return {@code Name}.
+   *   <li>Then throw {@link IllegalAccessException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"
-  })
-  public void testGetStartingValueType_givenName_whenPropertyGetNameReturnName()
-      throws ClassNotFoundException, IllegalAccessException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("Name");
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    Class<?> actualStartingValueType =
-        ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
-
-    // Assert
-    verify(property).getName();
-    Class<Object> expectedStartingValueType = Object.class;
-    assertEquals(expectedStartingValueType, actualStartingValueType);
-  }
-
-  /**
-   * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalAccessException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
   public void testGetStartingValueType_thenThrowIllegalAccessException()
       throws ClassNotFoundException, IllegalAccessException {
-    // Arrange
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    metadata.setMapFieldValueClass(null);
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property("---", "42");
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
 
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            null,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    Mockito.<Class<?>>when(populateValueRequest.getReturnType()).thenReturn(null);
+    when(populateValueRequest.getProperty()).thenReturn(new Property("Name", "42"));
 
     // Act and Assert
-    assertThrows(
-        IllegalAccessException.class,
+    assertThrows(IllegalAccessException.class,
         () -> ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest));
+    verify(populateValueRequest, atLeast(1)).getProperty();
+    verify(populateValueRequest).getReturnType();
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}.
-   *
    * <ul>
-   *   <li>When {@link BasicFieldMetadata} {@link BasicFieldMetadata#getMapFieldValueClass()} return
-   *       {@code null}.
+   *   <li>Then throw {@link IllegalAccessException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#getStartingValueType(PopulateValueRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"
-  })
-  public void testGetStartingValueType_whenBasicFieldMetadataGetMapFieldValueClassReturnNull()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Class RuleFieldPersistenceProvider.getStartingValueType(PopulateValueRequest)"})
+  public void testGetStartingValueType_thenThrowIllegalAccessException2()
       throws ClassNotFoundException, IllegalAccessException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
+    RuleFieldPersistenceProvider ruleFieldPersistenceProvider = new RuleFieldPersistenceProvider();
     Property property = mock(Property.class);
-    when(property.getName()).thenReturn("---");
+    when(property.getName()).thenReturn("Name");
+    PopulateValueRequest populateValueRequest = mock(PopulateValueRequest.class);
+    Mockito.<Class<?>>when(populateValueRequest.getReturnType()).thenReturn(null);
+    when(populateValueRequest.getProperty()).thenReturn(property);
 
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getMapFieldValueClass()).thenReturn(null);
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    Class<?> actualStartingValueType =
-        ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest);
-
-    // Assert
-    verify(metadata).getMapFieldValueClass();
-    verify(property).getName();
-    Class<Object> expectedStartingValueType = Object.class;
-    assertEquals(expectedStartingValueType, actualStartingValueType);
+    // Act and Assert
+    assertThrows(IllegalAccessException.class,
+        () -> ruleFieldPersistenceProvider.getStartingValueType(populateValueRequest));
+    verify(property, atLeast(1)).getName();
+    verify(populateValueRequest, atLeast(1)).getProperty();
+    verify(populateValueRequest).getReturnType();
   }
 
   /**
    * Test {@link RuleFieldPersistenceProvider#getOrder()}.
-   *
-   * <p>Method under test: {@link RuleFieldPersistenceProvider#getOrder()}
+   * <p>
+   * Method under test: {@link RuleFieldPersistenceProvider#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int RuleFieldPersistenceProvider.getOrder()"})
   public void testGetOrder() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange, Act and Assert
-    assertEquals(FieldPersistenceProvider.RULE, ruleFieldPersistenceProvider.getOrder());
+    assertEquals(FieldPersistenceProvider.RULE, (new RuleFieldPersistenceProvider()).getOrder());
   }
 }

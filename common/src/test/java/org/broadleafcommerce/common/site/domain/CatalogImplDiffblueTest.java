@@ -26,8 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +40,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CatalogImplDiffblueTest {
-  @Autowired private CatalogImpl catalogImpl;
+  @Autowired
+  private CatalogImpl catalogImpl;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CatalogImpl#setId(Long)}
    *   <li>{@link CatalogImpl#setName(String)}
@@ -61,16 +60,9 @@ public class CatalogImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long CatalogImpl.getId()",
-    "List CatalogImpl.getSiteXrefs()",
-    "void CatalogImpl.setId(Long)",
-    "void CatalogImpl.setName(String)",
-    "void CatalogImpl.setSiteXrefs(List)",
-    "void CatalogImpl.setSites(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long CatalogImpl.getId()", "List CatalogImpl.getSiteXrefs()", "void CatalogImpl.setId(Long)",
+      "void CatalogImpl.setName(String)", "void CatalogImpl.setSiteXrefs(List)", "void CatalogImpl.setSites(List)"})
   public void testGettersAndSetters() {
     // Arrange
     CatalogImpl catalogImpl = new CatalogImpl();
@@ -92,59 +84,56 @@ public class CatalogImplDiffblueTest {
 
   /**
    * Test {@link CatalogImpl#getName()}.
-   *
-   * <p>Method under test: {@link CatalogImpl#getName()}
+   * <p>
+   * Method under test: {@link CatalogImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CatalogImpl.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertNull(catalogImpl.getName());
+    assertNull((new CatalogImpl()).getName());
   }
 
   /**
    * Test {@link CatalogImpl#getSites()}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link SiteCatalogXrefImpl} (default
-   *       constructor).
-   *   <li>Then return {@link CatalogImpl} {@link CatalogImpl#sites}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SiteCatalogXrefImpl} (default constructor).</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#getSites()}
+   * <p>
+   * Method under test: {@link CatalogImpl#getSites()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogImpl.getSites()"})
-  public void testGetSites_givenArrayListAddSiteCatalogXrefImpl_thenReturnCatalogImplSites() {
+  public void testGetSites_givenArrayListAddSiteCatalogXrefImpl_thenReturnArrayList() {
     // Arrange
     ArrayList<SiteCatalogXref> siteXrefs = new ArrayList<>();
     siteXrefs.add(new SiteCatalogXrefImpl());
-    catalogImpl.setSiteXrefs(siteXrefs);
 
-    // Act
-    List<Site> actualSites = catalogImpl.getSites();
+    CatalogImpl catalogImpl2 = new CatalogImpl();
+    catalogImpl2.setId(1L);
+    catalogImpl2.setName("Name");
+    ArrayList<Site> sites = new ArrayList<>();
+    catalogImpl2.setSites(sites);
+    catalogImpl2.setSiteXrefs(siteXrefs);
 
-    // Assert
-    assertEquals(catalogImpl.sites, actualSites);
+    // Act and Assert
+    assertEquals(sites, catalogImpl2.getSites());
   }
 
   /**
    * Test {@link CatalogImpl#getSites()}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link SiteImpl} (default constructor).
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SiteImpl} (default constructor).</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#getSites()}
+   * <p>
+   * Method under test: {@link CatalogImpl#getSites()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogImpl.getSites()"})
   public void testGetSites_givenArrayListAddSiteImpl_thenReturnArrayList() {
     // Arrange
@@ -154,77 +143,74 @@ public class CatalogImplDiffblueTest {
     ArrayList<SiteCatalogXref> siteXrefs = new ArrayList<>();
     siteXrefs.add(new SiteCatalogXrefImpl());
 
-    CatalogImpl catalogImpl = new CatalogImpl();
-    catalogImpl.setId(1L);
-    catalogImpl.setName("Name");
-    catalogImpl.setSites(sites);
-    catalogImpl.setSiteXrefs(siteXrefs);
+    CatalogImpl catalogImpl2 = new CatalogImpl();
+    catalogImpl2.setId(1L);
+    catalogImpl2.setName("Name");
+    catalogImpl2.setSites(sites);
+    catalogImpl2.setSiteXrefs(siteXrefs);
 
     // Act and Assert
-    assertEquals(sites, catalogImpl.getSites());
+    assertEquals(sites, catalogImpl2.getSites());
   }
 
   /**
    * Test {@link CatalogImpl#getSites()}.
-   *
    * <ul>
-   *   <li>Given {@link CatalogImpl}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link CatalogImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#getSites()}
+   * <p>
+   * Method under test: {@link CatalogImpl#getSites()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogImpl.getSites()"})
   public void testGetSites_givenCatalogImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(catalogImpl.getSites().isEmpty());
+    assertTrue((new CatalogImpl()).getSites().isEmpty());
   }
 
   /**
    * Test {@link CatalogImpl#clone()}.
-   *
-   * <p>Method under test: {@link CatalogImpl#clone()}
+   * <p>
+   * Method under test: {@link CatalogImpl#clone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Catalog CatalogImpl.clone()"})
   public void testClone() {
-    // Arrange and Act
-    Catalog actualCloneResult = catalogImpl.clone();
+    // Arrange
+    CatalogImpl catalogImpl2 = new CatalogImpl();
+
+    // Act
+    Catalog actualCloneResult = catalogImpl2.clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof CatalogImpl);
-    assertEquals(catalogImpl, actualCloneResult);
+    assertEquals(catalogImpl2, actualCloneResult);
   }
 
   /**
    * Test {@link CatalogImpl#compareTo(Catalog)} with {@code Catalog}.
-   *
    * <ul>
-   *   <li>Given {@link CatalogImpl} (default constructor) Name is {@code Name}.
-   *   <li>Then calls {@link Catalog#getName()}.
+   *   <li>Given {@link CatalogImpl} (default constructor) Name is {@code Name}.</li>
+   *   <li>Then return zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#compareTo(Catalog)}
+   * <p>
+   * Method under test: {@link CatalogImpl#compareTo(Catalog)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int CatalogImpl.compareTo(Catalog)"})
-  public void testCompareToWithCatalog_givenCatalogImplNameIsName_thenCallsGetName() {
+  public void testCompareToWithCatalog_givenCatalogImplNameIsName_thenReturnZero() {
     // Arrange
-    CatalogImpl catalogImpl = new CatalogImpl();
-    catalogImpl.setName("Name");
-
+    CatalogImpl catalogImpl2 = new CatalogImpl();
+    catalogImpl2.setName("Name");
     Catalog other = mock(Catalog.class);
     when(other.getName()).thenReturn("Name");
 
     // Act
-    int actualCompareToResult = catalogImpl.compareTo(other);
+    int actualCompareToResult = catalogImpl2.compareTo(other);
 
     // Assert
     verify(other).getName();
@@ -232,140 +218,104 @@ public class CatalogImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogImpl#compareTo(Catalog)} with {@code Catalog}.
-   *
-   * <ul>
-   *   <li>Given one.
-   *   <li>When {@link CatalogImpl} (default constructor) Id is one.
-   *   <li>Then return zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#compareTo(Catalog)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int CatalogImpl.compareTo(Catalog)"})
-  public void testCompareToWithCatalog_givenOne_whenCatalogImplIdIsOne_thenReturnZero() {
-    // Arrange
-    CatalogImpl catalogImpl = new CatalogImpl();
-    catalogImpl.setName("Name");
-
-    CatalogImpl other = new CatalogImpl();
-    other.setId(1L);
-    other.setName("Name");
-    other.setSiteXrefs(new ArrayList<>());
-    other.setSites(new ArrayList<>());
-
-    // Act and Assert
-    assertEquals(0, catalogImpl.compareTo(other));
-  }
-
-  /**
    * Test {@link CatalogImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link CatalogImpl#getMainEntityName()}
+   * <p>
+   * Method under test: {@link CatalogImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CatalogImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull(catalogImpl.getMainEntityName());
+    assertNull((new CatalogImpl()).getMainEntityName());
   }
 
   /**
    * Test {@link CatalogImpl#getArchived()}.
-   *
-   * <p>Method under test: {@link CatalogImpl#getArchived()}
+   * <p>
+   * Method under test: {@link CatalogImpl#getArchived()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Character CatalogImpl.getArchived()"})
   public void testGetArchived() {
     // Arrange, Act and Assert
-    assertEquals('N', catalogImpl.getArchived().charValue());
+    assertEquals('N', (new CatalogImpl()).getArchived().charValue());
   }
 
   /**
    * Test {@link CatalogImpl#setArchived(Character)}.
-   *
-   * <p>Method under test: {@link CatalogImpl#setArchived(Character)}
+   * <p>
+   * Method under test: {@link CatalogImpl#setArchived(Character)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CatalogImpl.setArchived(Character)"})
   public void testSetArchived() {
-    // Arrange and Act
-    catalogImpl.setArchived('A');
+    // Arrange
+    CatalogImpl catalogImpl2 = new CatalogImpl();
+
+    // Act
+    catalogImpl2.setArchived('A');
 
     // Assert
-    assertEquals('A', catalogImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', catalogImpl.getArchived().charValue());
+    assertEquals('A', catalogImpl2.archiveStatus.getArchived().charValue());
+    assertEquals('A', catalogImpl2.getArchived().charValue());
   }
 
   /**
    * Test {@link CatalogImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link CatalogImpl} Archived is {@code Y}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link CatalogImpl} (default constructor) Archived is {@code Y}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#isActive()}
+   * <p>
+   * Method under test: {@link CatalogImpl#isActive()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.isActive()"})
   public void testIsActive_givenCatalogImplArchivedIsY_thenReturnFalse() {
     // Arrange
-    catalogImpl.setArchived('Y');
+    CatalogImpl catalogImpl2 = new CatalogImpl();
+    catalogImpl2.setArchived('Y');
 
     // Act and Assert
-    assertFalse(catalogImpl.isActive());
+    assertFalse(catalogImpl2.isActive());
   }
 
   /**
    * Test {@link CatalogImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link CatalogImpl}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link CatalogImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#isActive()}
+   * <p>
+   * Method under test: {@link CatalogImpl#isActive()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.isActive()"})
   public void testIsActive_givenCatalogImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(catalogImpl.isActive());
+    assertTrue((new CatalogImpl()).isActive());
   }
 
   /**
    * Test {@link CatalogImpl#equals(Object)}, and {@link CatalogImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CatalogImpl#equals(Object)}
    *   <li>{@link CatalogImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -383,27 +333,25 @@ public class CatalogImplDiffblueTest {
 
     // Act and Assert
     assertEquals(catalogImpl, catalogImpl2);
-    assertEquals(catalogImpl.hashCode(), catalogImpl2.hashCode());
+    int expectedHashCodeResult = catalogImpl.hashCode();
+    assertEquals(expectedHashCodeResult, catalogImpl2.hashCode());
   }
 
   /**
    * Test {@link CatalogImpl#equals(Object)}, and {@link CatalogImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CatalogImpl#equals(Object)}
    *   <li>{@link CatalogImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -421,27 +369,25 @@ public class CatalogImplDiffblueTest {
 
     // Act and Assert
     assertEquals(catalogImpl, catalogImpl2);
-    assertEquals(catalogImpl.hashCode(), catalogImpl2.hashCode());
+    int expectedHashCodeResult = catalogImpl.hashCode();
+    assertEquals(expectedHashCodeResult, catalogImpl2.hashCode());
   }
 
   /**
    * Test {@link CatalogImpl#equals(Object)}, and {@link CatalogImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CatalogImpl#equals(Object)}
    *   <li>{@link CatalogImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -459,27 +405,25 @@ public class CatalogImplDiffblueTest {
 
     // Act and Assert
     assertEquals(catalogImpl, catalogImpl2);
-    assertEquals(catalogImpl.hashCode(), catalogImpl2.hashCode());
+    int expectedHashCodeResult = catalogImpl.hashCode();
+    assertEquals(expectedHashCodeResult, catalogImpl2.hashCode());
   }
 
   /**
    * Test {@link CatalogImpl#equals(Object)}, and {@link CatalogImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CatalogImpl#equals(Object)}
    *   <li>{@link CatalogImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -497,17 +441,15 @@ public class CatalogImplDiffblueTest {
 
   /**
    * Test {@link CatalogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CatalogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -529,17 +471,15 @@ public class CatalogImplDiffblueTest {
 
   /**
    * Test {@link CatalogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CatalogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -561,17 +501,15 @@ public class CatalogImplDiffblueTest {
 
   /**
    * Test {@link CatalogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CatalogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
@@ -593,17 +531,15 @@ public class CatalogImplDiffblueTest {
 
   /**
    * Test {@link CatalogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CatalogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -619,17 +555,15 @@ public class CatalogImplDiffblueTest {
 
   /**
    * Test {@link CatalogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CatalogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CatalogImpl.equals(Object)", "int CatalogImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -645,12 +579,11 @@ public class CatalogImplDiffblueTest {
 
   /**
    * Test new {@link CatalogImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link CatalogImpl}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link CatalogImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CatalogImpl.<init>()"})
   public void testNewCatalogImpl() {
     // Arrange and Act

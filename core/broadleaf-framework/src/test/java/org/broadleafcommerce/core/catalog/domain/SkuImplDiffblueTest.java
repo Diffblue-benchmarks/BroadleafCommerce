@@ -23,33 +23,35 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.util.WeightUnitOfMeasureType;
 import org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPrices;
 import org.broadleafcommerce.core.inventory.service.type.InventoryType;
@@ -66,203 +68,295 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SkuImplDiffblueTest {
-  @Autowired private SkuImpl skuImpl;
+  @Autowired
+  private SkuImpl skuImpl;
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isOnSale()}
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
-  public void testIsOnSale_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnFalse() {
+  public void testIsOnSale_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
-    // Act and Assert
-    assertFalse(skuImpl.isOnSale());
+    // Act
+    boolean actualIsOnSaleResult = skuImpl2.isOnSale();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertFalse(actualIsOnSaleResult);
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isOnSale()}
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
+  public void testIsOnSale_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualIsOnSaleResult = skuImpl2.isOnSale();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertFalse(actualIsOnSaleResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#isOnSale()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
+  public void testIsOnSale_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualIsOnSaleResult = skuImpl2.isOnSale();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku, atLeast(1)).getId();
+    assertFalse(actualIsOnSaleResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#isOnSale()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
+  public void testIsOnSale_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.getRetailPrice()).thenReturn(new Money());
+    when(sku.getSalePrice()).thenReturn(new Money());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualIsOnSaleResult = skuImpl2.isOnSale();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku, atLeast(1)).getId();
+    verify(sku).getRetailPrice();
+    verify(sku).getSalePrice();
+    assertFalse(actualIsOnSaleResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#isOnSale()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.isOnSale());
+    assertFalse(skuImpl2.isOnSale());
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isOnSale()}
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenSkuImplRetailPriceIsMoney_thenReturnFalse() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
 
     // Act and Assert
-    assertFalse(skuImpl.isOnSale());
+    assertFalse(skuImpl2.isOnSale());
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isOnSale()}
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenSkuImplSalePriceIsMoney_thenReturnFalse() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertFalse(skuImpl.isOnSale());
+    assertFalse(skuImpl2.isOnSale());
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isOnSale()}
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_givenSkuImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(skuImpl.isOnSale());
+    assertFalse((new SkuImpl()).isOnSale());
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isOnSale()}
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isOnSale());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isOnSale());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#isOnSale()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isOnSale()}
+   * <p>
+   * Method under test: {@link SkuImpl#isOnSale()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isOnSale()"})
   public void testIsOnSale_thenThrowIllegalStateException2() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isOnSale());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isOnSale());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#hasDefaultSku()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasDefaultSkuResult = skuImpl.hasDefaultSku();
+    boolean actualHasDefaultSkuResult = skuImpl2.hasDefaultSku();
 
     // Assert
     verify(product).getDefaultSku();
@@ -271,56 +365,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#hasDefaultSku()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
-  public void testHasDefaultSku_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasDefaultSku());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#hasDefaultSku()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasDefaultSku()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasDefaultSkuResult = skuImpl.hasDefaultSku();
+    boolean actualHasDefaultSkuResult = skuImpl2.hasDefaultSku();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -330,130 +397,64 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#hasDefaultSku()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
-  public void testHasDefaultSku_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasDefaultSku());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#hasDefaultSku()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasDefaultSku()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
-  public void testHasDefaultSku_givenSkuImplIdIsOne_thenReturnFalse() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    boolean actualHasDefaultSkuResult = skuImpl.hasDefaultSku();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertFalse(actualHasDefaultSkuResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#hasDefaultSku()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasDefaultSku()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
     // Arrange
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.hasDefaultSku());
+    assertFalse(skuImpl2.hasDefaultSku());
   }
 
   /**
    * Test {@link SkuImpl#hasDefaultSku()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_givenSkuImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(skuImpl.hasDefaultSku());
+    assertFalse((new SkuImpl()).hasDefaultSku());
   }
 
   /**
    * Test {@link SkuImpl#hasDefaultSku()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
   public void testHasDefaultSku_thenReturnTrue() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasDefaultSkuResult = skuImpl.hasDefaultSku();
+    boolean actualHasDefaultSkuResult = skuImpl2.hasDefaultSku();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -461,596 +462,639 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#lookupDefaultSku()}.
-   *
+   * Test {@link SkuImpl#hasDefaultSku()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#lookupDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasDefaultSku()"})
+  public void testHasDefaultSku_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasDefaultSku());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#lookupDefaultSku()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#lookupDefaultSku()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku SkuImpl.lookupDefaultSku()"})
   public void testLookupDefaultSku_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.lookupDefaultSku());
+    assertNull(skuImpl2.lookupDefaultSku());
   }
 
   /**
    * Test {@link SkuImpl#lookupDefaultSku()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#lookupDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#lookupDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku SkuImpl.lookupDefaultSku()"})
   public void testLookupDefaultSku_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.lookupDefaultSku());
+    assertNull((new SkuImpl()).lookupDefaultSku());
   }
 
   /**
    * Test {@link SkuImpl#lookupDefaultSku()}.
-   *
    * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor).
+   *   <li>Then return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#lookupDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#lookupDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku SkuImpl.lookupDefaultSku()"})
   public void testLookupDefaultSku_thenReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    SkuImpl skuImpl = new SkuImpl();
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    when(product.getDefaultSku()).thenReturn(skuImpl2);
+
+    SkuImpl skuImpl3 = new SkuImpl();
+    skuImpl3.setProduct(product);
 
     // Act
-    Sku actualLookupDefaultSkuResult = skuImpl.lookupDefaultSku();
+    Sku actualLookupDefaultSkuResult = skuImpl3.lookupDefaultSku();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
-    assertSame(skuImpl, actualLookupDefaultSkuResult);
+    assertSame(skuImpl2, actualLookupDefaultSkuResult);
   }
 
   /**
    * Test {@link SkuImpl#lookupDefaultSku()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#lookupDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#lookupDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku SkuImpl.lookupDefaultSku()"})
   public void testLookupDefaultSku_thenThrowIllegalStateException() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setProduct(product);
+    when(product.getDefaultSku()).thenThrow(new IllegalStateException("foo"));
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.lookupDefaultSku());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.lookupDefaultSku());
     verify(product).getDefaultSku();
   }
 
   /**
    * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
+   * <p>
+   * Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getProductOptionValueAdjustments()"})
   public void testGetProductOptionValueAdjustments() {
-    // Arrange
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    SkuImpl sku = new SkuImpl();
-    SkuProductOptionValueXrefImpl skuProductOptionValueXrefImpl =
-        new SkuProductOptionValueXrefImpl(sku, new ProductOptionValueImpl());
-    productOptionValueXrefs.add(skuProductOptionValueXrefImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-
-    // Act and Assert
-    assertNull(skuImpl.getProductOptionValueAdjustments());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getProductOptionValueAdjustments()"})
-  public void testGetProductOptionValueAdjustments2() {
-    // Arrange
-    ProductOptionValueImpl productOptionValue = new ProductOptionValueImpl();
-    Money priceAdjustment = new Money();
-    productOptionValue.setPriceAdjustment(priceAdjustment);
-
-    SkuProductOptionValueXrefImpl skuProductOptionValueXrefImpl =
-        new SkuProductOptionValueXrefImpl();
-    skuProductOptionValueXrefImpl.setId(1L);
-    skuProductOptionValueXrefImpl.setProductOptionValue(productOptionValue);
-    skuProductOptionValueXrefImpl.setSku(new SkuImpl());
-
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(skuProductOptionValueXrefImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-
-    // Act and Assert
-    assertEquals(priceAdjustment, skuImpl.getProductOptionValueAdjustments());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getProductOptionValueAdjustments()"})
-  public void testGetProductOptionValueAdjustments_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getProductOptionValueAdjustments());
+    assertNull((new SkuImpl()).getProductOptionValueAdjustments());
   }
 
   /**
-   * Test {@link SkuImpl#getProductOptionValueAdjustments()}.
-   *
+   * Test {@link SkuImpl#getSalePrice()}.
    * <ul>
-   *   <li>Then calls {@link ProductOptionValueImpl#getPriceAdjustment()}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getProductOptionValueAdjustments()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getProductOptionValueAdjustments()"})
-  public void testGetProductOptionValueAdjustments_thenCallsGetPriceAdjustment() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
+  public void testGetSalePrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
-    ProductOptionValueImpl val = mock(ProductOptionValueImpl.class);
-    Money money = new Money();
-    when(val.getPriceAdjustment()).thenReturn(money);
-    SkuProductOptionValueXrefImpl skuProductOptionValueXrefImpl =
-        new SkuProductOptionValueXrefImpl(new SkuImpl(), val);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(skuProductOptionValueXrefImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualProductOptionValueAdjustments = skuImpl.getProductOptionValueAdjustments();
+    Money actualSalePrice = skuImpl2.getSalePrice();
 
     // Assert
-    verify(val, atLeast(1)).getPriceAdjustment();
-    assertSame(money, actualProductOptionValueAdjustments);
+    verify(product).getDefaultSku();
+    assertNull(actualSalePrice);
   }
 
   /**
    * Test {@link SkuImpl#getSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
-  public void testGetSalePrice_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnNull() {
+  public void testGetSalePrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
-    // Act and Assert
-    assertNull(skuImpl.getSalePrice());
+    // Act
+    Money actualSalePrice = skuImpl2.getSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertNull(actualSalePrice);
   }
 
   /**
    * Test {@link SkuImpl#getSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
+  public void testGetSalePrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualSalePrice = skuImpl2.getSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualSalePrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getSalePrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getSalePrice()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
+  public void testGetSalePrice_givenSkuGetSalePriceReturnMoney_thenCallsGetSalePrice() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Money money = new Money();
+    when(sku.getSalePrice()).thenReturn(money);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualSalePrice = skuImpl2.getSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getSalePrice();
+    assertSame(money, actualSalePrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getSalePrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getSalePrice());
+    assertNull(skuImpl2.getSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#getSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenSkuImplSalePriceIsMoney_thenReturnMoney() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money salePrice = new Money();
-    skuImpl.setSalePrice(salePrice);
+    skuImpl2.setSalePrice(salePrice);
 
     // Act and Assert
-    assertEquals(salePrice, skuImpl.getSalePrice());
+    assertEquals(salePrice, skuImpl2.getSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#getSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getSalePrice());
+    assertNull((new SkuImpl()).getSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#getSalePrice()}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
-  public void testGetSalePrice_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(currency);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setProduct(mock(Product.class));
-
-    // Act
-    Money actualSalePrice = skuImpl.getSalePrice();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualSalePrice.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualSalePrice.abs();
-    assertEquals(actualSalePrice, actualAbsResult);
-    Money actualZeroResult = actualSalePrice.zero();
-    assertEquals(actualSalePrice, actualZeroResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSalePrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getSalePrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getSalePrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getSalePrice()"})
   public void testGetSalePrice_thenThrowIllegalStateException2() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSalePrice());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#hasSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
-  public void testHasSalePrice_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnFalse() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertFalse(skuImpl.hasSalePrice());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getSalePrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#hasSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
-  public void testHasSalePrice_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
+  public void testHasSalePrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnFalse() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    // Act and Assert
-    assertFalse(skuImpl.hasSalePrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
-  public void testHasSalePrice_givenSkuImplSalePriceIsMoney_thenReturnTrue() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-
-    // Act and Assert
-    assertTrue(skuImpl.hasSalePrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
-  public void testHasSalePrice_givenSkuImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(skuImpl.hasSalePrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasSalePrice()}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
-  public void testHasSalePrice_thenCallsGetCurrencyCode() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(currency);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setProduct(mock(Product.class));
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasSalePriceResult = skuImpl.hasSalePrice();
+    boolean actualHasSalePriceResult = skuImpl2.hasSalePrice();
 
     // Assert
-    verify(currency).getCurrencyCode();
+    verify(product).getDefaultSku();
+    assertFalse(actualHasSalePriceResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#hasSalePrice()}.
+   * <ul>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
+  public void testHasSalePrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnFalse2() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualHasSalePriceResult = skuImpl2.hasSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertFalse(actualHasSalePriceResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#hasSalePrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
+  public void testHasSalePrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualHasSalePriceResult = skuImpl2.hasSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertFalse(actualHasSalePriceResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#hasSalePrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getSalePrice()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
+  public void testHasSalePrice_givenSkuGetSalePriceReturnMoney_thenCallsGetSalePrice() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.getSalePrice()).thenReturn(new Money());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualHasSalePriceResult = skuImpl2.hasSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getSalePrice();
     assertTrue(actualHasSalePriceResult);
   }
 
   /**
    * Test {@link SkuImpl#hasSalePrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
-  public void testHasSalePrice_thenThrowIllegalStateException() {
+  public void testHasSalePrice_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
     // Arrange
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasSalePrice());
-    verify(product).getDefaultSku();
+    assertFalse(skuImpl2.hasSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#hasSalePrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
+  public void testHasSalePrice_givenSkuImplSalePriceIsMoney_thenReturnTrue() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act and Assert
+    assertTrue(skuImpl2.hasSalePrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#hasSalePrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
+  public void testHasSalePrice_givenSkuImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new SkuImpl()).hasSalePrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#hasSalePrice()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
+  public void testHasSalePrice_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasSalePrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#hasSalePrice()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasSalePrice()"})
   public void testHasSalePrice_thenThrowIllegalStateException2() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasSalePrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasSalePrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setSalePrice(Money)}.
-   *
    * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#salePrice} is {@link BigDecimal#BigDecimal(String)}
-   *       with {@code 0.00}.
+   *   <li>When {@link Money#Money()}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setSalePrice(Money)}
+   * <p>
+   * Method under test: {@link SkuImpl#setSalePrice(Money)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setSalePrice(Money)"})
   public void testSetSalePrice_whenMoney_thenSkuImplSalePriceIsBigDecimalWith000() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
     Money salePrice = new Money();
 
     // Act
-    skuImpl.setSalePrice(salePrice);
+    skuImpl2.setSalePrice(salePrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuImpl.salePrice);
-    BigDecimal bigDecimal = skuImpl.salePrice;
+    assertEquals(new BigDecimal("0.00"), skuImpl2.salePrice);
+    BigDecimal bigDecimal = skuImpl2.salePrice;
     Money absResult = salePrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -1075,470 +1119,571 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#setSalePrice(Money)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#salePrice} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setSalePrice(Money)}
+   * <p>
+   * Method under test: {@link SkuImpl#setSalePrice(Money)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setSalePrice(Money)"})
   public void testSetSalePrice_whenNull_thenSkuImplSalePriceIsNull() {
-    // Arrange and Act
-    skuImpl.setSalePrice(null);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setSalePrice(null);
 
     // Assert that nothing has changed
-    assertNull(skuImpl.salePrice);
+    assertNull(skuImpl2.salePrice);
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
-  public void testGetRetailPrice_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnNull() {
+  public void testGetRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
-    // Act and Assert
-    assertNull(skuImpl.getRetailPrice());
+    // Act
+    Money actualRetailPrice = skuImpl2.getRetailPrice();
+
+    // Assert
+    verify(product).getDefaultSku();
+    assertNull(actualRetailPrice);
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
+  public void testGetRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualRetailPrice = skuImpl2.getRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertNull(actualRetailPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
+  public void testGetRetailPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualRetailPrice = skuImpl2.getRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualRetailPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
+  public void testGetRetailPrice_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Money money = new Money();
+    when(sku.getRetailPrice()).thenReturn(money);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualRetailPrice = skuImpl2.getRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getRetailPrice();
+    assertSame(money, actualRetailPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getRetailPrice());
+    assertNull(skuImpl2.getRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getRetailPrice());
+    assertEquals(retailPrice, skuImpl2.getRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
+  public void testGetRetailPrice_givenSkuImplSalePriceIsMoney_thenReturnNull() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act and Assert
+    assertNull(skuImpl2.getRetailPrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#getRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getRetailPrice());
+    assertNull((new SkuImpl()).getRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
-  public void testGetRetailPrice_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(currency);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(mock(Product.class));
-
-    // Act
-    Money actualRetailPrice = skuImpl.getRetailPrice();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualRetailPrice.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualRetailPrice.abs();
-    assertEquals(actualRetailPrice, actualAbsResult);
-    Money actualZeroResult = actualRetailPrice.zero();
-    assertEquals(actualRetailPrice, actualZeroResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#getRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getRetailPrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getRetailPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getRetailPrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPrice()"})
   public void testGetRetailPrice_thenThrowIllegalStateException2() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getRetailPrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getRetailPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
-  public void testGetRetailPriceInternal_givenProductBundleImplDefaultSkuIsSkuImpl() {
+  public void testGetRetailPriceInternal_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
-    // Act and Assert
-    assertNull(skuImpl.getRetailPriceInternal());
+    // Act
+    Money actualRetailPriceInternal = skuImpl2.getRetailPriceInternal();
+
+    // Assert
+    verify(product).getDefaultSku();
+    assertNull(actualRetailPriceInternal);
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
+  public void testGetRetailPriceInternal_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualRetailPriceInternal = skuImpl2.getRetailPriceInternal();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertNull(actualRetailPriceInternal);
+  }
+
+  /**
+   * Test {@link SkuImpl#getRetailPriceInternal()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
+  public void testGetRetailPriceInternal_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualRetailPriceInternal = skuImpl2.getRetailPriceInternal();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualRetailPriceInternal);
+  }
+
+  /**
+   * Test {@link SkuImpl#getRetailPriceInternal()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getRetailPriceInternal());
+    assertNull(skuImpl2.getRetailPriceInternal());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getRetailPriceInternal());
+    assertEquals(retailPrice, skuImpl2.getRetailPriceInternal());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
+  public void testGetRetailPriceInternal_givenSkuImplSalePriceIsMoney_thenReturnNull() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act and Assert
+    assertNull(skuImpl2.getRetailPriceInternal());
+  }
+
+  /**
+   * Test {@link SkuImpl#getRetailPriceInternal()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getRetailPriceInternal());
+    assertNull((new SkuImpl()).getRetailPriceInternal());
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
-  public void testGetRetailPriceInternal_thenReturnCurrencyDisplayNameIsBritishPound() {
+  public void testGetRetailPriceInternal_thenCallsGetRetailPrice() {
     // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Money money = new Money();
+    when(sku.getRetailPrice()).thenReturn(money);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(currency);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(mock(Product.class));
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualRetailPriceInternal = skuImpl.getRetailPriceInternal();
+    Money actualRetailPriceInternal = skuImpl2.getRetailPriceInternal();
 
     // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualRetailPriceInternal.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualRetailPriceInternal.abs();
-    assertEquals(actualRetailPriceInternal, actualAbsResult);
-    Money actualZeroResult = actualRetailPriceInternal.zero();
-    assertEquals(actualRetailPriceInternal, actualZeroResult);
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getRetailPrice();
+    assertSame(money, actualRetailPriceInternal);
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getRetailPriceInternal());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getRetailPriceInternal());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getRetailPriceInternal()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getRetailPriceInternal()}
+   * <p>
+   * Method under test: {@link SkuImpl#getRetailPriceInternal()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getRetailPriceInternal()"})
   public void testGetRetailPriceInternal_thenThrowIllegalStateException2() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getRetailPriceInternal());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getRetailPriceInternal());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setRetailPrice(null);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseRetailPrice());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice2() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseRetailPrice());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setRetailPrice(null);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
+    Money actualBaseRetailPrice = skuImpl2.getBaseRetailPrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -1547,229 +1692,19 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCurrency()} return {@code null}.
-   *   <li>Then calls {@link Sku#getCurrency()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_givenSkuGetCurrencyReturnNull_thenCallsGetCurrency() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenReturn(null);
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku).getId();
-    assertEquals(retailPrice, actualBaseRetailPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCurrency()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_givenSkuGetCurrencyThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenThrow(new IllegalStateException());
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseRetailPrice());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseRetailPrice());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertNull(actualBaseRetailPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_givenSkuImplIdIsOne_thenReturnMoney() {
+  public void testGetBaseRetailPrice_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertEquals(retailPrice, actualBaseRetailPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setRetailPrice(null);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualBaseRetailPrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_givenSkuImplIdIsOne_thenReturnNull2() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
 
     SkuImpl skuImpl2 = new SkuImpl();
     skuImpl2.setId(1L);
@@ -1785,86 +1720,106 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_givenSkuImplProductIsNull_thenReturnMoney() {
+  public void testGetBaseRetailPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
-    Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act and Assert
-    assertEquals(retailPrice, skuImpl.getBaseRetailPrice());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualBaseRetailPrice = skuImpl2.getBaseRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualBaseRetailPrice);
   }
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setRetailPrice(null);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getBaseRetailPrice());
+    assertNull(skuImpl2.getBaseRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
+  public void testGetBaseRetailPrice_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    Money retailPrice = new Money();
+    skuImpl2.setRetailPrice(retailPrice);
+
+    // Act and Assert
+    assertEquals(retailPrice, skuImpl2.getBaseRetailPrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#getBaseRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getBaseRetailPrice());
+    assertNull((new SkuImpl()).getBaseRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#getBaseRetailPrice()}.
+   *   <li>Then calls {@link Sku#getBaseRetailPrice()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
   public void testGetBaseRetailPrice_thenCallsGetBaseRetailPrice() {
     // Arrange
@@ -1872,16 +1827,15 @@ public class SkuImplDiffblueTest {
     when(sku.getId()).thenReturn(1L);
     Money money = new Money();
     when(sku.getBaseRetailPrice()).thenReturn(money);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
+    Money actualBaseRetailPrice = skuImpl2.getBaseRetailPrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -1892,114 +1846,82 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getBaseRetailPrice()}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
-  public void testGetBaseRetailPrice_thenReturnCurrencyDisplayNameIsBritishPound() {
+  public void testGetBaseRetailPrice_thenThrowIllegalStateException() {
     // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setCurrency(currency);
-    skuImpl.setProduct(mock(ProductBundleImpl.class));
-    skuImpl.setId(null);
-
-    // Act
-    Money actualBaseRetailPrice = skuImpl.getBaseRetailPrice();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualBaseRetailPrice.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualBaseRetailPrice.abs();
-    assertEquals(actualBaseRetailPrice, actualAbsResult);
-    Money actualZeroResult = actualBaseRetailPrice.zero();
-    assertEquals(actualBaseRetailPrice, actualZeroResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice() {
-    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setSalePrice(null);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseSalePrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getBaseRetailPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice2() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseSalePrice());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
+   * Test {@link SkuImpl#getBaseRetailPrice()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseRetailPrice()"})
+  public void testGetBaseRetailPrice_thenThrowIllegalStateException2() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getBaseRetailPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getBaseSalePrice()}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setSalePrice(null);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
+    Money actualBaseSalePrice = skuImpl2.getBaseSalePrice();
 
     // Assert
     verify(product).getDefaultSku();
@@ -2008,229 +1930,19 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCurrency()} return {@code null}.
-   *   <li>Then calls {@link Sku#getCurrency()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_givenSkuGetCurrencyReturnNull_thenCallsGetCurrency() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenReturn(null);
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    Money salePrice = new Money();
-    skuImpl.setSalePrice(salePrice);
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku).getId();
-    assertEquals(salePrice, actualBaseSalePrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCurrency()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_givenSkuGetCurrencyThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenThrow(new IllegalStateException());
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseSalePrice());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getBaseSalePrice());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_givenSkuImplIdIsOne_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertNull(actualBaseSalePrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_givenSkuImplIdIsOne_thenReturnMoney() {
+  public void testGetBaseSalePrice_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    Money salePrice = new Money();
-    skuImpl.setSalePrice(salePrice);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertEquals(salePrice, actualBaseSalePrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setSalePrice(null);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualBaseSalePrice);
-  }
-
-  /**
-   * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_givenSkuImplIdIsOne_thenReturnNull2() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
 
     SkuImpl skuImpl2 = new SkuImpl();
     skuImpl2.setId(1L);
@@ -2246,86 +1958,106 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_givenSkuImplProductIsNull_thenReturnMoney() {
+  public void testGetBaseSalePrice_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
-    Money salePrice = new Money();
-    skuImpl.setSalePrice(salePrice);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act and Assert
-    assertEquals(salePrice, skuImpl.getBaseSalePrice());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualBaseSalePrice = skuImpl2.getBaseSalePrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualBaseSalePrice);
   }
 
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setSalePrice(null);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getBaseSalePrice());
+    assertNull(skuImpl2.getBaseSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
+  public void testGetBaseSalePrice_givenSkuImplSalePriceIsMoney_thenReturnMoney() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    Money salePrice = new Money();
+    skuImpl2.setSalePrice(salePrice);
+
+    // Act and Assert
+    assertEquals(salePrice, skuImpl2.getBaseSalePrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#getBaseSalePrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getBaseSalePrice());
+    assertNull((new SkuImpl()).getBaseSalePrice());
   }
 
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#getBaseSalePrice()}.
+   *   <li>Then calls {@link Sku#getBaseSalePrice()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
   public void testGetBaseSalePrice_thenCallsGetBaseSalePrice() {
     // Arrange
@@ -2333,16 +2065,15 @@ public class SkuImplDiffblueTest {
     when(sku.getId()).thenReturn(1L);
     Money money = new Money();
     when(sku.getBaseSalePrice()).thenReturn(money);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
+    Money actualBaseSalePrice = skuImpl2.getBaseSalePrice();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -2353,100 +2084,85 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getBaseSalePrice()}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getBaseSalePrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
-  public void testGetBaseSalePrice_thenReturnCurrencyDisplayNameIsBritishPound() {
+  public void testGetBaseSalePrice_thenThrowIllegalStateException() {
     // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(currency);
-    skuImpl.setProduct(mock(ProductBundleImpl.class));
-    skuImpl.setId(null);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act
-    Money actualBaseSalePrice = skuImpl.getBaseSalePrice();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualBaseSalePrice.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualBaseSalePrice.abs();
-    assertEquals(actualBaseSalePrice, actualAbsResult);
-    Money actualZeroResult = actualBaseSalePrice.zero();
-    assertEquals(actualBaseSalePrice, actualZeroResult);
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getBaseSalePrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getBaseSalePrice()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getBaseSalePrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getBaseSalePrice()"})
+  public void testGetBaseSalePrice_thenThrowIllegalStateException2() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getBaseSalePrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getPriceData()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Currency is {@code null}.
-   *   <li>Then return Price is {@link Money#Money()}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
+   *   <li>Then return RetailPrice is Price.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPriceData()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPriceData()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
-  public void testGetPriceData_givenSkuImplCurrencyIsNull_thenReturnPriceIsMoney() {
+  public void testGetPriceData_givenSkuImplRetailPriceIsMoney_thenReturnRetailPriceIsPrice() {
     // Arrange
-    skuImpl.setCurrency(null);
-    skuImpl.setRetailPrice(null);
-    Money salePrice = new Money();
-    skuImpl.setSalePrice(salePrice);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
 
     // Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
-
-    // Assert
-    Money price = actualPriceData.getPrice();
-    assertEquals(salePrice, price);
-    assertSame(price, actualPriceData.getSalePrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#getPriceData()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Currency is {@code null}.
-   *   <li>Then return RetailPrice is Price.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPriceData()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
-  public void testGetPriceData_givenSkuImplCurrencyIsNull_thenReturnRetailPriceIsPrice() {
-    // Arrange
-    skuImpl.setCurrency(null);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setSalePrice(null);
-
-    // Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
+    DynamicSkuPrices actualPriceData = skuImpl2.getPriceData();
 
     // Assert
     Money price = actualPriceData.getPrice();
     assertSame(price, actualPriceData.getRetailPrice());
-    BigDecimal bigDecimal = skuImpl.retailPrice;
+    BigDecimal bigDecimal = skuImpl2.retailPrice;
     Money absResult = price.abs();
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.abs().getAmount());
@@ -2471,21 +2187,65 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getPriceData()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return Price is {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return SalePrice is Price.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPriceData()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPriceData()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
+  public void testGetPriceData_givenSkuImplSalePriceIsMoney_thenReturnSalePriceIsPrice() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act
+    DynamicSkuPrices actualPriceData = skuImpl2.getPriceData();
+
+    // Assert
+    Money price = actualPriceData.getPrice();
+    assertSame(price, actualPriceData.getSalePrice());
+    BigDecimal bigDecimal = skuImpl2.salePrice;
+    Money absResult = price.abs();
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = price.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult2.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+  }
+
+  /**
+   * Test {@link SkuImpl#getPriceData()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return Price is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getPriceData()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
   public void testGetPriceData_givenSkuImpl_thenReturnPriceIsNull() {
     // Arrange and Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
+    DynamicSkuPrices actualPriceData = (new SkuImpl()).getPriceData();
 
     // Assert
     assertNull(actualPriceData.getPrice());
@@ -2497,64 +2257,22 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getPriceData()}.
-   *
    * <ul>
-   *   <li>Then return Price Currency DisplayName is {@code British Pound}.
+   *   <li>Then return Price is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPriceData()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPriceData()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
-  public void testGetPriceData_thenReturnPriceCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setCurrency(currency);
-    skuImpl.setRetailPrice(null);
-    skuImpl.setSalePrice(new Money());
-
-    // Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Money price = actualPriceData.getPrice();
-    Currency currency2 = price.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = price.abs();
-    assertEquals(price, actualAbsResult);
-    Money actualZeroResult = price.zero();
-    assertEquals(price, actualZeroResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#getPriceData()}.
-   *
-   * <ul>
-   *   <li>Then return Price is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPriceData()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"DynamicSkuPrices SkuImpl.getPriceData()"})
   public void testGetPriceData_thenReturnPriceIsNull() {
     // Arrange
-    skuImpl.setCurrency(new BroadleafCurrencyImpl());
-    skuImpl.setRetailPrice(null);
-    skuImpl.setSalePrice(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setCurrency(new BroadleafCurrencyImpl());
 
     // Act
-    DynamicSkuPrices actualPriceData = skuImpl.getPriceData();
+    DynamicSkuPrices actualPriceData = skuImpl2.getPriceData();
 
     // Assert
     assertNull(actualPriceData.getPrice());
@@ -2566,206 +2284,287 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
-  public void testHasRetailPrice_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnFalse() {
+  public void testHasRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnFalse() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertFalse(skuImpl.hasRetailPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
-  public void testHasRetailPrice_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
-
-    // Act and Assert
-    assertFalse(skuImpl.hasRetailPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
-  public void testHasRetailPrice_givenSkuImplRetailPriceIsMoney_thenReturnTrue() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-
-    // Act and Assert
-    assertTrue(skuImpl.hasRetailPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
-  public void testHasRetailPrice_givenSkuImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(skuImpl.hasRetailPrice());
-  }
-
-  /**
-   * Test {@link SkuImpl#hasRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasRetailPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
-  public void testHasRetailPrice_thenCallsGetCurrencyCode() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(currency);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(mock(Product.class));
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    boolean actualHasRetailPriceResult = skuImpl.hasRetailPrice();
+    boolean actualHasRetailPriceResult = skuImpl2.hasRetailPrice();
 
     // Assert
-    verify(currency).getCurrencyCode();
+    verify(product).getDefaultSku();
+    assertFalse(actualHasRetailPriceResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#hasRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnFalse2() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualHasRetailPriceResult = skuImpl2.hasRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertFalse(actualHasRetailPriceResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#hasRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualHasRetailPriceResult = skuImpl2.hasRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertFalse(actualHasRetailPriceResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#hasRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.getRetailPrice()).thenReturn(new Money());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    boolean actualHasRetailPriceResult = skuImpl2.hasRetailPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getRetailPrice();
     assertTrue(actualHasRetailPriceResult);
   }
 
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
-  public void testHasRetailPrice_thenThrowIllegalStateException() {
+  public void testHasRetailPrice_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
     // Arrange
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasRetailPrice());
-    verify(product).getDefaultSku();
+    assertFalse(skuImpl2.hasRetailPrice());
   }
 
   /**
    * Test {@link SkuImpl#hasRetailPrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#hasRetailPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenSkuImplRetailPriceIsMoney_thenReturnTrue() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+
+    // Act and Assert
+    assertTrue(skuImpl2.hasRetailPrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#hasRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenSkuImplSalePriceIsMoney_thenReturnFalse() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act and Assert
+    assertFalse(skuImpl2.hasRetailPrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#hasRetailPrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_givenSkuImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new SkuImpl()).hasRetailPrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#hasRetailPrice()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
+  public void testHasRetailPrice_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasRetailPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#hasRetailPrice()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#hasRetailPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.hasRetailPrice()"})
   public void testHasRetailPrice_thenThrowIllegalStateException2() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.hasRetailPrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.hasRetailPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setRetailPrice(Money)}.
-   *
    * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#retailPrice} is {@link BigDecimal#BigDecimal(String)}
-   *       with {@code 0.00}.
+   *   <li>When {@link Money#Money()}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setRetailPrice(Money)}
+   * <p>
+   * Method under test: {@link SkuImpl#setRetailPrice(Money)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setRetailPrice(Money)"})
   public void testSetRetailPrice_whenMoney_thenSkuImplRetailPriceIsBigDecimalWith000() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
 
     // Act
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuImpl.retailPrice);
-    BigDecimal bigDecimal = skuImpl.retailPrice;
+    assertEquals(new BigDecimal("0.00"), skuImpl2.retailPrice);
+    BigDecimal bigDecimal = skuImpl2.retailPrice;
     Money absResult = retailPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -2790,408 +2589,576 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#setRetailPrice(Money)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#retailPrice} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setRetailPrice(Money)}
+   * <p>
+   * Method under test: {@link SkuImpl#setRetailPrice(Money)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setRetailPrice(Money)"})
   public void testSetRetailPrice_whenNull_thenSkuImplRetailPriceIsNull() {
-    // Arrange and Act
-    skuImpl.setRetailPrice(null);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setRetailPrice(null);
 
     // Assert that nothing has changed
-    assertNull(skuImpl.retailPrice);
+    assertNull(skuImpl2.retailPrice);
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getPrice()"})
-  public void testGetPrice_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnNull() {
+  public void testGetPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
-    // Act and Assert
-    assertNull(skuImpl.getPrice());
+    // Act
+    Money actualPrice = skuImpl2.getPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertNull(actualPrice);
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
+  public void testGetPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualPrice = skuImpl2.getPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertNull(actualPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
+  public void testGetPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualPrice = skuImpl2.getPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku, atLeast(1)).getId();
+    assertNull(actualPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getPrice()"})
+  public void testGetPrice_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Money money = new Money();
+    when(sku.getRetailPrice()).thenReturn(money);
+    when(sku.getSalePrice()).thenReturn(new Money());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualPrice = skuImpl2.getPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku, atLeast(1)).getId();
+    verify(sku, atLeast(1)).getRetailPrice();
+    verify(sku).getSalePrice();
+    assertSame(money, actualPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getPrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getPrice());
+    assertNull(skuImpl2.getPrice());
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getPrice());
+    assertEquals(retailPrice, skuImpl2.getPrice());
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenSkuImplSalePriceIsMoney_thenReturnNull() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSalePrice(new Money());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertNull(skuImpl.getPrice());
+    assertNull(skuImpl2.getPrice());
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getPrice());
+    assertNull((new SkuImpl()).getPrice());
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getPrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getPrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getPrice()"})
   public void testGetPrice_thenThrowIllegalStateException2() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getPrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getListPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
-  public void testGetListPrice_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnNull() {
+  public void testGetListPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
-    // Act and Assert
-    assertNull(skuImpl.getListPrice());
+    // Act
+    Money actualListPrice = skuImpl2.getListPrice();
+
+    // Assert
+    verify(product).getDefaultSku();
+    assertNull(actualListPrice);
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getListPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
+  public void testGetListPrice_givenProductGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualListPrice = skuImpl2.getListPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertNull(actualListPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getListPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
+  public void testGetListPrice_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualListPrice = skuImpl2.getListPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualListPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getListPrice()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getRetailPrice()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getRetailPrice()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
+  public void testGetListPrice_givenSkuGetRetailPriceReturnMoney_thenCallsGetRetailPrice() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Money money = new Money();
+    when(sku.getRetailPrice()).thenReturn(money);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualListPrice = skuImpl2.getListPrice();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getRetailPrice();
+    assertSame(money, actualListPrice);
+  }
+
+  /**
+   * Test {@link SkuImpl#getListPrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(new ProductBundleImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getListPrice());
+    assertNull(skuImpl2.getListPrice());
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getListPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_givenSkuImplRetailPriceIsMoney_thenReturnMoney() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
+    SkuImpl skuImpl2 = new SkuImpl();
     Money retailPrice = new Money();
-    skuImpl.setRetailPrice(retailPrice);
+    skuImpl2.setRetailPrice(retailPrice);
 
     // Act and Assert
-    assertEquals(retailPrice, skuImpl.getListPrice());
+    assertEquals(retailPrice, skuImpl2.getListPrice());
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getListPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
+  public void testGetListPrice_givenSkuImplSalePriceIsMoney_thenReturnNull() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act and Assert
+    assertNull(skuImpl2.getListPrice());
+  }
+
+  /**
+   * Test {@link SkuImpl#getListPrice()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getListPrice());
+    assertNull((new SkuImpl()).getListPrice());
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getListPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
-  public void testGetListPrice_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(currency);
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(mock(Product.class));
-
-    // Act
-    Money actualListPrice = skuImpl.getListPrice();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualListPrice.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualListPrice.abs();
-    assertEquals(actualListPrice, actualAbsResult);
-    Money actualZeroResult = actualListPrice.zero();
-    assertEquals(actualListPrice, actualZeroResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#getListPrice()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getListPrice()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getListPrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getListPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getListPrice()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getListPrice()}
+   * <p>
+   * Method under test: {@link SkuImpl#getListPrice()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getListPrice()"})
   public void testGetListPrice_thenThrowIllegalStateException2() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getListPrice());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getListPrice());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setListPrice(Money)}.
-   *
    * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#retailPrice} is {@link BigDecimal#BigDecimal(String)}
-   *       with {@code 0.00}.
+   *   <li>When {@link Money#Money()}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setListPrice(Money)}
+   * <p>
+   * Method under test: {@link SkuImpl#setListPrice(Money)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setListPrice(Money)"})
   public void testSetListPrice_whenMoney_thenSkuImplRetailPriceIsBigDecimalWith000() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
     Money listPrice = new Money();
 
     // Act
-    skuImpl.setListPrice(listPrice);
+    skuImpl2.setListPrice(listPrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuImpl.retailPrice);
-    BigDecimal bigDecimal = skuImpl.retailPrice;
+    assertEquals(new BigDecimal("0.00"), skuImpl2.retailPrice);
+    BigDecimal bigDecimal = skuImpl2.retailPrice;
     Money absResult = listPrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -3216,52 +3183,49 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#setListPrice(Money)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#retailPrice} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setListPrice(Money)}
+   * <p>
+   * Method under test: {@link SkuImpl#setListPrice(Money)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setListPrice(Money)"})
   public void testSetListPrice_whenNull_thenSkuImplRetailPriceIsNull() {
-    // Arrange and Act
-    skuImpl.setListPrice(null);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setListPrice(null);
 
     // Assert that nothing has changed
-    assertNull(skuImpl.retailPrice);
+    assertNull(skuImpl2.retailPrice);
   }
 
   /**
    * Test {@link SkuImpl#getCost()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-    skuImpl.setCurrency(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualCost = skuImpl.getCost();
+    Money actualCost = skuImpl2.getCost();
 
     // Assert
     verify(product).getDefaultSku();
@@ -3270,324 +3234,20 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getCost()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-    skuImpl.setCurrency(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCost());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenProductBundleImplGetDefaultSkuThrowIllegalStateException2() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setCost(new Money());
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-    skuImpl.setCurrency(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCost());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCost()} return {@link Money#Money()}.
-   *   <li>Then calls {@link Sku#getCost()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuGetCostReturnMoney_thenCallsGetCost() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Money money = new Money();
-    when(sku.getCost()).thenReturn(money);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualCost = skuImpl.getCost();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCost();
-    verify(sku).getId();
-    assertSame(money, actualCost);
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCurrency()} return {@code null}.
-   *   <li>Then calls {@link Sku#getCurrency()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuGetCurrencyReturnNull_thenCallsGetCurrency() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenReturn(null);
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    Money cost = new Money();
-    skuImpl.setCost(cost);
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualCost = skuImpl.getCost();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku).getId();
-    assertEquals(cost, actualCost);
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCurrency()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   *   <li>Then calls {@link Sku#getCurrency()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuGetCurrencyThrowIllegalStateException_thenCallsGetCurrency() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getCurrency()).thenThrow(new IllegalStateException());
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCost(new Money());
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCost());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getCurrency();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCost());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuImplIdIsOne_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Money actualCost = skuImpl.getCost();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertNull(actualCost);
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuImplIdIsOne_thenReturnMoney() {
+  public void testGetCost_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    Money cost = new Money();
-    skuImpl.setCost(cost);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-    skuImpl.setCurrency(null);
-
-    // Act
-    Money actualCost = skuImpl.getCost();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertEquals(cost, actualCost);
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-    skuImpl.setCurrency(null);
-
-    // Act
-    Money actualCost = skuImpl.getCost();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualCost);
-  }
-
-  /**
-   * Test {@link SkuImpl#getCost()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuImplIdIsOne_thenReturnNull2() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
 
     SkuImpl skuImpl2 = new SkuImpl();
     skuImpl2.setId(1L);
@@ -3603,138 +3263,211 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getCost()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link Sku} {@link Sku#getCost()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getCost()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_givenSkuImplProductIsNull_thenReturnMoney() {
+  public void testGetCost_givenSkuGetCostReturnMoney_thenCallsGetCost() {
     // Arrange
-    Money cost = new Money();
-    skuImpl.setCost(cost);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
-    skuImpl.setCurrency(null);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Money money = new Money();
+    when(sku.getCost()).thenReturn(money);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act and Assert
-    assertEquals(cost, skuImpl.getCost());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualCost = skuImpl2.getCost();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getCost();
+    verify(sku).getId();
+    assertSame(money, actualCost);
   }
 
   /**
    * Test {@link SkuImpl#getCost()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
+  public void testGetCost_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Money actualCost = skuImpl2.getCost();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualCost);
+  }
+
+  /**
+   * Test {@link SkuImpl#getCost()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Cost is {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
+  public void testGetCost_givenSkuImplCostIsMoney_thenReturnMoney() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    Money cost = new Money();
+    skuImpl2.setCost(cost);
+
+    // Act and Assert
+    assertEquals(cost, skuImpl2.getCost());
+  }
+
+  /**
+   * Test {@link SkuImpl#getCost()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setCost(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-    skuImpl.setCurrency(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getCost());
+    assertNull(skuImpl2.getCost());
   }
 
   /**
    * Test {@link SkuImpl#getCost()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getCost()"})
   public void testGetCost_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getCost());
+    assertNull((new SkuImpl()).getCost());
   }
 
   /**
    * Test {@link SkuImpl#getCost()}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCost()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getCost()"})
-  public void testGetCost_thenReturnCurrencyDisplayNameIsBritishPound() {
+  public void testGetCost_thenThrowIllegalStateException() {
     // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setCost(new Money());
-    skuImpl.setProduct(mock(ProductBundleImpl.class));
-    skuImpl.setId(null);
-    skuImpl.setCurrency(currency);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act
-    Money actualCost = skuImpl.getCost();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualCost.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualCost.abs();
-    assertEquals(actualCost, actualAbsResult);
-    Money actualZeroResult = actualCost.zero();
-    assertEquals(actualCost, actualZeroResult);
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getCost());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getCost()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getCost()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getCost()"})
+  public void testGetCost_thenThrowIllegalStateException2() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setCost(new Money());
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getCost());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setCost(Money)}.
-   *
    * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#cost} is {@link BigDecimal#BigDecimal(String)} with
-   *       {@code 0.00}.
+   *   <li>When {@link Money#Money()}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#cost} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setCost(Money)}
+   * <p>
+   * Method under test: {@link SkuImpl#setCost(Money)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setCost(Money)"})
   public void testSetCost_whenMoney_thenSkuImplCostIsBigDecimalWith000() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
     Money cost = new Money();
 
     // Act
-    skuImpl.setCost(cost);
+    skuImpl2.setCost(cost);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuImpl.cost);
-    BigDecimal bigDecimal = skuImpl.cost;
+    assertEquals(new BigDecimal("0.00"), skuImpl2.cost);
+    BigDecimal bigDecimal = skuImpl2.cost;
     Money absResult = cost.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -3759,180 +3492,132 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#setCost(Money)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#cost} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#cost} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setCost(Money)}
+   * <p>
+   * Method under test: {@link SkuImpl#setCost(Money)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setCost(Money)"})
   public void testSetCost_whenNull_thenSkuImplCostIsNull() {
-    // Arrange and Act
-    skuImpl.setCost(null);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setCost(null);
 
     // Assert that nothing has changed
-    assertNull(skuImpl.cost);
+    assertNull(skuImpl2.cost);
   }
 
   /**
    * Test {@link SkuImpl#getMargin()}.
-   *
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default
-   *       constructor).
+   *   <li>Given {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()} {@link Money#ZERO}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenProductGetDefaultSkuReturnSkuImpl() {
+  public void testGetMargin_givenMoney_thenReturnMoneyZero() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+    Money money = new Money();
+
+    // Act
+    Money actualMargin = skuImpl2.getMargin();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku, atLeast(1)).getId();
+    assertSame(money.ZERO, actualMargin);
+  }
+
+  /**
+   * Test {@link SkuImpl#getMargin()}.
+   * <ul>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return abs is {@link Money#ZERO}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_givenProductGetDefaultSkuReturnSkuImpl_thenReturnAbsIsZero() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(currency);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
-    verify(currency).getCurrencyCode();
     verify(product, atLeast(1)).getDefaultSku();
-    BigDecimal bigDecimal = skuImpl.salePrice;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
+    Money money = actualMargin.ZERO;
+    assertEquals(money, actualMargin.abs());
+    assertEquals(money, actualMargin.zero());
   }
 
   /**
    * Test {@link SkuImpl#getMargin()}.
-   *
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default
-   *       constructor).
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return abs is {@link Money#ZERO}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenProductGetDefaultSkuReturnSkuImpl2() {
+  public void testGetMargin_givenProductGetDefaultSkuReturnSkuImpl_thenReturnAbsIsZero2() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(currency);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
-    verify(currency).getCurrencyCode();
     verify(product, atLeast(1)).getDefaultSku();
-    BigDecimal bigDecimal = skuImpl.salePrice;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
+    Money money = actualMargin.ZERO;
+    assertEquals(money, actualMargin.abs());
+    assertEquals(money, actualMargin.zero());
   }
 
   /**
    * Test {@link SkuImpl#getMargin()}.
-   *
    * <ul>
-   *   <li>Given {@link Product} {@link Product#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link Sku} {@link Sku#getCost()} return {@link Money#Money()}.</li>
+   *   <li>Then calls {@link Sku#getCost()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenProductGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(mock(BroadleafCurrency.class));
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getMargin());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getCost()} return {@link Money#Money()}.
-   *   <li>Then calls {@link Sku#getCost()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getMargin()"})
   public void testGetMargin_givenSkuGetCostReturnMoney_thenCallsGetCost() {
     // Arrange
@@ -3940,88 +3625,49 @@ public class SkuImplDiffblueTest {
     when(sku.getId()).thenReturn(1L);
     when(sku.getCost()).thenReturn(new Money());
     when(sku.getRetailPrice()).thenReturn(new Money());
-
+    Money money = new Money();
+    when(sku.getSalePrice()).thenReturn(money);
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(currency);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
-    verify(currency).getCurrencyCode();
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getCost();
     verify(sku, atLeast(1)).getId();
     verify(sku, atLeast(1)).getRetailPrice();
-    BigDecimal bigDecimal = skuImpl.salePrice;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
+    verify(sku).getSalePrice();
+    assertSame(money.ZERO, actualMargin);
   }
 
   /**
    * Test {@link SkuImpl#getMargin()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Cost is {@link Money#Money()}.</li>
+   *   <li>Then return abs abs abs Amount is {@link SkuImpl} (default constructor) {@link SkuImpl#cost}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuGetIdReturnOne_thenCallsGetId() {
+  public void testGetMargin_givenSkuImplCostIsMoney_thenReturnAbsAbsAbsAmountIsSkuImplCost() {
     // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(currency);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setCost(new Money());
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    Money actualMargin = skuImpl2.getMargin();
 
     // Assert
-    verify(currency).getCurrencyCode();
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    BigDecimal bigDecimal = skuImpl.salePrice;
+    BigDecimal bigDecimal = skuImpl2.cost;
     Money absResult = actualMargin.abs();
     Money absResult2 = absResult.abs();
     assertSame(bigDecimal, absResult2.abs().getAmount());
@@ -4046,904 +3692,867 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getMargin()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuGetIdThrowIllegalStateException() {
+  public void testGetMargin_givenSkuImplRetailPriceIsMoneyWithAmountIsTen_thenReturnNull() {
     // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(mock(BroadleafCurrency.class));
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money(10.0d));
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getMargin());
+    assertNull(skuImpl2.getMargin());
+  }
+
+  /**
+   * Test {@link SkuImpl#getMargin()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return abs is {@link Money#ZERO}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_givenSkuImpl_thenReturnAbsIsZero() {
+    // Arrange and Act
+    Money actualMargin = (new SkuImpl()).getMargin();
+
+    // Assert
+    Money money = actualMargin.ZERO;
+    assertEquals(money, actualMargin.abs());
+    assertEquals(money, actualMargin.zero());
+  }
+
+  /**
+   * Test {@link SkuImpl#getMargin()}.
+   * <ul>
+   *   <li>Then return abs abs abs Amount is {@link SkuImpl} (default constructor) {@link SkuImpl#retailPrice}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_thenReturnAbsAbsAbsAmountIsSkuImplRetailPrice() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setRetailPrice(new Money());
+
+    // Act
+    Money actualMargin = skuImpl2.getMargin();
+
+    // Assert
+    BigDecimal bigDecimal = skuImpl2.retailPrice;
+    Money absResult = actualMargin.abs();
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = actualMargin.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult2.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+  }
+
+  /**
+   * Test {@link SkuImpl#getMargin()}.
+   * <ul>
+   *   <li>Then return abs abs abs Amount is {@link SkuImpl} (default constructor) {@link SkuImpl#salePrice}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_thenReturnAbsAbsAbsAmountIsSkuImplSalePrice() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act
+    Money actualMargin = skuImpl2.getMargin();
+
+    // Assert
+    BigDecimal bigDecimal = skuImpl2.salePrice;
+    Money absResult = actualMargin.abs();
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = actualMargin.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult2.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+  }
+
+  /**
+   * Test {@link SkuImpl#getMargin()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getMargin()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
+  public void testGetMargin_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("ThreadLocalManager.notify.orphans"));
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getMargin());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
+   * Test {@link SkuImpl#getName()}.
    * <ul>
-   *   <li>Given {@link SkuImpl} Cost is {@link Money#Money()}.
-   *   <li>Then return abs abs abs Amount is {@link SkuImpl} {@link SkuImpl#cost}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuImplCostIsMoney_thenReturnAbsAbsAbsAmountIsSkuImplCost() {
-    // Arrange
-    skuImpl.setCost(new Money());
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
-    skuImpl.setSalePrice(null);
-    skuImpl.setCurrency(null);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    BigDecimal bigDecimal = skuImpl.cost;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Currency is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuImplCurrencyIsNull() {
-    // Arrange
-    skuImpl.setCost(null);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(null);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    BigDecimal bigDecimal = skuImpl.salePrice;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return abs abs abs Amount is {@link SkuImpl} {@link SkuImpl#salePrice}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuImplIdIsOne_thenReturnAbsAbsAbsAmountIsSkuImplSalePrice() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(currency);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    verify(product, atLeast(1)).getDefaultSku();
-    BigDecimal bigDecimal = skuImpl.salePrice;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuImplProductIsNull() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-    skuImpl.setCost(null);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
-    skuImpl.setSalePrice(new Money());
-    skuImpl.setCurrency(currency);
-
-    // Act
-    Money actualMargin = skuImpl.getMargin();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    BigDecimal bigDecimal = skuImpl.salePrice;
-    Money absResult = actualMargin.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualMargin.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link Product}.
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuImplProductIsProduct_thenThrowIllegalStateException() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money());
-    skuImpl.setProduct(product);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getMargin());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) RetailPrice is {@link Money#Money(double)}
-   *       with amount is ten.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuImplRetailPriceIsMoneyWithAmountIsTen_thenReturnNull() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setRetailPrice(new Money(10.0d));
-
-    // Act and Assert
-    assertNull(skuImpl.getMargin());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} SalePrice is {@code null}.
-   *   <li>Then return abs is {@link Money#ZERO}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuImplSalePriceIsNull_thenReturnAbsIsZero() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
+  public void testGetName_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
     // Arrange
     Product product = mock(Product.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setCost(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-    skuImpl.setSalePrice(null);
-    skuImpl.setCurrency(mock(BroadleafCurrency.class));
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Money actualMargin = skuImpl.getMargin();
+    String actualName = skuImpl2.getName();
+
+    // Assert
+    verify(product).getDefaultSku();
+    assertNull(actualName);
+  }
+
+  /**
+   * Test {@link SkuImpl#getName()}.
+   * <ul>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
+  public void testGetName_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualName = skuImpl2.getName();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
-    Money money = Money.ZERO;
-    assertEquals(money, actualMargin.abs());
-    assertEquals(money, actualMargin.zero());
+    assertNull(actualName);
   }
 
   /**
-   * Test {@link SkuImpl#getMargin()}.
-   *
+   * Test {@link SkuImpl#getName()}.
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return abs is {@link Money#ZERO}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMargin()}
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuImpl.getMargin()"})
-  public void testGetMargin_givenSkuImpl_thenReturnAbsIsZero() {
-    // Arrange and Act
-    Money actualMargin = skuImpl.getMargin();
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
+  public void testGetName_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualName = skuImpl2.getName();
 
     // Assert
-    Money money = Money.ZERO;
-    assertEquals(money, actualMargin.abs());
-    assertEquals(money, actualMargin.zero());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualName);
   }
 
   /**
    * Test {@link SkuImpl#getName()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Sku} {@link Sku#getName()} return {@code Name}.</li>
+   *   <li>Then return {@code Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getName()}
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getName()"})
-  public void testGetName_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnNull() {
+  public void testGetName_givenSkuGetNameReturnName_thenReturnName() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
-    skuImpl.setName(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.getName()).thenReturn("Name");
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualName = skuImpl2.getName();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getName();
+    assertEquals("Name", actualName);
+  }
+
+  /**
+   * Test {@link SkuImpl#getName()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Name is {@code name}.</li>
+   *   <li>Then return {@code name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
+  public void testGetName_givenSkuImplNameIsName_thenReturnName() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setName("name");
 
     // Act and Assert
-    assertNull(skuImpl.getName());
+    assertEquals("name", skuImpl2.getName());
   }
 
   /**
    * Test {@link SkuImpl#getName()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getName()}
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getName()"})
-  public void testGetName_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
-    skuImpl.setName(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertNull(skuImpl.getName());
-  }
-
-  /**
-   * Test {@link SkuImpl#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getName()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getName()"})
-  public void testGetName_givenSkuImplIdIsOne_thenReturnNull2() {
-    // Arrange
-    SkuImpl defaultSku = new SkuImpl();
-    defaultSku.setId(1L);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(defaultSku);
-    skuImpl.setName(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertNull(skuImpl.getName());
-  }
-
-  /**
-   * Test {@link SkuImpl#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Name is {@code foo}.
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getName()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getName()"})
-  public void testGetName_givenSkuImplNameIsFoo_thenReturnFoo() {
-    // Arrange
-    skuImpl.setName("foo");
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertEquals("foo", skuImpl.getName());
-  }
-
-  /**
-   * Test {@link SkuImpl#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getName()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setName(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getName());
+    assertNull(skuImpl2.getName());
   }
 
   /**
    * Test {@link SkuImpl#getName()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getName()}
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getName()"})
+  public void testGetName_givenSkuImplSalePriceIsMoney_thenReturnNull() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act and Assert
+    assertNull(skuImpl2.getName());
+  }
+
+  /**
+   * Test {@link SkuImpl#getName()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getName());
+    assertNull((new SkuImpl()).getName());
   }
 
   /**
    * Test {@link SkuImpl#getName()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getName()}
+   * <p>
+   * Method under test: {@link SkuImpl#getName()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getName()"})
   public void testGetName_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setName(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getName());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getName());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getDescription()}.
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
+  public void testGetDescription() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDescription("The characteristics of someone or something");
+
+    // Act and Assert
+    assertEquals("The characteristics of someone or something", skuImpl2.getDescription());
+  }
+
+  /**
+   * Test {@link SkuImpl#getDescription()}.
+   * <ul>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
+  public void testGetDescription_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualDescription = skuImpl2.getDescription();
+
+    // Assert
     verify(product).getDefaultSku();
+    assertNull(actualDescription);
   }
 
   /**
    * Test {@link SkuImpl#getDescription()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then calls {@link Product#getDefaultSku()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getDescription()"})
-  public void testGetDescription_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnNull() {
+  public void testGetDescription_givenProductGetDefaultSkuReturnSkuImpl_thenCallsGetDefaultSku2() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
-    skuImpl.setDescription(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    // Act and Assert
-    assertNull(skuImpl.getDescription());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualDescription = skuImpl2.getDescription();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertNull(actualDescription);
   }
 
   /**
    * Test {@link SkuImpl#getDescription()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Description is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getDescription()"})
-  public void testGetDescription_givenSkuImplDescriptionIsFoo_thenReturnFoo() {
+  public void testGetDescription_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
-    skuImpl.setDescription("foo");
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act and Assert
-    assertEquals("foo", skuImpl.getDescription());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualDescription = skuImpl2.getDescription();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualDescription);
   }
 
   /**
    * Test {@link SkuImpl#getDescription()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getDescription()"})
-  public void testGetDescription_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
-    skuImpl.setDescription(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertNull(skuImpl.getDescription());
-  }
-
-  /**
-   * Test {@link SkuImpl#getDescription()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDescription()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getDescription()"})
-  public void testGetDescription_givenSkuImplIdIsOne_thenReturnNull2() {
-    // Arrange
-    SkuImpl defaultSku = new SkuImpl();
-    defaultSku.setId(1L);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(defaultSku);
-    skuImpl.setDescription(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertNull(skuImpl.getDescription());
-  }
-
-  /**
-   * Test {@link SkuImpl#getDescription()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDescription()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setDescription(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getDescription());
+    assertNull(skuImpl2.getDescription());
   }
 
   /**
    * Test {@link SkuImpl#getDescription()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
+  public void testGetDescription_givenSkuImplSalePriceIsMoney_thenReturnNull() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act and Assert
+    assertNull(skuImpl2.getDescription());
+  }
+
+  /**
+   * Test {@link SkuImpl#getDescription()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getDescription());
+    assertNull((new SkuImpl()).getDescription());
   }
 
   /**
    * Test {@link SkuImpl#getDescription()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then calls {@link Sku#getDescription()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getDescription()"})
+  public void testGetDescription_thenCallsGetDescription() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.getDescription()).thenReturn("The characteristics of someone or something");
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualDescription = skuImpl2.getDescription();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getDescription();
+    verify(sku).getId();
+    assertEquals("The characteristics of someone or something", actualDescription);
+  }
+
+  /**
+   * Test {@link SkuImpl#getDescription()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getDescription()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getDescription()"})
   public void testGetDescription_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setDescription(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getDescription());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getDescription());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getLongDescription()}.
+   * <ul>
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
+  public void testGetLongDescription_givenProductGetDefaultSkuReturnSkuImpl() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualLongDescription = skuImpl2.getLongDescription();
+
+    // Assert
     verify(product).getDefaultSku();
+    assertNull(actualLongDescription);
   }
 
   /**
    * Test {@link SkuImpl#getLongDescription()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Product} {@link Product#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getLongDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
-  public void testGetLongDescription_givenProductBundleImplDefaultSkuIsSkuImpl_thenReturnNull() {
+  public void testGetLongDescription_givenProductGetDefaultSkuReturnSkuImpl2() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
-    skuImpl.setLongDescription(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
-    // Act and Assert
-    assertNull(skuImpl.getLongDescription());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualLongDescription = skuImpl2.getLongDescription();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertNull(actualLongDescription);
   }
 
   /**
    * Test {@link SkuImpl#getLongDescription()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getLongDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
-  public void testGetLongDescription_givenSkuImplIdIsOne_thenReturnNull() {
+  public void testGetLongDescription_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
-    skuImpl.setLongDescription(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
 
-    // Act and Assert
-    assertNull(skuImpl.getLongDescription());
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualLongDescription = skuImpl2.getLongDescription();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertNull(actualLongDescription);
   }
 
   /**
    * Test {@link SkuImpl#getLongDescription()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getLongDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
-  public void testGetLongDescription_givenSkuImplIdIsOne_thenReturnNull2() {
-    // Arrange
-    SkuImpl defaultSku = new SkuImpl();
-    defaultSku.setId(1L);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(defaultSku);
-    skuImpl.setLongDescription(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertNull(skuImpl.getLongDescription());
-  }
-
-  /**
-   * Test {@link SkuImpl#getLongDescription()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} LongDescription is {@code foo}.
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getLongDescription()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
-  public void testGetLongDescription_givenSkuImplLongDescriptionIsFoo_thenReturnFoo() {
-    // Arrange
-    skuImpl.setLongDescription("foo");
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertEquals("foo", skuImpl.getLongDescription());
-  }
-
-  /**
-   * Test {@link SkuImpl#getLongDescription()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getLongDescription()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setLongDescription(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getLongDescription());
+    assertNull(skuImpl2.getLongDescription());
   }
 
   /**
    * Test {@link SkuImpl#getLongDescription()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getLongDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
+  public void testGetLongDescription_givenSkuImplSalePriceIsMoney_thenReturnNull() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
+
+    // Act and Assert
+    assertNull(skuImpl2.getLongDescription());
+  }
+
+  /**
+   * Test {@link SkuImpl#getLongDescription()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getLongDescription());
+    assertNull((new SkuImpl()).getLongDescription());
   }
 
   /**
    * Test {@link SkuImpl#getLongDescription()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then return {@code longDescription}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getLongDescription()}
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
+  public void testGetLongDescription_thenReturnLongDescription() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setLongDescription("longDescription");
+
+    // Act and Assert
+    assertEquals("longDescription", skuImpl2.getLongDescription());
+  }
+
+  /**
+   * Test {@link SkuImpl#getLongDescription()}.
+   * <ul>
+   *   <li>Then return {@code Long Description}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
+  public void testGetLongDescription_thenReturnLongDescription2() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.getLongDescription()).thenReturn("Long Description");
+    Product product = mock(Product.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    String actualLongDescription = skuImpl2.getLongDescription();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getLongDescription();
+    assertEquals("Long Description", actualLongDescription);
+  }
+
+  /**
+   * Test {@link SkuImpl#getLongDescription()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getLongDescription()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getLongDescription()"})
   public void testGetLongDescription_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setLongDescription(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getLongDescription());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getLongDescription());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
+    Boolean actualIsTaxableResult = skuImpl2.isTaxable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -4952,29 +4561,27 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
+    Boolean actualIsTaxableResult = skuImpl2.isTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -4983,58 +4590,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
-  public void testIsTaxable_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isTaxable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isTaxable()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
+    Boolean actualIsTaxableResult = skuImpl2.isTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5044,187 +4622,110 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
-  public void testIsTaxable_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isTaxable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isTaxable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
-  public void testIsTaxable_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualIsTaxableResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isTaxable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.isTaxable());
+    assertNull(skuImpl2.isTaxable());
   }
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Taxable is {@code false}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) Taxable is {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuImplTaxableIsFalse_thenReturnFalse() {
     // Arrange
-    skuImpl.setTaxable(false);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.isTaxable());
+    assertFalse(skuImpl2.isTaxable());
   }
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Taxable is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link SkuImpl} (default constructor) Taxable is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuImplTaxableIsTrue_thenReturnTrue() {
     // Arrange
-    skuImpl.setTaxable(true);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.isTaxable());
+    assertTrue(skuImpl2.isTaxable());
   }
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.isTaxable());
+    assertNull((new SkuImpl()).isTaxable());
   }
 
   /**
    * Test {@link SkuImpl#isTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#isTaxable()} return {@code true}.
-   *   <li>Then calls {@link Sku#isTaxable()}.
+   *   <li>Given {@link Sku} {@link Sku#isTaxable()} return {@code true}.</li>
+   *   <li>Then calls {@link Sku#isTaxable()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
   public void testIsTaxable_givenSkuIsTaxableReturnTrue_thenCallsIsTaxable() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isTaxable()).thenReturn(true);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsTaxableResult = skuImpl.isTaxable();
+    Boolean actualIsTaxableResult = skuImpl2.isTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5234,30 +4735,55 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getTaxable()}.
-   *
+   * Test {@link SkuImpl#isTaxable()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isTaxable()"})
+  public void testIsTaxable_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isTaxable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getTaxable()}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
+    Boolean actualTaxable = skuImpl2.getTaxable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -5266,29 +4792,27 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
+    Boolean actualTaxable = skuImpl2.getTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5297,58 +4821,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
-  public void testGetTaxable_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxable()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
+    Boolean actualTaxable = skuImpl2.getTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5358,187 +4853,110 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
-  public void testGetTaxable_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
-  public void testGetTaxable_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualTaxable);
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getTaxable());
+    assertNull(skuImpl2.getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Taxable is {@code false}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) Taxable is {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuImplTaxableIsFalse_thenReturnFalse() {
     // Arrange
-    skuImpl.setTaxable(false);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.getTaxable());
+    assertFalse(skuImpl2.getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Taxable is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link SkuImpl} (default constructor) Taxable is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuImplTaxableIsTrue_thenReturnTrue() {
     // Arrange
-    skuImpl.setTaxable(true);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.getTaxable());
+    assertTrue(skuImpl2.getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getTaxable());
+    assertNull((new SkuImpl()).getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#getTaxable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#isTaxable()} return {@code true}.
-   *   <li>Then calls {@link Sku#isTaxable()}.
+   *   <li>Given {@link Sku} {@link Sku#isTaxable()} return {@code true}.</li>
+   *   <li>Then calls {@link Sku#isTaxable()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
   public void testGetTaxable_givenSkuIsTaxableReturnTrue_thenCallsIsTaxable() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isTaxable()).thenReturn(true);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setTaxable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualTaxable = skuImpl.getTaxable();
+    Boolean actualTaxable = skuImpl2.getTaxable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5548,98 +4966,126 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#setTaxable(Boolean)}.
-   *
+   * Test {@link SkuImpl#getTaxable()}.
    * <ul>
-   *   <li>When {@code false}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#taxable} charValue is {@code N}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setTaxable(Boolean)}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getTaxable()"})
+  public void testGetTaxable_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getTaxable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#setTaxable(Boolean)}.
+   * <ul>
+   *   <li>When {@code false}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#taxable} charValue is {@code N}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setTaxable(Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setTaxable(Boolean)"})
   public void testSetTaxable_whenFalse_thenSkuImplTaxableCharValueIsN() {
-    // Arrange and Act
-    skuImpl.setTaxable(false);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setTaxable(false);
 
     // Assert
-    assertEquals('N', skuImpl.taxable.charValue());
-    assertFalse(skuImpl.getTaxable());
+    assertEquals('N', skuImpl2.taxable.charValue());
+    assertFalse(skuImpl2.getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#setTaxable(Boolean)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuImpl} Taxable is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) Taxable is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setTaxable(Boolean)}
+   * <p>
+   * Method under test: {@link SkuImpl#setTaxable(Boolean)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setTaxable(Boolean)"})
   public void testSetTaxable_whenNull_thenSkuImplTaxableIsNull() {
-    // Arrange and Act
-    skuImpl.setTaxable(null);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setTaxable(null);
 
     // Assert that nothing has changed
-    assertNull(skuImpl.getTaxable());
-    assertNull(skuImpl.taxable);
+    assertNull(skuImpl2.getTaxable());
+    assertNull(skuImpl2.taxable);
   }
 
   /**
    * Test {@link SkuImpl#setTaxable(Boolean)}.
-   *
    * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#taxable} charValue is {@code Y}.
+   *   <li>When {@code true}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#taxable} charValue is {@code Y}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setTaxable(Boolean)}
+   * <p>
+   * Method under test: {@link SkuImpl#setTaxable(Boolean)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setTaxable(Boolean)"})
   public void testSetTaxable_whenTrue_thenSkuImplTaxableCharValueIsY() {
-    // Arrange and Act
-    skuImpl.setTaxable(true);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setTaxable(true);
 
     // Assert
-    assertEquals('Y', skuImpl.taxable.charValue());
-    assertTrue(skuImpl.getTaxable());
+    assertEquals('Y', skuImpl2.taxable.charValue());
+    assertTrue(skuImpl2.getTaxable());
   }
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
+    Boolean actualIsDiscountableResult = skuImpl2.isDiscountable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -5648,28 +5094,26 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
+    Boolean actualIsDiscountableResult = skuImpl2.isDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5678,58 +5122,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
-  public void testIsDiscountable_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isDiscountable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isDiscountable()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
+    Boolean actualIsDiscountableResult = skuImpl2.isDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5739,187 +5154,110 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Discountable is {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
-  public void testIsDiscountable_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isDiscountable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isDiscountable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Discountable is {@code false}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuImplDiscountableIsFalse_thenReturnFalse() {
     // Arrange
-    skuImpl.setDiscountable(false);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDiscountable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.isDiscountable());
+    assertFalse(skuImpl2.isDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Discountable is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link SkuImpl} (default constructor) Discountable is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuImplDiscountableIsTrue_thenReturnTrue() {
     // Arrange
-    skuImpl.setDiscountable(true);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDiscountable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.isDiscountable());
+    assertTrue(skuImpl2.isDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
-  public void testIsDiscountable_givenSkuImplIdIsOne_thenReturnFalse() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertFalse(actualIsDiscountableResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isDiscountable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
     // Arrange
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.isDiscountable());
+    assertFalse(skuImpl2.isDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(skuImpl.isDiscountable());
+    assertFalse((new SkuImpl()).isDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#isDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#isDiscountable()} return {@code true}.
-   *   <li>Then calls {@link Sku#isDiscountable()}.
+   *   <li>Given {@link Sku} {@link Sku#isDiscountable()} return {@code true}.</li>
+   *   <li>Then calls {@link Sku#isDiscountable()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
   public void testIsDiscountable_givenSkuIsDiscountableReturnTrue_thenCallsIsDiscountable() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isDiscountable()).thenReturn(true);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsDiscountableResult = skuImpl.isDiscountable();
+    Boolean actualIsDiscountableResult = skuImpl2.isDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -5929,51 +5267,54 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getDiscountable()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * Test {@link SkuImpl#isDiscountable()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
-  public void testGetDiscountable() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isDiscountable()"})
+  public void testIsDiscountable_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getDiscountable());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isDiscountable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
+    Boolean actualDiscountable = skuImpl2.getDiscountable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -5982,28 +5323,26 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
+    Boolean actualDiscountable = skuImpl2.getDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -6012,31 +5351,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
+    Boolean actualDiscountable = skuImpl2.getDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -6046,187 +5383,110 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Discountable is {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
-  public void testGetDiscountable_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getDiscountable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getDiscountable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Discountable is {@code false}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuImplDiscountableIsFalse_thenReturnFalse() {
     // Arrange
-    skuImpl.setDiscountable(false);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDiscountable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.getDiscountable());
+    assertFalse(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Discountable is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link SkuImpl} (default constructor) Discountable is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuImplDiscountableIsTrue_thenReturnTrue() {
     // Arrange
-    skuImpl.setDiscountable(true);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDiscountable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.getDiscountable());
+    assertTrue(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
-  public void testGetDiscountable_givenSkuImplIdIsOne_thenReturnFalse() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertFalse(actualDiscountable);
-  }
-
-  /**
-   * Test {@link SkuImpl#getDiscountable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
     // Arrange
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.getDiscountable());
+    assertFalse(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(skuImpl.getDiscountable());
+    assertFalse((new SkuImpl()).getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#getDiscountable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#isDiscountable()} return {@code true}.
-   *   <li>Then calls {@link Sku#isDiscountable()}.
+   *   <li>Given {@link Sku} {@link Sku#isDiscountable()} return {@code true}.</li>
+   *   <li>Then calls {@link Sku#isDiscountable()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDiscountable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
   public void testGetDiscountable_givenSkuIsDiscountableReturnTrue_thenCallsIsDiscountable() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isDiscountable()).thenReturn(true);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setDiscountable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualDiscountable = skuImpl.getDiscountable();
+    Boolean actualDiscountable = skuImpl2.getDiscountable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -6236,1303 +5496,668 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#setDiscountable(Boolean)}.
-   *
+   * Test {@link SkuImpl#getDiscountable()}.
    * <ul>
-   *   <li>When {@code false}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#discountable} charValue is {@code N}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setDiscountable(Boolean)}
+   * <p>
+   * Method under test: {@link SkuImpl#getDiscountable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
-  public void testSetDiscountable_whenFalse_thenSkuImplDiscountableCharValueIsN() {
-    // Arrange and Act
-    skuImpl.setDiscountable(false);
-
-    // Assert
-    assertEquals('N', skuImpl.discountable.charValue());
-    assertFalse(skuImpl.getDiscountable());
-  }
-
-  /**
-   * Test {@link SkuImpl#setDiscountable(Boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then not {@link SkuImpl} Discountable.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setDiscountable(Boolean)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
-  public void testSetDiscountable_whenNull_thenNotSkuImplDiscountable() {
-    // Arrange and Act
-    skuImpl.setDiscountable(null);
-
-    // Assert that nothing has changed
-    assertFalse(skuImpl.getDiscountable());
-  }
-
-  /**
-   * Test {@link SkuImpl#setDiscountable(Boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#discountable} charValue is {@code Y}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setDiscountable(Boolean)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
-  public void testSetDiscountable_whenTrue_thenSkuImplDiscountableCharValueIsY() {
-    // Arrange and Act
-    skuImpl.setDiscountable(true);
-
-    // Assert
-    assertEquals('Y', skuImpl.discountable.charValue());
-    assertTrue(skuImpl.getDiscountable());
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getDiscountable()"})
+  public void testGetDiscountable_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenThrow(new IllegalStateException());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isAvailable());
-    verify(product).getDefaultCategory();
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getDiscountable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#setDiscountable(Boolean)}.
+   * <ul>
+   *   <li>When {@code false}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#discountable} charValue is {@code N}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setDiscountable(Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
+  public void testSetDiscountable_whenFalse_thenSkuImplDiscountableCharValueIsN() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setDiscountable(false);
+
+    // Assert
+    assertEquals('N', skuImpl2.discountable.charValue());
+    assertFalse(skuImpl2.getDiscountable());
+  }
+
+  /**
+   * Test {@link SkuImpl#setDiscountable(Boolean)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then not {@link SkuImpl} (default constructor) Discountable.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setDiscountable(Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
+  public void testSetDiscountable_whenNull_thenNotSkuImplDiscountable() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setDiscountable(null);
+
+    // Assert that nothing has changed
+    assertFalse(skuImpl2.getDiscountable());
+  }
+
+  /**
+   * Test {@link SkuImpl#setDiscountable(Boolean)}.
+   * <ul>
+   *   <li>When {@code true}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#discountable} charValue is {@code Y}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setDiscountable(Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setDiscountable(Boolean)"})
+  public void testSetDiscountable_whenTrue_thenSkuImplDiscountableCharValueIsY() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setDiscountable(true);
+
+    // Assert
+    assertEquals('Y', skuImpl2.discountable.charValue());
+    assertTrue(skuImpl2.getDiscountable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link
-   *       InventoryType#ALWAYS_AVAILABLE}.
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenCategoryImplGetInventoryTypeReturnAlways_available() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
+    Boolean actualIsAvailableResult = skuImpl2.isAvailable();
 
     // Assert
     verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
     assertTrue(actualIsAvailableResult);
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link
-   *       InventoryType#ALWAYS_AVAILABLE}.
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#UNAVAILABLE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenCategoryImplGetInventoryTypeReturnAlways_available2() {
+  public void testIsAvailable_givenCategoryImplGetInventoryTypeReturnUnavailable() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
+    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.UNAVAILABLE);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
+    Boolean actualIsAvailableResult = skuImpl2.isAvailable();
 
     // Assert
     verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualIsAvailableResult);
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
+    assertFalse(actualIsAvailableResult);
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenCategoryImplGetInventoryTypeThrowIllegalStateException() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isAvailable());
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultCategory()} return
-   *       {@link CategoryImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenProductBundleImplGetDefaultCategoryReturnCategoryImpl() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(new CategoryImpl());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
+    Boolean actualIsAvailableResult = skuImpl2.isAvailable();
 
     // Assert
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
     assertTrue(actualIsAvailableResult);
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Available is {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isAvailable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenSkuGetIdReturnOne_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
-
-    // Assert
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    assertTrue(actualIsAvailableResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenSkuGetIdThrowIllegalStateException_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isAvailable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Available is {@code false}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplAvailableIsFalse_thenReturnFalse() {
     // Arrange
-    skuImpl.setAvailable(false);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setAvailable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.isAvailable());
+    assertFalse(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Available is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link SkuImpl} (default constructor) Available is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplAvailableIsTrue_thenReturnTrue() {
     // Arrange
-    skuImpl.setAvailable(true);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setAvailable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.isAvailable());
+    assertTrue(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} DefaultProduct is {@link ProductBundleImpl} (default constructor).
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenSkuImplDefaultProductIsProductBundleImpl() {
+  public void testIsAvailable_givenSkuImplDefaultProductIsProductBundleImpl_thenReturnTrue() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
-    // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualIsAvailableResult);
+    // Act and Assert
+    assertTrue(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link CategoryImpl#getInventoryType()}.
+   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenSkuImplIdIsOne_thenCallsGetInventoryType() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
-
-    // Assert
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualIsAvailableResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is {@link
-   *       InventoryType#ALWAYS_AVAILABLE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenSkuImplInventoryTypeIsAlways_available() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualIsAvailableResult = skuImpl.isAvailable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualIsAvailableResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplInventoryTypeIsAlways_available_thenReturnTrue() {
     // Arrange
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
 
     // Act and Assert
-    assertTrue(skuImpl.isAvailable());
+    assertTrue(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} InventoryType is {@link InventoryType#UNAVAILABLE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenSkuImplInventoryTypeIsUnavailable_thenReturnFalse() {
-    // Arrange
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(InventoryType.UNAVAILABLE);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertFalse(skuImpl.isAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
-  public void testIsAvailable_givenSkuImplProductIsNull_thenReturnTrue() {
-    // Arrange
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertTrue(skuImpl.isAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#isAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImplProductIsProductBundleImpl_thenReturnTrue() {
     // Arrange
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.isAvailable());
+    assertTrue(skuImpl2.isAvailable());
   }
 
   /**
    * Test {@link SkuImpl#isAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
   public void testIsAvailable_givenSkuImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(skuImpl.isAvailable());
+    assertTrue((new SkuImpl()).isAvailable());
   }
 
   /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * Test {@link SkuImpl#isAvailable()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isAvailable()"})
+  public void testIsAvailable_thenThrowIllegalStateException() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenThrow(new IllegalStateException());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getAvailable());
-    verify(product).getDefaultCategory();
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isAvailable());
+    verify(categoryImpl).getInventoryType();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link
-   *       InventoryType#ALWAYS_AVAILABLE}.
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenCategoryImplGetInventoryTypeReturnAlways_available() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
+    Boolean actualAvailable = skuImpl2.getAvailable();
 
     // Assert
     verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
     assertTrue(actualAvailable);
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link
-   *       InventoryType#ALWAYS_AVAILABLE}.
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#UNAVAILABLE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenCategoryImplGetInventoryTypeReturnAlways_available2() {
+  public void testGetAvailable_givenCategoryImplGetInventoryTypeReturnUnavailable() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
+    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.UNAVAILABLE);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
+    Boolean actualAvailable = skuImpl2.getAvailable();
 
     // Assert
     verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualAvailable);
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
+    assertFalse(actualAvailable);
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenCategoryImplGetInventoryTypeThrowIllegalStateException() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getAvailable());
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultCategory()} return
-   *       {@link CategoryImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenProductBundleImplGetDefaultCategoryReturnCategoryImpl() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(new CategoryImpl());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
+    Boolean actualAvailable = skuImpl2.getAvailable();
 
     // Assert
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
     assertTrue(actualAvailable);
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Available is {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getAvailable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenSkuGetIdReturnOne_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
-
-    // Assert
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getId();
-    assertTrue(actualAvailable);
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenSkuGetIdThrowIllegalStateException_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getAvailable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Available is {@code false}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplAvailableIsFalse_thenReturnFalse() {
     // Arrange
-    skuImpl.setAvailable(false);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setAvailable(false);
 
     // Act and Assert
-    assertFalse(skuImpl.getAvailable());
+    assertFalse(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Available is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link SkuImpl} (default constructor) Available is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplAvailableIsTrue_thenReturnTrue() {
     // Arrange
-    skuImpl.setAvailable(true);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setAvailable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.getAvailable());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} DefaultProduct is {@link ProductBundleImpl} (default constructor).
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenSkuImplDefaultProductIsProductBundleImpl() {
+  public void testGetAvailable_givenSkuImplDefaultProductIsProductBundleImpl_thenReturnTrue() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
-    // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualAvailable);
+    // Act and Assert
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link CategoryImpl#getInventoryType()}.
+   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenSkuImplIdIsOne_thenCallsGetInventoryType() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
-
-    // Assert
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualAvailable);
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is {@link
-   *       InventoryType#ALWAYS_AVAILABLE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenSkuImplInventoryTypeIsAlways_available() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualAvailable = skuImpl.getAvailable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualAvailable);
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplInventoryTypeIsAlways_available_thenReturnTrue() {
     // Arrange
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
 
     // Act and Assert
-    assertTrue(skuImpl.getAvailable());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} InventoryType is {@link InventoryType#UNAVAILABLE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenSkuImplInventoryTypeIsUnavailable_thenReturnFalse() {
-    // Arrange
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(InventoryType.UNAVAILABLE);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertFalse(skuImpl.getAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
-  public void testGetAvailable_givenSkuImplProductIsNull_thenReturnTrue() {
-    // Arrange
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertTrue(skuImpl.getAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#getAvailable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImplProductIsProductBundleImpl_thenReturnTrue() {
     // Arrange
-    skuImpl.setAvailable(null);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.getAvailable());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getAvailable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getAvailable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
   public void testGetAvailable_givenSkuImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(skuImpl.getAvailable());
+    assertTrue((new SkuImpl()).getAvailable());
   }
 
   /**
-   * Test {@link SkuImpl#setAvailable(Boolean)}.
-   *
+   * Test {@link SkuImpl#getAvailable()}.
    * <ul>
-   *   <li>When {@code false}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#available} charValue is {@code N}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setAvailable(Boolean)}
+   * <p>
+   * Method under test: {@link SkuImpl#getAvailable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
-  public void testSetAvailable_whenFalse_thenSkuImplAvailableCharValueIsN() {
-    // Arrange and Act
-    skuImpl.setAvailable(false);
-
-    // Assert
-    assertEquals('N', skuImpl.available.charValue());
-    assertFalse(skuImpl.getAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#setAvailable(Boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuImpl} Available.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setAvailable(Boolean)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
-  public void testSetAvailable_whenNull_thenSkuImplAvailable() {
-    // Arrange and Act
-    skuImpl.setAvailable(null);
-
-    // Assert that nothing has changed
-    assertTrue(skuImpl.getAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#setAvailable(Boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#available} charValue is {@code Y}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setAvailable(Boolean)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
-  public void testSetAvailable_whenTrue_thenSkuImplAvailableCharValueIsY() {
-    // Arrange and Act
-    skuImpl.setAvailable(true);
-
-    // Assert
-    assertEquals('Y', skuImpl.available.charValue());
-    assertTrue(skuImpl.getAvailable());
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveStartDate()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
-  public void testGetActiveStartDate() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getAvailable()"})
+  public void testGetAvailable_thenThrowIllegalStateException() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getActiveStartDate());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getAvailable());
+    verify(categoryImpl).getInventoryType();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
+  }
+
+  /**
+   * Test {@link SkuImpl#setAvailable(Boolean)}.
+   * <ul>
+   *   <li>When {@code false}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#available} charValue is {@code N}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setAvailable(Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
+  public void testSetAvailable_whenFalse_thenSkuImplAvailableCharValueIsN() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setAvailable(false);
+
+    // Assert
+    assertEquals('N', skuImpl2.available.charValue());
+    assertFalse(skuImpl2.getAvailable());
+  }
+
+  /**
+   * Test {@link SkuImpl#setAvailable(Boolean)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) Available.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setAvailable(Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
+  public void testSetAvailable_whenNull_thenSkuImplAvailable() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setAvailable(null);
+
+    // Assert that nothing has changed
+    assertTrue(skuImpl2.getAvailable());
+  }
+
+  /**
+   * Test {@link SkuImpl#setAvailable(Boolean)}.
+   * <ul>
+   *   <li>When {@code true}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#available} charValue is {@code Y}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setAvailable(Boolean)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setAvailable(Boolean)"})
+  public void testSetAvailable_whenTrue_thenSkuImplAvailableCharValueIsY() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setAvailable(true);
+
+    // Assert
+    assertEquals('Y', skuImpl2.available.charValue());
+    assertTrue(skuImpl2.getAvailable());
   }
 
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveStartDate = skuImpl.getActiveStartDate();
+    Date actualActiveStartDate = skuImpl2.getActiveStartDate();
 
     // Assert
     verify(product).getDefaultSku();
@@ -7541,28 +6166,26 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveStartDate = skuImpl.getActiveStartDate();
+    Date actualActiveStartDate = skuImpl2.getActiveStartDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -7571,31 +6194,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveStartDate = skuImpl.getActiveStartDate();
+    Date actualActiveStartDate = skuImpl2.getActiveStartDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -7605,140 +6226,68 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
-  public void testGetActiveStartDate_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getActiveStartDate());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveStartDate()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
-  public void testGetActiveStartDate_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Date actualActiveStartDate = skuImpl.getActiveStartDate();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualActiveStartDate);
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveStartDate()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getActiveStartDate());
+    assertNull(skuImpl2.getActiveStartDate());
   }
 
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getActiveStartDate());
+    assertNull((new SkuImpl()).getActiveStartDate());
   }
 
   /**
    * Test {@link SkuImpl#getActiveStartDate()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#getActiveStartDate()}.
+   *   <li>Then calls {@link Sku#getActiveStartDate()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveStartDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
   public void testGetActiveStartDate_thenCallsGetActiveStartDate() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     when(sku.getActiveStartDate())
-        .thenReturn(
-            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    skuImpl.getActiveStartDate();
+    skuImpl2.getActiveStartDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -7747,51 +6296,54 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getActiveEndDate()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
+   * Test {@link SkuImpl#getActiveStartDate()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveStartDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
-  public void testGetActiveEndDate() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveStartDate()"})
+  public void testGetActiveStartDate_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getActiveEndDate());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getActiveStartDate());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveEndDate = skuImpl.getActiveEndDate();
+    Date actualActiveEndDate = skuImpl2.getActiveEndDate();
 
     // Assert
     verify(product).getDefaultSku();
@@ -7800,28 +6352,26 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveEndDate = skuImpl.getActiveEndDate();
+    Date actualActiveEndDate = skuImpl2.getActiveEndDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -7830,31 +6380,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Date actualActiveEndDate = skuImpl.getActiveEndDate();
+    Date actualActiveEndDate = skuImpl2.getActiveEndDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -7864,140 +6412,68 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
-  public void testGetActiveEndDate_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getActiveEndDate());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveEndDate()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
-  public void testGetActiveEndDate_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Date actualActiveEndDate = skuImpl.getActiveEndDate();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualActiveEndDate);
-  }
-
-  /**
-   * Test {@link SkuImpl#getActiveEndDate()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getActiveEndDate());
+    assertNull(skuImpl2.getActiveEndDate());
   }
 
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getActiveEndDate());
+    assertNull((new SkuImpl()).getActiveEndDate());
   }
 
   /**
    * Test {@link SkuImpl#getActiveEndDate()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#getActiveEndDate()}.
+   *   <li>Then calls {@link Sku#getActiveEndDate()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getActiveEndDate()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
   public void testGetActiveEndDate_thenCallsGetActiveEndDate() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     when(sku.getActiveEndDate())
-        .thenReturn(
-            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
+        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    skuImpl.getActiveEndDate();
+    skuImpl2.getActiveEndDate();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -8006,1018 +6482,269 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getDimension()}.
-   *
+   * Test {@link SkuImpl#getActiveEndDate()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDimension()}
+   * <p>
+   * Method under test: {@link SkuImpl#getActiveEndDate()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
-  public void testGetDimension_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setDimension(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act
-    Dimension actualDimension = skuImpl.getDimension();
-
-    // Assert
-    verify(product).getDefaultSku();
-    assertNull(actualDimension);
-  }
-
-  /**
-   * Test {@link SkuImpl#getDimension()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDimension()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
-  public void testGetDimension_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setDimension(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getDimension());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getDimension()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDimension()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
-  public void testGetDimension_givenSkuGetIdThrowIllegalStateException_thenCallsGetId() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date SkuImpl.getActiveEndDate()"})
+  public void testGetActiveEndDate_thenThrowIllegalStateException() {
     // Arrange
     Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setDimension(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getDimension());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getActiveEndDate());
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getDimension()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDimension()}
+   * <p>
+   * Method under test: {@link SkuImpl#getDimension()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
-  public void testGetDimension_givenSkuImplIdIsOne_thenReturnNull() {
+  public void testGetDimension() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setDimension(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Dimension actualDimension = skuImpl.getDimension();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualDimension);
-  }
-
-  /**
-   * Test {@link SkuImpl#getDimension()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDimension()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
-  public void testGetDimension_givenSkuImplProductIsNull_thenReturnNull() {
-    // Arrange
-    skuImpl.setDimension(null);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act and Assert
-    assertNull(skuImpl.getDimension());
+    assertSame(skuImpl2.dimension, skuImpl2.getDimension());
   }
 
   /**
-   * Test {@link SkuImpl#getDimension()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDimension()}
+   * Test {@link SkuImpl#getWeight()}.
+   * <p>
+   * Method under test: {@link SkuImpl#getWeight()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
-  public void testGetDimension_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
+  public void testGetWeight() {
     // Arrange
-    skuImpl.setDimension(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act and Assert
-    assertNull(skuImpl.getDimension());
-  }
-
-  /**
-   * Test {@link SkuImpl#getDimension()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@link SkuImpl} {@link SkuImpl#dimension}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDimension()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
-  public void testGetDimension_givenSkuImpl_thenReturnSkuImplDimension() {
-    // Arrange and Act
-    Dimension actualDimension = skuImpl.getDimension();
-
-    // Assert
-    assertSame(skuImpl.dimension, actualDimension);
-  }
-
-  /**
-   * Test {@link SkuImpl#getDimension()}.
-   *
-   * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor) {@link SkuImpl#dimension}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getDimension()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Dimension SkuImpl.getDimension()"})
-  public void testGetDimension_thenReturnSkuImplDimension() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    SkuImpl skuImpl = new SkuImpl();
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setDimension(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Dimension actualDimension = skuImpl.getDimension();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertSame(skuImpl.dimension, actualDimension);
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act
-    Weight actualWeight = skuImpl.getWeight();
-
-    // Assert
-    verify(product).getDefaultSku();
-    assertNull(actualWeight);
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getWeight());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenSkuGetIdReturnOne_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Weight actualWeight = skuImpl.getWeight();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertNull(actualWeight);
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getWeight());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Weight actualWeight = skuImpl.getWeight();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualWeight);
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenSkuImplProductIsNull_thenReturnNull() {
-    // Arrange
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertNull(skuImpl.getWeight());
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
-    // Arrange
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertNull(skuImpl.getWeight());
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@link SkuImpl} {@link SkuImpl#weight}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenSkuImpl_thenReturnSkuImplWeight() {
-    // Arrange and Act
-    Weight actualWeight = skuImpl.getWeight();
-
-    // Assert
-    assertSame(skuImpl.weight, actualWeight);
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Given {@link Weight} (default constructor) Weight is {@link
-   *       BigDecimal#BigDecimal(String)} with {@code 2.3}.
-   *   <li>Then return {@link Weight} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_givenWeightWeightIsBigDecimalWith23_thenReturnWeight() {
-    // Arrange
-    Weight weight = new Weight();
-    weight.setWeight(new BigDecimal("2.3"));
-    weight.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
-
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getWeight()).thenReturn(weight);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
-
-    // Act
-    Weight actualWeight = skuImpl.getWeight();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    verify(sku).getWeight();
-    assertSame(weight, actualWeight);
-  }
-
-  /**
-   * Test {@link SkuImpl#getWeight()}.
-   *
-   * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor) {@link SkuImpl#weight}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getWeight()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Weight SkuImpl.getWeight()"})
-  public void testGetWeight_thenReturnSkuImplWeight() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    SkuImpl skuImpl = new SkuImpl();
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setWeight(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Weight actualWeight = skuImpl.getWeight();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertSame(skuImpl.weight, actualWeight);
+    assertSame(skuImpl2.weight, skuImpl2.getWeight());
   }
 
   /**
    * Test {@link SkuImpl#isActive()}.
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive()"})
   public void testIsActive() {
     // Arrange
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act and Assert
-    assertFalse(skuImpl.isActive());
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive2() {
-    // Arrange
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertFalse(skuImpl.isActive());
+    assertFalse(skuImpl2.isActive());
   }
 
   /**
    * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
   public void testIsActiveWithProductCategory() {
     // Arrange
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    ProductBundleImpl product = new ProductBundleImpl();
 
-    // Act
-    skuImpl.isActive(null, null);
-
-    // Assert
-    verify(defaultProduct).isActive();
+    // Act and Assert
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
   }
 
   /**
    * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
   public void testIsActiveWithProductCategory2() {
     // Arrange
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive(null, null);
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory3() {
-    // Arrange
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setProduct(mock(Product.class));
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive(null, null);
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory4() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act and Assert
-    assertFalse(skuImpl.isActive(null, new CategoryImpl()));
+    assertFalse(skuImpl2.isActive(mock(Product.class), mock(Category.class)));
   }
 
   /**
    * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory5() {
-    // Arrange
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(new Date());
-    skuImpl.setActiveStartDate(new java.sql.Date(1, 1, 1));
-    skuImpl.setProduct(mock(Product.class));
-    skuImpl.setDefaultProduct(defaultProduct);
-    Product product = mock(Product.class);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive(product, new CategoryImpl());
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
+   *   <li>Given {@link SkuImpl} (default constructor) ActiveEndDate is {@link Date#Date()}.</li>
+   *   <li>When {@link Category}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory_givenProductBundleImplDefaultSkuIsSkuImpl() {
+  public void testIsActiveWithProductCategory_givenSkuImplActiveEndDateIsDate_whenCategory() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveEndDate(new Date());
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertFalse(skuImpl2.isActive(mock(Product.class), mock(Category.class)));
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory_givenSkuImplSalePriceIsMoney() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
     ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
 
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive(null, null);
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
+    // Act and Assert
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
   }
 
   /**
    * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#isActive()} return {@code
-   *       false}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory_givenProductBundleImplIsActiveReturnFalse() {
-    // Arrange
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(false);
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(mock(Product.class));
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive(null, null);
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory_givenSkuImplProductIsProductBundleImpl() {
-    // Arrange
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive(null, null);
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
   public void testIsActiveWithProductCategory_givenSkuImpl_whenProductBundleImpl() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
     ProductBundleImpl product = new ProductBundleImpl();
 
     // Act and Assert
-    assertFalse(skuImpl.isActive(product, new CategoryImpl()));
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
   }
 
   /**
    * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link Product} {@link Product#isActive()} return {@code true}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory_givenTrue_whenProductIsActiveReturnTrue() {
+  public void testIsActiveWithProductCategory_whenNull_thenReturnFalse() {
     // Arrange
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setActiveEndDate(new Date());
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setProduct(mock(Product.class));
-    skuImpl.setDefaultProduct(defaultProduct);
-
-    Product product = mock(Product.class);
-    when(product.isActive()).thenReturn(true);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive(product, new CategoryImpl());
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory_thenThrowIllegalStateException() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(mock(ProductBundleImpl.class));
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isActive(null, null));
-    verify(product).getDefaultSku();
+    assertFalse(skuImpl2.isActive(null, new CategoryImpl()));
   }
 
   /**
    * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>When {@link Product}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory_thenThrowIllegalStateException2() {
+  public void testIsActiveWithProductCategory_whenProduct_thenReturnFalse() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isActive(null, null));
-    verify(product).getDefaultSku();
-    verify(defaultProduct).isActive();
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
   }
 
   /**
    * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>When {@link Product}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive(Product, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
-  public void testIsActiveWithProductCategory_thenThrowIllegalStateException3() {
+  public void testIsActiveWithProductCategory_whenProduct_thenReturnFalse2() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isActive(null, null));
-    verify(product).getDefaultSku();
-    verify(defaultProduct).isActive();
+    assertFalse(skuImpl2.isActive(product, new CategoryImpl()));
   }
 
   /**
    * Test {@link SkuImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
-   *       (default constructor).
-   *   <li>Then calls {@link ProductBundleImpl#isActive()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#isActive()} return {@code false}.</li>
+   *   <li>Then calls {@link ProductImpl#isActive()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive_givenProductBundleImplDefaultSkuIsSkuImpl_thenCallsIsActive() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setDefaultSku(new SkuImpl());
-
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive();
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#isActive()} return {@code
-   *       false}.
-   *   <li>Then calls {@link ProductBundleImpl#isActive()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive()"})
   public void testIsActive_givenProductBundleImplIsActiveReturnFalse_thenCallsIsActive() {
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.isActive()).thenReturn(false);
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(mock(Product.class));
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    boolean actualIsActiveResult = skuImpl.isActive();
+    boolean actualIsActiveResult = skuImpl2.isActive();
 
     // Assert
     verify(defaultProduct).isActive();
@@ -9026,30 +6753,26 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} ActiveStartDate is {@link Date#Date()}.
-   *   <li>Then calls {@link ProductBundleImpl#isActive()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#isActive()} return {@code true}.</li>
+   *   <li>Then calls {@link ProductImpl#isActive()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive_givenSkuImplActiveStartDateIsDate_thenCallsIsActive() {
+  public void testIsActive_givenProductBundleImplIsActiveReturnTrue_thenCallsIsActive() {
     // Arrange
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(new Date());
-    skuImpl.setActiveEndDate(new Date());
-    skuImpl.setProduct(mock(Product.class));
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    boolean actualIsActiveResult = skuImpl.isActive();
+    boolean actualIsActiveResult = skuImpl2.isActive();
 
     // Assert
     verify(defaultProduct).isActive();
@@ -9058,359 +6781,140 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive_givenSkuImplProductIsNull_thenReturnFalse() {
+  public void testIsActive_givenSkuImplSalePriceIsMoney_thenReturnFalse() {
     // Arrange
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setSalePrice(new Money());
 
     // Act and Assert
-    assertFalse(skuImpl.isActive());
+    assertFalse(skuImpl2.isActive());
   }
 
   /**
    * Test {@link SkuImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then calls {@link ProductBundleImpl#isActive()}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
+   * <p>
+   * Method under test: {@link SkuImpl#isActive()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive_givenSkuImplProductIsProductBundleImpl_thenCallsIsActive() {
-    // Arrange
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act
-    boolean actualIsActiveResult = skuImpl.isActive();
-
-    // Assert
-    verify(defaultProduct).isActive();
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isActive()"})
   public void testIsActive_givenSkuImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new SkuImpl()).isActive());
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isActive()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
+  public void testIsActive_givenSkuImpl_thenReturnFalse2() {
     // Arrange, Act and Assert
     assertFalse(skuImpl.isActive());
   }
 
   /**
-   * Test {@link SkuImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive_thenThrowIllegalStateException() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(mock(ProductBundleImpl.class));
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isActive());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive_thenThrowIllegalStateException2() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isActive());
-    verify(product).getDefaultSku();
-    verify(defaultProduct).isActive();
-  }
-
-  /**
-   * Test {@link SkuImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isActive()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive_thenThrowIllegalStateException3() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
-    when(defaultProduct.isActive()).thenReturn(true);
-    skuImpl.setActiveStartDate(null);
-    skuImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isActive());
-    verify(product).getDefaultSku();
-    verify(defaultProduct).isActive();
-  }
-
-  /**
    * Test {@link SkuImpl#getSkuMedia()}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link
-   *       SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return {@code foo} is {@code null}.
+   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
-  public void testGetSkuMedia_givenHashMapFooIsSkuMediaXrefImpl_thenReturnFooIsNull() {
+  public void testGetSkuMedia_givenHashMap42IsSkuMediaXrefImpl_thenReturnSizeIsOne() {
     // Arrange
-    HashMap<String, SkuMediaXref> skuMediaXref = new HashMap<>();
-    skuMediaXref.put("foo", new SkuMediaXrefImpl());
-    skuImpl.setSkuMediaXref(skuMediaXref);
-    skuImpl.setProduct(mock(ProductBundleImpl.class));
-    skuImpl.setId(null);
-
-    // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
-
-    // Assert
-    assertEquals(1, actualSkuMedia.size());
-    assertNull(actualSkuMedia.get("foo"));
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMedia()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
-  public void testGetSkuMedia_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
-
-    // Assert
-    verify(product).getDefaultSku();
-    assertTrue(actualSkuMedia.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMedia()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
-  public void testGetSkuMedia_givenSkuGetIdReturnOne_thenCallsGetId() {
-    // Arrange
+    HashMap<String, SkuMediaXref> stringSkuMediaXrefMap = new HashMap<>();
+    stringSkuMediaXrefMap.put("42", new SkuMediaXrefImpl());
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
+    when(sku.getSkuMediaXref()).thenReturn(stringSkuMediaXrefMap);
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-    skuImpl.setProduct(product);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertTrue(actualSkuMedia.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMedia()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSkuMediaXref()} return {@link HashMap#HashMap()}.
-   *   <li>Then calls {@link Sku#getSkuMediaXref()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
-  public void testGetSkuMedia_givenSkuGetSkuMediaXrefReturnHashMap_thenCallsGetSkuMediaXref() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getSkuMediaXref()).thenReturn(new HashMap<>());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(2L);
-    skuImpl.setProduct(product);
-
-    // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
     verify(sku).getId();
     verify(sku).getSkuMediaXref();
-    assertTrue(actualSkuMedia.isEmpty());
+    assertEquals(1, actualSkuMedia.size());
+    assertNull(actualSkuMedia.get("42"));
   }
 
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then calls {@link ProductBundleImpl#getDefaultSku()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
-  public void testGetSkuMedia_givenSkuImplIdIsOne_thenCallsGetDefaultSku() {
+  public void testGetSkuMedia_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnEmpty() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
 
     // Assert
-    verify(product, atLeast(1)).getDefaultSku();
+    verify(product).getDefaultSku();
     assertTrue(actualSkuMedia.isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link ProductBundleImpl#getDefaultSku()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
-  public void testGetSkuMedia_givenSkuImplIdIsOne_thenCallsGetDefaultSku2() {
+  public void testGetSkuMedia_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnEmpty2() {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
 
     SkuImpl skuImpl2 = new SkuImpl();
     skuImpl2.setId(1L);
@@ -9426,214 +6930,214 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
+  public void testGetSkuMedia_givenSkuGetIdReturnOne_thenCallsGetId() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    assertTrue(actualSkuMedia.isEmpty());
+  }
+
+  /**
+   * Test {@link SkuImpl#getSkuMedia()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getSkuMediaXref()} return {@link HashMap#HashMap()}.</li>
+   *   <li>Then calls {@link Sku#getSkuMediaXref()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMedia()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
+  public void testGetSkuMedia_givenSkuGetSkuMediaXrefReturnHashMap_thenCallsGetSkuMediaXref() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.getSkuMediaXref()).thenReturn(new HashMap<>());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Map<String, Media> actualSkuMedia = skuImpl2.getSkuMedia();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+    verify(sku).getSkuMediaXref();
+    assertTrue(actualSkuMedia.isEmpty());
+  }
+
+  /**
+   * Test {@link SkuImpl#getSkuMedia()}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMedia()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
   public void testGetSkuMedia_givenSkuImplProductIsProductBundleImpl_thenReturnEmpty() {
     // Arrange
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.getSkuMedia().isEmpty());
+    assertTrue(skuImpl2.getSkuMedia().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
   public void testGetSkuMedia_givenSkuImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(skuImpl.getSkuMedia().isEmpty());
+    assertTrue((new SkuImpl()).getSkuMedia().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMedia()}.
-   *
    * <ul>
-   *   <li>Then return {@code foo} is {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMedia()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
-  public void testGetSkuMedia_thenReturnFooIsCategoryMediaXrefImpl() {
-    // Arrange
-    SkuMediaXref skuMediaXref = mock(SkuMediaXref.class);
-    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
-    when(skuMediaXref.getMedia()).thenReturn(categoryMediaXrefImpl);
-
-    HashMap<String, SkuMediaXref> skuMediaXref2 = new HashMap<>();
-    skuMediaXref2.put("foo", skuMediaXref);
-    skuImpl.setSkuMediaXref(skuMediaXref2);
-    skuImpl.setProduct(mock(ProductBundleImpl.class));
-    skuImpl.setId(null);
-
-    // Act
-    Map<String, Media> actualSkuMedia = skuImpl.getSkuMedia();
-
-    // Assert
-    verify(skuMediaXref).getMedia();
-    assertEquals(1, actualSkuMedia.size());
-    assertSame(categoryMediaXrefImpl, actualSkuMedia.get("foo"));
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMedia()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMedia()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMedia()"})
   public void testGetSkuMedia_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setSkuMediaXref(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSkuMedia());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getSkuMedia());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#setSkuMedia(Map)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then {@link SkuImpl} SkuMedia size is one.
+   *   <li>Given {@code foo}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) SkuMedia size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setSkuMedia(Map)}
+   * <p>
+   * Method under test: {@link SkuImpl#setSkuMedia(Map)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setSkuMedia(Map)"})
   public void testSetSkuMedia_givenFoo_thenSkuImplSkuMediaSizeIsOne() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
     HashMap<String, Media> skuMedia = new HashMap<>();
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
     skuMedia.put("foo", categoryMediaXrefImpl);
 
     // Act
-    skuImpl.setSkuMedia(skuMedia);
+    skuImpl2.setSkuMedia(skuMedia);
 
     // Assert
-    Map<String, Media> skuMedia2 = skuImpl.getSkuMedia();
+    Map<String, Media> skuMedia2 = skuImpl2.getSkuMedia();
     assertEquals(1, skuMedia2.size());
-    assertEquals(1, skuImpl.skuMedia.size());
+    assertEquals(1, skuImpl2.skuMedia.size());
     assertSame(categoryMediaXrefImpl, skuMedia2.get("foo"));
-    Map<String, SkuMediaXref> expectedSkuMediaXref = skuImpl.skuMedia;
-    assertSame(expectedSkuMediaXref, skuImpl.getSkuMediaXref());
+    Map<String, SkuMediaXref> expectedSkuMediaXref = skuImpl2.skuMedia;
+    assertSame(expectedSkuMediaXref, skuImpl2.getSkuMediaXref());
   }
 
   /**
    * Test {@link SkuImpl#setSkuMedia(Map)}.
-   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then {@link SkuImpl} SkuMedia Empty.
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) SkuMedia Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setSkuMedia(Map)}
+   * <p>
+   * Method under test: {@link SkuImpl#setSkuMedia(Map)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setSkuMedia(Map)"})
   public void testSetSkuMedia_whenHashMap_thenSkuImplSkuMediaEmpty() {
-    // Arrange and Act
-    skuImpl.setSkuMedia(new HashMap<>());
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setSkuMedia(new HashMap<>());
 
     // Assert that nothing has changed
-    assertTrue(skuImpl.getSkuMedia().isEmpty());
-    assertTrue(skuImpl.getSkuMediaXref().isEmpty());
-    assertTrue(skuImpl.skuMedia.isEmpty());
+    assertTrue(skuImpl2.getSkuMedia().isEmpty());
+    assertTrue(skuImpl2.getSkuMediaXref().isEmpty());
+    assertTrue(skuImpl2.skuMedia.isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link
-   *       SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return {@link HashMap#HashMap()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
-  public void testGetSkuMediaXref_givenHashMapFooIsSkuMediaXrefImpl_thenReturnHashMap() {
-    // Arrange
-    HashMap<String, SkuMediaXref> skuMediaXref = new HashMap<>();
-    skuMediaXref.put("foo", new SkuMediaXrefImpl());
-    skuImpl.setSkuMediaXref(skuMediaXref);
-    skuImpl.setProduct(mock(ProductBundleImpl.class));
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertSame(skuMediaXref, skuImpl.getSkuMediaXref());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
+    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl2.getSkuMediaXref();
 
     // Assert
     verify(product).getDefaultSku();
@@ -9642,31 +7146,57 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
+  public void testGetSkuMediaXref_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
+    // Arrange
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(new SkuImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act
+    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl2.getSkuMediaXref();
+
+    // Assert
+    verify(product, atLeast(1)).getDefaultSku();
+    assertTrue(actualSkuMediaXref.isEmpty());
+  }
+
+  /**
+   * Test {@link SkuImpl#getSkuMediaXref()}.
+   * <ul>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMediaXref()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
+    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl2.getSkuMediaXref();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9676,137 +7206,67 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then calls {@link ProductBundleImpl#getDefaultSku()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
-  public void testGetSkuMediaXref_givenSkuImplIdIsOne_thenCallsGetDefaultSku() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualSkuMediaXref.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link ProductBundleImpl#getDefaultSku()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
-  public void testGetSkuMediaXref_givenSkuImplIdIsOne_thenCallsGetDefaultSku2() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertTrue(actualSkuMediaXref.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenSkuImplProductIsProductBundleImpl_thenReturnEmpty() {
     // Arrange
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertTrue(skuImpl.getSkuMediaXref().isEmpty());
+    assertTrue(skuImpl2.getSkuMediaXref().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_givenSkuImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(skuImpl.getSkuMediaXref().isEmpty());
+    assertTrue((new SkuImpl()).getSkuMediaXref().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#getSkuMediaXref()}.
+   *   <li>Then calls {@link Sku#getSkuMediaXref()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_thenCallsGetSkuMediaXref() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     when(sku.getSkuMediaXref()).thenReturn(new HashMap<>());
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setSkuMediaXref(new HashMap<>());
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl.getSkuMediaXref();
+    Map<String, SkuMediaXref> actualSkuMediaXref = skuImpl2.getSkuMediaXref();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -9817,208 +7277,97 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getSkuMediaXref()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXref()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMediaXref()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMediaXref()"})
   public void testGetSkuMediaXref_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setSkuMediaXref(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getSkuMediaXref());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getSkuMediaXref());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuMediaXrefIgnoreDefaultSku()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuMediaXrefIgnoreDefaultSku()"})
   public void testGetSkuMediaXrefIgnoreDefaultSku() {
     // Arrange, Act and Assert
-    assertTrue(skuImpl.getSkuMediaXrefIgnoreDefaultSku().isEmpty());
+    assertTrue((new SkuImpl()).getSkuMediaXrefIgnoreDefaultSku().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getPrimarySkuMedia()}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code primary} is {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrimarySkuMedia()}
+   * <p>
+   * Method under test: {@link SkuImpl#getPrimarySkuMedia()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Media SkuImpl.getPrimarySkuMedia()"})
-  public void testGetPrimarySkuMedia_givenHashMapPrimaryIsNull_thenReturnNull() {
-    // Arrange
-    HashMap<String, SkuMediaXref> skuMediaXref = new HashMap<>();
-    skuMediaXref.put("primary", null);
-    skuImpl.setSkuMediaXref(skuMediaXref);
-
-    // Act and Assert
-    assertNull(skuImpl.getPrimarySkuMedia());
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrimarySkuMedia()}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code primary} is {@link
-   *       SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrimarySkuMedia()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Media SkuImpl.getPrimarySkuMedia()"})
-  public void testGetPrimarySkuMedia_givenHashMapPrimaryIsSkuMediaXrefImpl_thenReturnNull() {
-    // Arrange
-    HashMap<String, SkuMediaXref> skuMediaXref = new HashMap<>();
-    skuMediaXref.put("primary", new SkuMediaXrefImpl());
-    skuImpl.setSkuMediaXref(skuMediaXref);
-
-    // Act and Assert
-    assertNull(skuImpl.getPrimarySkuMedia());
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrimarySkuMedia()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrimarySkuMedia()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Media SkuImpl.getPrimarySkuMedia()"})
-  public void testGetPrimarySkuMedia_givenSkuImpl_thenReturnNull() {
+  public void testGetPrimarySkuMedia() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getPrimarySkuMedia());
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrimarySkuMedia()}.
-   *
-   * <ul>
-   *   <li>Then return {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrimarySkuMedia()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Media SkuImpl.getPrimarySkuMedia()"})
-  public void testGetPrimarySkuMedia_thenReturnCategoryMediaXrefImpl() {
-    // Arrange
-    SkuMediaXref skuMediaXref = mock(SkuMediaXref.class);
-    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
-    when(skuMediaXref.getMedia()).thenReturn(categoryMediaXrefImpl);
-
-    HashMap<String, SkuMediaXref> skuMediaXref2 = new HashMap<>();
-    skuMediaXref2.put("primary", skuMediaXref);
-    skuImpl.setSkuMediaXref(skuMediaXref2);
-
-    // Act
-    Media actualPrimarySkuMedia = skuImpl.getPrimarySkuMedia();
-
-    // Assert
-    verify(skuMediaXref).getMedia();
-    assertSame(categoryMediaXrefImpl, actualPrimarySkuMedia);
-  }
-
-  /**
-   * Test {@link SkuImpl#getPrimarySkuMedia()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getPrimarySkuMedia()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Media SkuImpl.getPrimarySkuMedia()"})
-  public void testGetPrimarySkuMedia_thenThrowIllegalStateException() {
-    // Arrange
-    SkuMediaXref skuMediaXref = mock(SkuMediaXref.class);
-    when(skuMediaXref.getMedia()).thenThrow(new IllegalStateException());
-
-    HashMap<String, SkuMediaXref> skuMediaXref2 = new HashMap<>();
-    skuMediaXref2.put("primary", skuMediaXref);
-    skuImpl.setSkuMediaXref(skuMediaXref2);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getPrimarySkuMedia());
-    verify(skuMediaXref).getMedia();
+    assertNull((new SkuImpl()).getPrimarySkuMedia());
   }
 
   /**
    * Test {@link SkuImpl#isOrderedSkuMedia(Map)}.
-   *
-   * <p>Method under test: {@link SkuImpl#isOrderedSkuMedia(Map)}
+   * <p>
+   * Method under test: {@link SkuImpl#isOrderedSkuMedia(Map)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SkuImpl.isOrderedSkuMedia(Map)"})
   public void testIsOrderedSkuMedia() {
-    // Arrange, Act and Assert
-    assertFalse(skuImpl.isOrderedSkuMedia(new HashMap<>()));
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act and Assert
+    assertFalse(skuImpl2.isOrderedSkuMedia(new HashMap<>()));
   }
 
   /**
    * Test {@link SkuImpl#sortSkuMedia(Map)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@link
-   *       SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return size is one.
+   *   <li>Given {@code foo}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#sortSkuMedia(Map)}
+   * <p>
+   * Method under test: {@link SkuImpl#sortSkuMedia(Map)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.sortSkuMedia(Map)"})
   public void testSortSkuMedia_givenFoo_whenHashMapFooIsSkuMediaXrefImpl_thenReturnSizeIsOne() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
     HashMap<String, SkuMediaXref> skuMedia = new HashMap<>();
     SkuMediaXrefImpl skuMediaXrefImpl = new SkuMediaXrefImpl();
     skuMedia.put("foo", skuMediaXrefImpl);
 
     // Act
-    Map<String, SkuMediaXref> actualSortSkuMediaResult = skuImpl.sortSkuMedia(skuMedia);
+    Map<String, SkuMediaXref> actualSortSkuMediaResult = skuImpl2.sortSkuMedia(skuMedia);
 
     // Assert
     assertEquals(1, actualSortSkuMediaResult.size());
@@ -10027,28 +7376,28 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#sortSkuMedia(Map)}.
-   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return Empty.
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#sortSkuMedia(Map)}
+   * <p>
+   * Method under test: {@link SkuImpl#sortSkuMedia(Map)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.sortSkuMedia(Map)"})
   public void testSortSkuMedia_whenHashMap_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(skuImpl.sortSkuMedia(new HashMap<>()).isEmpty());
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act and Assert
+    assertTrue(skuImpl2.sortSkuMedia(new HashMap<>()).isEmpty());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SkuImpl#setActiveEndDate(Date)}
    *   <li>{@link SkuImpl#setActiveStartDate(Date)}
@@ -10088,55 +7437,29 @@ public class SkuImplDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Product SkuImpl.getDefaultProduct()",
-    "String SkuImpl.getDisplayTemplate()",
-    "List SkuImpl.getExcludedFulfillmentOptions()",
-    "String SkuImpl.getExternalId()",
-    "List SkuImpl.getFees()",
-    "FieldEntity SkuImpl.getFieldEntityType()",
-    "Map SkuImpl.getFulfillmentFlatRates()",
-    "Long SkuImpl.getId()",
-    "Set SkuImpl.getProductOptionValueXrefs()",
-    "Integer SkuImpl.getQuantityAvailable()",
-    "String SkuImpl.getUpc()",
-    "String SkuImpl.getUrlKey()",
-    "void SkuImpl.setActiveEndDate(Date)",
-    "void SkuImpl.setActiveStartDate(Date)",
-    "void SkuImpl.setCurrency(BroadleafCurrency)",
-    "void SkuImpl.setDefaultProduct(Product)",
-    "void SkuImpl.setDescription(String)",
-    "void SkuImpl.setDimension(Dimension)",
-    "void SkuImpl.setDisplayTemplate(String)",
-    "void SkuImpl.setExcludedFulfillmentOptions(List)",
-    "void SkuImpl.setExternalId(String)",
-    "void SkuImpl.setFees(List)",
-    "void SkuImpl.setFulfillmentFlatRates(Map)",
-    "void SkuImpl.setId(Long)",
-    "void SkuImpl.setIsMachineSortable(Boolean)",
-    "void SkuImpl.setLongDescription(String)",
-    "void SkuImpl.setMachineSortable(Boolean)",
-    "void SkuImpl.setName(String)",
-    "void SkuImpl.setProduct(Product)",
-    "void SkuImpl.setProductOptionValueXrefs(Set)",
-    "void SkuImpl.setQuantityAvailable(Integer)",
-    "void SkuImpl.setSkuMediaXref(Map)",
-    "void SkuImpl.setTaxCode(String)",
-    "void SkuImpl.setUpc(String)",
-    "void SkuImpl.setUrlKey(String)",
-    "void SkuImpl.setWeight(Weight)"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product SkuImpl.getDefaultProduct()", "String SkuImpl.getDisplayTemplate()",
+      "List SkuImpl.getExcludedFulfillmentOptions()", "String SkuImpl.getExternalId()", "List SkuImpl.getFees()",
+      "FieldEntity SkuImpl.getFieldEntityType()", "Map SkuImpl.getFulfillmentFlatRates()", "Long SkuImpl.getId()",
+      "Set SkuImpl.getProductOptionValueXrefs()", "Integer SkuImpl.getQuantityAvailable()", "String SkuImpl.getUpc()",
+      "String SkuImpl.getUrlKey()", "void SkuImpl.setActiveEndDate(Date)", "void SkuImpl.setActiveStartDate(Date)",
+      "void SkuImpl.setCurrency(BroadleafCurrency)", "void SkuImpl.setDefaultProduct(Product)",
+      "void SkuImpl.setDescription(String)", "void SkuImpl.setDimension(Dimension)",
+      "void SkuImpl.setDisplayTemplate(String)", "void SkuImpl.setExcludedFulfillmentOptions(List)",
+      "void SkuImpl.setExternalId(String)", "void SkuImpl.setFees(List)", "void SkuImpl.setFulfillmentFlatRates(Map)",
+      "void SkuImpl.setId(Long)", "void SkuImpl.setIsMachineSortable(Boolean)",
+      "void SkuImpl.setLongDescription(String)", "void SkuImpl.setMachineSortable(Boolean)",
+      "void SkuImpl.setName(String)", "void SkuImpl.setProduct(Product)",
+      "void SkuImpl.setProductOptionValueXrefs(Set)", "void SkuImpl.setQuantityAvailable(Integer)",
+      "void SkuImpl.setSkuMediaXref(Map)", "void SkuImpl.setTaxCode(String)", "void SkuImpl.setUpc(String)",
+      "void SkuImpl.setUrlKey(String)", "void SkuImpl.setWeight(Weight)"})
   public void testGettersAndSetters() {
     // Arrange
     SkuImpl skuImpl = new SkuImpl();
 
     // Act
-    skuImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    skuImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    skuImpl.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    skuImpl.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     skuImpl.setCurrency(new BroadleafCurrencyImpl());
     ProductBundleImpl defaultProduct = new ProductBundleImpl();
     skuImpl.setDefaultProduct(defaultProduct);
@@ -10168,16 +7491,13 @@ public class SkuImplDiffblueTest {
     skuImpl.setWeight(weight);
     Product actualDefaultProduct = skuImpl.getDefaultProduct();
     String actualDisplayTemplate = skuImpl.getDisplayTemplate();
-    List<FulfillmentOption> actualExcludedFulfillmentOptions =
-        skuImpl.getExcludedFulfillmentOptions();
+    List<FulfillmentOption> actualExcludedFulfillmentOptions = skuImpl.getExcludedFulfillmentOptions();
     String actualExternalId = skuImpl.getExternalId();
     List<SkuFee> actualFees = skuImpl.getFees();
     FieldEntity actualFieldEntityType = skuImpl.getFieldEntityType();
-    Map<FulfillmentOption, BigDecimal> actualFulfillmentFlatRates =
-        skuImpl.getFulfillmentFlatRates();
+    Map<FulfillmentOption, BigDecimal> actualFulfillmentFlatRates = skuImpl.getFulfillmentFlatRates();
     Long actualId = skuImpl.getId();
-    Set<SkuProductOptionValueXref> actualProductOptionValueXrefs =
-        skuImpl.getProductOptionValueXrefs();
+    Set<SkuProductOptionValueXref> actualProductOptionValueXrefs = skuImpl.getProductOptionValueXrefs();
     Integer actualQuantityAvailable = skuImpl.getQuantityAvailable();
     String actualUpc = skuImpl.getUpc();
 
@@ -10193,274 +7513,338 @@ public class SkuImplDiffblueTest {
     assertSame(fulfillmentFlatRates, actualFulfillmentFlatRates);
     assertSame(productOptionValueXrefs, actualProductOptionValueXrefs);
     assertSame(defaultProduct, actualDefaultProduct);
-    assertSame(FieldEntity.SKU, actualFieldEntityType);
+    assertSame(actualFieldEntityType.SKU, actualFieldEntityType);
   }
 
   /**
    * Test {@link SkuImpl#getProduct()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getProduct()}
+   * <p>
+   * Method under test: {@link SkuImpl#getProduct()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product SkuImpl.getProduct()"})
   public void testGetProduct_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getProduct());
+    assertNull((new SkuImpl()).getProduct());
   }
 
   /**
    * Test {@link SkuImpl#getProduct()}.
-   *
    * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getProduct()}
+   * <p>
+   * Method under test: {@link SkuImpl#getProduct()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product SkuImpl.getProduct()"})
   public void testGetProduct_thenReturnProductBundleImpl() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
     ProductBundleImpl defaultProduct = new ProductBundleImpl();
-    skuImpl.setDefaultProduct(defaultProduct);
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertSame(defaultProduct, skuImpl.getProduct());
+    assertSame(defaultProduct, skuImpl2.getProduct());
   }
 
   /**
    * Test {@link SkuImpl#getProductOptionValuesCollection()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getProductOptionValuesCollection()}
+   * <p>
+   * Method under test: {@link SkuImpl#getProductOptionValuesCollection()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set SkuImpl.getProductOptionValuesCollection()"})
-  public void testGetProductOptionValuesCollection_givenSkuImpl_thenReturnEmpty() {
+  public void testGetProductOptionValuesCollection() {
     // Arrange, Act and Assert
-    assertTrue(skuImpl.getProductOptionValuesCollection().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValuesCollection()}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getProductOptionValuesCollection()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Set SkuImpl.getProductOptionValuesCollection()"})
-  public void testGetProductOptionValuesCollection_thenReturnSizeIsOne() {
-    // Arrange
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(new SkuProductOptionValueXrefImpl());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
-
-    // Act and Assert
-    assertEquals(1, skuImpl.getProductOptionValuesCollection().size());
+    assertTrue((new SkuImpl()).getProductOptionValuesCollection().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
-   *
    * <ul>
-   *   <li>Then {@link LinkedHashSet#LinkedHashSet()} size is one.
+   *   <li>Given {@link SkuImpl} (default constructor) Name is {@code Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setProductOptionValuesCollection(Set)"})
-  public void testSetProductOptionValuesCollection_thenLinkedHashSetSizeIsOne() {
+  public void testSetProductOptionValuesCollection_givenSkuImplNameIsName() {
     // Arrange
-    LinkedHashSet<ProductOptionValue> productOptionValues = new LinkedHashSet<>();
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setName("Name");
+
+    HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
     ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
     productOptionValues.add(productOptionValueImpl);
 
     // Act
-    skuImpl.setProductOptionValuesCollection(productOptionValues);
+    skuImpl2.setProductOptionValuesCollection(productOptionValues);
 
     // Assert
-    assertEquals(1, productOptionValues.size());
-    List<ProductOptionValue> productOptionValues2 = skuImpl.getProductOptionValues();
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
     assertEquals(1, productOptionValues2.size());
-    assertEquals(1, skuImpl.getProductOptionValueXrefs().size());
-    assertEquals(1, skuImpl.getProductOptionValuesCollection().size());
-    assertEquals(1, skuImpl.legacyProductOptionValues.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
     assertSame(productOptionValueImpl, productOptionValues2.get(0));
   }
 
   /**
    * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
-   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
-   *   <li>Then {@link HashSet#HashSet()} Empty.
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setProductOptionValuesCollection(Set)"})
-  public void testSetProductOptionValuesCollection_whenHashSet_thenHashSetEmpty() {
+  public void testSetProductOptionValuesCollection_thenSkuImplProductOptionValuesEmpty() {
     // Arrange
-    HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
+    SkuImpl skuImpl2 = new SkuImpl();
 
     // Act
-    skuImpl.setProductOptionValuesCollection(productOptionValues);
+    skuImpl2.setProductOptionValuesCollection(new HashSet<>());
 
     // Assert that nothing has changed
-    assertTrue(productOptionValues.isEmpty());
-    assertTrue(skuImpl.getProductOptionValues().isEmpty());
-    assertTrue(skuImpl.getProductOptionValueXrefs().isEmpty());
-    assertTrue(skuImpl.getProductOptionValuesCollection().isEmpty());
-    assertTrue(skuImpl.legacyProductOptionValues.isEmpty());
+    assertTrue(skuImpl2.getProductOptionValues().isEmpty());
+    assertTrue(skuImpl2.getProductOptionValueXrefs().isEmpty());
+    assertTrue(skuImpl2.getProductOptionValuesCollection().isEmpty());
+    assertTrue(skuImpl2.legacyProductOptionValues.isEmpty());
   }
 
   /**
-   * Test {@link SkuImpl#getProductOptionValues()}.
-   *
+   * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return Empty.
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getProductOptionValues()}
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SkuImpl.getProductOptionValues()"})
-  public void testGetProductOptionValues_givenSkuImpl_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(skuImpl.getProductOptionValues().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getProductOptionValues()}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getProductOptionValues()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SkuImpl.getProductOptionValues()"})
-  public void testGetProductOptionValues_thenReturnSizeIsOne() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValuesCollection(Set)"})
+  public void testSetProductOptionValuesCollection_thenSkuImplProductOptionValuesSizeIsOne() {
     // Arrange
-    HashSet<SkuProductOptionValueXref> productOptionValueXrefs = new HashSet<>();
-    productOptionValueXrefs.add(new SkuProductOptionValueXrefImpl());
+    SkuImpl skuImpl2 = new SkuImpl();
 
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setProductOptionValueXrefs(productOptionValueXrefs);
+    HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
 
     // Act
-    List<ProductOptionValue> actualProductOptionValues = skuImpl.getProductOptionValues();
+    skuImpl2.setProductOptionValuesCollection(productOptionValues);
 
     // Assert
-    assertEquals(1, actualProductOptionValues.size());
-    assertNull(actualProductOptionValues.get(0));
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(0));
+  }
+
+  /**
+   * Test {@link SkuImpl#setProductOptionValuesCollection(Set)}.
+   * <ul>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValuesCollection(Set)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValuesCollection(Set)"})
+  public void testSetProductOptionValuesCollection_thenSkuImplProductOptionValuesSizeIsTwo() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    HashSet<ProductOptionValue> productOptionValues = new HashSet<>();
+    productOptionValues.add(null);
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
+
+    // Act
+    skuImpl2.setProductOptionValuesCollection(productOptionValues);
+
+    // Assert
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(2, productOptionValues2.size());
+    assertNull(productOptionValues2.get(0));
+    assertEquals(2, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(2, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(2, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(1));
+  }
+
+  /**
+   * Test {@link SkuImpl#getProductOptionValues()}.
+   * <p>
+   * Method under test: {@link SkuImpl#getProductOptionValues()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SkuImpl.getProductOptionValues()"})
+  public void testGetProductOptionValues() {
+    // Arrange, Act and Assert
+    assertTrue((new SkuImpl()).getProductOptionValues().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#setProductOptionValues(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then {@link SkuImpl} ProductOptionValues Empty.
+   *   <li>Given {@link SkuImpl} (default constructor) Name is {@code Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setProductOptionValues(List)}
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValues(List)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValues(List)"})
+  public void testSetProductOptionValues_givenSkuImplNameIsName() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setName("Name");
+
+    ArrayList<ProductOptionValue> productOptionValues = new ArrayList<>();
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
+
+    // Act
+    skuImpl2.setProductOptionValues(productOptionValues);
+
+    // Assert
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(0));
+  }
+
+  /**
+   * Test {@link SkuImpl#setProductOptionValues(List)}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValues(List)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValues(List)"})
+  public void testSetProductOptionValues_givenSkuImpl_thenSkuImplProductOptionValuesSizeIsOne() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    ArrayList<ProductOptionValue> productOptionValues = new ArrayList<>();
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
+
+    // Act
+    skuImpl2.setProductOptionValues(productOptionValues);
+
+    // Assert
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(0));
+  }
+
+  /**
+   * Test {@link SkuImpl#setProductOptionValues(List)}.
+   * <ul>
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValues(List)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SkuImpl.setProductOptionValues(List)"})
+  public void testSetProductOptionValues_givenSkuImpl_thenSkuImplProductOptionValuesSizeIsOne2() {
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    ArrayList<ProductOptionValue> productOptionValues = new ArrayList<>();
+    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValues.add(productOptionValueImpl);
+    productOptionValues.add(new ProductOptionValueImpl());
+
+    // Act
+    skuImpl2.setProductOptionValues(productOptionValues);
+
+    // Assert
+    List<ProductOptionValue> productOptionValues2 = skuImpl2.getProductOptionValues();
+    assertEquals(1, productOptionValues2.size());
+    assertEquals(1, skuImpl2.getProductOptionValueXrefs().size());
+    assertEquals(1, skuImpl2.getProductOptionValuesCollection().size());
+    assertEquals(1, skuImpl2.legacyProductOptionValues.size());
+    assertSame(productOptionValueImpl, productOptionValues2.get(0));
+  }
+
+  /**
+   * Test {@link SkuImpl#setProductOptionValues(List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) ProductOptionValues Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#setProductOptionValues(List)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setProductOptionValues(List)"})
   public void testSetProductOptionValues_whenArrayList_thenSkuImplProductOptionValuesEmpty() {
-    // Arrange and Act
-    skuImpl.setProductOptionValues(new ArrayList<>());
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setProductOptionValues(new ArrayList<>());
 
     // Assert that nothing has changed
-    assertTrue(skuImpl.getProductOptionValues().isEmpty());
-    assertTrue(skuImpl.getProductOptionValueXrefs().isEmpty());
-    assertTrue(skuImpl.getProductOptionValuesCollection().isEmpty());
-    assertTrue(skuImpl.legacyProductOptionValues.isEmpty());
+    assertTrue(skuImpl2.getProductOptionValues().isEmpty());
+    assertTrue(skuImpl2.getProductOptionValueXrefs().isEmpty());
+    assertTrue(skuImpl2.getProductOptionValuesCollection().isEmpty());
+    assertTrue(skuImpl2.legacyProductOptionValues.isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
-  public void testIsMachineSortable() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isMachineSortable());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#isMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
+    Boolean actualIsMachineSortableResult = skuImpl2.isMachineSortable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -10469,28 +7853,26 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
+    Boolean actualIsMachineSortableResult = skuImpl2.isMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10499,31 +7881,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
+    Boolean actualIsMachineSortableResult = skuImpl2.isMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10533,162 +7913,88 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) MachineSortable is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
-  public void testIsMachineSortable_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.isMachineSortable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#isMachineSortable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
-  public void testIsMachineSortable_givenSkuImplIdIsOne_thenReturnFalse() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertFalse(actualIsMachineSortableResult);
-  }
-
-  /**
-   * Test {@link SkuImpl#isMachineSortable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} MachineSortable is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenSkuImplMachineSortableIsTrue_thenReturnTrue() {
     // Arrange
-    skuImpl.setMachineSortable(true);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setMachineSortable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.isMachineSortable());
+    assertTrue(skuImpl2.isMachineSortable());
   }
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
     // Arrange
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.isMachineSortable());
+    assertFalse(skuImpl2.isMachineSortable());
   }
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_givenSkuImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(skuImpl.isMachineSortable());
+    assertFalse((new SkuImpl()).isMachineSortable());
   }
 
   /**
    * Test {@link SkuImpl#isMachineSortable()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#isMachineSortable()}.
+   *   <li>Then calls {@link Sku#isMachineSortable()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#isMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
   public void testIsMachineSortable_thenCallsIsMachineSortable() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.isMachineSortable()).thenReturn(true);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortableResult = skuImpl.isMachineSortable();
+    Boolean actualIsMachineSortableResult = skuImpl2.isMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10698,51 +8004,54 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * Test {@link SkuImpl#isMachineSortable()}.
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#isMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
-  public void testGetIsMachineSortable() {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.isMachineSortable()"})
+  public void testIsMachineSortable_thenThrowIllegalStateException() {
     // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
     ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getIsMachineSortable());
-    verify(product).getDefaultSku();
+    assertThrows(IllegalStateException.class, () -> skuImpl2.isMachineSortable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
   }
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenProductBundleImplGetDefaultSkuReturnSkuImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
+    Boolean actualIsMachineSortable = skuImpl2.getIsMachineSortable();
 
     // Assert
     verify(product).getDefaultSku();
@@ -10751,28 +8060,26 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenProductBundleImplGetDefaultSkuReturnSkuImpl2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
+    Boolean actualIsMachineSortable = skuImpl2.getIsMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10781,31 +8088,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
+    Boolean actualIsMachineSortable = skuImpl2.getIsMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10815,162 +8120,88 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) MachineSortable is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
-  public void testGetIsMachineSortable_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getIsMachineSortable());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
-  public void testGetIsMachineSortable_givenSkuImplIdIsOne_thenReturnFalse() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertFalse(actualIsMachineSortable);
-  }
-
-  /**
-   * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} MachineSortable is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenSkuImplMachineSortableIsTrue_thenReturnTrue() {
     // Arrange
-    skuImpl.setMachineSortable(true);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setMachineSortable(true);
 
     // Act and Assert
-    assertTrue(skuImpl.getIsMachineSortable());
+    assertTrue(skuImpl2.getIsMachineSortable());
   }
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenSkuImplProductIsProductBundleImpl_thenReturnFalse() {
     // Arrange
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertFalse(skuImpl.getIsMachineSortable());
+    assertFalse(skuImpl2.getIsMachineSortable());
   }
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_givenSkuImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(skuImpl.getIsMachineSortable());
+    assertFalse((new SkuImpl()).getIsMachineSortable());
   }
 
   /**
    * Test {@link SkuImpl#getIsMachineSortable()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#getIsMachineSortable()}.
+   *   <li>Then calls {@link Sku#getIsMachineSortable()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getIsMachineSortable()}
+   * <p>
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
   public void testGetIsMachineSortable_thenCallsGetIsMachineSortable() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getIsMachineSortable()).thenReturn(true);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setMachineSortable(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    Boolean actualIsMachineSortable = skuImpl.getIsMachineSortable();
+    Boolean actualIsMachineSortable = skuImpl2.getIsMachineSortable();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -10980,1263 +8211,539 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getInventoryType());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType2() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenThrow(new IllegalStateException());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getInventoryType());
-    verify(product).getDefaultCategory();
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
+   * Test {@link SkuImpl#getIsMachineSortable()}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link
-   *       InventoryType#ALWAYS_AVAILABLE}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getIsMachineSortable()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean SkuImpl.getIsMachineSortable()"})
+  public void testGetIsMachineSortable_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getIsMachineSortable());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getInventoryType()}.
+   * <ul>
+   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link InventoryType#ALWAYS_AVAILABLE}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getInventoryType()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenCategoryImplGetInventoryTypeReturnAlways_available() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
+    InventoryType actualInventoryType = skuImpl2.getInventoryType();
 
     // Assert
     verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
-    assertSame(InventoryType.ALWAYS_AVAILABLE, actualInventoryType);
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
+    assertSame(actualInventoryType.ALWAYS_AVAILABLE, actualInventoryType);
   }
 
   /**
    * Test {@link SkuImpl#getInventoryType()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} return {@link
-   *       InventoryType#ALWAYS_AVAILABLE}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType_givenCategoryImplGetInventoryTypeReturnAlways_available2() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
-
-    // Assert
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    assertSame(InventoryType.ALWAYS_AVAILABLE, actualInventoryType);
-  }
-
-  /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getInventoryType()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType_givenCategoryImplGetInventoryTypeThrowIllegalStateException() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getInventoryType());
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultCategory()} return
-   *       {@link CategoryImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenProductBundleImplGetDefaultCategoryReturnCategoryImpl() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(new CategoryImpl());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
+    InventoryType actualInventoryType = skuImpl2.getInventoryType();
 
     // Assert
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
     assertNull(actualInventoryType);
   }
 
   /**
    * Test {@link SkuImpl#getInventoryType()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType_givenSkuGetIdReturnOne_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
-
-    // Assert
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    assertSame(InventoryType.ALWAYS_AVAILABLE, actualInventoryType);
-  }
-
-  /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType_givenSkuGetIdThrowIllegalStateException_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getInventoryType());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} DefaultProduct is {@link ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenSkuImplDefaultProductIsProductBundleImpl() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
-    // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
-
-    // Assert
-    verify(product).getDefaultSku();
-    assertNull(actualInventoryType);
+    // Act and Assert
+    assertNull(skuImpl2.getInventoryType());
   }
 
   /**
    * Test {@link SkuImpl#getInventoryType()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link CategoryImpl#getInventoryType()}.
+   *   <li>Given {@link SkuImpl} (default constructor) InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType_givenSkuImplIdIsOne_thenCallsGetInventoryType() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
-
-    // Assert
-    verify(categoryImpl).getInventoryType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    assertSame(InventoryType.ALWAYS_AVAILABLE, actualInventoryType);
-  }
-
-  /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} InventoryType is {@link InventoryType#ALWAYS_AVAILABLE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenSkuImplInventoryTypeIsAlways_available() {
     // Arrange
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
 
-    // Act and Assert
-    assertSame(InventoryType.ALWAYS_AVAILABLE, skuImpl.getInventoryType());
+    // Act
+    InventoryType actualInventoryType = skuImpl2.getInventoryType();
+
+    // Assert
+    assertSame(actualInventoryType.ALWAYS_AVAILABLE, actualInventoryType);
   }
 
   /**
    * Test {@link SkuImpl#getInventoryType()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType_givenSkuImplProductIsNull_thenReturnNull() {
-    // Arrange
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertNull(skuImpl.getInventoryType());
-  }
-
-  /**
-   * Test {@link SkuImpl#getInventoryType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getInventoryType());
+    assertNull(skuImpl2.getInventoryType());
   }
 
   /**
    * Test {@link SkuImpl#getInventoryType()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
   public void testGetInventoryType_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getInventoryType());
+    assertNull((new SkuImpl()).getInventoryType());
   }
 
   /**
    * Test {@link SkuImpl#getInventoryType()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#getInventoryType()}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getInventoryType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getInventoryType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"InventoryType SkuImpl.getInventoryType()"})
-  public void testGetInventoryType_thenCallsGetInventoryType() {
+  public void testGetInventoryType_thenThrowIllegalStateException() {
     // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getInventoryType()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setInventoryType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(2L);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
-    // Act
-    InventoryType actualInventoryType = skuImpl.getInventoryType();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-    verify(sku, atLeast(1)).getInventoryType();
-    assertSame(InventoryType.ALWAYS_AVAILABLE, actualInventoryType);
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getInventoryType());
+    verify(categoryImpl).getInventoryType();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
 
   /**
    * Test {@link SkuImpl#setInventoryType(InventoryType)}.
-   *
    * <ul>
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#inventoryType} is {@code ALWAYS_AVAILABLE}.
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#inventoryType} is {@code ALWAYS_AVAILABLE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
+   * <p>
+   * Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setInventoryType(InventoryType)"})
   public void testSetInventoryType_thenSkuImplInventoryTypeIsAlwaysAvailable() {
-    // Arrange and Act
-    skuImpl.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    InventoryType inventoryType = InventoryType.ALWAYS_AVAILABLE;
+
+    // Act
+    skuImpl2.setInventoryType(inventoryType);
 
     // Assert
-    assertEquals("ALWAYS_AVAILABLE", skuImpl.inventoryType);
-    assertSame(InventoryType.ALWAYS_AVAILABLE, skuImpl.getInventoryType());
+    assertEquals("ALWAYS_AVAILABLE", skuImpl2.inventoryType);
+    InventoryType expectedInventoryType = inventoryType.ALWAYS_AVAILABLE;
+    assertSame(expectedInventoryType, skuImpl2.getInventoryType());
   }
 
   /**
    * Test {@link SkuImpl#setInventoryType(InventoryType)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#inventoryType} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#inventoryType} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
+   * <p>
+   * Method under test: {@link SkuImpl#setInventoryType(InventoryType)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setInventoryType(InventoryType)"})
   public void testSetInventoryType_whenNull_thenSkuImplInventoryTypeIsNull() {
-    // Arrange and Act
-    skuImpl.setInventoryType(null);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setInventoryType(null);
 
     // Assert that nothing has changed
-    assertNull(skuImpl.inventoryType);
-    assertNull(skuImpl.getInventoryType());
+    assertNull(skuImpl2.inventoryType);
+    assertNull(skuImpl2.getInventoryType());
   }
 
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
 
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getFulfillmentType());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType2() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(new CategoryImpl());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    FulfillmentType actualFulfillmentType = skuImpl.getFulfillmentType();
+    FulfillmentType actualFulfillmentType = skuImpl2.getFulfillmentType();
 
     // Assert
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
     assertNull(actualFulfillmentType);
   }
 
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType3() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenThrow(new IllegalStateException());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getFulfillmentType());
-    verify(product).getDefaultCategory();
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType_givenSkuGetIdReturnOne_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getFulfillmentType()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getFulfillmentType());
-    verify(categoryImpl).getFulfillmentType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType_givenSkuGetIdThrowIllegalStateException_thenCallsGetId() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getFulfillmentType());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} DefaultProduct is {@link ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenSkuImplDefaultProductIsProductBundleImpl() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
-    // Act
-    FulfillmentType actualFulfillmentType = skuImpl.getFulfillmentType();
-
-    // Assert
-    verify(product).getDefaultSku();
-    assertNull(actualFulfillmentType);
+    // Act and Assert
+    assertNull(skuImpl2.getFulfillmentType());
   }
 
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} FulfillmentType is {@link FulfillmentType#DIGITAL}.
-   *   <li>Then return {@link FulfillmentType#DIGITAL}.
+   *   <li>Given {@link SkuImpl} (default constructor) FulfillmentType is {@link FulfillmentType#DIGITAL}.</li>
+   *   <li>Then return {@link FulfillmentType#DIGITAL}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenSkuImplFulfillmentTypeIsDigital_thenReturnDigital() {
     // Arrange
-    skuImpl.setFulfillmentType(FulfillmentType.DIGITAL);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
 
-    // Act and Assert
-    assertSame(FulfillmentType.DIGITAL, skuImpl.getFulfillmentType());
+    // Act
+    FulfillmentType actualFulfillmentType = skuImpl2.getFulfillmentType();
+
+    // Assert
+    assertSame(actualFulfillmentType.DIGITAL, actualFulfillmentType);
   }
 
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link CategoryImpl#getFulfillmentType()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType_givenSkuImplIdIsOne_thenCallsGetFulfillmentType() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getFulfillmentType()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getFulfillmentType());
-    verify(categoryImpl).getFulfillmentType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType_givenSkuImplProductIsNull_thenReturnNull() {
-    // Arrange
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertNull(skuImpl.getFulfillmentType());
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getFulfillmentType());
+    assertNull(skuImpl2.getFulfillmentType());
   }
 
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
   public void testGetFulfillmentType_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getFulfillmentType());
+    assertNull((new SkuImpl()).getFulfillmentType());
   }
 
   /**
    * Test {@link SkuImpl#getFulfillmentType()}.
-   *
    * <ul>
-   *   <li>Then calls {@link CategoryImpl#getFulfillmentType()}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
+   * <p>
+   * Method under test: {@link SkuImpl#getFulfillmentType()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType_thenCallsGetFulfillmentType() {
+  public void testGetFulfillmentType_thenThrowIllegalStateException() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getFulfillmentType()).thenThrow(new IllegalStateException());
+    when(categoryImpl.getFulfillmentType()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getFulfillmentType());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getFulfillmentType());
     verify(categoryImpl).getFulfillmentType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CategoryImpl#getFulfillmentType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType_thenCallsGetFulfillmentType2() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getFulfillmentType()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getFulfillmentType());
-    verify(categoryImpl).getFulfillmentType();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getFulfillmentType()}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Sku#getFulfillmentType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getFulfillmentType()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentType SkuImpl.getFulfillmentType()"})
-  public void testGetFulfillmentType_thenCallsGetFulfillmentType3() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.getFulfillmentType()).thenReturn(FulfillmentType.DIGITAL);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setFulfillmentType(null);
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(2L);
-
-    // Act
-    FulfillmentType actualFulfillmentType = skuImpl.getFulfillmentType();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku, atLeast(1)).getFulfillmentType();
-    verify(sku).getId();
-    assertSame(FulfillmentType.DIGITAL, actualFulfillmentType);
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
 
   /**
    * Test {@link SkuImpl#setFulfillmentType(FulfillmentType)}.
-   *
    * <ul>
-   *   <li>When {@link FulfillmentType#DIGITAL}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#fulfillmentType} is {@code DIGITAL}.
+   *   <li>When {@link FulfillmentType#DIGITAL}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#fulfillmentType} is {@code DIGITAL}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
+   * <p>
+   * Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setFulfillmentType(FulfillmentType)"})
   public void testSetFulfillmentType_whenDigital_thenSkuImplFulfillmentTypeIsDigital() {
-    // Arrange and Act
-    skuImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+    FulfillmentType fulfillmentType = FulfillmentType.DIGITAL;
+
+    // Act
+    skuImpl2.setFulfillmentType(fulfillmentType);
 
     // Assert
-    assertEquals("DIGITAL", skuImpl.fulfillmentType);
-    assertSame(FulfillmentType.DIGITAL, skuImpl.getFulfillmentType());
+    assertEquals("DIGITAL", skuImpl2.fulfillmentType);
+    FulfillmentType expectedFulfillmentType = fulfillmentType.DIGITAL;
+    assertSame(expectedFulfillmentType, skuImpl2.getFulfillmentType());
   }
 
   /**
    * Test {@link SkuImpl#setFulfillmentType(FulfillmentType)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#fulfillmentType} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#fulfillmentType} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
+   * <p>
+   * Method under test: {@link SkuImpl#setFulfillmentType(FulfillmentType)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setFulfillmentType(FulfillmentType)"})
   public void testSetFulfillmentType_whenNull_thenSkuImplFulfillmentTypeIsNull() {
-    // Arrange and Act
-    skuImpl.setFulfillmentType(null);
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setFulfillmentType(null);
 
     // Assert that nothing has changed
-    assertNull(skuImpl.fulfillmentType);
-    assertNull(skuImpl.getFulfillmentType());
+    assertNull(skuImpl2.fulfillmentType);
+    assertNull(skuImpl2.getFulfillmentType());
   }
 
   /**
    * Test {@link SkuImpl#getSkuAttributes()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuAttributes()}
+   * <p>
+   * Method under test: {@link SkuImpl#getSkuAttributes()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getSkuAttributes()"})
-  public void testGetSkuAttributes_givenSkuImpl_thenReturnEmpty() {
+  public void testGetSkuAttributes() {
     // Arrange, Act and Assert
-    assertTrue(skuImpl.getSkuAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuAttributes()}.
-   *
-   * <ul>
-   *   <li>Then return containsKey {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuAttributes()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuAttributes()"})
-  public void testGetSkuAttributes_thenReturnContainsKeyName() {
-    // Arrange
-    SkuAttributeImpl skuAttributeImpl = mock(SkuAttributeImpl.class);
-    when(skuAttributeImpl.getName()).thenReturn("Name");
-
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    skuAttributes.put("foo", skuAttributeImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, SkuAttribute> actualSkuAttributes = skuImpl.getSkuAttributes();
-
-    // Assert
-    verify(skuAttributeImpl).getName();
-    assertEquals(1, actualSkuAttributes.size());
-    assertTrue(actualSkuAttributes.containsKey("Name"));
-  }
-
-  /**
-   * Test {@link SkuImpl#getSkuAttributes()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null} is {@link SkuAttributeImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getSkuAttributes()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getSkuAttributes()"})
-  public void testGetSkuAttributes_thenReturnNullIsSkuAttributeImpl() {
-    // Arrange
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    SkuAttributeImpl skuAttributeImpl = new SkuAttributeImpl();
-    skuAttributes.put("foo", skuAttributeImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, SkuAttribute> actualSkuAttributes = skuImpl.getSkuAttributes();
-
-    // Assert
-    assertEquals(1, actualSkuAttributes.size());
-    assertSame(skuAttributeImpl, actualSkuAttributes.get(null));
+    assertTrue((new SkuImpl()).getSkuAttributes().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
+   * <p>
+   * Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map SkuImpl.getMultiValueSkuAttributes()"})
-  public void testGetMultiValueSkuAttributes_givenSkuImpl_thenReturnEmpty() {
+  public void testGetMultiValueSkuAttributes() {
     // Arrange, Act and Assert
-    assertTrue(skuImpl.getMultiValueSkuAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   *
-   * <ul>
-   *   <li>Then return {@code Name} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getMultiValueSkuAttributes()"})
-  public void testGetMultiValueSkuAttributes_thenReturnNameSizeIsOne() {
-    // Arrange
-    SkuAttributeImpl skuAttributeImpl = mock(SkuAttributeImpl.class);
-    when(skuAttributeImpl.getName()).thenReturn("Name");
-
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    skuAttributes.put("foo", skuAttributeImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, Collection<SkuAttribute>> actualMultiValueSkuAttributes =
-        skuImpl.getMultiValueSkuAttributes();
-
-    // Assert
-    verify(skuAttributeImpl).getName();
-    assertEquals(1, actualMultiValueSkuAttributes.size());
-    Collection<SkuAttribute> getResult = actualMultiValueSkuAttributes.get("Name");
-    assertEquals(1, getResult.size());
-    assertTrue(getResult instanceof List);
-  }
-
-  /**
-   * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null} is {@link SkuImpl} (default constructor) {@link
-   *       SkuImpl#skuAttributes}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getMultiValueSkuAttributes()"})
-  public void testGetMultiValueSkuAttributes_thenReturnNullIsSkuImplSkuAttributes() {
-    // Arrange
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    skuAttributes.put("foo", new SkuAttributeImpl());
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, Collection<SkuAttribute>> actualMultiValueSkuAttributes =
-        skuImpl.getMultiValueSkuAttributes();
-
-    // Assert
-    assertEquals(1, actualMultiValueSkuAttributes.size());
-    assertEquals(skuImpl.skuAttributes, actualMultiValueSkuAttributes.get(null));
-  }
-
-  /**
-   * Test {@link SkuImpl#getMultiValueSkuAttributes()}.
-   *
-   * <ul>
-   *   <li>Then return size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getMultiValueSkuAttributes()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SkuImpl.getMultiValueSkuAttributes()"})
-  public void testGetMultiValueSkuAttributes_thenReturnSizeIsTwo() {
-    // Arrange
-    SkuAttributeImpl skuAttributeImpl = mock(SkuAttributeImpl.class);
-    when(skuAttributeImpl.getName()).thenReturn("Name");
-
-    HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
-    SkuAttributeImpl skuAttributeImpl2 = new SkuAttributeImpl();
-    skuAttributes.put("42", skuAttributeImpl2);
-    skuAttributes.put("", new SkuAttributeImpl());
-    skuAttributes.put("foo", skuAttributeImpl);
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setSkuAttributes(skuAttributes);
-
-    // Act
-    Map<String, Collection<SkuAttribute>> actualMultiValueSkuAttributes =
-        skuImpl.getMultiValueSkuAttributes();
-
-    // Assert
-    verify(skuAttributeImpl).getName();
-    assertEquals(2, actualMultiValueSkuAttributes.size());
-    Collection<SkuAttribute> getResult = actualMultiValueSkuAttributes.get(null);
-    assertEquals(2, getResult.size());
-    assertTrue(getResult instanceof List);
-    assertTrue(((List<SkuAttribute>) getResult).get(0) instanceof SkuAttributeImpl);
-    assertTrue(actualMultiValueSkuAttributes.containsKey("Name"));
-    assertSame(skuAttributeImpl2, ((List<SkuAttribute>) getResult).get(1));
+    assertTrue((new SkuImpl()).getMultiValueSkuAttributes().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#setSkuAttributes(Map)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#skuAttributes} size is one.
+   *   <li>Given {@code foo}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#skuAttributes} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setSkuAttributes(Map)}
+   * <p>
+   * Method under test: {@link SkuImpl#setSkuAttributes(Map)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setSkuAttributes(Map)"})
   public void testSetSkuAttributes_givenFoo_thenSkuImplSkuAttributesSizeIsOne() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
     HashMap<String, SkuAttribute> skuAttributes = new HashMap<>();
     SkuAttributeImpl skuAttributeImpl = new SkuAttributeImpl();
     skuAttributes.put("foo", skuAttributeImpl);
 
     // Act
-    skuImpl.setSkuAttributes(skuAttributes);
+    skuImpl2.setSkuAttributes(skuAttributes);
 
     // Assert
-    List<SkuAttribute> skuAttributeList = skuImpl.skuAttributes;
+    List<SkuAttribute> skuAttributeList = skuImpl2.skuAttributes;
     assertEquals(1, skuAttributeList.size());
-    Map<String, Collection<SkuAttribute>> multiValueSkuAttributes =
-        skuImpl.getMultiValueSkuAttributes();
+    Map<String, Collection<SkuAttribute>> multiValueSkuAttributes = skuImpl2.getMultiValueSkuAttributes();
     assertEquals(1, multiValueSkuAttributes.size());
-    Map<String, SkuAttribute> skuAttributes2 = skuImpl.getSkuAttributes();
+    Map<String, SkuAttribute> skuAttributes2 = skuImpl2.getSkuAttributes();
     assertEquals(1, skuAttributes2.size());
-    assertEquals(skuImpl.skuAttributes, multiValueSkuAttributes.get(null));
+    List<SkuAttribute> expectedGetResult = skuImpl2.skuAttributes;
+    assertEquals(expectedGetResult, multiValueSkuAttributes.get(null));
     assertSame(skuAttributeImpl, skuAttributeList.get(0));
     assertSame(skuAttributeImpl, skuAttributes2.get(null));
   }
 
   /**
    * Test {@link SkuImpl#setSkuAttributes(Map)}.
-   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then {@link SkuImpl} {@link SkuImpl#skuAttributes} Empty.
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>Then {@link SkuImpl} (default constructor) {@link SkuImpl#skuAttributes} Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#setSkuAttributes(Map)}
+   * <p>
+   * Method under test: {@link SkuImpl#setSkuAttributes(Map)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.setSkuAttributes(Map)"})
   public void testSetSkuAttributes_whenHashMap_thenSkuImplSkuAttributesEmpty() {
-    // Arrange and Act
-    skuImpl.setSkuAttributes(new HashMap<>());
+    // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
+
+    // Act
+    skuImpl2.setSkuAttributes(new HashMap<>());
 
     // Assert that nothing has changed
-    assertTrue(skuImpl.skuAttributes.isEmpty());
-    assertTrue(skuImpl.getMultiValueSkuAttributes().isEmpty());
-    assertTrue(skuImpl.getSkuAttributes().isEmpty());
+    assertTrue(skuImpl2.skuAttributes.isEmpty());
+    assertTrue(skuImpl2.getMultiValueSkuAttributes().isEmpty());
+    assertTrue(skuImpl2.getSkuAttributes().isEmpty());
   }
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(product);
 
     // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
+    BroadleafCurrency actualCurrency = skuImpl2.getCurrency();
 
     // Assert
     verify(product).getDefaultSku();
@@ -12245,29 +8752,27 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} return {@link
-   *       SkuImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultSku()} return {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenProductBundleImplGetDefaultSkuReturnSkuImpl_thenReturnNull2() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
+    BroadleafCurrency actualCurrency = skuImpl2.getCurrency();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -12276,58 +8781,29 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
+   *   <li>Then calls {@link Sku#getId()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
-  public void testGetCurrency_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCurrency());
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getCurrency()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
 
     // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
+    BroadleafCurrency actualCurrency = skuImpl2.getCurrency();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -12337,147 +8813,73 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
-  public void testGetCurrency_givenSkuGetIdThrowIllegalStateException() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getCurrency());
-    verify(product, atLeast(1)).getDefaultSku();
-    verify(sku).getId();
-  }
-
-  /**
-   * Test {@link SkuImpl#getCurrency()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Currency is {@link BroadleafCurrencyImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenSkuImplCurrencyIsBroadleafCurrencyImpl() {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
     BroadleafCurrencyImpl currency = new BroadleafCurrencyImpl();
-    skuImpl.setCurrency(currency);
-    skuImpl.setProduct(null);
-    skuImpl.setId(null);
+    skuImpl2.setCurrency(currency);
 
     // Act and Assert
-    assertSame(currency, skuImpl.getCurrency());
+    assertSame(currency, skuImpl2.getCurrency());
   }
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor) Id is one.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
-  public void testGetCurrency_givenSkuImplIdIsOne_thenReturnNull() {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setId(1L);
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(skuImpl);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(1L);
-
-    // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
-
-    // Assert
-    verify(product, atLeast(1)).getDefaultSku();
-    assertNull(actualCurrency);
-  }
-
-  /**
-   * Test {@link SkuImpl#getCurrency()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertNull(skuImpl.getCurrency());
+    assertNull(skuImpl2.getCurrency());
   }
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getCurrency());
+    assertNull((new SkuImpl()).getCurrency());
   }
 
   /**
    * Test {@link SkuImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Sku#getCurrency()}.
+   *   <li>Then calls {@link Sku#getCurrency()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
   public void testGetCurrency_thenCallsGetCurrency() {
     // Arrange
@@ -12485,15 +8887,15 @@ public class SkuImplDiffblueTest {
     when(sku.getId()).thenReturn(1L);
     BroadleafCurrencyImpl broadleafCurrencyImpl = new BroadleafCurrencyImpl();
     when(sku.getCurrency()).thenReturn(broadleafCurrencyImpl);
-
     ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getDefaultSku()).thenReturn(sku);
-    skuImpl.setCurrency(null);
-    skuImpl.setProduct(product);
-    skuImpl.setId(2L);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(2L);
+    skuImpl2.setProduct(product);
 
     // Act
-    BroadleafCurrency actualCurrency = skuImpl.getCurrency();
+    BroadleafCurrency actualCurrency = skuImpl2.getCurrency();
 
     // Assert
     verify(product, atLeast(1)).getDefaultSku();
@@ -12503,300 +8905,185 @@ public class SkuImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuImpl#getTaxCode()}.
-   *
+   * Test {@link SkuImpl#getCurrency()}.
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultCategory()} return
-   *       {@link CategoryImpl} (default constructor).
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
+   * <p>
+   * Method under test: {@link SkuImpl#getCurrency()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafCurrency SkuImpl.getCurrency()"})
+  public void testGetCurrency_thenThrowIllegalStateException() {
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultSku()).thenReturn(sku);
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setId(1L);
+    skuImpl2.setProduct(product);
+
+    // Act and Assert
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getCurrency());
+    verify(product, atLeast(1)).getDefaultSku();
+    verify(sku).getId();
+  }
+
+  /**
+   * Test {@link SkuImpl#getTaxCode()}.
+   * <ul>
+   *   <li>Given {@link ProductBundleImpl} {@link ProductImpl#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxCode()}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
   public void testGetTaxCode_givenProductBundleImplGetDefaultCategoryReturnCategoryImpl() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(new CategoryImpl());
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setTaxCode("");
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(new CategoryImpl());
+
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act
-    String actualTaxCode = skuImpl.getTaxCode();
+    String actualTaxCode = skuImpl2.getTaxCode();
 
     // Assert
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
     assertNull(actualTaxCode);
   }
 
   /**
    * Test {@link SkuImpl#getTaxCode()}.
-   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} {@link ProductBundleImpl#getDefaultSku()} throw {@link
-   *       IllegalStateException#IllegalStateException()}.
+   *   <li>Given {@link SkuImpl} (default constructor) DefaultProduct is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
-  public void testGetTaxCode_givenProductBundleImplGetDefaultSkuThrowIllegalStateException() {
+  public void testGetTaxCode_givenSkuImplDefaultProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenThrow(new IllegalStateException());
-    skuImpl.setTaxCode("");
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxCode());
-    verify(product).getDefaultSku();
+    assertNull(skuImpl2.getTaxCode());
   }
 
   /**
    * Test {@link SkuImpl#getTaxCode()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} DefaultProduct is {@link ProductBundleImpl} (default constructor).
+   *   <li>Given {@link SkuImpl} (default constructor) Product is {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
-  public void testGetTaxCode_givenSkuImplDefaultProductIsProductBundleImpl() {
+  public void testGetTaxCode_givenSkuImplProductIsProductBundleImpl_thenReturnNull() {
     // Arrange
-    skuImpl.setTaxCode("");
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(new ProductBundleImpl());
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setProduct(new ProductBundleImpl());
 
     // Act and Assert
-    assertEquals("", skuImpl.getTaxCode());
+    assertNull(skuImpl2.getTaxCode());
   }
 
   /**
    * Test {@link SkuImpl#getTaxCode()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Id is one.
-   *   <li>Then calls {@link CategoryImpl#getTaxCode()}.
+   *   <li>Given {@link SkuImpl} (default constructor) TaxCode is {@code Tax Code}.</li>
+   *   <li>Then return {@code Tax Code}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
-  public void testGetTaxCode_givenSkuImplIdIsOne_thenCallsGetTaxCode() {
+  public void testGetTaxCode_givenSkuImplTaxCodeIsTaxCode_thenReturnTaxCode() {
     // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getTaxCode()).thenThrow(new IllegalStateException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setTaxCode("");
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(1L);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setTaxCode("Tax Code");
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxCode());
-    verify(categoryImpl).getTaxCode();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product, atLeast(1)).getDefaultSku();
+    assertEquals("Tax Code", skuImpl2.getTaxCode());
   }
 
   /**
    * Test {@link SkuImpl#getTaxCode()}.
-   *
    * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@code null}.
-   *   <li>Then return empty string.
+   *   <li>Given {@link SkuImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
-  public void testGetTaxCode_givenSkuImplProductIsNull_thenReturnEmptyString() {
-    // Arrange
-    skuImpl.setTaxCode("");
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertEquals("", skuImpl.getTaxCode());
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxCode()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} Product is {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
-  public void testGetTaxCode_givenSkuImplProductIsProductBundleImpl_thenReturnEmptyString() {
-    // Arrange
-    skuImpl.setTaxCode("");
-    skuImpl.setProduct(new ProductBundleImpl());
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertEquals("", skuImpl.getTaxCode());
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxCode()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} TaxCode is {@code foo}.
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
-  public void testGetTaxCode_givenSkuImplTaxCodeIsFoo_thenReturnFoo() {
-    // Arrange
-    skuImpl.setTaxCode("foo");
-    skuImpl.setProduct(null);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertEquals("foo", skuImpl.getTaxCode());
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxCode()}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
   public void testGetTaxCode_givenSkuImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuImpl.getTaxCode());
+    assertNull((new SkuImpl()).getTaxCode());
   }
 
   /**
    * Test {@link SkuImpl#getTaxCode()}.
-   *
    * <ul>
-   *   <li>Then calls {@link Product#getDefaultCategory()}.
+   *   <li>Then throw {@link IllegalStateException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
+   * <p>
+   * Method under test: {@link SkuImpl#getTaxCode()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
-  public void testGetTaxCode_thenCallsGetDefaultCategory() {
-    // Arrange
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-
-    Product defaultProduct = mock(Product.class);
-    when(defaultProduct.getDefaultCategory()).thenThrow(new IllegalStateException());
-    skuImpl.setTaxCode("");
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(defaultProduct);
-    skuImpl.setId(null);
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxCode());
-    verify(defaultProduct).getDefaultCategory();
-    verify(product).getDefaultSku();
-  }
-
-  /**
-   * Test {@link SkuImpl#getTaxCode()}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CategoryImpl#getTaxCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuImpl#getTaxCode()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuImpl.getTaxCode()"})
-  public void testGetTaxCode_thenCallsGetTaxCode() {
+  public void testGetTaxCode_thenThrowIllegalStateException() {
     // Arrange
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getTaxCode()).thenThrow(new IllegalStateException());
+    when(categoryImpl.getTaxCode()).thenThrow(new IllegalStateException("foo"));
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.getDefaultCategory()).thenReturn(categoryImpl);
 
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    when(product.getDefaultSku()).thenReturn(new SkuImpl());
-    skuImpl.setTaxCode("");
-    skuImpl.setProduct(product);
-    skuImpl.setDefaultProduct(null);
-    skuImpl.setId(null);
+    SkuImpl skuImpl2 = new SkuImpl();
+    skuImpl2.setDefaultProduct(defaultProduct);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> skuImpl.getTaxCode());
+    assertThrows(IllegalStateException.class, () -> skuImpl2.getTaxCode());
     verify(categoryImpl).getTaxCode();
-    verify(product, atLeast(1)).getDefaultCategory();
-    verify(product).getDefaultSku();
+    verify(defaultProduct, atLeast(1)).getDefaultCategory();
   }
 
   /**
    * Test {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreateResponse SkuImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
+    SkuImpl skuImpl2 = new SkuImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new SkuImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<Sku> actualCreateOrRetrieveCopyInstanceResult =
-        skuImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<Sku> actualCreateOrRetrieveCopyInstanceResult = skuImpl2.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -12805,36 +9092,50 @@ public class SkuImplDiffblueTest {
 
   /**
    * Test {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then Clone return {@link SkuImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CreateResponse SkuImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+  public void testCreateOrRetrieveCopyInstance_givenJavaLangObject_thenCloneReturnSkuImpl()
+      throws CloneNotSupportedException {
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(skuImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    SkuImpl skuImpl2 = new SkuImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<Sku> actualCreateOrRetrieveCopyInstanceResult =
-        skuImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<Sku> actualCreateOrRetrieveCopyInstanceResult = skuImpl2
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    Sku clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof SkuImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(skuImpl2, clone);
   }
 
   /**
    * Test new {@link SkuImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SkuImpl}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SkuImpl}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuImpl.<init>()"})
   public void testNewSkuImpl() {
     // Arrange and Act
@@ -12909,8 +9210,7 @@ public class SkuImplDiffblueTest {
     Dimension expectedDimension = actualSkuImpl.dimension;
     assertSame(expectedDimension, actualSkuImpl.getDimension());
     Map<String, SkuMediaXref> expectedSkuMediaXrefIgnoreDefaultSku = actualSkuImpl.skuMedia;
-    assertSame(
-        expectedSkuMediaXrefIgnoreDefaultSku, actualSkuImpl.getSkuMediaXrefIgnoreDefaultSku());
+    assertSame(expectedSkuMediaXrefIgnoreDefaultSku, actualSkuImpl.getSkuMediaXrefIgnoreDefaultSku());
     Weight expectedWeight = actualSkuImpl.weight;
     assertSame(expectedWeight, actualSkuImpl.getWeight());
   }

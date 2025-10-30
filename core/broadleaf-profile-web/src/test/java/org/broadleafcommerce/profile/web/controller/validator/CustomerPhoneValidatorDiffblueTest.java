@@ -19,7 +19,6 @@ package org.broadleafcommerce.profile.web.controller.validator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.junit.jupiter.api.DisplayName;
@@ -29,18 +28,16 @@ import org.junit.jupiter.api.Test;
 class CustomerPhoneValidatorDiffblueTest {
   /**
    * Test {@link CustomerPhoneValidator#supports(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerPhoneValidator#supports(Class)}
+   * <p>
+   * Method under test: {@link CustomerPhoneValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CustomerPhoneValidator.supports(Class)"})
   void testSupports_whenJavaLangObject_thenReturnFalse() {
     // Arrange
@@ -53,19 +50,16 @@ class CustomerPhoneValidatorDiffblueTest {
 
   /**
    * Test {@link CustomerPhoneValidator#supports(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Phone}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code Phone}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerPhoneValidator#supports(Class)}
+   * <p>
+   * Method under test: {@link CustomerPhoneValidator#supports(Class)}
    */
   @Test
-  @DisplayName(
-      "Test supports(Class); when 'org.broadleafcommerce.profile.core.domain.Phone'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test supports(Class); when 'org.broadleafcommerce.profile.core.domain.Phone'; then return 'true'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CustomerPhoneValidator.supports(Class)"})
   void testSupports_whenOrgBroadleafcommerceProfileCoreDomainPhone_thenReturnTrue() {
     // Arrange

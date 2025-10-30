@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.order.fulfillment.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmountType;
@@ -31,12 +30,11 @@ import org.junit.experimental.categories.Category;
 public class FulfillmentBandImplDiffblueTest {
   /**
    * Test {@link FulfillmentBandImpl#getResultAmount()}.
-   *
-   * <p>Method under test: {@link FulfillmentBandImpl#getResultAmount()}
+   * <p>
+   * Method under test: {@link FulfillmentBandImpl#getResultAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BigDecimal FulfillmentBandImpl.getResultAmount()"})
   public void testGetResultAmount() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
@@ -44,17 +42,16 @@ public class FulfillmentBandImplDiffblueTest {
     //   a non-Spring test was created.
 
     // Arrange, Act and Assert
-    assertNull(new FulfillmentPriceBandImpl().getResultAmount());
+    assertNull((new FulfillmentPriceBandImpl()).getResultAmount());
   }
 
   /**
    * Test {@link FulfillmentBandImpl#setResultAmount(BigDecimal)}.
-   *
-   * <p>Method under test: {@link FulfillmentBandImpl#setResultAmount(BigDecimal)}
+   * <p>
+   * Method under test: {@link FulfillmentBandImpl#setResultAmount(BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FulfillmentBandImpl.setResultAmount(BigDecimal)"})
   public void testSetResultAmount() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
@@ -74,40 +71,35 @@ public class FulfillmentBandImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentBandImpl#getResultAmountType()}.
-   *
-   * <p>Method under test: {@link FulfillmentBandImpl#getResultAmountType()}
+   * <p>
+   * Method under test: {@link FulfillmentBandImpl#getResultAmountType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentBandResultAmountType FulfillmentBandImpl.getResultAmountType()"})
   public void testGetResultAmountType() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
     //   Run dcover create --keep-partial-tests to gain insights into why
     //   a non-Spring test was created.
 
-    // Arrange, Act and Assert
-    assertSame(
-        FulfillmentBandResultAmountType.RATE, new FulfillmentPriceBandImpl().getResultAmountType());
+    // Arrange and Act
+    FulfillmentBandResultAmountType actualResultAmountType = (new FulfillmentPriceBandImpl()).getResultAmountType();
+
+    // Assert
+    assertSame(actualResultAmountType.RATE, actualResultAmountType);
   }
 
   /**
    * Test {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}.
-   *
    * <ul>
-   *   <li>Then {@link FulfillmentPriceBandImpl} (default constructor) {@link
-   *       FulfillmentBandImpl#resultAmountType} is {@code PERCENTAGE}.
+   *   <li>Then {@link FulfillmentPriceBandImpl} (default constructor) {@link FulfillmentBandImpl#resultAmountType} is {@code PERCENTAGE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}
+   * <p>
+   * Method under test: {@link FulfillmentBandImpl#setResultAmountType(FulfillmentBandResultAmountType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentBandImpl.setResultAmountType(FulfillmentBandResultAmountType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentBandImpl.setResultAmountType(FulfillmentBandResultAmountType)"})
   public void testSetResultAmountType_thenFulfillmentPriceBandImplResultAmountTypeIsPercentage() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
     //   Run dcover create --keep-partial-tests to gain insights into why
@@ -115,13 +107,14 @@ public class FulfillmentBandImplDiffblueTest {
 
     // Arrange
     FulfillmentPriceBandImpl fulfillmentPriceBandImpl = new FulfillmentPriceBandImpl();
+    FulfillmentBandResultAmountType resultAmountType = FulfillmentBandResultAmountType.PERCENTAGE;
 
     // Act
-    fulfillmentPriceBandImpl.setResultAmountType(FulfillmentBandResultAmountType.PERCENTAGE);
+    fulfillmentPriceBandImpl.setResultAmountType(resultAmountType);
 
     // Assert
     assertEquals("PERCENTAGE", fulfillmentPriceBandImpl.resultAmountType);
-    assertSame(
-        FulfillmentBandResultAmountType.PERCENTAGE, fulfillmentPriceBandImpl.getResultAmountType());
+    FulfillmentBandResultAmountType expectedResultAmountType = resultAmountType.PERCENTAGE;
+    assertSame(expectedResultAmountType, fulfillmentPriceBandImpl.getResultAmountType());
   }
 }

@@ -19,7 +19,6 @@ package org.broadleafcommerce.profile.web.core.form;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -30,9 +29,8 @@ import org.junit.jupiter.api.Test;
 class RegisterCustomerFormDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link RegisterCustomerForm}
    *   <li>{@link RegisterCustomerForm#setCustomer(Customer)}
@@ -47,19 +45,12 @@ class RegisterCustomerFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RegisterCustomerForm.<init>()",
-    "Customer RegisterCustomerForm.getCustomer()",
-    "String RegisterCustomerForm.getPassword()",
-    "String RegisterCustomerForm.getPasswordConfirm()",
-    "String RegisterCustomerForm.getRedirectUrl()",
-    "void RegisterCustomerForm.setCustomer(Customer)",
-    "void RegisterCustomerForm.setPassword(String)",
-    "void RegisterCustomerForm.setPasswordConfirm(String)",
-    "void RegisterCustomerForm.setRedirectUrl(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void RegisterCustomerForm.<init>()", "Customer RegisterCustomerForm.getCustomer()",
+      "String RegisterCustomerForm.getPassword()", "String RegisterCustomerForm.getPasswordConfirm()",
+      "String RegisterCustomerForm.getRedirectUrl()", "void RegisterCustomerForm.setCustomer(Customer)",
+      "void RegisterCustomerForm.setPassword(String)", "void RegisterCustomerForm.setPasswordConfirm(String)",
+      "void RegisterCustomerForm.setRedirectUrl(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     RegisterCustomerForm actualRegisterCustomerForm = new RegisterCustomerForm();

@@ -25,8 +25,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,27 +40,25 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestrictionFactoryImplDiffblueTest {
-  @Mock private Map<String, Restriction> map;
+  @Mock
+  private Map<String, Restriction> map;
 
-  @InjectMocks private RestrictionFactoryImpl restrictionFactoryImpl;
+  @InjectMocks
+  private RestrictionFactoryImpl restrictionFactoryImpl;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link RestrictionFactoryImpl#setRestrictions(Map)}
    *   <li>{@link RestrictionFactoryImpl#getRestrictions()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map RestrictionFactoryImpl.getRestrictions()",
-    "void RestrictionFactoryImpl.setRestrictions(Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map RestrictionFactoryImpl.getRestrictions()",
+      "void RestrictionFactoryImpl.setRestrictions(Map)"})
   public void testGettersAndSetters() {
     // Arrange
     RestrictionFactoryImpl restrictionFactoryImpl = new RestrictionFactoryImpl();
@@ -78,12 +75,11 @@ public class RestrictionFactoryImplDiffblueTest {
 
   /**
    * Test {@link RestrictionFactoryImpl#getRestriction(String, String)}.
-   *
-   * <p>Method under test: {@link RestrictionFactoryImpl#getRestriction(String, String)}
+   * <p>
+   * Method under test: {@link RestrictionFactoryImpl#getRestriction(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Restriction RestrictionFactoryImpl.getRestriction(String, String)"})
   public void testGetRestriction() {
     // Arrange
@@ -104,18 +100,15 @@ public class RestrictionFactoryImplDiffblueTest {
 
   /**
    * Test {@link RestrictionFactoryImpl#getRestriction(String, String)}.
-   *
    * <ul>
-   *   <li>Given {@link Restriction} {@link Restriction#clone()} return {@link Restriction} (default
-   *       constructor).
-   *   <li>Then return {@link Restriction} (default constructor).
+   *   <li>Given {@link Restriction} {@link Restriction#clone()} return {@link Restriction} (default constructor).</li>
+   *   <li>Then return {@link Restriction} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RestrictionFactoryImpl#getRestriction(String, String)}
+   * <p>
+   * Method under test: {@link RestrictionFactoryImpl#getRestriction(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Restriction RestrictionFactoryImpl.getRestriction(String, String)"})
   public void testGetRestriction_givenRestrictionCloneReturnRestriction_thenReturnRestriction() {
     // Arrange
@@ -135,22 +128,19 @@ public class RestrictionFactoryImplDiffblueTest {
 
   /**
    * Test {@link RestrictionFactoryImpl#getRestriction(String, String)}.
-   *
    * <ul>
-   *   <li>Then calls {@link Restriction#setFieldPathBuilder(FieldPathBuilder)}.
+   *   <li>Then calls {@link Restriction#setFieldPathBuilder(FieldPathBuilder)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RestrictionFactoryImpl#getRestriction(String, String)}
+   * <p>
+   * Method under test: {@link RestrictionFactoryImpl#getRestriction(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Restriction RestrictionFactoryImpl.getRestriction(String, String)"})
   public void testGetRestriction_thenCallsSetFieldPathBuilder() {
     // Arrange
     Restriction restriction = mock(Restriction.class);
     doNothing().when(restriction).setFieldPathBuilder(Mockito.<FieldPathBuilder>any());
-
     Restriction restriction2 = mock(Restriction.class);
     when(restriction2.clone()).thenReturn(restriction);
     when(map.get(Mockito.<Object>any())).thenReturn(restriction2);

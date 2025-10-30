@@ -18,8 +18,7 @@
 package org.broadleafcommerce.common.jmx;
 
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -32,26 +31,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AnnotationJmxAttributeSource.class, String.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AnnotationJmxAttributeSourceDiffblueTest {
-  @Autowired private AnnotationJmxAttributeSource annotationJmxAttributeSource;
+  @Autowired
+  private AnnotationJmxAttributeSource annotationJmxAttributeSource;
 
   /**
    * Test {@link AnnotationJmxAttributeSource#getManagedResource(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AnnotationJmxAttributeSource#getManagedResource(Class)}
+   * <p>
+   * Method under test: {@link AnnotationJmxAttributeSource#getManagedResource(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.springframework.jmx.export.metadata.ManagedResource AnnotationJmxAttributeSource.getManagedResource(Class)"
-  })
-  public void testGetManagedResource_whenJavaLangObject_thenReturnNull()
-      throws InvalidMetadataException {
+      "org.springframework.jmx.export.metadata.ManagedResource AnnotationJmxAttributeSource.getManagedResource(Class)"})
+  public void testGetManagedResource_whenJavaLangObject_thenReturnNull() throws InvalidMetadataException {
     // Arrange
     Class<Object> beanClass = Object.class;
 

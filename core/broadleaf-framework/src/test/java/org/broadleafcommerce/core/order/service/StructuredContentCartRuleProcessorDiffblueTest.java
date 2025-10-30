@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.order.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,26 +38,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {StructuredContentCartRuleProcessor.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class StructuredContentCartRuleProcessorDiffblueTest {
-  @Autowired private StructuredContentCartRuleProcessor structuredContentCartRuleProcessor;
+  @Autowired
+  private StructuredContentCartRuleProcessor structuredContentCartRuleProcessor;
 
   /**
-   * Test {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)} with
-   * {@code StructuredContentDTO}, {@code Map}.
-   *
+   * Test {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)} with {@code StructuredContentDTO}, {@code Map}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
+   * <p>
+   * Method under test: {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentCartRuleProcessor.checkForMatch(StructuredContentDTO, Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentCartRuleProcessor.checkForMatch(StructuredContentDTO, Map)"})
   public void testCheckForMatchWithStructuredContentDTOMap_givenArrayList_thenReturnTrue() {
     // Arrange
     StructuredContentDTO sc = new StructuredContentDTO();
@@ -76,22 +70,16 @@ public class StructuredContentCartRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)} with
-   * {@code StructuredContentDTO}, {@code Map}.
-   *
+   * Test {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)} with {@code StructuredContentDTO}, {@code Map}.
    * <ul>
-   *   <li>Given {@code null}.
+   *   <li>Given {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
+   * <p>
+   * Method under test: {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentCartRuleProcessor.checkForMatch(StructuredContentDTO, Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentCartRuleProcessor.checkForMatch(StructuredContentDTO, Map)"})
   public void testCheckForMatchWithStructuredContentDTOMap_givenNull() {
     // Arrange
     StructuredContentDTO sc = new StructuredContentDTO();
@@ -112,22 +100,16 @@ public class StructuredContentCartRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)} with
-   * {@code StructuredContentDTO}, {@code Map}.
-   *
+   * Test {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)} with {@code StructuredContentDTO}, {@code Map}.
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
+   * <p>
+   * Method under test: {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean StructuredContentCartRuleProcessor.checkForMatch(StructuredContentDTO, Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean StructuredContentCartRuleProcessor.checkForMatch(StructuredContentDTO, Map)"})
   public void testCheckForMatchWithStructuredContentDTOMap_thenReturnFalse() {
     // Arrange
     ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
@@ -153,18 +135,15 @@ public class StructuredContentCartRuleProcessorDiffblueTest {
 
   /**
    * Test new {@link StructuredContentCartRuleProcessor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * StructuredContentCartRuleProcessor}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link StructuredContentCartRuleProcessor}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StructuredContentCartRuleProcessor.<init>()"})
   public void testNewStructuredContentCartRuleProcessor() {
     // Arrange and Act
-    StructuredContentCartRuleProcessor actualStructuredContentCartRuleProcessor =
-        new StructuredContentCartRuleProcessor();
+    StructuredContentCartRuleProcessor actualStructuredContentCartRuleProcessor = new StructuredContentCartRuleProcessor();
 
     // Assert
     assertNull(actualStructuredContentCartRuleProcessor.getOrderDao());

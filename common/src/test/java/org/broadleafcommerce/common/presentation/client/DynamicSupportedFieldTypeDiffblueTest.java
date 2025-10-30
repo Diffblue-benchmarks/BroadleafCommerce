@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.junit.Test;
@@ -35,16 +34,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DynamicSupportedFieldType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DynamicSupportedFieldTypeDiffblueTest {
-  @Autowired private DynamicSupportedFieldType dynamicSupportedFieldType;
+  @Autowired
+  private DynamicSupportedFieldType dynamicSupportedFieldType;
 
   /**
    * Test {@link DynamicSupportedFieldType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link DynamicSupportedFieldType#getInstance(String)}
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"DynamicSupportedFieldType DynamicSupportedFieldType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange, Act and Assert
@@ -53,9 +52,8 @@ public class DynamicSupportedFieldTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DynamicSupportedFieldType#DynamicSupportedFieldType()}
    *   <li>{@link DynamicSupportedFieldType#getFriendlyType()}
@@ -63,13 +61,9 @@ public class DynamicSupportedFieldTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void DynamicSupportedFieldType.<init>()",
-    "String DynamicSupportedFieldType.getFriendlyType()",
-    "String DynamicSupportedFieldType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DynamicSupportedFieldType.<init>()", "String DynamicSupportedFieldType.getFriendlyType()",
+      "String DynamicSupportedFieldType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DynamicSupportedFieldType actualDynamicSupportedFieldType = new DynamicSupportedFieldType();
@@ -82,36 +76,30 @@ public class DynamicSupportedFieldTypeDiffblueTest {
 
   /**
    * Test {@link DynamicSupportedFieldType#DynamicSupportedFieldType(String, String)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicSupportedFieldType#DynamicSupportedFieldType(String,
-   * String)}
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#DynamicSupportedFieldType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DynamicSupportedFieldType.<init>(String, String)"})
   public void testNewDynamicSupportedFieldType_thenThrowRuntimeException() {
     // Arrange, Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            new DynamicSupportedFieldType(
-                "ADDITIONAL_FOREIGN_KEY|org.broadleafcommerce.core.catalog.domain.Category",
-                "Friendly Type"));
+    assertThrows(RuntimeException.class,
+        () -> new DynamicSupportedFieldType("ADDITIONAL_FOREIGN_KEY|org.broadleafcommerce.core.catalog.domain.Category",
+            "Friendly Type"));
+
   }
 
   /**
    * Test {@link DynamicSupportedFieldType#getTypes()}.
-   *
-   * <p>Method under test: {@link DynamicSupportedFieldType#getTypes()}
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#getTypes()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List DynamicSupportedFieldType.getTypes()"})
   public void testGetTypes() {
     // Arrange and Act
@@ -120,13 +108,9 @@ public class DynamicSupportedFieldTypeDiffblueTest {
     // Assert
     assertEquals(8, actualTypes.size());
     DynamicSupportedFieldType getResult = actualTypes.get(6);
-    assertEquals(
-        "ADDITIONAL_FOREIGN_KEY|org.broadleafcommerce.core.catalog.domain.Category",
-        getResult.getType());
+    assertEquals("ADDITIONAL_FOREIGN_KEY|org.broadleafcommerce.core.catalog.domain.Category", getResult.getType());
     DynamicSupportedFieldType getResult2 = actualTypes.get(5);
-    assertEquals(
-        "ADDITIONAL_FOREIGN_KEY|org.broadleafcommerce.core.catalog.domain.Product",
-        getResult2.getType());
+    assertEquals("ADDITIONAL_FOREIGN_KEY|org.broadleafcommerce.core.catalog.domain.Product", getResult2.getType());
     DynamicSupportedFieldType getResult3 = actualTypes.get(4);
     assertEquals("ASSET_LOOKUP", getResult3.getType());
     DynamicSupportedFieldType getResult4 = actualTypes.get(3);
@@ -150,28 +134,21 @@ public class DynamicSupportedFieldTypeDiffblueTest {
   }
 
   /**
-   * Test {@link DynamicSupportedFieldType#equals(Object)}, and {@link
-   * DynamicSupportedFieldType#hashCode()}.
-   *
+   * Test {@link DynamicSupportedFieldType#equals(Object)}, and {@link DynamicSupportedFieldType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DynamicSupportedFieldType#equals(Object)}
    *   <li>{@link DynamicSupportedFieldType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DynamicSupportedFieldType.equals(Object)",
-    "int DynamicSupportedFieldType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicSupportedFieldType.equals(Object)", "int DynamicSupportedFieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     DynamicSupportedFieldType dynamicSupportedFieldType = DynamicSupportedFieldType.ASSET_LOOKUP;
@@ -179,32 +156,26 @@ public class DynamicSupportedFieldTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(dynamicSupportedFieldType, dynamicSupportedFieldType2);
-    assertEquals(dynamicSupportedFieldType.hashCode(), dynamicSupportedFieldType2.hashCode());
+    int expectedHashCodeResult = dynamicSupportedFieldType.hashCode();
+    assertEquals(expectedHashCodeResult, dynamicSupportedFieldType2.hashCode());
   }
 
   /**
-   * Test {@link DynamicSupportedFieldType#equals(Object)}, and {@link
-   * DynamicSupportedFieldType#hashCode()}.
-   *
+   * Test {@link DynamicSupportedFieldType#equals(Object)}, and {@link DynamicSupportedFieldType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DynamicSupportedFieldType#equals(Object)}
    *   <li>{@link DynamicSupportedFieldType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DynamicSupportedFieldType.equals(Object)",
-    "int DynamicSupportedFieldType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicSupportedFieldType.equals(Object)", "int DynamicSupportedFieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     DynamicSupportedFieldType dynamicSupportedFieldType = new DynamicSupportedFieldType();
@@ -212,32 +183,26 @@ public class DynamicSupportedFieldTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(dynamicSupportedFieldType, dynamicSupportedFieldType2);
-    assertEquals(dynamicSupportedFieldType.hashCode(), dynamicSupportedFieldType2.hashCode());
+    int expectedHashCodeResult = dynamicSupportedFieldType.hashCode();
+    assertEquals(expectedHashCodeResult, dynamicSupportedFieldType2.hashCode());
   }
 
   /**
-   * Test {@link DynamicSupportedFieldType#equals(Object)}, and {@link
-   * DynamicSupportedFieldType#hashCode()}.
-   *
+   * Test {@link DynamicSupportedFieldType#equals(Object)}, and {@link DynamicSupportedFieldType#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DynamicSupportedFieldType#equals(Object)}
    *   <li>{@link DynamicSupportedFieldType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DynamicSupportedFieldType.equals(Object)",
-    "int DynamicSupportedFieldType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicSupportedFieldType.equals(Object)", "int DynamicSupportedFieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     DynamicSupportedFieldType dynamicSupportedFieldType = DynamicSupportedFieldType.ASSET_LOOKUP;
@@ -250,44 +215,33 @@ public class DynamicSupportedFieldTypeDiffblueTest {
 
   /**
    * Test {@link DynamicSupportedFieldType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicSupportedFieldType#equals(Object)}
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DynamicSupportedFieldType.equals(Object)",
-    "int DynamicSupportedFieldType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicSupportedFieldType.equals(Object)", "int DynamicSupportedFieldType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        DynamicSupportedFieldType.CATEGORY_LOOKUP, DynamicSupportedFieldType.ASSET_LOOKUP);
+    assertNotEquals(DynamicSupportedFieldType.CATEGORY_LOOKUP, DynamicSupportedFieldType.ASSET_LOOKUP);
   }
 
   /**
    * Test {@link DynamicSupportedFieldType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicSupportedFieldType#equals(Object)}
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DynamicSupportedFieldType.equals(Object)",
-    "int DynamicSupportedFieldType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicSupportedFieldType.equals(Object)", "int DynamicSupportedFieldType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new DynamicSupportedFieldType(), DynamicSupportedFieldType.ASSET_LOOKUP);
@@ -295,21 +249,16 @@ public class DynamicSupportedFieldTypeDiffblueTest {
 
   /**
    * Test {@link DynamicSupportedFieldType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicSupportedFieldType#equals(Object)}
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DynamicSupportedFieldType.equals(Object)",
-    "int DynamicSupportedFieldType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicSupportedFieldType.equals(Object)", "int DynamicSupportedFieldType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(DynamicSupportedFieldType.ASSET_LOOKUP, null);
@@ -317,24 +266,18 @@ public class DynamicSupportedFieldTypeDiffblueTest {
 
   /**
    * Test {@link DynamicSupportedFieldType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DynamicSupportedFieldType#equals(Object)}
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DynamicSupportedFieldType.equals(Object)",
-    "int DynamicSupportedFieldType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean DynamicSupportedFieldType.equals(Object)", "int DynamicSupportedFieldType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        DynamicSupportedFieldType.ASSET_LOOKUP, "Different type to DynamicSupportedFieldType");
+    assertNotEquals(DynamicSupportedFieldType.ASSET_LOOKUP, "Different type to DynamicSupportedFieldType");
   }
 }

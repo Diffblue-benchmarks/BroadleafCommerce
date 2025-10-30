@@ -19,7 +19,6 @@ package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +29,8 @@ import org.junit.jupiter.api.Test;
 class CustomerCreditInfoFormDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CustomerCreditInfoForm}
    *   <li>{@link CustomerCreditInfoForm#setAccountNumbers(List)}
@@ -41,13 +39,9 @@ class CustomerCreditInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CustomerCreditInfoForm.<init>()",
-    "List CustomerCreditInfoForm.getAccountNumbers()",
-    "void CustomerCreditInfoForm.setAccountNumbers(List)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerCreditInfoForm.<init>()", "List CustomerCreditInfoForm.getAccountNumbers()",
+      "void CustomerCreditInfoForm.setAccountNumbers(List)"})
   void testGettersAndSetters() {
     // Arrange and Act
     CustomerCreditInfoForm actualCustomerCreditInfoForm = new CustomerCreditInfoForm();

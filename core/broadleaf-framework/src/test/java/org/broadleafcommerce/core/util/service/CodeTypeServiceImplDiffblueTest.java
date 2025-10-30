@@ -19,12 +19,12 @@ package org.broadleafcommerce.core.util.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,18 +41,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CodeTypeServiceImplDiffblueTest {
-  @Mock private CodeTypeDao codeTypeDao;
+  @Mock
+  private CodeTypeDao codeTypeDao;
 
-  @InjectMocks private CodeTypeServiceImpl codeTypeServiceImpl;
+  @InjectMocks
+  private CodeTypeServiceImpl codeTypeServiceImpl;
 
   /**
    * Test {@link CodeTypeServiceImpl#deleteCodeType(CodeType)}.
-   *
-   * <p>Method under test: {@link CodeTypeServiceImpl#deleteCodeType(CodeType)}
+   * <p>
+   * Method under test: {@link CodeTypeServiceImpl#deleteCodeType(CodeType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CodeTypeServiceImpl.deleteCodeType(CodeType)"})
   public void testDeleteCodeType() {
     // Arrange
@@ -67,12 +68,11 @@ public class CodeTypeServiceImplDiffblueTest {
 
   /**
    * Test {@link CodeTypeServiceImpl#findAllCodeTypes()}.
-   *
-   * <p>Method under test: {@link CodeTypeServiceImpl#findAllCodeTypes()}
+   * <p>
+   * Method under test: {@link CodeTypeServiceImpl#findAllCodeTypes()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CodeTypeServiceImpl.findAllCodeTypes()"})
   public void testFindAllCodeTypes() {
     // Arrange
@@ -88,12 +88,11 @@ public class CodeTypeServiceImplDiffblueTest {
 
   /**
    * Test {@link CodeTypeServiceImpl#lookupCodeTypeById(Long)}.
-   *
-   * <p>Method under test: {@link CodeTypeServiceImpl#lookupCodeTypeById(Long)}
+   * <p>
+   * Method under test: {@link CodeTypeServiceImpl#lookupCodeTypeById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CodeType CodeTypeServiceImpl.lookupCodeTypeById(Long)"})
   public void testLookupCodeTypeById() {
     // Arrange
@@ -104,18 +103,17 @@ public class CodeTypeServiceImplDiffblueTest {
     CodeType actualLookupCodeTypeByIdResult = codeTypeServiceImpl.lookupCodeTypeById(1L);
 
     // Assert
-    verify(codeTypeDao).readCodeTypeById(1L);
+    verify(codeTypeDao).readCodeTypeById(eq(1L));
     assertSame(codeTypeImpl, actualLookupCodeTypeByIdResult);
   }
 
   /**
    * Test {@link CodeTypeServiceImpl#lookupCodeTypeByKey(String)}.
-   *
-   * <p>Method under test: {@link CodeTypeServiceImpl#lookupCodeTypeByKey(String)}
+   * <p>
+   * Method under test: {@link CodeTypeServiceImpl#lookupCodeTypeByKey(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CodeTypeServiceImpl.lookupCodeTypeByKey(String)"})
   public void testLookupCodeTypeByKey() {
     // Arrange
@@ -125,18 +123,17 @@ public class CodeTypeServiceImplDiffblueTest {
     List<CodeType> actualLookupCodeTypeByKeyResult = codeTypeServiceImpl.lookupCodeTypeByKey("Key");
 
     // Assert
-    verify(codeTypeDao).readCodeTypeByKey("Key");
+    verify(codeTypeDao).readCodeTypeByKey(eq("Key"));
     assertTrue(actualLookupCodeTypeByKeyResult.isEmpty());
   }
 
   /**
    * Test {@link CodeTypeServiceImpl#save(CodeType)}.
-   *
-   * <p>Method under test: {@link CodeTypeServiceImpl#save(CodeType)}
+   * <p>
+   * Method under test: {@link CodeTypeServiceImpl#save(CodeType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CodeType CodeTypeServiceImpl.save(CodeType)"})
   public void testSave() {
     // Arrange

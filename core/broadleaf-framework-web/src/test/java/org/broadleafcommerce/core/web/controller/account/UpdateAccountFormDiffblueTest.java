@@ -18,7 +18,6 @@
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -27,9 +26,8 @@ import org.junit.jupiter.api.Test;
 class UpdateAccountFormDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link UpdateAccountForm}
    *   <li>{@link UpdateAccountForm#setEmailAddress(String)}
@@ -42,17 +40,11 @@ class UpdateAccountFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void UpdateAccountForm.<init>()",
-    "String UpdateAccountForm.getEmailAddress()",
-    "String UpdateAccountForm.getFirstName()",
-    "String UpdateAccountForm.getLastName()",
-    "void UpdateAccountForm.setEmailAddress(String)",
-    "void UpdateAccountForm.setFirstName(String)",
-    "void UpdateAccountForm.setLastName(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void UpdateAccountForm.<init>()", "String UpdateAccountForm.getEmailAddress()",
+      "String UpdateAccountForm.getFirstName()", "String UpdateAccountForm.getLastName()",
+      "void UpdateAccountForm.setEmailAddress(String)", "void UpdateAccountForm.setFirstName(String)",
+      "void UpdateAccountForm.setLastName(String)"})
   void testGettersAndSetters() {
     // Arrange and Act
     UpdateAccountForm actualUpdateAccountForm = new UpdateAccountForm();

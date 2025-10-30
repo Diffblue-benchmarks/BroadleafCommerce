@@ -22,7 +22,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.notification.service.NotificationDispatcher;
@@ -40,36 +39,31 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {BroadleafContactUsController.class})
 @ExtendWith(SpringExtension.class)
 class BroadleafContactUsControllerDiffblueTest {
-  @Autowired private BroadleafContactUsController broadleafContactUsController;
+  @Autowired
+  private BroadleafContactUsController broadleafContactUsController;
 
   @MockBean(name = "blNotificationDispatcher")
   private NotificationDispatcher notificationDispatcher;
 
   /**
    * Test {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}.
-   *
    * <ul>
-   *   <li>Then return {@code contactus/success}.
+   *   <li>Then return {@code contactus/success}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafContactUsController#sendConfirmationEmail(String, String,
-   * String)}
+   * <p>
+   * Method under test: {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}
    */
   @Test
-  @DisplayName(
-      "Test sendConfirmationEmail(String, String, String); then return 'contactus/success'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafContactUsController.sendConfirmationEmail(String, String, String)"
-  })
+  @DisplayName("Test sendConfirmationEmail(String, String, String); then return 'contactus/success'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafContactUsController.sendConfirmationEmail(String, String, String)"})
   void testSendConfirmationEmail_thenReturnContactusSuccess() throws ServiceException {
     // Arrange
     doNothing().when(notificationDispatcher).dispatchNotification(Mockito.<Notification>any());
 
     // Act
-    String actualSendConfirmationEmailResult =
-        broadleafContactUsController.sendConfirmationEmail("Name", "42 Main St", "Comments");
+    String actualSendConfirmationEmailResult = broadleafContactUsController.sendConfirmationEmail("Name", "42 Main St",
+        "Comments");
 
     // Assert
     verify(notificationDispatcher).dispatchNotification(isA(Notification.class));
@@ -78,31 +72,24 @@ class BroadleafContactUsControllerDiffblueTest {
 
   /**
    * Test {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}.
-   *
    * <ul>
-   *   <li>Then return {@code redirect:/contactus}.
+   *   <li>Then return {@code redirect:/contactus}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafContactUsController#sendConfirmationEmail(String, String,
-   * String)}
+   * <p>
+   * Method under test: {@link BroadleafContactUsController#sendConfirmationEmail(String, String, String)}
    */
   @Test
-  @DisplayName(
-      "Test sendConfirmationEmail(String, String, String); then return 'redirect:/contactus'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafContactUsController.sendConfirmationEmail(String, String, String)"
-  })
+  @DisplayName("Test sendConfirmationEmail(String, String, String); then return 'redirect:/contactus'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafContactUsController.sendConfirmationEmail(String, String, String)"})
   void testSendConfirmationEmail_thenReturnRedirectContactus() throws ServiceException {
     // Arrange
-    doThrow(new ServiceException("An error occurred"))
-        .when(notificationDispatcher)
+    doThrow(new ServiceException("An error occurred")).when(notificationDispatcher)
         .dispatchNotification(Mockito.<Notification>any());
 
     // Act
-    String actualSendConfirmationEmailResult =
-        broadleafContactUsController.sendConfirmationEmail("Name", "42 Main St", "Comments");
+    String actualSendConfirmationEmailResult = broadleafContactUsController.sendConfirmationEmail("Name", "42 Main St",
+        "Comments");
 
     // Assert
     verify(notificationDispatcher).dispatchNotification(isA(Notification.class));
@@ -111,13 +98,12 @@ class BroadleafContactUsControllerDiffblueTest {
 
   /**
    * Test {@link BroadleafContactUsController#index()}.
-   *
-   * <p>Method under test: {@link BroadleafContactUsController#index()}
+   * <p>
+   * Method under test: {@link BroadleafContactUsController#index()}
    */
   @Test
   @DisplayName("Test index()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String BroadleafContactUsController.index()"})
   void testIndex() {
     // Arrange, Act and Assert
@@ -126,9 +112,8 @@ class BroadleafContactUsControllerDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafContactUsController}
    *   <li>{@link BroadleafContactUsController#getPath()}
@@ -138,18 +123,12 @@ class BroadleafContactUsControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafContactUsController.<init>()",
-    "String BroadleafContactUsController.getPath()",
-    "String BroadleafContactUsController.getSuccessView()",
-    "String BroadleafContactUsController.getView()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafContactUsController.<init>()", "String BroadleafContactUsController.getPath()",
+      "String BroadleafContactUsController.getSuccessView()", "String BroadleafContactUsController.getView()"})
   void testGettersAndSetters() {
     // Arrange and Act
-    BroadleafContactUsController actualBroadleafContactUsController =
-        new BroadleafContactUsController();
+    BroadleafContactUsController actualBroadleafContactUsController = new BroadleafContactUsController();
     String actualPath = actualBroadleafContactUsController.getPath();
     String actualSuccessView = actualBroadleafContactUsController.getSuccessView();
 

@@ -26,8 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -51,249 +50,273 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PaymentLogImplDiffblueTest {
-  @Autowired private PaymentLogImpl paymentLogImpl;
+  @Autowired
+  private PaymentLogImpl paymentLogImpl;
 
   /**
    * Test {@link PaymentLogImpl#setTransactionType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link PaymentLogImpl#setTransactionType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#setTransactionType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PaymentLogImpl.setTransactionType(PaymentTransactionType)"})
   public void testSetTransactionType() {
     // Arrange
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
     PaymentTransactionType transactionType = new PaymentTransactionType("Type", "Friendly Type");
 
     // Act
-    paymentLogImpl.setTransactionType(transactionType);
+    paymentLogImpl2.setTransactionType(transactionType);
 
     // Assert
-    assertEquals("Type", paymentLogImpl.transactionType);
-    assertEquals(transactionType, paymentLogImpl.getTransactionType());
+    assertEquals("Type", paymentLogImpl2.transactionType);
+    assertEquals(transactionType, paymentLogImpl2.getTransactionType());
   }
 
   /**
    * Test {@link PaymentLogImpl#setTransactionType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>Given {@code Type}.
-   *   <li>Then {@link PaymentLogImpl} TransactionType Type is {@code Type}.
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link PaymentLogImpl} (default constructor) TransactionType Type is {@code Type}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#setTransactionType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#setTransactionType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PaymentLogImpl.setTransactionType(PaymentTransactionType)"})
   public void testSetTransactionType_givenType_thenPaymentLogImplTransactionTypeTypeIsType() {
     // Arrange
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
     PaymentTransactionType transactionType = mock(PaymentTransactionType.class);
     when(transactionType.getType()).thenReturn("Type");
 
     // Act
-    paymentLogImpl.setTransactionType(transactionType);
+    paymentLogImpl2.setTransactionType(transactionType);
 
     // Assert
     verify(transactionType).getType();
-    assertEquals("Type", paymentLogImpl.getTransactionType().getType());
-    assertEquals("Type", paymentLogImpl.transactionType);
-  }
-
-  /**
-   * Test {@link PaymentLogImpl#getLogType()}.
-   *
-   * <p>Method under test: {@link PaymentLogImpl#getLogType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PaymentLogEventType PaymentLogImpl.getLogType()"})
-  public void testGetLogType() {
-    // Arrange, Act and Assert
-    assertNull(paymentLogImpl.getLogType());
+    assertEquals("Type", paymentLogImpl2.getTransactionType().getType());
+    assertEquals("Type", paymentLogImpl2.transactionType);
   }
 
   /**
    * Test {@link PaymentLogImpl#setLogType(PaymentLogEventType)}.
-   *
-   * <p>Method under test: {@link PaymentLogImpl#setLogType(PaymentLogEventType)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#setLogType(PaymentLogEventType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PaymentLogImpl.setLogType(PaymentLogEventType)"})
   public void testSetLogType() {
     // Arrange
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
     PaymentLogEventType logType = new PaymentLogEventType("Type", "Friendly Type");
 
     // Act
-    paymentLogImpl.setLogType(logType);
+    paymentLogImpl2.setLogType(logType);
 
     // Assert
-    assertEquals("Type", paymentLogImpl.logType);
-    assertEquals(logType, paymentLogImpl.getLogType());
+    assertEquals("Type", paymentLogImpl2.logType);
+    assertEquals(logType, paymentLogImpl2.getLogType());
   }
 
   /**
    * Test {@link PaymentLogImpl#setLogType(PaymentLogEventType)}.
-   *
    * <ul>
-   *   <li>Given {@code Type}.
-   *   <li>Then {@link PaymentLogImpl} LogType Type is {@code Type}.
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link PaymentLogImpl} (default constructor) LogType Type is {@code Type}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#setLogType(PaymentLogEventType)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#setLogType(PaymentLogEventType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PaymentLogImpl.setLogType(PaymentLogEventType)"})
   public void testSetLogType_givenType_thenPaymentLogImplLogTypeTypeIsType() {
     // Arrange
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
     PaymentLogEventType logType = mock(PaymentLogEventType.class);
     when(logType.getType()).thenReturn("Type");
 
     // Act
-    paymentLogImpl.setLogType(logType);
+    paymentLogImpl2.setLogType(logType);
 
     // Assert
     verify(logType).getType();
-    assertEquals("Type", paymentLogImpl.getLogType().getType());
-    assertEquals("Type", paymentLogImpl.logType);
+    assertEquals("Type", paymentLogImpl2.getLogType().getType());
+    assertEquals("Type", paymentLogImpl2.logType);
   }
 
   /**
    * Test {@link PaymentLogImpl#getTransactionSuccess()}.
-   *
    * <ul>
-   *   <li>Given {@link PaymentLogImpl} TransactionSuccess is {@code null}.
+   *   <li>Given {@link PaymentLogImpl} (default constructor) TransactionSuccess is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#getTransactionSuccess()}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#getTransactionSuccess()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean PaymentLogImpl.getTransactionSuccess()"})
   public void testGetTransactionSuccess_givenPaymentLogImplTransactionSuccessIsNull() {
     // Arrange
-    paymentLogImpl.setTransactionSuccess(null);
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
+    paymentLogImpl2.setAmountPaid(new Money());
+    paymentLogImpl2.setCurrency(new BroadleafCurrencyImpl());
+    paymentLogImpl2.setCustomer(new CustomerImpl());
+    paymentLogImpl2.setExceptionMessage("An error occurred");
+    paymentLogImpl2.setId(1L);
+    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
+    paymentLogImpl2.setPaymentInfoId(1L);
+    paymentLogImpl2.setPaymentInfoReferenceNumber("42");
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentLogImpl2.setUserName("janedoe");
+    paymentLogImpl2.setTransactionSuccess(null);
 
     // Act and Assert
-    assertFalse(paymentLogImpl.getTransactionSuccess());
+    assertFalse(paymentLogImpl2.getTransactionSuccess());
   }
 
   /**
    * Test {@link PaymentLogImpl#getTransactionSuccess()}.
-   *
    * <ul>
-   *   <li>Given {@link PaymentLogImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link PaymentLogImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#getTransactionSuccess()}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#getTransactionSuccess()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean PaymentLogImpl.getTransactionSuccess()"})
   public void testGetTransactionSuccess_givenPaymentLogImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(paymentLogImpl.getTransactionSuccess());
+    assertFalse((new PaymentLogImpl()).getTransactionSuccess());
   }
 
   /**
    * Test {@link PaymentLogImpl#getTransactionSuccess()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#getTransactionSuccess()}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#getTransactionSuccess()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean PaymentLogImpl.getTransactionSuccess()"})
   public void testGetTransactionSuccess_thenReturnTrue() {
     // Arrange
-    paymentLogImpl.setTransactionSuccess(true);
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
+    paymentLogImpl2.setAmountPaid(new Money());
+    paymentLogImpl2.setCurrency(new BroadleafCurrencyImpl());
+    paymentLogImpl2.setCustomer(new CustomerImpl());
+    paymentLogImpl2.setExceptionMessage("An error occurred");
+    paymentLogImpl2.setId(1L);
+    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
+    paymentLogImpl2.setPaymentInfoId(1L);
+    paymentLogImpl2.setPaymentInfoReferenceNumber("42");
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentLogImpl2.setUserName("janedoe");
+    paymentLogImpl2.setTransactionSuccess(true);
 
     // Act and Assert
-    assertTrue(paymentLogImpl.getTransactionSuccess());
+    assertTrue(paymentLogImpl2.getTransactionSuccess());
   }
 
   /**
    * Test {@link PaymentLogImpl#getAmountPaid()}.
-   *
    * <ul>
-   *   <li>Given {@link PaymentLogImpl} Currency is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link PaymentLogImpl} (default constructor) Currency is {@code null}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#getAmountPaid()}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#getAmountPaid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money PaymentLogImpl.getAmountPaid()"})
   public void testGetAmountPaid_givenPaymentLogImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
+    paymentLogImpl2.setCustomer(new CustomerImpl());
+    paymentLogImpl2.setExceptionMessage("An error occurred");
+    paymentLogImpl2.setId(1L);
+    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
+    paymentLogImpl2.setPaymentInfoId(1L);
+    paymentLogImpl2.setPaymentInfoReferenceNumber("42");
+    paymentLogImpl2.setTransactionSuccess(true);
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentLogImpl2.setUserName("janedoe");
     Money amountPaid = new Money();
-    paymentLogImpl.setAmountPaid(amountPaid);
-    paymentLogImpl.setCurrency(null);
+    paymentLogImpl2.setAmountPaid(amountPaid);
+    paymentLogImpl2.setCurrency(null);
 
     // Act and Assert
-    assertEquals(amountPaid, paymentLogImpl.getAmountPaid());
+    assertEquals(amountPaid, paymentLogImpl2.getAmountPaid());
   }
 
   /**
    * Test {@link PaymentLogImpl#getAmountPaid()}.
-   *
    * <ul>
-   *   <li>Given {@link PaymentLogImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link PaymentLogImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#getAmountPaid()}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#getAmountPaid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money PaymentLogImpl.getAmountPaid()"})
   public void testGetAmountPaid_givenPaymentLogImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(paymentLogImpl.getAmountPaid());
+    assertNull((new PaymentLogImpl()).getAmountPaid());
   }
 
   /**
    * Test {@link PaymentLogImpl#getAmountPaid()}.
-   *
    * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   *   <li>Then return Currency DisplayName is {@code British Pound}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#getAmountPaid()}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#getAmountPaid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money PaymentLogImpl.getAmountPaid()"})
   public void testGetAmountPaid_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
+    BroadleafCurrencyImpl currency = mock(BroadleafCurrencyImpl.class);
     when(currency.getCurrencyCode()).thenReturn("GBP");
-    paymentLogImpl.setAmountPaid(new Money());
-    paymentLogImpl.setCurrency(currency);
+
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
+    paymentLogImpl2.setCustomer(new CustomerImpl());
+    paymentLogImpl2.setExceptionMessage("An error occurred");
+    paymentLogImpl2.setId(1L);
+    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
+    paymentLogImpl2.setPaymentInfoId(1L);
+    paymentLogImpl2.setPaymentInfoReferenceNumber("42");
+    paymentLogImpl2.setTransactionSuccess(true);
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
+    paymentLogImpl2.setUserName("janedoe");
+    paymentLogImpl2.setAmountPaid(new Money());
+    paymentLogImpl2.setCurrency(currency);
 
     // Act
-    Money actualAmountPaid = paymentLogImpl.getAmountPaid();
+    Money actualAmountPaid = paymentLogImpl2.getAmountPaid();
 
     // Assert
     verify(currency).getCurrencyCode();
@@ -303,37 +326,33 @@ public class PaymentLogImplDiffblueTest {
     assertEquals("GBP", currency2.toString());
     assertEquals("£", currency2.getSymbol());
     assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualAmountPaid.abs();
-    assertEquals(actualAmountPaid, actualAbsResult);
-    Money actualZeroResult = actualAmountPaid.zero();
-    assertEquals(actualAmountPaid, actualZeroResult);
+    assertEquals(actualAmountPaid, actualAmountPaid.abs());
+    assertEquals(actualAmountPaid, actualAmountPaid.zero());
   }
 
   /**
    * Test {@link PaymentLogImpl#setAmountPaid(Money)}.
-   *
    * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link PaymentLogImpl} {@link PaymentLogImpl#amountPaid} is {@link
-   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
+   *   <li>When {@link Money#Money()}.</li>
+   *   <li>Then {@link PaymentLogImpl} (default constructor) {@link PaymentLogImpl#amountPaid} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#setAmountPaid(Money)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#setAmountPaid(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PaymentLogImpl.setAmountPaid(Money)"})
   public void testSetAmountPaid_whenMoney_thenPaymentLogImplAmountPaidIsBigDecimalWith000() {
     // Arrange
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
     Money amountPaid = new Money();
 
     // Act
-    paymentLogImpl.setAmountPaid(amountPaid);
+    paymentLogImpl2.setAmountPaid(amountPaid);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), paymentLogImpl.amountPaid);
-    BigDecimal bigDecimal = paymentLogImpl.amountPaid;
+    assertEquals(new BigDecimal("0.00"), paymentLogImpl2.amountPaid);
+    BigDecimal bigDecimal = paymentLogImpl2.amountPaid;
     Money absResult = amountPaid.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -358,44 +377,42 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#setAmountPaid(Money)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link PaymentLogImpl} {@link PaymentLogImpl#amountPaid} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link PaymentLogImpl} (default constructor) {@link PaymentLogImpl#amountPaid} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#setAmountPaid(Money)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#setAmountPaid(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PaymentLogImpl.setAmountPaid(Money)"})
   public void testSetAmountPaid_whenNull_thenPaymentLogImplAmountPaidIsNull() {
-    // Arrange and Act
-    paymentLogImpl.setAmountPaid(null);
+    // Arrange
+    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
+
+    // Act
+    paymentLogImpl2.setAmountPaid(null);
 
     // Assert that nothing has changed
-    assertNull(paymentLogImpl.amountPaid);
+    assertNull(paymentLogImpl2.amountPaid);
   }
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PaymentLogImpl#equals(Object)}
    *   <li>{@link PaymentLogImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -409,8 +426,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -424,34 +441,32 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
     // Act and Assert
     assertEquals(paymentLogImpl, paymentLogImpl2);
-    assertEquals(paymentLogImpl.hashCode(), paymentLogImpl2.hashCode());
+    int expectedHashCodeResult = paymentLogImpl.hashCode();
+    assertEquals(expectedHashCodeResult, paymentLogImpl2.hashCode());
   }
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PaymentLogImpl#equals(Object)}
    *   <li>{@link PaymentLogImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -465,8 +480,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -480,34 +495,32 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
     // Act and Assert
     assertEquals(paymentLogImpl, paymentLogImpl2);
-    assertEquals(paymentLogImpl.hashCode(), paymentLogImpl2.hashCode());
+    int expectedHashCodeResult = paymentLogImpl.hashCode();
+    assertEquals(expectedHashCodeResult, paymentLogImpl2.hashCode());
   }
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PaymentLogImpl#equals(Object)}
    *   <li>{@link PaymentLogImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -521,8 +534,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -536,312 +549,32 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
     // Act and Assert
     assertEquals(paymentLogImpl, paymentLogImpl2);
-    assertEquals(paymentLogImpl.hashCode(), paymentLogImpl2.hashCode());
+    int expectedHashCodeResult = paymentLogImpl.hashCode();
+    assertEquals(expectedHashCodeResult, paymentLogImpl2.hashCode());
   }
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PaymentLogImpl#equals(Object)}
    *   <li>{@link PaymentLogImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
-    // Arrange
-    PaymentLogImpl paymentLogImpl = new PaymentLogImpl();
-    paymentLogImpl.setAmountPaid(new Money());
-    paymentLogImpl.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl.setCustomer(null);
-    paymentLogImpl.setExceptionMessage("An error occurred");
-    paymentLogImpl.setId(null);
-    paymentLogImpl.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl.setPaymentInfoId(1L);
-    paymentLogImpl.setPaymentInfoReferenceNumber("42");
-    paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl.setUserName("janedoe");
-
-    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
-    paymentLogImpl2.setAmountPaid(new Money());
-    paymentLogImpl2.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl2.setCustomer(null);
-    paymentLogImpl2.setExceptionMessage("An error occurred");
-    paymentLogImpl2.setId(1L);
-    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl2.setPaymentInfoId(1L);
-    paymentLogImpl2.setPaymentInfoReferenceNumber("42");
-    paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl2.setUserName("janedoe");
-
-    // Act and Assert
-    assertEquals(paymentLogImpl, paymentLogImpl2);
-    assertEquals(paymentLogImpl.hashCode(), paymentLogImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PaymentLogImpl#equals(Object)}
-   *   <li>{@link PaymentLogImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
-    // Arrange
-    PaymentLogImpl paymentLogImpl = new PaymentLogImpl();
-    paymentLogImpl.setAmountPaid(new Money());
-    paymentLogImpl.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl.setCustomer(new CustomerImpl());
-    paymentLogImpl.setExceptionMessage("An error occurred");
-    paymentLogImpl.setId(null);
-    paymentLogImpl.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl.setPaymentInfoId(null);
-    paymentLogImpl.setPaymentInfoReferenceNumber("42");
-    paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl.setUserName("janedoe");
-
-    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
-    paymentLogImpl2.setAmountPaid(new Money());
-    paymentLogImpl2.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl2.setCustomer(new CustomerImpl());
-    paymentLogImpl2.setExceptionMessage("An error occurred");
-    paymentLogImpl2.setId(1L);
-    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl2.setPaymentInfoId(null);
-    paymentLogImpl2.setPaymentInfoReferenceNumber("42");
-    paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl2.setUserName("janedoe");
-
-    // Act and Assert
-    assertEquals(paymentLogImpl, paymentLogImpl2);
-    assertEquals(paymentLogImpl.hashCode(), paymentLogImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PaymentLogImpl#equals(Object)}
-   *   <li>{@link PaymentLogImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
-    // Arrange
-    PaymentLogImpl paymentLogImpl = new PaymentLogImpl();
-    paymentLogImpl.setAmountPaid(new Money());
-    paymentLogImpl.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl.setCustomer(new CustomerImpl());
-    paymentLogImpl.setExceptionMessage("An error occurred");
-    paymentLogImpl.setId(null);
-    paymentLogImpl.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl.setPaymentInfoId(1L);
-    paymentLogImpl.setPaymentInfoReferenceNumber(null);
-    paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl.setUserName("janedoe");
-
-    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
-    paymentLogImpl2.setAmountPaid(new Money());
-    paymentLogImpl2.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl2.setCustomer(new CustomerImpl());
-    paymentLogImpl2.setExceptionMessage("An error occurred");
-    paymentLogImpl2.setId(1L);
-    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl2.setPaymentInfoId(1L);
-    paymentLogImpl2.setPaymentInfoReferenceNumber(null);
-    paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl2.setUserName("janedoe");
-
-    // Act and Assert
-    assertEquals(paymentLogImpl, paymentLogImpl2);
-    assertEquals(paymentLogImpl.hashCode(), paymentLogImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PaymentLogImpl#equals(Object)}
-   *   <li>{@link PaymentLogImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
-    // Arrange
-    PaymentLogImpl paymentLogImpl = new PaymentLogImpl();
-    paymentLogImpl.setAmountPaid(new Money());
-    paymentLogImpl.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl.setCustomer(new CustomerImpl());
-    paymentLogImpl.setExceptionMessage("An error occurred");
-    paymentLogImpl.setId(null);
-    paymentLogImpl.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl.setPaymentInfoId(1L);
-    paymentLogImpl.setPaymentInfoReferenceNumber("42");
-    paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(null);
-    paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl.setUserName("janedoe");
-
-    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
-    paymentLogImpl2.setAmountPaid(new Money());
-    paymentLogImpl2.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl2.setCustomer(new CustomerImpl());
-    paymentLogImpl2.setExceptionMessage("An error occurred");
-    paymentLogImpl2.setId(1L);
-    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl2.setPaymentInfoId(1L);
-    paymentLogImpl2.setPaymentInfoReferenceNumber("42");
-    paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(null);
-    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl2.setUserName("janedoe");
-
-    // Act and Assert
-    assertEquals(paymentLogImpl, paymentLogImpl2);
-    assertEquals(paymentLogImpl.hashCode(), paymentLogImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PaymentLogImpl#equals(Object)}
-   *   <li>{@link PaymentLogImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual8() {
-    // Arrange
-    PaymentLogImpl paymentLogImpl = new PaymentLogImpl();
-    paymentLogImpl.setAmountPaid(new Money());
-    paymentLogImpl.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl.setCustomer(new CustomerImpl());
-    paymentLogImpl.setExceptionMessage("An error occurred");
-    paymentLogImpl.setId(null);
-    paymentLogImpl.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl.setPaymentInfoId(1L);
-    paymentLogImpl.setPaymentInfoReferenceNumber("42");
-    paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl.setUserName(null);
-
-    PaymentLogImpl paymentLogImpl2 = new PaymentLogImpl();
-    paymentLogImpl2.setAmountPaid(new Money());
-    paymentLogImpl2.setCurrency(new BroadleafCurrencyImpl());
-    paymentLogImpl2.setCustomer(new CustomerImpl());
-    paymentLogImpl2.setExceptionMessage("An error occurred");
-    paymentLogImpl2.setId(1L);
-    paymentLogImpl2.setLogType(new PaymentLogEventType("Type", "Friendly Type"));
-    paymentLogImpl2.setPaymentInfoId(1L);
-    paymentLogImpl2.setPaymentInfoReferenceNumber("42");
-    paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
-    paymentLogImpl2.setUserName(null);
-
-    // Act and Assert
-    assertEquals(paymentLogImpl, paymentLogImpl2);
-    assertEquals(paymentLogImpl.hashCode(), paymentLogImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link PaymentLogImpl#equals(Object)}, and {@link PaymentLogImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PaymentLogImpl#equals(Object)}
-   *   <li>{@link PaymentLogImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -855,8 +588,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -868,17 +601,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -892,8 +623,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -907,8 +638,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -918,17 +649,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -942,8 +671,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -957,8 +686,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -968,17 +697,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
@@ -992,8 +719,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -1007,8 +734,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1018,17 +745,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
@@ -1042,8 +767,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(2L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -1057,8 +782,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1068,17 +793,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
@@ -1092,8 +815,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(null);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -1107,8 +830,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1118,17 +841,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
@@ -1142,8 +863,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("janedoe");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -1157,8 +878,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1168,17 +889,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
@@ -1192,8 +911,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber(null);
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -1207,8 +926,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1218,17 +937,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
@@ -1242,7 +959,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(new Date());
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -1256,8 +974,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1267,17 +985,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
@@ -1305,8 +1021,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1316,17 +1032,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
@@ -1340,8 +1054,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("42");
 
@@ -1355,8 +1069,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1366,17 +1080,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
@@ -1390,8 +1102,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName(null);
 
@@ -1405,8 +1117,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl2.setPaymentInfoId(1L);
     paymentLogImpl2.setPaymentInfoReferenceNumber("42");
     paymentLogImpl2.setTransactionSuccess(true);
-    paymentLogImpl2.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl2
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl2.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl2.setUserName("janedoe");
 
@@ -1416,17 +1128,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -1440,8 +1150,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -1451,17 +1161,15 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test {@link PaymentLogImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentLogImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link PaymentLogImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PaymentLogImpl.equals(Object)", "int PaymentLogImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -1475,8 +1183,8 @@ public class PaymentLogImplDiffblueTest {
     paymentLogImpl.setPaymentInfoId(1L);
     paymentLogImpl.setPaymentInfoReferenceNumber("42");
     paymentLogImpl.setTransactionSuccess(true);
-    paymentLogImpl.setTransactionTimestamp(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentLogImpl
+        .setTransactionTimestamp(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentLogImpl.setTransactionType(new PaymentTransactionType("Type", "Friendly Type"));
     paymentLogImpl.setUserName("janedoe");
 
@@ -1486,9 +1194,8 @@ public class PaymentLogImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PaymentLogImpl}
    *   <li>{@link PaymentLogImpl#setCurrency(BroadleafCurrency)}
@@ -1511,28 +1218,16 @@ public class PaymentLogImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentLogImpl.<init>()",
-    "BroadleafCurrency PaymentLogImpl.getCurrency()",
-    "Customer PaymentLogImpl.getCustomer()",
-    "String PaymentLogImpl.getExceptionMessage()",
-    "Long PaymentLogImpl.getId()",
-    "Long PaymentLogImpl.getPaymentInfoId()",
-    "String PaymentLogImpl.getPaymentInfoReferenceNumber()",
-    "Date PaymentLogImpl.getTransactionTimestamp()",
-    "String PaymentLogImpl.getUserName()",
-    "void PaymentLogImpl.setCurrency(BroadleafCurrency)",
-    "void PaymentLogImpl.setCustomer(Customer)",
-    "void PaymentLogImpl.setExceptionMessage(String)",
-    "void PaymentLogImpl.setId(Long)",
-    "void PaymentLogImpl.setPaymentInfoId(Long)",
-    "void PaymentLogImpl.setPaymentInfoReferenceNumber(String)",
-    "void PaymentLogImpl.setTransactionSuccess(Boolean)",
-    "void PaymentLogImpl.setTransactionTimestamp(Date)",
-    "void PaymentLogImpl.setUserName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PaymentLogImpl.<init>()", "BroadleafCurrency PaymentLogImpl.getCurrency()",
+      "Customer PaymentLogImpl.getCustomer()", "String PaymentLogImpl.getExceptionMessage()",
+      "Long PaymentLogImpl.getId()", "Long PaymentLogImpl.getPaymentInfoId()",
+      "String PaymentLogImpl.getPaymentInfoReferenceNumber()", "Date PaymentLogImpl.getTransactionTimestamp()",
+      "String PaymentLogImpl.getUserName()", "void PaymentLogImpl.setCurrency(BroadleafCurrency)",
+      "void PaymentLogImpl.setCustomer(Customer)", "void PaymentLogImpl.setExceptionMessage(String)",
+      "void PaymentLogImpl.setId(Long)", "void PaymentLogImpl.setPaymentInfoId(Long)",
+      "void PaymentLogImpl.setPaymentInfoReferenceNumber(String)", "void PaymentLogImpl.setTransactionSuccess(Boolean)",
+      "void PaymentLogImpl.setTransactionTimestamp(Date)", "void PaymentLogImpl.setUserName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PaymentLogImpl actualPaymentLogImpl = new PaymentLogImpl();
@@ -1545,8 +1240,7 @@ public class PaymentLogImplDiffblueTest {
     actualPaymentLogImpl.setPaymentInfoId(1L);
     actualPaymentLogImpl.setPaymentInfoReferenceNumber("42");
     actualPaymentLogImpl.setTransactionSuccess(true);
-    Date transactionTimestamp =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date transactionTimestamp = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     actualPaymentLogImpl.setTransactionTimestamp(transactionTimestamp);
     actualPaymentLogImpl.setUserName("janedoe");
     BroadleafCurrency actualCurrency = actualPaymentLogImpl.getCurrency();

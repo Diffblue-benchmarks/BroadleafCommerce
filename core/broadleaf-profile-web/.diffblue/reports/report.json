@@ -1,21 +1,21 @@
 {
   "meta" : {
-    "reportVersion" : "2.7"
+    "reportVersion" : "2.6"
   },
   "run" : {
-    "version" : "2025.09.01-44e352d-licensed",
-    "creationTimestamp" : "2025-10-15T16:07:16.260043423Z",
+    "version" : "2025.02.02-08b2a5a-licensed",
+    "creationTimestamp" : "2025-10-29T11:36:42.178749164Z",
     "command" : "dcover create --coverage-reports --upload http://localhost:8080 --project-name BroadleafCommerce --name with-diffblue-tests",
-    "totalTime" : 510.676,
-    "environmentDetectionTime" : 0.097,
-    "indexingTime" : 0.381,
-    "entryPointsTime" : 0.088,
-    "generationTime" : 29033.523,
-    "timeToFirstTest" : 2417.281,
-    "timeToLastTest" : 30179.691,
-    "indexQueryTime" : 7.2170000000000005,
-    "verificationTime" : 946.12,
-    "validationTime" : 13.851
+    "totalTime" : 389.661,
+    "environmentDetectionTime" : 0.378,
+    "indexingTime" : 0.333,
+    "entryPointsTime" : 0.373,
+    "generationTime" : 12350.332,
+    "timeToFirstTest" : 1340.665,
+    "timeToLastTest" : 13384.683,
+    "indexQueryTime" : 9.192,
+    "verificationTime" : 835.785,
+    "validationTime" : 26.271
   },
   "codes" : {
     "R000" : "Success",
@@ -33,7 +33,6 @@
     "T010" : "Abstract or interface method",
     "T012" : "Synthetic method",
     "T021" : "Empty method body",
-    "T023" : "Testability unknown",
     "V000" : "Validated successfully",
     "V003" : "Tests discarded during validation",
     "W002" : "Test compiled, but did not pass"
@@ -41,9 +40,9 @@
   "summary" : {
     "classesCount" : 35,
     "methodsCount" : 155,
-    "cumulativeDiffblueTestCount" : 118,
+    "cumulativeDiffblueTestCount" : 87,
     "cumulativeManualTestCount" : 0,
-    "completeTestCount" : 118,
+    "completeTestCount" : 87,
     "incompleteTestCount" : 0,
     "skeletonTestCount" : 0,
     "totalPhysicalLineCount" : 1412,
@@ -56,31 +55,29 @@
       "T005" : 19,
       "T007" : 1,
       "T010" : 8,
-      "T012" : 2,
-      "T021" : 4,
-      "T023" : 3
+      "T012" : 5,
+      "T021" : 4
     },
     "perMethodOutcome" : {
-      "R000" : 87,
+      "R000" : 86,
       "R002" : 13,
       "R004" : 1,
-      "R013" : 10,
-      "R027" : 7,
+      "R013" : 7,
+      "R027" : 11,
       "T003" : 2,
       "T004" : 2,
       "T005" : 17,
       "T007" : 1,
       "T010" : 8,
-      "T012" : 2,
-      "T023" : 3,
+      "T012" : 5,
       "W002" : 2
     },
     "perTestOutcome" : {
-      "R000" : 118
+      "R000" : 87
     },
     "perTestValidation" : {
-      "V000" : 118,
-      "V003" : 1
+      "V000" : 87,
+      "V003" : 6
     },
     "warnings" : {
       "W002" : 3
@@ -89,7 +86,7 @@
   "classes" : {
     "org.broadleafcommerce.profile.web.controller.CustomChallengeQuestionEditor" : {
       "methodsCount" : 3,
-      "completeTestCount" : 5,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -99,7 +96,7 @@
         "R000" : 3
       },
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 4
       }
     },
     "org.broadleafcommerce.profile.web.controller.CustomerPhoneController" : {
@@ -112,12 +109,16 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 5,
+        "R000" : 4,
         "R002" : 12,
-        "T005" : 1
+        "T005" : 1,
+        "W002" : 1
       },
       "perTestOutcome" : {
         "R000" : 5
+      },
+      "warnings" : {
+        "W002" : 1
       }
     },
     "org.broadleafcommerce.profile.web.controller.RegisterCustomerController" : {
@@ -158,7 +159,7 @@
     },
     "org.broadleafcommerce.profile.web.controller.validator.PhoneValidator" : {
       "methodsCount" : 3,
-      "completeTestCount" : 17,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -169,7 +170,7 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 17
+        "R000" : 4
       }
     },
     "org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator" : {
@@ -201,7 +202,7 @@
       },
       "perMethodOutcome" : {
         "R000" : 1,
-        "R013" : 3,
+        "R027" : 3,
         "T005" : 1
       },
       "perTestOutcome" : {
@@ -236,7 +237,7 @@
     },
     "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression" : {
       "methodsCount" : 7,
-      "completeTestCount" : 7,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 5,
@@ -249,7 +250,7 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 9
       }
     },
     "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression$1" : {
@@ -390,7 +391,7 @@
     },
     "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor" : {
       "methodsCount" : 13,
-      "completeTestCount" : 29,
+      "completeTestCount" : 17,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 9,
@@ -399,11 +400,11 @@
       },
       "perMethodOutcome" : {
         "R000" : 11,
-        "R013" : 1,
+        "R027" : 1,
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 29
+        "R000" : 17
       }
     },
     "org.broadleafcommerce.profile.web.core.security.DefaultCustomerMergeExtensionHandler" : {
@@ -429,13 +430,13 @@
         "T000" : 3,
         "T001" : 1,
         "T003" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
         "R013" : 1,
         "T003" : 1,
-        "T023" : 1,
+        "T012" : 1,
         "W002" : 1
       },
       "perTestOutcome" : {
@@ -514,7 +515,7 @@
     },
     "org.broadleafcommerce.profile.web.core.util.PhoneFormatterImpl" : {
       "methodsCount" : 3,
-      "completeTestCount" : 14,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
@@ -527,12 +528,12 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 14
+        "R000" : 9
       }
     },
     "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter" : {
       "methodsCount" : 6,
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
@@ -545,7 +546,7 @@
         "R000" : 6
       },
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       }
     },
     "org.broadleafcommerce.profile.web.email.EmailOpenTrackingServlet" : {
@@ -555,18 +556,15 @@
       "perMethodTestability" : {
         "T000" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 1,
-        "T023" : 1,
-        "W002" : 1
+        "R013" : 1,
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 1
-      },
-      "warnings" : {
-        "W002" : 1
       }
     },
     "org.broadleafcommerce.profile.web.site.security.CustomerStateFilter" : {
@@ -614,19 +612,19 @@
     },
     "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter" : {
       "methodsCount" : 4,
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "warnings" : {
         "W002" : 1
@@ -664,12 +662,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.controller.CustomChallengeQuestionEditor.setAsText:(Ljava/lang/String;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         45,
@@ -720,12 +718,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.makePhoneDefault:(Ljava/lang/Long;Ljavax/servlet/http/HttpServletRequest;)Ljava/lang/String;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
+      "perMethodOutcome" : "W002",
+      "warnings" : {
+        "W002" : 1
       },
       "lineNumbers" : [
         127,
@@ -735,12 +733,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.savePhone:(Lorg/broadleafcommerce/profile/web/core/model/PhoneNameForm;Lorg/springframework/validation/BindingResult;Ljavax/servlet/http/HttpServletRequest;Ljava/lang/Long;Ljava/lang/Long;)Ljava/lang/String;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         154,
@@ -1186,12 +1184,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.controller.validator.PhoneValidator.validate:(Ljava/lang/Object;Lorg/springframework/validation/Errors;)V" : {
-      "completeTestCount" : 15,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 15
+        "R000" : 2
       },
       "lineNumbers" : [
         36,
@@ -1317,7 +1315,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         39
       ]
@@ -1326,7 +1324,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         43
       ]
@@ -1335,7 +1333,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         55,
         56
@@ -1510,12 +1508,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression.sortCustomerPaymentsByDefault:(Ljava/util/List;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 4
       },
       "lineNumbers" : [
         90,
@@ -1841,12 +1839,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.copyAnonymousCustomerInfoToCustomer:(Lorg/springframework/web/context/request/WebRequest;Lorg/broadleafcommerce/profile/core/domain/Customer;Lorg/broadleafcommerce/profile/core/domain/Customer;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 2
       },
       "lineNumbers" : [
         204,
@@ -1863,12 +1861,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.getAnonymousCustomer:(Lorg/springframework/web/context/request/WebRequest;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 2
       },
       "lineNumbers" : [
         292,
@@ -1926,18 +1924,18 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         366
       ]
     },
     "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.mergeCustomerIfRequired:(Lorg/springframework/web/context/request/WebRequest;Lorg/broadleafcommerce/profile/core/domain/Customer;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 4
       },
       "lineNumbers" : [
         176,
@@ -1949,12 +1947,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.process:(Lorg/springframework/web/context/request/WebRequest;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         80,
@@ -2024,12 +2022,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.resolveAnonymousCustomer:(Lorg/springframework/web/context/request/WebRequest;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 3
       },
       "lineNumbers" : [
         265,
@@ -2093,8 +2091,11 @@
     "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        62
+      ]
     },
     "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter.<init>:()V" : {
       "completeTestCount" : 0,
@@ -2325,12 +2326,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.core.util.PhoneFormatterImpl.formatPhoneNumber:(Lorg/broadleafcommerce/profile/core/domain/Phone;)V" : {
-      "completeTestCount" : 14,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 14
+        "R000" : 9
       },
       "lineNumbers" : [
         27,
@@ -2383,12 +2384,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter.doFilter:(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;Ljavax/servlet/FilterChain;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         67,
@@ -2452,8 +2453,11 @@
     "org.broadleafcommerce.profile.web.email.EmailOpenTrackingServlet.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        46
+      ]
     },
     "org.broadleafcommerce.profile.web.email.EmailOpenTrackingServlet.<init>:()V" : {
       "completeTestCount" : 1,
@@ -2471,10 +2475,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         55,
         56,
@@ -2642,8 +2643,11 @@
     "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        60
+      ]
     },
     "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter.<init>:()V" : {
       "completeTestCount" : 0,
@@ -2672,12 +2676,12 @@
       ]
     },
     "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter.doFilter:(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;Ljavax/servlet/FilterChain;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "warnings" : {
         "W002" : 1
@@ -2709,6 +2713,5 @@
         118
       ]
     }
-  },
-  "validationMetrics" : { }
+  }
 }

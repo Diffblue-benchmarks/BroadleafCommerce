@@ -21,25 +21,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import org.broadleafcommerce.cms.page.dao.PageDao;
 import org.broadleafcommerce.cms.page.dao.PageDaoImpl;
 import org.broadleafcommerce.cms.page.domain.Page;
 import org.broadleafcommerce.cms.page.domain.PageImpl;
-import org.broadleafcommerce.cms.page.domain.PageTemplateImpl;
 import org.broadleafcommerce.common.file.domain.FileWorkArea;
 import org.broadleafcommerce.common.sitemap.domain.CustomUrlSiteMapGeneratorConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfigurationImpl;
@@ -59,72 +53,29 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PageSiteMapGeneratorDiffblueTest {
-  @Mock private PageDao pageDao;
+  @Mock
+  private PageDao pageDao;
 
-  @InjectMocks private PageSiteMapGenerator pageSiteMapGenerator;
-
-  /**
-   * Test {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapGeneratorType#PAGE}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"
-  })
-  public void testCanHandleSiteMapConfiguration_givenPage_thenReturnTrue() {
-    // Arrange
-    SiteMapGeneratorConfiguration siteMapGeneratorConfiguration =
-        mock(SiteMapGeneratorConfiguration.class);
-    when(siteMapGeneratorConfiguration.getSiteMapGeneratorType())
-        .thenReturn(SiteMapGeneratorType.PAGE);
-
-    // Act
-    boolean actualCanHandleSiteMapConfigurationResult =
-        pageSiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration);
-
-    // Assert
-    verify(siteMapGeneratorConfiguration).getSiteMapGeneratorType();
-    assertTrue(actualCanHandleSiteMapConfigurationResult);
-  }
+  @InjectMocks
+  private PageSiteMapGenerator pageSiteMapGenerator;
 
   /**
    * Test {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"
-  })
-  public void testCanHandleSiteMapConfiguration_givenTrue() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
+  public void testCanHandleSiteMapConfiguration() {
     // Arrange
-    SiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration =
-        new SiteMapGeneratorConfigurationImpl();
+    SiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = new SiteMapGeneratorConfigurationImpl();
     siteMapGeneratorConfiguration.setDisabled(true);
     siteMapGeneratorConfiguration.setId(1L);
-    siteMapGeneratorConfiguration.setSiteMapChangeFreq(
-        new SiteMapChangeFreqType("Type", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
     siteMapGeneratorConfiguration.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    siteMapGeneratorConfiguration.setSiteMapGeneratorType(
-        new SiteMapGeneratorType("Type", "Friendly Type"));
-    siteMapGeneratorConfiguration.setSiteMapPriority(
-        new SiteMapPriorityType("Type", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
 
     // Act and Assert
     assertFalse(pageSiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration));
@@ -132,40 +83,53 @@ public class PageSiteMapGeneratorDiffblueTest {
 
   /**
    * Test {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   *
    * <ul>
-   *   <li>When {@link CustomUrlSiteMapGeneratorConfigurationImpl} (default constructor).
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"
-  })
-  public void testCanHandleSiteMapConfiguration_whenCustomUrlSiteMapGeneratorConfigurationImpl() {
-    // Arrange, Act and Assert
-    assertFalse(
-        pageSiteMapGenerator.canHandleSiteMapConfiguration(
-            new CustomUrlSiteMapGeneratorConfigurationImpl()));
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
+  public void testCanHandleSiteMapConfiguration_thenReturnTrue() {
+    // Arrange
+    SiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = new SiteMapGeneratorConfigurationImpl();
+    siteMapGeneratorConfiguration.setDisabled(true);
+    siteMapGeneratorConfiguration.setId(1L);
+    siteMapGeneratorConfiguration.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    siteMapGeneratorConfiguration.setSiteMapGeneratorType(new SiteMapGeneratorType("PAGE", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
+
+    // Act and Assert
+    assertTrue(pageSiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration));
   }
 
   /**
-   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * Test {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   * <ul>
+   *   <li>When {@link CustomUrlSiteMapGeneratorConfigurationImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PageSiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"})
+  public void testCanHandleSiteMapConfiguration_whenCustomUrlSiteMapGeneratorConfigurationImpl() {
+    // Arrange, Act and Assert
+    assertFalse(pageSiteMapGenerator.canHandleSiteMapConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl()));
+  }
+
+  /**
+   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
   public void testAddSiteMapEntries() {
     // Arrange
     PageImpl pageImpl = mock(PageImpl.class);
@@ -174,24 +138,17 @@ public class PageSiteMapGeneratorDiffblueTest {
 
     ArrayList<Page> pageList = new ArrayList<>();
     pageList.add(pageImpl);
-    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any()))
-        .thenReturn(pageList);
-
+    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any())).thenReturn(pageList);
     SiteMapGeneratorConfiguration smgc = mock(SiteMapGeneratorConfiguration.class);
-    when(smgc.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(smgc.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
     when(smgc.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    pageSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+    pageSiteMapGenerator.addSiteMapEntries(smgc, new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true));
 
     // Assert
-    verify(pageDao).readOnlineAndIncludedPages(0, 0, "fullUrl");
+    verify(pageDao).readOnlineAndIncludedPages(eq(0), eq(0), eq("fullUrl"));
     verify(pageImpl).getExcludeFromSiteMap();
     verify(pageImpl, atLeast(1)).getFullUrl();
     verify(smgc).getSiteMapChangeFreq();
@@ -199,61 +156,43 @@ public class PageSiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
+   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PageImpl} (default constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PageImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
   public void testAddSiteMapEntries_givenArrayListAddPageImpl() {
     // Arrange
     ArrayList<Page> pageList = new ArrayList<>();
     pageList.add(new PageImpl());
-    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any()))
-        .thenReturn(pageList);
-    CustomUrlSiteMapGeneratorConfigurationImpl smgc =
-        new CustomUrlSiteMapGeneratorConfigurationImpl();
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any())).thenReturn(pageList);
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    pageSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+    pageSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
 
     // Assert
-    verify(pageDao).readOnlineAndIncludedPages(0, 0, "fullUrl");
+    verify(pageDao).readOnlineAndIncludedPages(eq(0), eq(0), eq("fullUrl"));
   }
 
   /**
-   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
+   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <ul>
-   *   <li>Given {@link PageImpl} {@link PageImpl#getExcludeFromSiteMap()} return {@code true}.
+   *   <li>Given {@link PageImpl} {@link PageImpl#getExcludeFromSiteMap()} return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
   public void testAddSiteMapEntries_givenPageImplGetExcludeFromSiteMapReturnTrue() {
     // Arrange
     PageImpl pageImpl = mock(PageImpl.class);
@@ -261,42 +200,30 @@ public class PageSiteMapGeneratorDiffblueTest {
 
     ArrayList<Page> pageList = new ArrayList<>();
     pageList.add(pageImpl);
-    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any()))
-        .thenReturn(pageList);
-    CustomUrlSiteMapGeneratorConfigurationImpl smgc =
-        new CustomUrlSiteMapGeneratorConfigurationImpl();
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any())).thenReturn(pageList);
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    pageSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+    pageSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
 
     // Assert
-    verify(pageDao).readOnlineAndIncludedPages(0, 0, "fullUrl");
+    verify(pageDao).readOnlineAndIncludedPages(eq(0), eq(0), eq("fullUrl"));
     verify(pageImpl).getExcludeFromSiteMap();
   }
 
   /**
-   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
+   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <ul>
-   *   <li>Given {@link PageImpl} {@link PageImpl#getFullUrl()} return empty string.
+   *   <li>Given {@link PageImpl} {@link PageImpl#getFullUrl()} return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
   public void testAddSiteMapEntries_givenPageImplGetFullUrlReturnEmptyString() {
     // Arrange
     PageImpl pageImpl = mock(PageImpl.class);
@@ -305,42 +232,31 @@ public class PageSiteMapGeneratorDiffblueTest {
 
     ArrayList<Page> pageList = new ArrayList<>();
     pageList.add(pageImpl);
-    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any()))
-        .thenReturn(pageList);
-    SiteMapGeneratorConfiguration smgc = mock(SiteMapGeneratorConfiguration.class);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any())).thenReturn(pageList);
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    pageSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+    pageSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
 
     // Assert
-    verify(pageDao).readOnlineAndIncludedPages(0, 0, "fullUrl");
+    verify(pageDao).readOnlineAndIncludedPages(eq(0), eq(0), eq("fullUrl"));
     verify(pageImpl).getExcludeFromSiteMap();
     verify(pageImpl, atLeast(1)).getFullUrl();
   }
 
   /**
-   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
+   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <ul>
-   *   <li>Given {@link PageImpl} {@link PageImpl#getFullUrl()} return {@code /}.
+   *   <li>Given {@link PageImpl} {@link PageImpl#getFullUrl()} return {@code /}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
   public void testAddSiteMapEntries_givenPageImplGetFullUrlReturnSlash() {
     // Arrange
     PageImpl pageImpl = mock(PageImpl.class);
@@ -349,25 +265,17 @@ public class PageSiteMapGeneratorDiffblueTest {
 
     ArrayList<Page> pageList = new ArrayList<>();
     pageList.add(pageImpl);
-    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any()))
-        .thenReturn(pageList);
-
+    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any())).thenReturn(pageList);
     SiteMapGeneratorConfiguration smgc = mock(SiteMapGeneratorConfiguration.class);
-    when(smgc.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(smgc.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
     when(smgc.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    pageSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+    pageSiteMapGenerator.addSiteMapEntries(smgc, new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true));
 
     // Assert
-    verify(pageDao).readOnlineAndIncludedPages(0, 0, "fullUrl");
+    verify(pageDao).readOnlineAndIncludedPages(eq(0), eq(0), eq("fullUrl"));
     verify(pageImpl).getExcludeFromSiteMap();
     verify(pageImpl, atLeast(1)).getFullUrl();
     verify(smgc).getSiteMapChangeFreq();
@@ -375,23 +283,18 @@ public class PageSiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
+   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <ul>
-   *   <li>Given {@link PageImpl} {@link PageImpl#getFullUrl()} return {@code /}.
+   *   <li>Given {@link PageImpl} {@link PageImpl#getFullUrl()} return {@code /}.</li>
+   *   <li>Then calls {@link PageImpl#getFullUrl()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_givenPageImplGetFullUrlReturnSlash2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_givenPageImplGetFullUrlReturnSlash_thenCallsGetFullUrl() {
     // Arrange
     PageImpl pageImpl = mock(PageImpl.class);
     when(pageImpl.getExcludeFromSiteMap()).thenReturn(false);
@@ -399,47 +302,64 @@ public class PageSiteMapGeneratorDiffblueTest {
 
     ArrayList<Page> pageList = new ArrayList<>();
     pageList.add(pageImpl);
-    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any()))
-        .thenReturn(pageList);
-
-    SiteMapGeneratorConfiguration smgc = mock(SiteMapGeneratorConfiguration.class);
-    when(smgc.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    when(smgc.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
+    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any())).thenReturn(pageList);
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    pageSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+    pageSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
 
     // Assert
-    verify(pageDao).readOnlineAndIncludedPages(0, 0, "fullUrl");
+    verify(pageDao).readOnlineAndIncludedPages(eq(0), eq(0), eq("fullUrl"));
     verify(pageImpl).getExcludeFromSiteMap();
     verify(pageImpl, atLeast(1)).getFullUrl();
-    verify(smgc).getSiteMapChangeFreq();
-    verify(smgc).getSiteMapPriority();
   }
 
   /**
-   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
+   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
    * <ul>
-   *   <li>Then calls {@link SiteMapGeneratorConfiguration#getSiteMapChangeFreq()}.
+   *   <li>Then calls {@link PageImpl#getFullUrl()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
+  public void testAddSiteMapEntries_thenCallsGetFullUrl() {
+    // Arrange
+    PageImpl pageImpl = mock(PageImpl.class);
+    when(pageImpl.getExcludeFromSiteMap()).thenReturn(false);
+    when(pageImpl.getFullUrl()).thenReturn("https://example.org/example");
+
+    ArrayList<Page> pageList = new ArrayList<>();
+    pageList.add(pageImpl);
+    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any())).thenReturn(pageList);
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+
+    // Act
+    pageSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
+
+    // Assert
+    verify(pageDao).readOnlineAndIncludedPages(eq(0), eq(0), eq("fullUrl"));
+    verify(pageImpl).getExcludeFromSiteMap();
+    verify(pageImpl, atLeast(1)).getFullUrl();
+  }
+
+  /**
+   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <ul>
+   *   <li>Then calls {@link SiteMapGeneratorConfiguration#getSiteMapChangeFreq()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"})
   public void testAddSiteMapEntries_thenCallsGetSiteMapChangeFreq() {
     // Arrange
     PageImpl pageImpl = mock(PageImpl.class);
@@ -448,25 +368,18 @@ public class PageSiteMapGeneratorDiffblueTest {
 
     ArrayList<Page> pageList = new ArrayList<>();
     pageList.add(pageImpl);
-    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any()))
-        .thenReturn(pageList);
-
+    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any())).thenReturn(pageList);
     SiteMapGeneratorConfiguration smgc = mock(SiteMapGeneratorConfiguration.class);
-    when(smgc.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(smgc.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
     when(smgc.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
 
     // Act
-    pageSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
+    pageSiteMapGenerator.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
 
     // Assert
-    verify(pageDao).readOnlineAndIncludedPages(0, 0, "fullUrl");
+    verify(pageDao).readOnlineAndIncludedPages(eq(0), eq(0), eq("fullUrl"));
     verify(pageImpl).getExcludeFromSiteMap();
     verify(pageImpl, atLeast(1)).getFullUrl();
     verify(smgc).getSiteMapChangeFreq();
@@ -474,186 +387,120 @@ public class PageSiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>When {@link CustomUrlSiteMapGeneratorConfigurationImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageSiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_whenCustomUrlSiteMapGeneratorConfigurationImpl() {
-    // Arrange
-    PageImpl pageImpl = mock(PageImpl.class);
-    when(pageImpl.getExcludeFromSiteMap()).thenReturn(false);
-    when(pageImpl.getFullUrl()).thenReturn("https://example.org/example");
-
-    ArrayList<Page> pageList = new ArrayList<>();
-    pageList.add(pageImpl);
-    when(pageDao.readOnlineAndIncludedPages(anyInt(), anyInt(), Mockito.<String>any()))
-        .thenReturn(pageList);
-    CustomUrlSiteMapGeneratorConfigurationImpl smgc =
-        new CustomUrlSiteMapGeneratorConfigurationImpl();
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    pageSiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(pageDao).readOnlineAndIncludedPages(0, 0, "fullUrl");
-    verify(pageImpl).getExcludeFromSiteMap();
-    verify(pageImpl, atLeast(1)).getFullUrl();
-  }
-
-  /**
    * Test {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}.
-   *
    * <ul>
-   *   <li>Then return {@code /https://example.org/example}.
+   *   <li>Given {@code https://example.org/example}.</li>
+   *   <li>Then return {@code /https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PageSiteMapGenerator.generateUri(SiteMapBuilder, Page)"})
-  public void testGenerateUri_thenReturnHttpsExampleOrgExample() {
+  public void testGenerateUri_givenHttpsExampleOrgExample_thenReturnHttpsExampleOrgExample() {
     // Arrange
-    SiteMapBuilder smb = mock(SiteMapBuilder.class);
-    when(smb.getBaseUrl()).thenReturn("/");
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
-    PageImpl page = new PageImpl();
-    page.setFullUrl("https://example.org/example");
+    PageImpl page = mock(PageImpl.class);
+    when(page.getFullUrl()).thenReturn("https://example.org/example");
 
     // Act
     String actualGenerateUriResult = pageSiteMapGenerator.generateUri(smb, page);
 
     // Assert
-    verify(smb).getBaseUrl();
+    verify(page).getFullUrl();
     assertEquals("/https://example.org/example", actualGenerateUriResult);
   }
 
   /**
    * Test {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example/}.
+   *   <li>Given {@code /}.</li>
+   *   <li>Then return {@code https://example.org/example/}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PageSiteMapGenerator.generateUri(SiteMapBuilder, Page)"})
-  public void testGenerateUri_thenReturnHttpsExampleOrgExample2() {
+  public void testGenerateUri_givenSlash_thenReturnHttpsExampleOrgExample() {
     // Arrange
-    SiteMapBuilder smb = mock(SiteMapBuilder.class);
-    when(smb.getBaseUrl()).thenReturn("https://example.org/example");
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
 
-    PageImpl page = new PageImpl();
-    page.setFullUrl("/");
+    PageImpl page = mock(PageImpl.class);
+    when(page.getFullUrl()).thenReturn("/");
 
     // Act
     String actualGenerateUriResult = pageSiteMapGenerator.generateUri(smb, page);
 
     // Assert
-    verify(smb).getBaseUrl();
+    verify(page).getFullUrl();
     assertEquals("https://example.org/example/", actualGenerateUriResult);
   }
 
   /**
    * Test {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example/https://example.org/example}.
+   *   <li>Given {@code /}.</li>
+   *   <li>Then return {@code /}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PageSiteMapGenerator.generateUri(SiteMapBuilder, Page)"})
-  public void testGenerateUri_thenReturnHttpsExampleOrgExampleHttpsExampleOrgExample() {
+  public void testGenerateUri_givenSlash_thenReturnSlash() {
     // Arrange
-    SiteMapBuilder smb = mock(SiteMapBuilder.class);
-    when(smb.getBaseUrl()).thenReturn("https://example.org/example");
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
-    PageImpl page = new PageImpl();
-    page.setFullUrl("https://example.org/example");
+    PageImpl page = mock(PageImpl.class);
+    when(page.getFullUrl()).thenReturn("/");
 
     // Act
     String actualGenerateUriResult = pageSiteMapGenerator.generateUri(smb, page);
 
     // Assert
-    verify(smb).getBaseUrl();
-    assertEquals(
-        "https://example.org/example/https://example.org/example", actualGenerateUriResult);
+    verify(page).getFullUrl();
+    assertEquals("/", actualGenerateUriResult);
   }
 
   /**
    * Test {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}.
-   *
    * <ul>
-   *   <li>Then return {@code /}.
+   *   <li>Then return {@code https://example.org/example/https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PageSiteMapGenerator.generateUri(SiteMapBuilder, Page)"})
-  public void testGenerateUri_thenReturnSlash() {
+  public void testGenerateUri_thenReturnHttpsExampleOrgExampleHttpsExampleOrgExample() {
     // Arrange
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder smb =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
 
-    PageImpl page = new PageImpl();
-    page.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    page.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    page.setAdditionalAttributes(new HashMap<>());
-    page.setDescription("The characteristics of someone or something");
-    page.setExcludeFromSiteMap(true);
-    page.setId(1L);
-    page.setMetaDescription("Meta Description");
-    page.setMetaTitle("Dr");
-    page.setOfflineFlag(true);
-    page.setPageFields(new HashMap<>());
-    page.setPageMatchRules(new HashMap<>());
-    page.setPageTemplate(new PageTemplateImpl());
-    page.setPriority(1);
-    page.setQualifyingItemCriteria(new HashSet<>());
-    page.setFullUrl("/");
+    PageImpl page = mock(PageImpl.class);
+    when(page.getFullUrl()).thenReturn("https://example.org/example");
 
-    // Act and Assert
-    assertEquals("/", pageSiteMapGenerator.generateUri(smb, page));
+    // Act
+    String actualGenerateUriResult = pageSiteMapGenerator.generateUri(smb, page);
+
+    // Assert
+    verify(page).getFullUrl();
+    assertEquals("https://example.org/example/https://example.org/example", actualGenerateUriResult);
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PageSiteMapGenerator#setPageDao(PageDao)}
    *   <li>{@link PageSiteMapGenerator#setRowLimit(int)}
@@ -662,14 +509,9 @@ public class PageSiteMapGeneratorDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PageDao PageSiteMapGenerator.getPageDao()",
-    "int PageSiteMapGenerator.getRowLimit()",
-    "void PageSiteMapGenerator.setPageDao(PageDao)",
-    "void PageSiteMapGenerator.setRowLimit(int)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PageDao PageSiteMapGenerator.getPageDao()", "int PageSiteMapGenerator.getRowLimit()",
+      "void PageSiteMapGenerator.setPageDao(PageDao)", "void PageSiteMapGenerator.setRowLimit(int)"})
   public void testGettersAndSetters() {
     // Arrange
     PageSiteMapGenerator pageSiteMapGenerator = new PageSiteMapGenerator();

@@ -23,8 +23,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
@@ -36,6 +35,7 @@ import java.util.List;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.extension.ExtensionHandler;
+import org.broadleafcommerce.common.extension.ExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
@@ -60,40 +60,31 @@ public class MergeOrdersByEmailPostRegistrationObserverDiffblueTest {
   @InjectMocks
   private MergeOrdersByEmailPostRegistrationObserver mergeOrdersByEmailPostRegistrationObserver;
 
-  @Mock private OrderService orderService;
+  @Mock
+  private OrderService orderService;
 
-  @Mock private PostUpdateOrderExtensionManager postUpdateOrderExtensionManager;
+  @Mock
+  private PostUpdateOrderExtensionManager postUpdateOrderExtensionManager;
 
   /**
    * Test {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}.
-   *
-   * <p>Method under test: {@link
-   * MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
+   * <p>
+   * Method under test: {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"})
   public void testProcessRegistrationEvent() {
     // Arrange
-    PostUpdateOrderExtensionHandler postUpdateOrderExtensionHandler =
-        mock(PostUpdateOrderExtensionHandler.class);
+    PostUpdateOrderExtensionHandler postUpdateOrderExtensionHandler = mock(PostUpdateOrderExtensionHandler.class);
     when(postUpdateOrderExtensionHandler.postUpdateAll(Mockito.<List<Order>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
 
-    ArrayList<PostUpdateOrderExtensionHandler> postUpdateOrderExtensionHandlerList =
-        new ArrayList<>();
+    ArrayList<PostUpdateOrderExtensionHandler> postUpdateOrderExtensionHandlerList = new ArrayList<>();
     postUpdateOrderExtensionHandlerList.add(postUpdateOrderExtensionHandler);
-    when(postUpdateOrderExtensionManager.shouldContinue(
-            Mockito.<ExtensionResultStatusType>any(),
-            Mockito.<ExtensionHandler>any(),
-            Mockito.<Method>any(),
-            Mockito.<Object[]>any()))
-        .thenReturn(false);
-    when(postUpdateOrderExtensionManager.getHandlers())
-        .thenReturn(postUpdateOrderExtensionHandlerList);
+    when(postUpdateOrderExtensionManager.shouldContinue(Mockito.<ExtensionResultStatusType>any(),
+        Mockito.<ExtensionHandler>any(), Mockito.<Method>any(), Mockito.<Object[]>any())).thenReturn(false);
+    when(postUpdateOrderExtensionManager.getHandlers()).thenReturn(postUpdateOrderExtensionHandlerList);
     when(orderService.findOrdersByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
     // Act
@@ -101,53 +92,39 @@ public class MergeOrdersByEmailPostRegistrationObserverDiffblueTest {
 
     // Assert
     verify(postUpdateOrderExtensionManager).getHandlers();
-    verify(postUpdateOrderExtensionManager)
-        .shouldContinue(eq(ExtensionResultStatusType.HANDLED), isNull(), isNull(), isNull());
+    verify(postUpdateOrderExtensionManager).shouldContinue(eq(ExtensionResultStatusType.HANDLED), isNull(), isNull(),
+        isNull());
     verify(postUpdateOrderExtensionHandler).postUpdateAll(isA(List.class));
-    verify(orderService).findOrdersByEmail(null);
+    verify(orderService).findOrdersByEmail(isNull());
   }
 
   /**
    * Test {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}.
-   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
+   *   <li>Given {@link OrderImpl} (default constructor) Customer is {@link CustomerImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
+   * <p>
+   * Method under test: {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"
-  })
-  public void testProcessRegistrationEvent_givenAuditableCreatedByIsOne() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"})
+  public void testProcessRegistrationEvent_givenOrderImplCustomerIsCustomerImpl() {
     // Arrange
-    PostUpdateOrderExtensionHandler postUpdateOrderExtensionHandler =
-        mock(PostUpdateOrderExtensionHandler.class);
+    PostUpdateOrderExtensionHandler postUpdateOrderExtensionHandler = mock(PostUpdateOrderExtensionHandler.class);
     when(postUpdateOrderExtensionHandler.postUpdateAll(Mockito.<List<Order>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
 
-    ArrayList<PostUpdateOrderExtensionHandler> postUpdateOrderExtensionHandlerList =
-        new ArrayList<>();
+    ArrayList<PostUpdateOrderExtensionHandler> postUpdateOrderExtensionHandlerList = new ArrayList<>();
     postUpdateOrderExtensionHandlerList.add(postUpdateOrderExtensionHandler);
-    when(postUpdateOrderExtensionManager.shouldContinue(
-            Mockito.<ExtensionResultStatusType>any(),
-            Mockito.<ExtensionHandler>any(),
-            Mockito.<Method>any(),
-            Mockito.<Object[]>any()))
-        .thenReturn(true);
-    when(postUpdateOrderExtensionManager.getHandlers())
-        .thenReturn(postUpdateOrderExtensionHandlerList);
+    when(postUpdateOrderExtensionManager.shouldContinue(Mockito.<ExtensionResultStatusType>any(),
+        Mockito.<ExtensionHandler>any(), Mockito.<Method>any(), Mockito.<Object[]>any())).thenReturn(true);
+    when(postUpdateOrderExtensionManager.getHandlers()).thenReturn(postUpdateOrderExtensionHandlerList);
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl orderImpl = new OrderImpl();
@@ -168,11 +145,11 @@ public class MergeOrdersByEmailPostRegistrationObserverDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
 
     ArrayList<Order> orderList = new ArrayList<>();
@@ -184,57 +161,42 @@ public class MergeOrdersByEmailPostRegistrationObserverDiffblueTest {
 
     // Assert
     verify(postUpdateOrderExtensionManager).getHandlers();
-    verify(postUpdateOrderExtensionManager)
-        .shouldContinue(eq(ExtensionResultStatusType.HANDLED), isNull(), isNull(), isNull());
+    verify(postUpdateOrderExtensionManager).shouldContinue(eq(ExtensionResultStatusType.HANDLED), isNull(), isNull(),
+        isNull());
     verify(postUpdateOrderExtensionHandler).postUpdateAll(isA(List.class));
-    verify(orderService).findOrdersByEmail(null);
+    verify(orderService).findOrdersByEmail(isNull());
   }
 
   /**
    * Test {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}.
-   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) Registered is {@code true}.
+   *   <li>Then calls {@link Customer#isRegistered()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
+   * <p>
+   * Method under test: {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"
-  })
-  public void testProcessRegistrationEvent_givenCustomerImplRegisteredIsTrue() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"})
+  public void testProcessRegistrationEvent_thenCallsIsRegistered() {
     // Arrange
-    PostUpdateOrderExtensionHandler postUpdateOrderExtensionHandler =
-        mock(PostUpdateOrderExtensionHandler.class);
+    PostUpdateOrderExtensionHandler postUpdateOrderExtensionHandler = mock(PostUpdateOrderExtensionHandler.class);
     when(postUpdateOrderExtensionHandler.postUpdateAll(Mockito.<List<Order>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
 
-    ArrayList<PostUpdateOrderExtensionHandler> postUpdateOrderExtensionHandlerList =
-        new ArrayList<>();
+    ArrayList<PostUpdateOrderExtensionHandler> postUpdateOrderExtensionHandlerList = new ArrayList<>();
     postUpdateOrderExtensionHandlerList.add(postUpdateOrderExtensionHandler);
-    when(postUpdateOrderExtensionManager.shouldContinue(
-            Mockito.<ExtensionResultStatusType>any(),
-            Mockito.<ExtensionHandler>any(),
-            Mockito.<Method>any(),
-            Mockito.<Object[]>any()))
-        .thenReturn(true);
-    when(postUpdateOrderExtensionManager.getHandlers())
-        .thenReturn(postUpdateOrderExtensionHandlerList);
+    when(postUpdateOrderExtensionManager.shouldContinue(Mockito.<ExtensionResultStatusType>any(),
+        Mockito.<ExtensionHandler>any(), Mockito.<Method>any(), Mockito.<Object[]>any())).thenReturn(true);
+    when(postUpdateOrderExtensionManager.getHandlers()).thenReturn(postUpdateOrderExtensionHandlerList);
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
-
-    CustomerImpl customer = new CustomerImpl();
-    customer.setRegistered(true);
+    Customer customer = mock(Customer.class);
+    when(customer.isRegistered()).thenReturn(true);
 
     OrderImpl orderImpl = new OrderImpl();
     orderImpl.setAdditionalOfferInformation(new HashMap<>());
@@ -254,11 +216,11 @@ public class MergeOrdersByEmailPostRegistrationObserverDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalShipping(new Money());
     orderImpl.setTotalTax(new Money());
 
     ArrayList<Order> orderList = new ArrayList<>();
@@ -270,48 +232,35 @@ public class MergeOrdersByEmailPostRegistrationObserverDiffblueTest {
 
     // Assert
     verify(postUpdateOrderExtensionManager).getHandlers();
-    verify(postUpdateOrderExtensionManager)
-        .shouldContinue(eq(ExtensionResultStatusType.HANDLED), isNull(), isNull(), isNull());
+    verify(postUpdateOrderExtensionManager).shouldContinue(eq(ExtensionResultStatusType.HANDLED), isNull(), isNull(),
+        isNull());
     verify(postUpdateOrderExtensionHandler).postUpdateAll(isA(List.class));
-    verify(orderService).findOrdersByEmail(null);
+    verify(orderService).findOrdersByEmail(isNull());
+    verify(customer).isRegistered();
   }
 
   /**
    * Test {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}.
-   *
    * <ul>
-   *   <li>Then calls {@link
-   *       PostUpdateOrderExtensionManager#shouldContinue(ExtensionResultStatusType,
-   *       ExtensionHandler, Method, Object[])}.
+   *   <li>Then calls {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
+   * <p>
+   * Method under test: {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"})
   public void testProcessRegistrationEvent_thenCallsShouldContinue() {
     // Arrange
-    PostUpdateOrderExtensionHandler postUpdateOrderExtensionHandler =
-        mock(PostUpdateOrderExtensionHandler.class);
+    PostUpdateOrderExtensionHandler postUpdateOrderExtensionHandler = mock(PostUpdateOrderExtensionHandler.class);
     when(postUpdateOrderExtensionHandler.postUpdateAll(Mockito.<List<Order>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
 
-    ArrayList<PostUpdateOrderExtensionHandler> postUpdateOrderExtensionHandlerList =
-        new ArrayList<>();
+    ArrayList<PostUpdateOrderExtensionHandler> postUpdateOrderExtensionHandlerList = new ArrayList<>();
     postUpdateOrderExtensionHandlerList.add(postUpdateOrderExtensionHandler);
-    when(postUpdateOrderExtensionManager.shouldContinue(
-            Mockito.<ExtensionResultStatusType>any(),
-            Mockito.<ExtensionHandler>any(),
-            Mockito.<Method>any(),
-            Mockito.<Object[]>any()))
-        .thenReturn(true);
-    when(postUpdateOrderExtensionManager.getHandlers())
-        .thenReturn(postUpdateOrderExtensionHandlerList);
+    when(postUpdateOrderExtensionManager.shouldContinue(Mockito.<ExtensionResultStatusType>any(),
+        Mockito.<ExtensionHandler>any(), Mockito.<Method>any(), Mockito.<Object[]>any())).thenReturn(true);
+    when(postUpdateOrderExtensionManager.getHandlers()).thenReturn(postUpdateOrderExtensionHandlerList);
     when(orderService.findOrdersByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
     // Act
@@ -319,29 +268,24 @@ public class MergeOrdersByEmailPostRegistrationObserverDiffblueTest {
 
     // Assert
     verify(postUpdateOrderExtensionManager).getHandlers();
-    verify(postUpdateOrderExtensionManager)
-        .shouldContinue(eq(ExtensionResultStatusType.HANDLED), isNull(), isNull(), isNull());
+    verify(postUpdateOrderExtensionManager).shouldContinue(eq(ExtensionResultStatusType.HANDLED), isNull(), isNull(),
+        isNull());
     verify(postUpdateOrderExtensionHandler).postUpdateAll(isA(List.class));
-    verify(orderService).findOrdersByEmail(null);
+    verify(orderService).findOrdersByEmail(isNull());
   }
 
   /**
    * Test {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}.
-   *
    * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).
-   *   <li>Then calls {@link PostUpdateOrderExtensionManager#getHandlers()}.
+   *   <li>When {@link CustomerImpl} (default constructor).</li>
+   *   <li>Then calls {@link ExtensionManager#getHandlers()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
+   * <p>
+   * Method under test: {@link MergeOrdersByEmailPostRegistrationObserver#processRegistrationEvent(Customer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeOrdersByEmailPostRegistrationObserver.processRegistrationEvent(Customer)"})
   public void testProcessRegistrationEvent_whenCustomerImpl_thenCallsGetHandlers() {
     // Arrange
     when(postUpdateOrderExtensionManager.getHandlers()).thenReturn(new ArrayList<>());
@@ -352,6 +296,6 @@ public class MergeOrdersByEmailPostRegistrationObserverDiffblueTest {
 
     // Assert
     verify(postUpdateOrderExtensionManager).getHandlers();
-    verify(orderService).findOrdersByEmail(null);
+    verify(orderService).findOrdersByEmail(isNull());
   }
 }

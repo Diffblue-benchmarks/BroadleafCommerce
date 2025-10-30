@@ -18,10 +18,10 @@
 package org.broadleafcommerce.profile.core.dao;
 
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.profile.core.domain.Phone;
@@ -36,18 +36,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PhoneDaoImplDiffblueTest {
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
-  @InjectMocks private PhoneDaoImpl phoneDaoImpl;
+  @InjectMocks
+  private PhoneDaoImpl phoneDaoImpl;
 
   /**
    * Test {@link PhoneDaoImpl#create()}.
-   *
-   * <p>Method under test: {@link PhoneDaoImpl#create()}
+   * <p>
+   * Method under test: {@link PhoneDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Phone PhoneDaoImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -64,8 +65,7 @@ public class PhoneDaoImplDiffblueTest {
     Phone actualCreateResult = phoneDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.profile.core.domain.Phone");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.Phone"));
     assertSame(phoneImpl, actualCreateResult);
   }
 }

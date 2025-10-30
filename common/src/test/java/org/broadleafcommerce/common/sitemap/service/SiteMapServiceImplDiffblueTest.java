@@ -27,16 +27,17 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadleafcommerce.common.config.domain.AbstractModuleConfiguration;
 import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
 import org.broadleafcommerce.common.config.service.ModuleConfigurationService;
 import org.broadleafcommerce.common.config.service.ModuleConfigurationServiceImpl;
 import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
+import org.broadleafcommerce.common.file.domain.FileWorkArea;
 import org.broadleafcommerce.common.file.service.BroadleafFileService;
 import org.broadleafcommerce.common.sitemap.domain.CustomUrlSiteMapGeneratorConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfiguration;
@@ -53,94 +54,89 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SiteMapServiceImplDiffblueTest {
-  @Mock private BroadleafFileService broadleafFileService;
+  @Mock
+  private ModuleConfigurationService moduleConfigurationService;
 
-  @Mock private ModuleConfigurationService moduleConfigurationService;
+  @InjectMocks
+  private SiteMapServiceImpl siteMapServiceImpl;
 
-  @InjectMocks private SiteMapServiceImpl siteMapServiceImpl;
+  @Mock
+  private BroadleafFileService broadleafFileService;
 
   /**
    * Test {@link SiteMapServiceImpl#generateSiteMap()}.
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SiteMapGenerationResponse SiteMapServiceImpl.generateSiteMap()"})
   public void testGenerateSiteMap() throws IOException, SiteMapException {
     // Arrange
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenThrow(new SiteMapException("An error occurred"));
+
+    ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
+    siteMapGenerators.add(null);
+    siteMapServiceImpl.setSiteMapGenerators(siteMapGenerators);
+    siteMapServiceImpl.setGzipSiteMapFiles(null);
 
     // Act and Assert
     assertThrows(SiteMapException.class, () -> siteMapServiceImpl.generateSiteMap());
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
   }
 
   /**
    * Test {@link SiteMapServiceImpl#generateSiteMap()}.
-   *
    * <ul>
-   *   <li>Then calls {@link BroadleafFileService#initializeWorkArea()}.
+   *   <li>Then calls {@link BroadleafFileService#initializeWorkArea()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SiteMapGenerationResponse SiteMapServiceImpl.generateSiteMap()"})
-  public void testGenerateSiteMap_thenCallsInitializeWorkArea()
-      throws IOException, SiteMapException {
+  public void testGenerateSiteMap_thenCallsInitializeWorkArea() throws IOException, SiteMapException {
     // Arrange
-    when(broadleafFileService.initializeWorkArea())
-        .thenThrow(new SiteMapException("An error occurred"));
+    when(broadleafFileService.initializeWorkArea()).thenThrow(new SiteMapException("An error occurred"));
 
     ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
     moduleConfigurationList.add(new SiteMapConfigurationImpl());
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenReturn(moduleConfigurationList);
 
     // Act and Assert
     assertThrows(SiteMapException.class, () -> siteMapServiceImpl.generateSiteMap());
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
     verify(broadleafFileService).initializeWorkArea();
   }
 
   /**
    * Test {@link SiteMapServiceImpl#generateSiteMap()}.
-   *
    * <ul>
-   *   <li>Then return ErrorCode is {@code No SiteMap Configuration Found}.
+   *   <li>Then return ErrorCode is {@code No SiteMap Configuration Found}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SiteMapGenerationResponse SiteMapServiceImpl.generateSiteMap()"})
   public void testGenerateSiteMap_thenReturnErrorCodeIsNoSiteMapConfigurationFound()
       throws IOException, SiteMapException {
     // Arrange
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
     SiteMapGenerationResponse actualGenerateSiteMapResult = siteMapServiceImpl.generateSiteMap();
 
     // Assert
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
     assertEquals("No SiteMap Configuration Found", actualGenerateSiteMapResult.getErrorCode());
     assertEquals("sitemap.xml", actualGenerateSiteMapResult.getSitemapIndexFileName());
     assertTrue(actualGenerateSiteMapResult.getSiteMapFilePaths().isEmpty());
@@ -149,112 +145,122 @@ public class SiteMapServiceImplDiffblueTest {
 
   /**
    * Test {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then calls {@link AbstractModuleConfiguration#getIsDefault()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SiteMapConfiguration SiteMapServiceImpl.findActiveSiteMapConfiguration()"})
+  public void testFindActiveSiteMapConfiguration_thenCallsGetIsDefault() {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+
+    // Act
+    siteMapServiceImpl.findActiveSiteMapConfiguration();
+
+    // Assert
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SiteMapConfiguration SiteMapServiceImpl.findActiveSiteMapConfiguration()"})
   public void testFindActiveSiteMapConfiguration_thenReturnNull() {
     // Arrange
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    SiteMapConfiguration actualFindActiveSiteMapConfigurationResult =
-        siteMapServiceImpl.findActiveSiteMapConfiguration();
+    SiteMapConfiguration actualFindActiveSiteMapConfigurationResult = siteMapServiceImpl
+        .findActiveSiteMapConfiguration();
 
     // Assert
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
     assertNull(actualFindActiveSiteMapConfigurationResult);
   }
 
   /**
    * Test {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}.
-   *
    * <ul>
-   *   <li>Then return {@link SiteMapConfigurationImpl} (default constructor).
+   *   <li>Then return {@link SiteMapConfigurationImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SiteMapConfiguration SiteMapServiceImpl.findActiveSiteMapConfiguration()"})
   public void testFindActiveSiteMapConfiguration_thenReturnSiteMapConfigurationImpl() {
     // Arrange
     ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
     SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
     moduleConfigurationList.add(siteMapConfigurationImpl);
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenReturn(moduleConfigurationList);
 
     // Act
-    SiteMapConfiguration actualFindActiveSiteMapConfigurationResult =
-        siteMapServiceImpl.findActiveSiteMapConfiguration();
+    SiteMapConfiguration actualFindActiveSiteMapConfigurationResult = siteMapServiceImpl
+        .findActiveSiteMapConfiguration();
 
     // Assert
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
     assertSame(siteMapConfigurationImpl, actualFindActiveSiteMapConfigurationResult);
   }
 
   /**
    * Test {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}.
-   *
    * <ul>
-   *   <li>Then throw {@link SiteMapException}.
+   *   <li>Then throw {@link SiteMapException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SiteMapConfiguration SiteMapServiceImpl.findActiveSiteMapConfiguration()"})
   public void testFindActiveSiteMapConfiguration_thenThrowSiteMapException() {
     // Arrange
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenThrow(new SiteMapException("An error occurred"));
 
     // Act and Assert
     assertThrows(SiteMapException.class, () -> siteMapServiceImpl.findActiveSiteMapConfiguration());
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
   }
 
   /**
    * Test {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}.
-   *
    * <ul>
-   *   <li>Then calls {@link
-   *       CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   *   <li>Then calls {@link CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "SiteMapGenerator SiteMapServiceImpl.selectSiteMapGenerator(SiteMapGeneratorConfiguration)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SiteMapGenerator SiteMapServiceImpl.selectSiteMapGenerator(SiteMapGeneratorConfiguration)"})
   public void testSelectSiteMapGenerator_thenCallsCanHandleSiteMapConfiguration() {
     // Arrange
     CustomUrlSiteMapGenerator customUrlSiteMapGenerator = mock(CustomUrlSiteMapGenerator.class);
-    when(customUrlSiteMapGenerator.canHandleSiteMapConfiguration(
-            Mockito.<SiteMapGeneratorConfiguration>any()))
+    when(customUrlSiteMapGenerator.canHandleSiteMapConfiguration(Mockito.<SiteMapGeneratorConfiguration>any()))
         .thenReturn(true);
 
     ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
@@ -265,26 +271,20 @@ public class SiteMapServiceImplDiffblueTest {
     siteMapServiceImpl.selectSiteMapGenerator(new CustomUrlSiteMapGeneratorConfigurationImpl());
 
     // Assert
-    verify(customUrlSiteMapGenerator)
-        .canHandleSiteMapConfiguration(isA(SiteMapGeneratorConfiguration.class));
+    verify(customUrlSiteMapGenerator).canHandleSiteMapConfiguration(isA(SiteMapGeneratorConfiguration.class));
   }
 
   /**
    * Test {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "SiteMapGenerator SiteMapServiceImpl.selectSiteMapGenerator(SiteMapGeneratorConfiguration)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SiteMapGenerator SiteMapServiceImpl.selectSiteMapGenerator(SiteMapGeneratorConfiguration)"})
   public void testSelectSiteMapGenerator_thenReturnNull() {
     // Arrange
     ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
@@ -292,16 +292,206 @@ public class SiteMapServiceImplDiffblueTest {
     siteMapServiceImpl.setSiteMapGenerators(siteMapGenerators);
 
     // Act and Assert
-    assertNull(
-        siteMapServiceImpl.selectSiteMapGenerator(
-            new CustomUrlSiteMapGeneratorConfigurationImpl()));
+    assertNull(siteMapServiceImpl.selectSiteMapGenerator(new CustomUrlSiteMapGeneratorConfigurationImpl()));
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)} with {@code fileWorkArea}, {@code fileNames}.
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapServiceImpl.gzipAndDeleteFiles(FileWorkArea, List)"})
+  public void testGzipAndDeleteFilesWithFileWorkAreaFileNames() {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)} with {@code fileWorkArea}, {@code fileNames}, {@code shouldDeleteOriginal}.
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapServiceImpl.gzipAndDeleteFiles(FileWorkArea, List, boolean)"})
+  public void testGzipAndDeleteFilesWithFileWorkAreaFileNamesShouldDeleteOriginal() {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("foo");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames, true);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)} with {@code fileWorkArea}, {@code fileNames}, {@code shouldDeleteOriginal}.
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapServiceImpl.gzipAndDeleteFiles(FileWorkArea, List, boolean)"})
+  public void testGzipAndDeleteFilesWithFileWorkAreaFileNamesShouldDeleteOriginal2() {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("Error writing zip file.");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("foo");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames, true);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)} with {@code fileWorkArea}, {@code fileNames}, {@code shouldDeleteOriginal}.
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapServiceImpl.gzipAndDeleteFiles(FileWorkArea, List, boolean)"})
+  public void testGzipAndDeleteFilesWithFileWorkAreaFileNamesShouldDeleteOriginal3() {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames, true);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)} with {@code fileWorkArea}, {@code fileNames}, {@code shouldDeleteOriginal}.
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapServiceImpl.gzipAndDeleteFiles(FileWorkArea, List, boolean)"})
+  public void testGzipAndDeleteFilesWithFileWorkAreaFileNamesShouldDeleteOriginal4() {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames, true);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)} with {@code fileWorkArea}, {@code fileNames}.
+   * <ul>
+   *   <li>Given {@code /directory/foo.txt}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapServiceImpl.gzipAndDeleteFiles(FileWorkArea, List)"})
+  public void testGzipAndDeleteFilesWithFileWorkAreaFileNames_givenDirectoryFooTxt() {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("foo");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)} with {@code fileWorkArea}, {@code fileNames}.
+   * <ul>
+   *   <li>Given {@code /directory/foo.txt}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapServiceImpl.gzipAndDeleteFiles(FileWorkArea, List)"})
+  public void testGzipAndDeleteFilesWithFileWorkAreaFileNames_givenDirectoryFooTxt2() {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Test {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)} with {@code fileWorkArea}, {@code fileNames}.
+   * <ul>
+   *   <li>Given {@code Error writing zip file.}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapServiceImpl.gzipAndDeleteFiles(FileWorkArea, List)"})
+  public void testGzipAndDeleteFilesWithFileWorkAreaFileNames_givenErrorWritingZipFile() {
+    // Arrange
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("Error writing zip file.");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("foo");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteMapServiceImpl#setGzipSiteMapFiles(Boolean)}
    *   <li>{@link SiteMapServiceImpl#setModuleConfigurationService(ModuleConfigurationService)}
@@ -311,28 +501,22 @@ public class SiteMapServiceImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ModuleConfigurationService SiteMapServiceImpl.getModuleConfigurationService()",
-    "List SiteMapServiceImpl.getSiteMapGenerators()",
-    "void SiteMapServiceImpl.setGzipSiteMapFiles(Boolean)",
-    "void SiteMapServiceImpl.setModuleConfigurationService(ModuleConfigurationService)",
-    "void SiteMapServiceImpl.setSiteMapGenerators(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ModuleConfigurationService SiteMapServiceImpl.getModuleConfigurationService()",
+      "List SiteMapServiceImpl.getSiteMapGenerators()", "void SiteMapServiceImpl.setGzipSiteMapFiles(Boolean)",
+      "void SiteMapServiceImpl.setModuleConfigurationService(ModuleConfigurationService)",
+      "void SiteMapServiceImpl.setSiteMapGenerators(List)"})
   public void testGettersAndSetters() {
     // Arrange
     SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
 
     // Act
     siteMapServiceImpl.setGzipSiteMapFiles(true);
-    ModuleConfigurationServiceImpl moduleConfigurationService =
-        new ModuleConfigurationServiceImpl();
+    ModuleConfigurationServiceImpl moduleConfigurationService = new ModuleConfigurationServiceImpl();
     siteMapServiceImpl.setModuleConfigurationService(moduleConfigurationService);
     ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
     siteMapServiceImpl.setSiteMapGenerators(siteMapGenerators);
-    ModuleConfigurationService actualModuleConfigurationService =
-        siteMapServiceImpl.getModuleConfigurationService();
+    ModuleConfigurationService actualModuleConfigurationService = siteMapServiceImpl.getModuleConfigurationService();
     List<SiteMapGenerator> actualSiteMapGenerators = siteMapServiceImpl.getSiteMapGenerators();
 
     // Assert
@@ -344,16 +528,14 @@ public class SiteMapServiceImplDiffblueTest {
 
   /**
    * Test {@link SiteMapServiceImpl#getGzipSiteMapFiles()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#getGzipSiteMapFiles()}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#getGzipSiteMapFiles()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SiteMapServiceImpl.getGzipSiteMapFiles()"})
   public void testGetGzipSiteMapFiles_thenReturnFalse() {
     // Arrange
@@ -365,16 +547,14 @@ public class SiteMapServiceImplDiffblueTest {
 
   /**
    * Test {@link SiteMapServiceImpl#getGzipSiteMapFiles()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#getGzipSiteMapFiles()}
+   * <p>
+   * Method under test: {@link SiteMapServiceImpl#getGzipSiteMapFiles()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SiteMapServiceImpl.getGzipSiteMapFiles()"})
   public void testGetGzipSiteMapFiles_thenReturnTrue() {
     // Arrange

@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.catalog.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {ProductOptionValidationType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProductOptionValidationTypeDiffblueTest {
-  @Autowired private ProductOptionValidationType productOptionValidationType;
+  @Autowired
+  private ProductOptionValidationType productOptionValidationType;
 
   /**
    * Test {@link ProductOptionValidationType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link ProductOptionValidationType#getInstance(String)}
+   * <p>
+   * Method under test: {@link ProductOptionValidationType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProductOptionValidationType ProductOptionValidationType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,9 +54,8 @@ public class ProductOptionValidationTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionValidationType#ProductOptionValidationType()}
    *   <li>{@link ProductOptionValidationType#getFriendlyType()}
@@ -65,17 +63,12 @@ public class ProductOptionValidationTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationType.<init>()",
-    "String ProductOptionValidationType.getFriendlyType()",
-    "String ProductOptionValidationType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ProductOptionValidationType.<init>()",
+      "String ProductOptionValidationType.getFriendlyType()", "String ProductOptionValidationType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    ProductOptionValidationType actualProductOptionValidationType =
-        new ProductOptionValidationType();
+    ProductOptionValidationType actualProductOptionValidationType = new ProductOptionValidationType();
     String actualFriendlyType = actualProductOptionValidationType.getFriendlyType();
 
     // Assert
@@ -85,18 +78,16 @@ public class ProductOptionValidationTypeDiffblueTest {
 
   /**
    * Test {@link ProductOptionValidationType#ProductOptionValidationType(String, String)}.
-   *
-   * <p>Method under test: {@link ProductOptionValidationType#ProductOptionValidationType(String,
-   * String)}
+   * <p>
+   * Method under test: {@link ProductOptionValidationType#ProductOptionValidationType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ProductOptionValidationType.<init>(String, String)"})
   public void testNewProductOptionValidationType() {
     // Arrange and Act
-    ProductOptionValidationType actualProductOptionValidationType =
-        new ProductOptionValidationType("Type", "Friendly Type");
+    ProductOptionValidationType actualProductOptionValidationType = new ProductOptionValidationType("Type",
+        "Friendly Type");
 
     // Assert
     assertEquals("Friendly Type", actualProductOptionValidationType.getFriendlyType());
@@ -104,28 +95,22 @@ public class ProductOptionValidationTypeDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationType#equals(Object)}, and {@link
-   * ProductOptionValidationType#hashCode()}.
-   *
+   * Test {@link ProductOptionValidationType#equals(Object)}, and {@link ProductOptionValidationType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionValidationType#equals(Object)}
    *   <li>{@link ProductOptionValidationType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationType.equals(Object)",
-    "int ProductOptionValidationType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationType.equals(Object)",
+      "int ProductOptionValidationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ProductOptionValidationType productOptionValidationType = ProductOptionValidationType.REGEX;
@@ -133,67 +118,55 @@ public class ProductOptionValidationTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(productOptionValidationType, productOptionValidationType2);
-    assertEquals(productOptionValidationType.hashCode(), productOptionValidationType2.hashCode());
+    int expectedHashCodeResult = productOptionValidationType.hashCode();
+    assertEquals(expectedHashCodeResult, productOptionValidationType2.hashCode());
   }
 
   /**
-   * Test {@link ProductOptionValidationType#equals(Object)}, and {@link
-   * ProductOptionValidationType#hashCode()}.
-   *
+   * Test {@link ProductOptionValidationType#equals(Object)}, and {@link ProductOptionValidationType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionValidationType#equals(Object)}
    *   <li>{@link ProductOptionValidationType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationType.equals(Object)",
-    "int ProductOptionValidationType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationType.equals(Object)",
+      "int ProductOptionValidationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
-    ProductOptionValidationType productOptionValidationType =
-        new ProductOptionValidationType("Type", "Friendly Type");
-    ProductOptionValidationType productOptionValidationType2 =
-        new ProductOptionValidationType("Type", "Type");
+    ProductOptionValidationType productOptionValidationType = new ProductOptionValidationType("REGEX", "Friendly Type");
+    ProductOptionValidationType productOptionValidationType2 = ProductOptionValidationType.REGEX;
 
     // Act and Assert
     assertEquals(productOptionValidationType, productOptionValidationType2);
-    assertEquals(productOptionValidationType.hashCode(), productOptionValidationType2.hashCode());
+    int expectedHashCodeResult = productOptionValidationType.hashCode();
+    assertEquals(expectedHashCodeResult, productOptionValidationType2.hashCode());
   }
 
   /**
-   * Test {@link ProductOptionValidationType#equals(Object)}, and {@link
-   * ProductOptionValidationType#hashCode()}.
-   *
+   * Test {@link ProductOptionValidationType#equals(Object)}, and {@link ProductOptionValidationType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionValidationType#equals(Object)}
    *   <li>{@link ProductOptionValidationType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationType.equals(Object)",
-    "int ProductOptionValidationType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationType.equals(Object)",
+      "int ProductOptionValidationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     ProductOptionValidationType productOptionValidationType = new ProductOptionValidationType();
@@ -201,32 +174,27 @@ public class ProductOptionValidationTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(productOptionValidationType, productOptionValidationType2);
-    assertEquals(productOptionValidationType.hashCode(), productOptionValidationType2.hashCode());
+    int expectedHashCodeResult = productOptionValidationType.hashCode();
+    assertEquals(expectedHashCodeResult, productOptionValidationType2.hashCode());
   }
 
   /**
-   * Test {@link ProductOptionValidationType#equals(Object)}, and {@link
-   * ProductOptionValidationType#hashCode()}.
-   *
+   * Test {@link ProductOptionValidationType#equals(Object)}, and {@link ProductOptionValidationType#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionValidationType#equals(Object)}
    *   <li>{@link ProductOptionValidationType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationType.equals(Object)",
-    "int ProductOptionValidationType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationType.equals(Object)",
+      "int ProductOptionValidationType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ProductOptionValidationType productOptionValidationType = ProductOptionValidationType.REGEX;
@@ -239,45 +207,35 @@ public class ProductOptionValidationTypeDiffblueTest {
 
   /**
    * Test {@link ProductOptionValidationType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationType#equals(Object)}
+   * <p>
+   * Method under test: {@link ProductOptionValidationType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationType.equals(Object)",
-    "int ProductOptionValidationType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationType.equals(Object)",
+      "int ProductOptionValidationType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        new ProductOptionValidationType("Type", "Friendly Type"),
-        ProductOptionValidationType.REGEX);
+    assertNotEquals(new ProductOptionValidationType("Type", "Friendly Type"), ProductOptionValidationType.REGEX);
   }
 
   /**
    * Test {@link ProductOptionValidationType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationType#equals(Object)}
+   * <p>
+   * Method under test: {@link ProductOptionValidationType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationType.equals(Object)",
-    "int ProductOptionValidationType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationType.equals(Object)",
+      "int ProductOptionValidationType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new ProductOptionValidationType(), ProductOptionValidationType.REGEX);
@@ -285,21 +243,17 @@ public class ProductOptionValidationTypeDiffblueTest {
 
   /**
    * Test {@link ProductOptionValidationType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationType#equals(Object)}
+   * <p>
+   * Method under test: {@link ProductOptionValidationType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationType.equals(Object)",
-    "int ProductOptionValidationType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationType.equals(Object)",
+      "int ProductOptionValidationType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ProductOptionValidationType.REGEX, null);
@@ -307,24 +261,19 @@ public class ProductOptionValidationTypeDiffblueTest {
 
   /**
    * Test {@link ProductOptionValidationType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationType#equals(Object)}
+   * <p>
+   * Method under test: {@link ProductOptionValidationType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationType.equals(Object)",
-    "int ProductOptionValidationType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ProductOptionValidationType.equals(Object)",
+      "int ProductOptionValidationType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        ProductOptionValidationType.REGEX, "Different type to ProductOptionValidationType");
+    assertNotEquals(ProductOptionValidationType.REGEX, "Different type to ProductOptionValidationType");
   }
 }

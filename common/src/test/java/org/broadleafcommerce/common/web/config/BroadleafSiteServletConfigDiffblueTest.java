@@ -21,41 +21,43 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.web.BroadleafCookieLocaleResolver;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.LocaleResolver;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BroadleafSiteServletConfigDiffblueTest {
+  @InjectMocks
+  private BroadleafSiteServletConfig broadleafSiteServletConfig;
+
   /**
    * Test {@link BroadleafSiteServletConfig#localeResolver()}.
-   *
-   * <p>Method under test: {@link BroadleafSiteServletConfig#localeResolver()}
+   * <p>
+   * Method under test: {@link BroadleafSiteServletConfig#localeResolver()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"LocaleResolver BroadleafSiteServletConfig.localeResolver()"})
   public void testLocaleResolver() {
     // Arrange and Act
-    LocaleResolver actualLocaleResolverResult = new BroadleafSiteServletConfig().localeResolver();
+    LocaleResolver actualLocaleResolverResult = broadleafSiteServletConfig.localeResolver();
 
     // Assert
     assertTrue(actualLocaleResolverResult instanceof BroadleafCookieLocaleResolver);
     assertEquals("/", ((BroadleafCookieLocaleResolver) actualLocaleResolverResult).getCookiePath());
-    assertEquals(
-        "org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE",
+    assertEquals("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE",
         ((BroadleafCookieLocaleResolver) actualLocaleResolverResult).getCookieName());
     assertNull(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).getCookieMaxAge());
     assertNull(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).getCookieDomain());
     assertFalse(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isCookieSecure());
-    assertTrue(
-        ((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isLanguageTagCompliant());
-    assertTrue(
-        ((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isRejectInvalidCookies());
+    assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isLanguageTagCompliant());
+    assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isRejectInvalidCookies());
     assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isCookieHttpOnly());
   }
 }

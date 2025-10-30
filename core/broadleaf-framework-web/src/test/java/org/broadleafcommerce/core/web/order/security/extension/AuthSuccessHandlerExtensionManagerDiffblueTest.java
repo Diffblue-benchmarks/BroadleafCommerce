@@ -18,7 +18,6 @@
 package org.broadleafcommerce.core.web.order.security.extension;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -31,17 +30,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {AuthSuccessHandlerExtensionManager.class})
 @ExtendWith(SpringExtension.class)
 class AuthSuccessHandlerExtensionManagerDiffblueTest {
-  @Autowired private AuthSuccessHandlerExtensionManager authSuccessHandlerExtensionManager;
+  @Autowired
+  private AuthSuccessHandlerExtensionManager authSuccessHandlerExtensionManager;
 
   /**
    * Test {@link AuthSuccessHandlerExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link AuthSuccessHandlerExtensionManager#continueOnHandled()}
+   * <p>
+   * Method under test: {@link AuthSuccessHandlerExtensionManager#continueOnHandled()}
    */
   @Test
   @DisplayName("Test continueOnHandled()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean AuthSuccessHandlerExtensionManager.continueOnHandled()"})
   void testContinueOnHandled() {
     // Arrange, Act and Assert

@@ -25,13 +25,10 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
-import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
-import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
@@ -48,216 +45,135 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NullFulfillmentGroupItemStrategyImplDiffblueTest {
-  @Mock private FulfillmentGroupService fulfillmentGroupService;
+  @InjectMocks
+  private NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl;
 
-  @InjectMocks private NullFulfillmentGroupItemStrategyImpl nullFulfillmentGroupItemStrategyImpl;
+  @Mock
+  private FulfillmentGroupService fulfillmentGroupService;
 
   /**
    * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}.
-   *
-   * <p>Method under test: {@link
-   * NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
+   * <p>
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#onItemAdded(CartOperationRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemAdded(CartOperationRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemAdded(CartOperationRequest)"})
   public void testOnItemAdded() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
-    // Act
-    CartOperationRequest actualOnItemAddedResult =
-        nullFulfillmentGroupItemStrategyImpl.onItemAdded(request);
-
-    // Assert
-    assertSame(request, actualOnItemAddedResult);
+    // Act and Assert
+    assertSame(request, nullFulfillmentGroupItemStrategyImpl.onItemAdded(request));
   }
 
   /**
    * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}.
-   *
-   * <p>Method under test: {@link
-   * NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
+   * <p>
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#onItemUpdated(CartOperationRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemUpdated(CartOperationRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemUpdated(CartOperationRequest)"})
   public void testOnItemUpdated() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
-    // Act
-    CartOperationRequest actualOnItemUpdatedResult =
-        nullFulfillmentGroupItemStrategyImpl.onItemUpdated(request);
-
-    // Assert
-    assertSame(request, actualOnItemUpdatedResult);
+    // Act and Assert
+    assertSame(request, nullFulfillmentGroupItemStrategyImpl.onItemUpdated(request));
   }
 
   /**
    * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
-   *
    * <ul>
-   *   <li>Then Order return {@link NullOrderImpl}.
+   *   <li>Then AddedOrderItem return {@link BundleOrderItemImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
+   * <p>
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"
-  })
-  public void testOnItemRemoved_thenOrderReturnNullOrderImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"})
+  public void testOnItemRemoved_thenAddedOrderItemReturnBundleOrderItemImpl() {
     // Arrange
-    when(fulfillmentGroupService.getFulfillmentGroupItemsForOrderItem(
-            Mockito.<Order>any(), Mockito.<OrderItem>any()))
-        .thenReturn(new ArrayList<>());
     NullOrderImpl order = new NullOrderImpl();
+
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    request.setOrderItem(orderItem);
 
     // Act
-    CartOperationRequest actualOnItemRemovedResult =
-        nullFulfillmentGroupItemStrategyImpl.onItemRemoved(request);
+    CartOperationRequest actualOnItemRemovedResult = nullFulfillmentGroupItemStrategyImpl.onItemRemoved(request);
 
     // Assert
-    verify(fulfillmentGroupService)
-        .getFulfillmentGroupItemsForOrderItem(isA(Order.class), isNull());
+    OrderItem addedOrderItem = actualOnItemRemovedResult.getAddedOrderItem();
+    assertTrue(addedOrderItem instanceof BundleOrderItemImpl);
+    assertSame(orderItem, addedOrderItem);
+    assertSame(orderItem, actualOnItemRemovedResult.getOrderItem());
+  }
+
+  /**
+   * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
+   * <ul>
+   *   <li>Then Order return {@link NullOrderImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"})
+  public void testOnItemRemoved_thenOrderReturnNullOrderImpl() {
+    // Arrange
+    when(fulfillmentGroupService.getFulfillmentGroupItemsForOrderItem(Mockito.<Order>any(), Mockito.<OrderItem>any()))
+        .thenReturn(new ArrayList<>());
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    CartOperationRequest actualOnItemRemovedResult = nullFulfillmentGroupItemStrategyImpl
+        .onItemRemoved(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
+
+    // Assert
+    verify(fulfillmentGroupService).getFulfillmentGroupItemsForOrderItem(isA(Order.class), isNull());
     assertTrue(actualOnItemRemovedResult.getOrder() instanceof NullOrderImpl);
     assertNull(actualOnItemRemovedResult.getAddedOrderItem());
     assertNull(actualOnItemRemovedResult.getOrderItem());
   }
 
   /**
-   * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
-   *
-   * <ul>
-   *   <li>Then return AddedOrderItem DiscreteOrderItems is {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"
-  })
-  public void testOnItemRemoved_thenReturnAddedOrderItemDiscreteOrderItemsIsArrayList() {
-    // Arrange
-    when(fulfillmentGroupService.getFulfillmentGroupItemsForOrderItem(
-            Mockito.<Order>any(), Mockito.<OrderItem>any()))
-        .thenReturn(new ArrayList<>());
-
-    ArrayList<DiscreteOrderItem> discreteOrderItems = new ArrayList<>();
-    discreteOrderItems.add(new DiscreteOrderItemImpl());
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setDiscreteOrderItems(discreteOrderItems);
-    NullOrderImpl order = new NullOrderImpl();
-
-    CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-    request.setOrderItem(orderItem);
-
-    // Act
-    CartOperationRequest actualOnItemRemovedResult =
-        nullFulfillmentGroupItemStrategyImpl.onItemRemoved(request);
-
-    // Assert
-    verify(fulfillmentGroupService)
-        .getFulfillmentGroupItemsForOrderItem(isA(Order.class), isA(OrderItem.class));
-    OrderItem addedOrderItem = actualOnItemRemovedResult.getAddedOrderItem();
-    assertTrue(addedOrderItem instanceof BundleOrderItemImpl);
-    assertSame(discreteOrderItems, ((BundleOrderItemImpl) addedOrderItem).getDiscreteOrderItems());
-    assertSame(discreteOrderItems, ((BundleOrderItemImpl) addedOrderItem).getOrderItems());
-  }
-
-  /**
-   * Test {@link NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}.
-   *
-   * <ul>
-   *   <li>Then return AddedOrderItem SalePrice is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * NullFulfillmentGroupItemStrategyImpl#onItemRemoved(CartOperationRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CartOperationRequest NullFulfillmentGroupItemStrategyImpl.onItemRemoved(CartOperationRequest)"
-  })
-  public void testOnItemRemoved_thenReturnAddedOrderItemSalePriceIsNull() {
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
-
-    CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-    request.setOrderItem(new BundleOrderItemImpl());
-
-    // Act and Assert
-    OrderItem addedOrderItem =
-        nullFulfillmentGroupItemStrategyImpl.onItemRemoved(request).getAddedOrderItem();
-    assertTrue(addedOrderItem instanceof BundleOrderItemImpl);
-    assertNull(addedOrderItem.getSalePrice());
-    assertFalse(addedOrderItem.getIsOnSale());
-    assertTrue(((BundleOrderItemImpl) addedOrderItem).getDiscreteOrderItems().isEmpty());
-    assertTrue(addedOrderItem.isSkuActive());
-  }
-
-  /**
    * Test {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}.
-   *
-   * <p>Method under test: {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
+   * <p>
+   * Method under test: {@link NullFulfillmentGroupItemStrategyImpl#verify(CartOperationRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CartOperationRequest NullFulfillmentGroupItemStrategyImpl.verify(CartOperationRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CartOperationRequest NullFulfillmentGroupItemStrategyImpl.verify(CartOperationRequest)"})
   public void testVerify() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
     CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
-    // Act
-    CartOperationRequest actualVerifyResult = nullFulfillmentGroupItemStrategyImpl.verify(request);
-
-    // Assert
-    assertSame(request, actualVerifyResult);
+    // Act and Assert
+    assertSame(request, nullFulfillmentGroupItemStrategyImpl.verify(request));
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link NullFulfillmentGroupItemStrategyImpl}
    *   <li>{@link NullFulfillmentGroupItemStrategyImpl#isRemoveEmptyFulfillmentGroups()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NullFulfillmentGroupItemStrategyImpl.<init>()",
-    "boolean NullFulfillmentGroupItemStrategyImpl.isRemoveEmptyFulfillmentGroups()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NullFulfillmentGroupItemStrategyImpl.<init>()",
+      "boolean NullFulfillmentGroupItemStrategyImpl.isRemoveEmptyFulfillmentGroups()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
-    assertFalse(new NullFulfillmentGroupItemStrategyImpl().isRemoveEmptyFulfillmentGroups());
+    assertFalse((new NullFulfillmentGroupItemStrategyImpl()).isRemoveEmptyFulfillmentGroups());
   }
 }

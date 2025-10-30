@@ -21,18 +21,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -57,238 +56,173 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class AdminUserProvisioningServiceImplDiffblueTest {
-  @Mock private AdminExternalLoginUserExtensionManager adminExternalLoginUserExtensionManager;
+  @InjectMocks
+  private AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
 
-  @Mock private AdminSecurityHelper adminSecurityHelper;
+  @Mock
+  private AdminSecurityHelper adminSecurityHelper;
 
-  @Mock private AdminSecurityService adminSecurityService;
+  @Mock
+  private AdminExternalLoginUserExtensionManager adminExternalLoginUserExtensionManager;
 
-  @InjectMocks private AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+  @Mock
+  private AdminSecurityService adminSecurityService;
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
   public void testProvisionAdminUser() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
 
     // Act
-    AdminUserDetails actualProvisionAdminUserResult =
-        adminUserProvisioningServiceImpl.provisionAdminUser(details);
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).readAllAdminRoles();
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
     assertEquals(details, actualProvisionAdminUserResult);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
   public void testProvisionAdminUser2() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    BroadleafExternalAuthenticationUserDetails details =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getEmail()).thenReturn("not blank");
-    when(details.getFirstName()).thenReturn("not blank");
-    when(details.getLastName()).thenReturn("not blank");
-    when(details.getUsername()).thenReturn("janedoe");
-    when(details.getAuthorities()).thenReturn(new ArrayList<>());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
 
     // Act
-    AdminUserDetails actualProvisionAdminUserResult =
-        adminUserProvisioningServiceImpl.provisionAdminUser(details);
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(details, atLeast(1)).getEmail();
-    verify(details, atLeast(1)).getFirstName();
-    verify(details, atLeast(1)).getLastName();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).readAllAdminRoles();
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    verify(details).getAuthorities();
-    verify(details, atLeast(1)).getUsername();
-    Collection<GrantedAuthority> authorities = actualProvisionAdminUserResult.getAuthorities();
-    assertEquals(6, authorities.size());
-    assertTrue(authorities instanceof Set);
-    assertEquals("", actualProvisionAdminUserResult.getPassword());
-    assertEquals("janedoe", actualProvisionAdminUserResult.getUsername());
-    assertNull(actualProvisionAdminUserResult.getId());
-    assertTrue(actualProvisionAdminUserResult.isAccountNonExpired());
-    assertTrue(actualProvisionAdminUserResult.isAccountNonLocked());
-    assertTrue(actualProvisionAdminUserResult.isCredentialsNonExpired());
-    assertTrue(actualProvisionAdminUserResult.isEnabled());
+    assertEquals(details, actualProvisionAdminUserResult);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminRoleImpl} (default constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminRoleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
   public void testProvisionAdminUser_givenArrayListAddAdminRoleImpl() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
 
     ArrayList<AdminRole> adminRoleList = new ArrayList<>();
     adminRoleList.add(new AdminRoleImpl());
     when(adminSecurityService.readAllAdminRoles()).thenReturn(adminRoleList);
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
 
     // Act
-    AdminUserDetails actualProvisionAdminUserResult =
-        adminUserProvisioningServiceImpl.provisionAdminUser(details);
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).readAllAdminRoles();
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
     assertEquals(details, actualProvisionAdminUserResult);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link
-   *       SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.
+   *   <li>Given {@code jane.doe@example.org}.</li>
+   *   <li>Then return Authorities size is six.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"
-  })
-  public void testProvisionAdminUser_givenArrayListAddSimpleGrantedAuthorityWithRole() {
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
+  public void testProvisionAdminUser_givenJaneDoeExampleOrg_thenReturnAuthoritiesSizeIsSix() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    ArrayList<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
-    grantedAuthorityList.add(new SimpleGrantedAuthority("Role"));
-
-    BroadleafExternalAuthenticationUserDetails details =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getEmail()).thenReturn("not blank");
-    when(details.getFirstName()).thenReturn("not blank");
-    when(details.getLastName()).thenReturn("not blank");
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn("jane.doe@example.org");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
     when(details.getUsername()).thenReturn("janedoe");
-    when(details.getAuthorities()).thenReturn(grantedAuthorityList);
+    when(details.getAuthorities()).thenReturn(new ArrayList<>());
 
     // Act
-    AdminUserDetails actualProvisionAdminUserResult =
-        adminUserProvisioningServiceImpl.provisionAdminUser(details);
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
     verify(details, atLeast(1)).getEmail();
     verify(details, atLeast(1)).getFirstName();
     verify(details, atLeast(1)).getLastName();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).readAllAdminRoles();
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
     verify(details).getAuthorities();
@@ -306,211 +240,86 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@code Doe}.
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with role is {@link AdminUserDetailsServiceImpl#LEGACY_ROLE_PREFIX}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"
-  })
-  public void testProvisionAdminUser_givenDoe() {
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
+  public void testProvisionAdminUser_givenSimpleGrantedAuthorityWithRoleIsLegacy_role_prefix() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
 
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-    details.setLastName("Doe");
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.LEGACY_ROLE_PREFIX));
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", authorities);
 
     // Act
-    AdminUserDetails actualProvisionAdminUserResult =
-        adminUserProvisioningServiceImpl.provisionAdminUser(details);
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).readAllAdminRoles();
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
     assertEquals(details, actualProvisionAdminUserResult);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@code Jane}.
+   *   <li>Given space.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"
-  })
-  public void testProvisionAdminUser_givenJane() {
-    // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-    details.setFirstName("Jane");
-
-    // Act
-    AdminUserDetails actualProvisionAdminUserResult =
-        adminUserProvisioningServiceImpl.provisionAdminUser(details);
-
-    // Assert
-    verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
-    verify(adminSecurityService).readAllAdminRoles();
-    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    assertEquals(details, actualProvisionAdminUserResult);
-  }
-
-  /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
-   *
-   * <ul>
-   *   <li>Given {@code jane.doe@example.org}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"
-  })
-  public void testProvisionAdminUser_givenJaneDoeExampleOrg() {
-    // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-    details.setEmail("jane.doe@example.org");
-
-    // Act
-    AdminUserDetails actualProvisionAdminUserResult =
-        adminUserProvisioningServiceImpl.provisionAdminUser(details);
-
-    // Assert
-    verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
-    verify(adminSecurityService).readAllAdminRoles();
-    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    assertEquals(details, actualProvisionAdminUserResult);
-  }
-
-  /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
-   *
-   * <ul>
-   *   <li>Given space.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "AdminUserDetails AdminUserProvisioningServiceImpl.provisionAdminUser(BroadleafExternalAuthenticationUserDetails)"})
   public void testProvisionAdminUser_givenSpace() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any()))
-        .thenReturn(new AdminUserImpl());
-
-    BroadleafExternalAuthenticationUserDetails details =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(new AdminUserImpl());
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
     when(details.getEmail()).thenReturn(" ");
-    when(details.getFirstName()).thenReturn(" ");
-    when(details.getLastName()).thenReturn(" ");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
     when(details.getUsername()).thenReturn("janedoe");
     when(details.getAuthorities()).thenReturn(new ArrayList<>());
 
     // Act
-    AdminUserDetails actualProvisionAdminUserResult =
-        adminUserProvisioningServiceImpl.provisionAdminUser(details);
+    AdminUserDetails actualProvisionAdminUserResult = adminUserProvisioningServiceImpl.provisionAdminUser(details);
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
     verify(details).getEmail();
-    verify(details).getFirstName();
-    verify(details).getLastName();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).readAllAdminRoles();
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
     verify(details).getAuthorities();
@@ -528,34 +337,27 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminRoleImpl} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminRoleImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"})
   public void testParseAdminRoles_givenArrayListAddAdminRoleImpl_thenReturnEmpty() {
     // Arrange
     ArrayList<AdminRole> adminRoleList = new ArrayList<>();
     adminRoleList.add(new AdminRoleImpl());
     when(adminSecurityService.readAllAdminRoles()).thenReturn(adminRoleList);
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
 
     // Act
-    HashSet<AdminRole> actualParseAdminRolesResult =
-        adminUserProvisioningServiceImpl.parseAdminRoles(details);
+    HashSet<AdminRole> actualParseAdminRolesResult = adminUserProvisioningServiceImpl
+        .parseAdminRoles(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
 
     // Assert
     verify(adminSecurityService).readAllAdminRoles();
@@ -563,34 +365,27 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.
+   *   <li>Given {@link SimpleGrantedAuthority#SimpleGrantedAuthority(String)} with {@code Role}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"})
   public void testParseAdminRoles_givenSimpleGrantedAuthorityWithRole() {
     // Arrange
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
 
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("Role"));
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", authorities);
 
     // Act
-    HashSet<AdminRole> actualParseAdminRolesResult =
-        adminUserProvisioningServiceImpl.parseAdminRoles(details);
+    HashSet<AdminRole> actualParseAdminRolesResult = adminUserProvisioningServiceImpl
+        .parseAdminRoles(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", authorities));
 
     // Assert
     verify(adminSecurityService).readAllAdminRoles();
@@ -598,31 +393,24 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "HashSet AdminUserProvisioningServiceImpl.parseAdminRoles(BroadleafExternalAuthenticationUserDetails)"})
   public void testParseAdminRoles_thenReturnEmpty() {
     // Arrange
     when(adminSecurityService.readAllAdminRoles()).thenReturn(new ArrayList<>());
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
 
     // Act
-    HashSet<AdminRole> actualParseAdminRolesResult =
-        adminUserProvisioningServiceImpl.parseAdminRoles(details);
+    HashSet<AdminRole> actualParseAdminRolesResult = adminUserProvisioningServiceImpl
+        .parseAdminRoles(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
 
     // Assert
     verify(adminSecurityService).readAllAdminRoles();
@@ -631,83 +419,99 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
-   *
    * <ul>
-   *   <li>Then calls {@link AdminSecurityHelper#addAllPermissionsToAuthorities(List, Collection)}.
+   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set AdminUserProvisioningServiceImpl.extractAdminUserAuthorities(HashSet)"})
-  public void testExtractAdminUserAuthorities_thenCallsAddAllPermissionsToAuthorities() {
+  public void testExtractAdminUserAuthorities_whenHashSetAddAdminRoleImpl() {
     // Arrange
-    doNothing()
-        .when(adminSecurityHelper)
-        .addAllPermissionsToAuthorities(
-            Mockito.<List<SimpleGrantedAuthority>>any(),
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+
+    HashSet<AdminRole> parsedRoles = new HashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
+    parsedRoles.add(new AdminRoleImpl());
+
+    // Act
+    Set<SimpleGrantedAuthority> actualExtractAdminUserAuthoritiesResult = adminUserProvisioningServiceImpl
+        .extractAdminUserAuthorities(parsedRoles);
+
+    // Assert
+    verify(adminSecurityHelper, atLeast(1)).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    assertEquals(6, actualExtractAdminUserAuthoritiesResult.size());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
+   * <ul>
+   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>Then return size is six.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set AdminUserProvisioningServiceImpl.extractAdminUserAuthorities(HashSet)"})
+  public void testExtractAdminUserAuthorities_whenHashSet_thenReturnSizeIsSix() {
+    // Arrange, Act and Assert
+    assertEquals(6, adminUserProvisioningServiceImpl.extractAdminUserAuthorities(new HashSet<>()).size());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
+   * <ul>
+   *   <li>When {@link LinkedHashSet#LinkedHashSet()} add {@link AdminRoleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set AdminUserProvisioningServiceImpl.extractAdminUserAuthorities(HashSet)"})
+  public void testExtractAdminUserAuthorities_whenLinkedHashSetAddAdminRoleImpl() {
+    // Arrange
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
             Mockito.<Collection<AdminPermission>>any());
 
     LinkedHashSet<AdminRole> parsedRoles = new LinkedHashSet<>();
     parsedRoles.add(new AdminRoleImpl());
 
     // Act
-    Set<SimpleGrantedAuthority> actualExtractAdminUserAuthoritiesResult =
-        adminUserProvisioningServiceImpl.extractAdminUserAuthorities(parsedRoles);
+    Set<SimpleGrantedAuthority> actualExtractAdminUserAuthoritiesResult = adminUserProvisioningServiceImpl
+        .extractAdminUserAuthorities(parsedRoles);
 
     // Assert
-    verify(adminSecurityHelper)
-        .addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
     assertEquals(6, actualExtractAdminUserAuthoritiesResult.size());
   }
 
   /**
-   * Test {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
-   *
-   * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
-   *   <li>Then return size is six.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Set AdminUserProvisioningServiceImpl.extractAdminUserAuthorities(HashSet)"})
-  public void testExtractAdminUserAuthorities_whenHashSet_thenReturnSizeIsSix() {
-    // Arrange, Act and Assert
-    assertEquals(
-        6, adminUserProvisioningServiceImpl.extractAdminUserAuthorities(new HashSet<>()).size());
-  }
-
-  /**
    * Test {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}.
-   *
    * <ul>
-   *   <li>Given {@link AdminRoleImpl} (default constructor).
-   *   <li>Then calls {@link AdminSecurityHelper#addAllPermissionsToAuthorities(List, Collection)}.
+   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.addPermissions(HashSet, List)"})
-  public void testAddPermissions_givenAdminRoleImpl_thenCallsAddAllPermissionsToAuthorities() {
+  public void testAddPermissions_whenHashSetAddAdminRoleImpl() {
     // Arrange
-    doNothing()
-        .when(adminSecurityHelper)
-        .addAllPermissionsToAuthorities(
-            Mockito.<List<SimpleGrantedAuthority>>any(),
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
             Mockito.<Collection<AdminPermission>>any());
 
-    LinkedHashSet<AdminRole> parsedRoles = new LinkedHashSet<>();
+    HashSet<AdminRole> parsedRoles = new HashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
     parsedRoles.add(new AdminRoleImpl());
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
 
@@ -715,8 +519,7 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
     adminUserProvisioningServiceImpl.addPermissions(parsedRoles, adminUserAuthorities);
 
     // Assert
-    verify(adminSecurityHelper)
-        .addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    verify(adminSecurityHelper, atLeast(1)).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
     assertEquals(2, adminUserAuthorities.size());
     SimpleGrantedAuthority getResult = adminUserAuthorities.get(1);
     assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.getAuthority());
@@ -728,17 +531,15 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}.
-   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.
+   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.addPermissions(HashSet, List)"})
   public void testAddPermissions_whenHashSet_thenArrayListSizeIsTwo() {
     // Arrange
@@ -759,14 +560,47 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * Test {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}.
+   * <ul>
+   *   <li>When {@link LinkedHashSet#LinkedHashSet()} add {@link AdminRoleImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.addPermissions(HashSet, List)"})
+  public void testAddPermissions_whenLinkedHashSetAddAdminRoleImpl() {
+    // Arrange
+    doNothing().when(adminSecurityHelper)
+        .addAllPermissionsToAuthorities(Mockito.<List<SimpleGrantedAuthority>>any(),
+            Mockito.<Collection<AdminPermission>>any());
+
+    LinkedHashSet<AdminRole> parsedRoles = new LinkedHashSet<>();
+    parsedRoles.add(new AdminRoleImpl());
+    ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
+
+    // Act
+    adminUserProvisioningServiceImpl.addPermissions(parsedRoles, adminUserAuthorities);
+
+    // Assert
+    verify(adminSecurityHelper).addAllPermissionsToAuthorities(isA(List.class), isA(Collection.class));
+    assertEquals(2, adminUserAuthorities.size());
+    SimpleGrantedAuthority getResult = adminUserAuthorities.get(1);
+    assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.getAuthority());
+    assertEquals("PERMISSION_ALL_USER_SANDBOX", getResult.toString());
+    SimpleGrantedAuthority getResult2 = adminUserAuthorities.get(0);
+    assertEquals("PERMISSION_OTHER_DEFAULT", getResult2.getAuthority());
+    assertEquals("PERMISSION_OTHER_DEFAULT", getResult2.toString());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole() {
     // Arrange
@@ -788,13 +622,11 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole2() {
     // Arrange
@@ -816,13 +648,11 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole3() {
     // Arrange
@@ -844,51 +674,19 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
-  public void testConvertPermissionPrefixToRole4() {
-    // Arrange
-    ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
-    adminUserAuthorities.add(new SimpleGrantedAuthority("PERMISSION_PERMISSION_PERMISSION_"));
-
-    // Act
-    adminUserProvisioningServiceImpl.convertPermissionPrefixToRole(adminUserAuthorities);
-
-    // Assert
-    assertEquals(3, adminUserAuthorities.size());
-    SimpleGrantedAuthority getResult = adminUserAuthorities.get(1);
-    assertEquals("ROLE_PERMISSION_PERMISSION_PERMISSION_", getResult.getAuthority());
-    assertEquals("ROLE_PERMISSION_PERMISSION_PERMISSION_", getResult.toString());
-    SimpleGrantedAuthority getResult2 = adminUserAuthorities.get(2);
-    assertEquals("ROLE_ROLE_ROLE_", getResult2.getAuthority());
-    assertEquals("ROLE_ROLE_ROLE_", getResult2.toString());
-  }
-
-  /**
-   * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} second Authority is {@code ROLE_PERMISSION_}.
+   *   <li>Then {@link ArrayList#ArrayList()} second Authority is {@code ROLE_PERMISSION_}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSecondAuthorityIsRolePermission() {
     // Arrange
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
-    adminUserAuthorities.add(
-        new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.LEGACY_ROLE_PREFIX));
+    adminUserAuthorities.add(new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.LEGACY_ROLE_PREFIX));
     adminUserAuthorities.add(new SimpleGrantedAuthority("Role"));
 
     // Act
@@ -900,25 +698,20 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
     assertEquals("ROLE_PERMISSION_", getResult.getAuthority());
     assertEquals("ROLE_PERMISSION_", getResult.toString());
     SimpleGrantedAuthority getResult2 = adminUserAuthorities.get(2);
-    assertEquals(
-        AdminUserDetailsServiceImpl.DEFAULT_SPRING_SECURITY_ROLE_PREFIX, getResult2.getAuthority());
-    assertEquals(
-        AdminUserDetailsServiceImpl.DEFAULT_SPRING_SECURITY_ROLE_PREFIX, getResult2.toString());
+    assertEquals(AdminUserDetailsServiceImpl.DEFAULT_SPRING_SECURITY_ROLE_PREFIX, getResult2.getAuthority());
+    assertEquals(AdminUserDetailsServiceImpl.DEFAULT_SPRING_SECURITY_ROLE_PREFIX, getResult2.toString());
   }
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSizeIsOne() {
     // Arrange
@@ -934,24 +727,20 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListSizeIsTwo() {
     // Arrange
     ArrayList<SimpleGrantedAuthority> adminUserAuthorities = new ArrayList<>();
-    adminUserAuthorities.add(
-        new SimpleGrantedAuthority(
-            AdminUserDetailsServiceImpl.DEFAULT_SPRING_SECURITY_ROLE_PREFIX));
+    adminUserAuthorities
+        .add(new SimpleGrantedAuthority(AdminUserDetailsServiceImpl.DEFAULT_SPRING_SECURITY_ROLE_PREFIX));
     adminUserAuthorities.add(new SimpleGrantedAuthority("Role"));
 
     // Act
@@ -966,17 +755,14 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} third Authority is {@code ROLE_42}.
+   *   <li>Then {@link ArrayList#ArrayList()} third Authority is {@code ROLE_42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_thenArrayListThirdAuthorityIsRole42() {
     // Arrange
@@ -998,18 +784,15 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserProvisioningServiceImpl.convertPermissionPrefixToRole(List)"})
   public void testConvertPermissionPrefixToRole_whenArrayList_thenArrayListEmpty() {
     // Arrange
@@ -1023,89 +806,66 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"
-  })
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
   public void testGetAdminUser() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
     AdminUserImpl adminUserImpl = new AdminUserImpl();
     when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
 
     // Act
-    AdminUser actualAdminUser =
-        adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
     assertSame(adminUserImpl, actualAdminUser);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
    * <ul>
-   *   <li>Given {@link AdminRoleImpl} (default constructor).
-   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).
+   *   <li>Given {@link AdminRoleImpl} (default constructor).</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"
-  })
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
   public void testGetAdminUser_givenAdminRoleImpl_whenHashSetAddAdminRoleImpl() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
     AdminUserImpl adminUserImpl = new AdminUserImpl();
     when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
-
-    BroadleafExternalAuthenticationUserDetails details =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getEmail()).thenReturn(" ");
-    when(details.getFirstName()).thenReturn(" ");
-    when(details.getLastName()).thenReturn(" ");
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn("jane.doe@example.org");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
     when(details.getUsername()).thenReturn("janedoe");
 
     HashSet<AdminRole> parsedRoles = new HashSet<>();
@@ -1116,57 +876,44 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(details).getEmail();
-    verify(details).getFirstName();
-    verify(details).getLastName();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(details, atLeast(1)).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    verify(details, atLeast(1)).getUsername();
+    verify(details).getUsername();
     assertSame(adminUserImpl, actualAdminUser);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
    * <ul>
-   *   <li>Given {@link AdminRoleImpl} (default constructor).
-   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).
+   *   <li>Given {@link AdminRoleImpl} (default constructor).</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link AdminRoleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"
-  })
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
   public void testGetAdminUser_givenAdminRoleImpl_whenHashSetAddAdminRoleImpl2() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
     AdminUserImpl adminUserImpl = new AdminUserImpl();
     when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
-
-    BroadleafExternalAuthenticationUserDetails details =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getEmail()).thenReturn(" ");
-    when(details.getFirstName()).thenReturn(" ");
-    when(details.getLastName()).thenReturn(" ");
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn("jane.doe@example.org");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
     when(details.getUsername()).thenReturn("janedoe");
 
     HashSet<AdminRole> parsedRoles = new HashSet<>();
@@ -1178,469 +925,242 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(details).getEmail();
-    verify(details).getFirstName();
-    verify(details).getLastName();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(details, atLeast(1)).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    verify(details, atLeast(1)).getUsername();
+    verify(details).getUsername();
     assertSame(adminUserImpl, actualAdminUser);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
    * <ul>
-   *   <li>Given {@link AdminSecurityService} {@link
-   *       AdminSecurityService#readAdminUserByUserName(String)} return {@code null}.
+   *   <li>Given {@link AdminSecurityService} {@link AdminSecurityService#readAdminUserByUserName(String)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"
-  })
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
   public void testGetAdminUser_givenAdminSecurityServiceReadAdminUserByUserNameReturnNull() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
     AdminUserImpl adminUserImpl = new AdminUserImpl();
     when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
-
-    BroadleafExternalAuthenticationUserDetails details =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
-    when(details.getEmail()).thenReturn(" ");
-    when(details.getFirstName()).thenReturn(" ");
-    when(details.getLastName()).thenReturn(" ");
-    when(details.getUsername()).thenReturn("janedoe");
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
 
     // Act
-    AdminUser actualAdminUser =
-        adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(details).getEmail();
-    verify(details).getFirstName();
-    verify(details).getLastName();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
-    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    verify(details, atLeast(1)).getUsername();
-    assertSame(adminUserImpl, actualAdminUser);
-  }
-
-  /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}.
-   *
-   * <ul>
-   *   <li>Given {@code Doe}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"
-  })
-  public void testGetAdminUser_givenDoe() {
-    // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
-
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-    details.setLastName("Doe");
-
-    // Act
-    AdminUser actualAdminUser =
-        adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
-
-    // Assert
-    verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
     assertSame(adminUserImpl, actualAdminUser);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
    * <ul>
-   *   <li>Given {@code Jane}.
+   *   <li>Given {@code jane.doe@example.org}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"
-  })
-  public void testGetAdminUser_givenJane() {
-    // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    AdminUserImpl adminUserImpl = new AdminUserImpl();
-    when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
-
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-    details.setFirstName("Jane");
-
-    // Act
-    AdminUser actualAdminUser =
-        adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
-
-    // Assert
-    verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
-    verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    assertSame(adminUserImpl, actualAdminUser);
-  }
-
-  /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}.
-   *
-   * <ul>
-   *   <li>Given {@code jane.doe@example.org}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"
-  })
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
   public void testGetAdminUser_givenJaneDoeExampleOrg() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
     AdminUserImpl adminUserImpl = new AdminUserImpl();
     when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
-
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-    details.setEmail("jane.doe@example.org");
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getEmail()).thenReturn("jane.doe@example.org");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
+    when(details.getUsername()).thenReturn("janedoe");
 
     // Act
-    AdminUser actualAdminUser =
-        adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(details, atLeast(1)).getEmail();
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
+    verify(details).getUsername();
     assertSame(adminUserImpl, actualAdminUser);
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
    * <ul>
-   *   <li>Given space.
-   *   <li>Then calls {@link BroadleafExternalAuthenticationUserDetails#getEmail()}.
+   *   <li>Given space.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails,
-   * HashSet)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"
-  })
-  public void testGetAdminUser_givenSpace_thenCallsGetEmail() {
+      "AdminUser AdminUserProvisioningServiceImpl.getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)"})
+  public void testGetAdminUser_givenSpace() {
     // Arrange
-    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler =
-        mock(AdminExternalLoginExtensionHandler.class);
-    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(
-            Mockito.<AdminUser>any(), Mockito.<BroadleafExternalAuthenticationUserDetails>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminExternalLoginUserExtensionManager.getProxy())
-        .thenReturn(adminExternalLoginExtensionHandler);
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
+    AdminExternalLoginExtensionHandler adminExternalLoginExtensionHandler = mock(
+        AdminExternalLoginExtensionHandler.class);
+    when(adminExternalLoginExtensionHandler.performAdditionalAuthenticationTasks(Mockito.<AdminUser>any(),
+        Mockito.<BroadleafExternalAuthenticationUserDetails>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(adminExternalLoginUserExtensionManager.getProxy()).thenReturn(adminExternalLoginExtensionHandler);
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
     AdminUserImpl adminUserImpl = new AdminUserImpl();
     when(adminSecurityService.saveAdminUser(Mockito.<AdminUser>any())).thenReturn(adminUserImpl);
-
-    BroadleafExternalAuthenticationUserDetails details =
-        mock(BroadleafExternalAuthenticationUserDetails.class);
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
     when(details.getEmail()).thenReturn(" ");
-    when(details.getFirstName()).thenReturn(" ");
-    when(details.getLastName()).thenReturn(" ");
+    when(details.getFirstName()).thenReturn("Jane");
+    when(details.getLastName()).thenReturn("Doe");
     when(details.getUsername()).thenReturn("janedoe");
 
     // Act
-    AdminUser actualAdminUser =
-        adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
+    AdminUser actualAdminUser = adminUserProvisioningServiceImpl.getAdminUser(details, new HashSet<>());
 
     // Assert
     verify(adminExternalLoginUserExtensionManager).getProxy();
     verify(details).getEmail();
-    verify(details).getFirstName();
-    verify(details).getLastName();
-    verify(adminExternalLoginExtensionHandler)
-        .performAdditionalAuthenticationTasks(
-            isA(AdminUser.class), isA(BroadleafExternalAuthenticationUserDetails.class));
-    verify(adminSecurityService).readAdminUserByUserName("janedoe");
+    verify(details, atLeast(1)).getFirstName();
+    verify(details, atLeast(1)).getLastName();
+    verify(adminExternalLoginExtensionHandler).performAdditionalAuthenticationTasks(isA(AdminUser.class),
+        isA(BroadleafExternalAuthenticationUserDetails.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("janedoe"));
     verify(adminSecurityService).saveAdminUser(isA(AdminUser.class));
-    verify(details, atLeast(1)).getUsername();
+    verify(details).getUsername();
     assertSame(adminUserImpl, actualAdminUser);
   }
 
   /**
-   * Test {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser,
-   * BroadleafExternalAuthenticationUserDetails, Set)}.
-   *
-   * <p>Method under test: {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser,
-   * BroadleafExternalAuthenticationUserDetails, Set)}
+   * Test {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "AdminUserDetails AdminUserProvisioningServiceImpl.createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)"
-  })
+      "AdminUserDetails AdminUserProvisioningServiceImpl.createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)"})
   public void testCreateDetails() {
     // Arrange
     AdminUserImpl adminUser = new AdminUserImpl();
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
+
+    // Act and Assert
+    assertEquals(details, adminUserProvisioningServiceImpl.createDetails(adminUser, details, new HashSet<>()));
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
+   * <ul>
+   *   <li>Given {@code janedoe}.</li>
+   *   <li>Then return Authorities size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "AdminUserDetails AdminUserProvisioningServiceImpl.createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)"})
+  public void testCreateDetails_givenJanedoe_thenReturnAuthoritiesSizeIsOne() {
+    // Arrange
+    AdminUserImpl adminUser = new AdminUserImpl();
+    BroadleafExternalAuthenticationUserDetails details = mock(BroadleafExternalAuthenticationUserDetails.class);
+    when(details.getUsername()).thenReturn("janedoe");
+
+    HashSet<SimpleGrantedAuthority> adminUserAuthorities = new HashSet<>();
+    adminUserAuthorities.add(new SimpleGrantedAuthority("Role"));
 
     // Act
-    AdminUserDetails actualCreateDetailsResult =
-        adminUserProvisioningServiceImpl.createDetails(adminUser, details, new HashSet<>());
+    AdminUserDetails actualCreateDetailsResult = adminUserProvisioningServiceImpl.createDetails(adminUser, details,
+        adminUserAuthorities);
 
     // Assert
-    assertEquals(details, actualCreateDetailsResult);
+    verify(details).getUsername();
+    Collection<GrantedAuthority> authorities = actualCreateDetailsResult.getAuthorities();
+    assertEquals(1, authorities.size());
+    assertTrue(authorities instanceof Set);
+    assertEquals("", actualCreateDetailsResult.getPassword());
+    assertEquals("janedoe", actualCreateDetailsResult.getUsername());
+    assertNull(actualCreateDetailsResult.getId());
+    assertTrue(actualCreateDetailsResult.isAccountNonExpired());
+    assertTrue(actualCreateDetailsResult.isAccountNonLocked());
+    assertTrue(actualCreateDetailsResult.isCredentialsNonExpired());
+    assertTrue(actualCreateDetailsResult.isEnabled());
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is array of {@link String} with {@code foo}.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"
-  })
-  public void testParseRolesFromUserDetails_givenHashMapFooIsArrayOfStringWithFoo() {
-    // Arrange
-    HashMap<String, String[]> roleNameSubstitutions = new HashMap<>();
-    roleNameSubstitutions.put("foo", new String[] {"foo"});
-
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl =
-        new AdminUserProvisioningServiceImpl();
-    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(roleNameSubstitutions);
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-
-    // Act and Assert
-    assertTrue(adminUserProvisioningServiceImpl.parseRolesFromUserDetails(details).isEmpty());
-  }
-
-  /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"})
   public void testParseRolesFromUserDetails_thenReturnEmpty() {
-    // Arrange
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-
-    // Act and Assert
-    assertTrue(adminUserProvisioningServiceImpl.parseRolesFromUserDetails(details).isEmpty());
+    // Arrange, Act and Assert
+    assertTrue(
+        adminUserProvisioningServiceImpl
+            .parseRolesFromUserDetails(
+                new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()))
+            .isEmpty());
   }
 
   /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   *
+   * Test {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
+   * <p>
+   * Method under test: {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"
-  })
-  public void testParseRolesFromUserDetails_thenReturnEmpty2() {
-    // Arrange
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl =
-        new AdminUserProvisioningServiceImpl();
-    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(new HashMap<>());
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>());
-
-    // Act and Assert
-    assertTrue(adminUserProvisioningServiceImpl.parseRolesFromUserDetails(details).isEmpty());
-  }
-
-  /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"
-  })
+      "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"})
   public void testParseRolesFromUserDetails_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("Role"));
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", authorities);
 
     // Act
-    HashSet<String> actualParseRolesFromUserDetailsResult =
-        adminUserProvisioningServiceImpl.parseRolesFromUserDetails(details);
-
-    // Assert
-    assertEquals(1, actualParseRolesFromUserDetailsResult.size());
-    assertTrue(actualParseRolesFromUserDetailsResult.contains("Role"));
-  }
-
-  /**
-   * Test {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "HashSet AdminUserProvisioningServiceImpl.parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)"
-  })
-  public void testParseRolesFromUserDetails_thenReturnSizeIsOne2() {
-    // Arrange
-    HashMap<String, String[]> roleNameSubstitutions = new HashMap<>();
-    roleNameSubstitutions.put("foo", new String[] {"foo"});
-
-    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl =
-        new AdminUserProvisioningServiceImpl();
-    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(roleNameSubstitutions);
-
-    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("Role"));
-    BroadleafExternalAuthenticationUserDetails details =
-        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", authorities);
-
-    // Act
-    HashSet<String> actualParseRolesFromUserDetailsResult =
-        adminUserProvisioningServiceImpl.parseRolesFromUserDetails(details);
+    HashSet<String> actualParseRolesFromUserDetailsResult = adminUserProvisioningServiceImpl
+        .parseRolesFromUserDetails(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", authorities));
 
     // Assert
     assertEquals(1, actualParseRolesFromUserDetailsResult.size());

@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.search.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,19 +38,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {SearchCriteria.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SearchCriteriaDiffblueTest {
-  @Autowired private SearchCriteria searchCriteria;
+  @Autowired
+  private SearchCriteria searchCriteria;
 
   /**
    * Test {@link SearchCriteria#addFilterQuery(String)}.
-   *
-   * <p>Method under test: {@link SearchCriteria#addFilterQuery(String)}
+   * <p>
+   * Method under test: {@link SearchCriteria#addFilterQuery(String)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SearchCriteria.addFilterQuery(String)"})
   public void testAddFilterQuery() {
     // Arrange and Act
@@ -66,9 +65,8 @@ public class SearchCriteriaDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SearchCriteria}
    *   <li>{@link SearchCriteria#setCategory(Category)}
@@ -94,31 +92,17 @@ public class SearchCriteriaDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchCriteria.<init>()",
-    "Category SearchCriteria.getCategory()",
-    "Map SearchCriteria.getFilterCriteria()",
-    "Collection SearchCriteria.getFilterQueries()",
-    "Integer SearchCriteria.getPage()",
-    "Integer SearchCriteria.getPageSize()",
-    "String SearchCriteria.getQuery()",
-    "String SearchCriteria.getRequestHandler()",
-    "boolean SearchCriteria.getSearchExplicitCategory()",
-    "String SearchCriteria.getSortQuery()",
-    "Integer SearchCriteria.getStartIndex()",
-    "void SearchCriteria.setCategory(Category)",
-    "void SearchCriteria.setFilterCriteria(Map)",
-    "void SearchCriteria.setFilterQueries(Collection)",
-    "void SearchCriteria.setPage(Integer)",
-    "void SearchCriteria.setPageSize(Integer)",
-    "void SearchCriteria.setQuery(String)",
-    "void SearchCriteria.setRequestHandler(String)",
-    "void SearchCriteria.setSearchExplicitCategory(boolean)",
-    "void SearchCriteria.setSortQuery(String)",
-    "void SearchCriteria.setStartIndex(Integer)"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchCriteria.<init>()", "Category SearchCriteria.getCategory()",
+      "Map SearchCriteria.getFilterCriteria()", "Collection SearchCriteria.getFilterQueries()",
+      "Integer SearchCriteria.getPage()", "Integer SearchCriteria.getPageSize()", "String SearchCriteria.getQuery()",
+      "String SearchCriteria.getRequestHandler()", "boolean SearchCriteria.getSearchExplicitCategory()",
+      "String SearchCriteria.getSortQuery()", "Integer SearchCriteria.getStartIndex()",
+      "void SearchCriteria.setCategory(Category)", "void SearchCriteria.setFilterCriteria(Map)",
+      "void SearchCriteria.setFilterQueries(Collection)", "void SearchCriteria.setPage(Integer)",
+      "void SearchCriteria.setPageSize(Integer)", "void SearchCriteria.setQuery(String)",
+      "void SearchCriteria.setRequestHandler(String)", "void SearchCriteria.setSearchExplicitCategory(boolean)",
+      "void SearchCriteria.setSortQuery(String)", "void SearchCriteria.setStartIndex(Integer)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchCriteria actualSearchCriteria = new SearchCriteria();

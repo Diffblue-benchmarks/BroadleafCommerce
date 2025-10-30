@@ -20,8 +20,7 @@ package org.broadleafcommerce.openadmin.server.security.service.user;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,17 +33,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class AdminUserDetailsDiffblueTest {
   /**
    * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}.
-   *
    * <ul>
-   *   <li>Then return Authorities size is one.
+   *   <li>Then return Authorities size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String,
-   * Collection)}
+   * <p>
+   * Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserDetails.<init>(Long, String, String, Collection)"})
   public void testNewAdminUserDetails_thenReturnAuthoritiesSizeIsOne() {
     // Arrange
@@ -52,8 +48,7 @@ public class AdminUserDetailsDiffblueTest {
     authorities.add(new SimpleGrantedAuthority("Role"));
 
     // Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", authorities);
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", authorities);
 
     // Assert
     Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
@@ -70,17 +65,14 @@ public class AdminUserDetailsDiffblueTest {
 
   /**
    * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}.
-   *
    * <ul>
-   *   <li>Then return Authorities size is one.
+   *   <li>Then return Authorities size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String,
-   * Collection)}
+   * <p>
+   * Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserDetails.<init>(Long, String, String, Collection)"})
   public void testNewAdminUserDetails_thenReturnAuthoritiesSizeIsOne2() {
     // Arrange
@@ -89,8 +81,7 @@ public class AdminUserDetailsDiffblueTest {
     authorities.add(new SimpleGrantedAuthority("Role"));
 
     // Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", authorities);
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", authorities);
 
     // Assert
     Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
@@ -106,30 +97,25 @@ public class AdminUserDetailsDiffblueTest {
   }
 
   /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean,
-   * boolean, Collection)}.
-   *
+   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}.
    * <ul>
-   *   <li>Then return Authorities size is one.
+   *   <li>Then return Authorities size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean,
-   * boolean, boolean, boolean, Collection)}
+   * <p>
+   * Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"
-  })
+      "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"})
   public void testNewAdminUserDetails_thenReturnAuthoritiesSizeIsOne3() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("Role"));
 
     // Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true, authorities);
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true,
+        authorities);
 
     // Assert
     Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
@@ -145,22 +131,17 @@ public class AdminUserDetailsDiffblueTest {
   }
 
   /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean,
-   * boolean, Collection)}.
-   *
+   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}.
    * <ul>
-   *   <li>Then return Authorities size is one.
+   *   <li>Then return Authorities size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean,
-   * boolean, boolean, boolean, Collection)}
+   * <p>
+   * Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"
-  })
+      "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"})
   public void testNewAdminUserDetails_thenReturnAuthoritiesSizeIsOne4() {
     // Arrange
     ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -168,8 +149,8 @@ public class AdminUserDetailsDiffblueTest {
     authorities.add(new SimpleGrantedAuthority("Role"));
 
     // Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true, authorities);
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true,
+        authorities);
 
     // Assert
     Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
@@ -186,23 +167,19 @@ public class AdminUserDetailsDiffblueTest {
 
   /**
    * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Authorities Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Authorities Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String,
-   * Collection)}
+   * <p>
+   * Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminUserDetails.<init>(Long, String, String, Collection)"})
   public void testNewAdminUserDetails_whenArrayList_thenReturnAuthoritiesEmpty() {
     // Arrange and Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
 
     // Assert
     Collection<GrantedAuthority> authorities = actualAdminUserDetails.getAuthorities();
@@ -218,27 +195,22 @@ public class AdminUserDetailsDiffblueTest {
   }
 
   /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean,
-   * boolean, Collection)}.
-   *
+   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Authorities Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Authorities Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean,
-   * boolean, boolean, boolean, Collection)}
+   * <p>
+   * Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"
-  })
+      "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"})
   public void testNewAdminUserDetails_whenArrayList_thenReturnAuthoritiesEmpty2() {
     // Arrange and Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true, new ArrayList<>());
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true,
+        new ArrayList<>());
 
     // Assert
     Collection<GrantedAuthority> authorities = actualAdminUserDetails.getAuthorities();
@@ -255,30 +227,24 @@ public class AdminUserDetailsDiffblueTest {
 
   /**
    * Test {@link AdminUserDetails#withId(Long)}.
-   *
-   * <p>Method under test: {@link AdminUserDetails#withId(Long)}
+   * <p>
+   * Method under test: {@link AdminUserDetails#withId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"AdminUserDetails AdminUserDetails.withId(Long)"})
   public void testWithId() {
     // Arrange
-    AdminUserDetails adminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
+    AdminUserDetails adminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
 
-    // Act
-    AdminUserDetails actualWithIdResult = adminUserDetails.withId(1L);
-
-    // Assert
-    assertSame(adminUserDetails, actualWithIdResult);
+    // Act and Assert
+    assertSame(adminUserDetails, adminUserDetails.withId(1L));
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AdminUserDetails#setId(Long)}
    *   <li>{@link AdminUserDetails#toString()}
@@ -286,28 +252,21 @@ public class AdminUserDetailsDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long AdminUserDetails.getId()",
-    "void AdminUserDetails.setId(Long)",
-    "String AdminUserDetails.toString()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long AdminUserDetails.getId()", "void AdminUserDetails.setId(Long)",
+      "String AdminUserDetails.toString()"})
   public void testGettersAndSetters() {
     // Arrange
-    AdminUserDetails adminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
+    AdminUserDetails adminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
 
     // Act
     adminUserDetails.setId(1L);
     String actualToStringResult = adminUserDetails.toString();
 
     // Assert
-    assertEquals(
-        "org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetails [Username=janedoe,"
-            + " Password=[PROTECTED], Enabled=true, AccountNonExpired=true, credentialsNonExpired=true, AccountNonLocked"
-            + "=true, Granted Authorities=[]]: Id: 1; ",
-        actualToStringResult);
+    assertEquals("org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetails [Username=janedoe,"
+        + " Password=[PROTECTED], Enabled=true, AccountNonExpired=true, credentialsNonExpired=true, AccountNonLocked"
+        + "=true, Granted Authorities=[]]: Id: 1; ", actualToStringResult);
     assertEquals(1L, adminUserDetails.getId().longValue());
   }
 }

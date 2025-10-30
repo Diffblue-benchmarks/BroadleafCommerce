@@ -20,10 +20,10 @@ package org.broadleafcommerce.core.offer.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -43,18 +43,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OfferAuditDaoImplDiffblueTest {
-  @Mock private EntityConfiguration entityConfiguration;
+  @InjectMocks
+  private OfferAuditDaoImpl offerAuditDaoImpl;
 
-  @InjectMocks private OfferAuditDaoImpl offerAuditDaoImpl;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link OfferAuditDaoImpl#create()}.
-   *
-   * <p>Method under test: {@link OfferAuditDaoImpl#create()}
+   * <p>
+   * Method under test: {@link OfferAuditDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OfferAudit OfferAuditDaoImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -65,33 +66,29 @@ public class OfferAuditDaoImplDiffblueTest {
     offerAuditImpl.setOfferCodeId(OfferAuditImpl.serialVersionUID);
     offerAuditImpl.setOfferId(OfferAuditImpl.serialVersionUID);
     offerAuditImpl.setOrderId(OfferAuditImpl.serialVersionUID);
-    offerAuditImpl.setRedeemedDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(offerAuditImpl);
+    offerAuditImpl
+        .setRedeemedDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(offerAuditImpl);
 
     // Act
     OfferAudit actualCreateResult = offerAuditDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.offer.domain.OfferAudit");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.OfferAudit"));
     assertSame(offerAuditImpl, actualCreateResult);
   }
 
   /**
    * Test {@link OfferAuditDaoImpl#getOrderId(Order)}.
-   *
    * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferAuditDaoImpl#getOrderId(Order)}
+   * <p>
+   * Method under test: {@link OfferAuditDaoImpl#getOrderId(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditDaoImpl.getOrderId(Order)"})
   public void testGetOrderId_whenNullOrderImpl_thenReturnNull() {
     // Arrange, Act and Assert
@@ -99,14 +96,12 @@ public class OfferAuditDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferAuditDaoImpl#countOfferCodeUses(Order, Long)} with {@code order}, {@code
-   * offerCodeId}.
-   *
-   * <p>Method under test: {@link OfferAuditDaoImpl#countOfferCodeUses(Order, Long)}
+   * Test {@link OfferAuditDaoImpl#countOfferCodeUses(Order, Long)} with {@code order}, {@code offerCodeId}.
+   * <p>
+   * Method under test: {@link OfferAuditDaoImpl#countOfferCodeUses(Order, Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long OfferAuditDaoImpl.countOfferCodeUses(Order, Long)"})
   public void testCountOfferCodeUsesWithOrderOfferCodeId() {
     // Arrange, Act and Assert
@@ -115,21 +110,17 @@ public class OfferAuditDaoImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferAuditDaoImpl#setCurrentDateResolution(Long)}
    *   <li>{@link OfferAuditDaoImpl#getCurrentDateResolution()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long OfferAuditDaoImpl.getCurrentDateResolution()",
-    "void OfferAuditDaoImpl.setCurrentDateResolution(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long OfferAuditDaoImpl.getCurrentDateResolution()",
+      "void OfferAuditDaoImpl.setCurrentDateResolution(Long)"})
   public void testGettersAndSetters() {
     // Arrange
     OfferAuditDaoImpl offerAuditDaoImpl = new OfferAuditDaoImpl();

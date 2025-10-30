@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.money.Money;
 import org.junit.Test;
@@ -36,13 +35,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {NonDiscreteOrderItemRequestDTO.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NonDiscreteOrderItemRequestDTODiffblueTest {
-  @Autowired private NonDiscreteOrderItemRequestDTO nonDiscreteOrderItemRequestDTO;
+  @Autowired
+  private NonDiscreteOrderItemRequestDTO nonDiscreteOrderItemRequestDTO;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link NonDiscreteOrderItemRequestDTO#NonDiscreteOrderItemRequestDTO()}
    *   <li>{@link NonDiscreteOrderItemRequestDTO#setItemName(String)}
@@ -50,17 +49,12 @@ public class NonDiscreteOrderItemRequestDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NonDiscreteOrderItemRequestDTO.<init>()",
-    "String NonDiscreteOrderItemRequestDTO.getItemName()",
-    "void NonDiscreteOrderItemRequestDTO.setItemName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void NonDiscreteOrderItemRequestDTO.<init>()",
+      "String NonDiscreteOrderItemRequestDTO.getItemName()", "void NonDiscreteOrderItemRequestDTO.setItemName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    NonDiscreteOrderItemRequestDTO actualNonDiscreteOrderItemRequestDTO =
-        new NonDiscreteOrderItemRequestDTO();
+    NonDiscreteOrderItemRequestDTO actualNonDiscreteOrderItemRequestDTO = new NonDiscreteOrderItemRequestDTO();
     actualNonDiscreteOrderItemRequestDTO.setItemName("Item Name");
 
     // Assert
@@ -79,23 +73,20 @@ public class NonDiscreteOrderItemRequestDTODiffblueTest {
   }
 
   /**
-   * Test {@link NonDiscreteOrderItemRequestDTO#NonDiscreteOrderItemRequestDTO(String, Integer,
-   * Money)}.
-   *
-   * <p>Method under test: {@link
-   * NonDiscreteOrderItemRequestDTO#NonDiscreteOrderItemRequestDTO(String, Integer, Money)}
+   * Test {@link NonDiscreteOrderItemRequestDTO#NonDiscreteOrderItemRequestDTO(String, Integer, Money)}.
+   * <p>
+   * Method under test: {@link NonDiscreteOrderItemRequestDTO#NonDiscreteOrderItemRequestDTO(String, Integer, Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void NonDiscreteOrderItemRequestDTO.<init>(String, Integer, Money)"})
   public void testNewNonDiscreteOrderItemRequestDTO() {
     // Arrange
     Money overrideRetailPrice = new Money();
 
     // Act
-    NonDiscreteOrderItemRequestDTO actualNonDiscreteOrderItemRequestDTO =
-        new NonDiscreteOrderItemRequestDTO("Item Name", 1, overrideRetailPrice);
+    NonDiscreteOrderItemRequestDTO actualNonDiscreteOrderItemRequestDTO = new NonDiscreteOrderItemRequestDTO(
+        "Item Name", 1, overrideRetailPrice);
 
     // Assert
     assertEquals("Item Name", actualNonDiscreteOrderItemRequestDTO.getItemName());

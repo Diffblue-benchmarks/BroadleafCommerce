@@ -22,8 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -35,39 +34,35 @@ import org.junit.experimental.categories.Category;
 public class ImageConverterDiffblueTest {
   /**
    * Test {@link ImageConverter#getPixels(BufferedImage)}.
-   *
    * <ul>
-   *   <li>Then return array of {@code int} with {@code -16777216}.
+   *   <li>Then return array of {@code int} with {@code -16777216}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ImageConverter#getPixels(BufferedImage)}
+   * <p>
+   * Method under test: {@link ImageConverter#getPixels(BufferedImage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int[] ImageConverter.getPixels(BufferedImage)"})
   public void testGetPixels_thenReturnArrayOfIntWith16777216() {
     // Arrange, Act and Assert
-    assertArrayEquals(new int[] {-16777216}, ImageConverter.getPixels(new BufferedImage(1, 1, 1)));
+    assertArrayEquals(new int[]{-16777216}, ImageConverter.getPixels(new BufferedImage(1, 1, 1)));
   }
 
   /**
    * Test {@link ImageConverter#getImage(int[], int, int)}.
-   *
    * <ul>
-   *   <li>When array of {@code int} with one and zero.
-   *   <li>Then ColorModel return {@link DirectColorModel}.
+   *   <li>When array of {@code int} with one and zero.</li>
+   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ImageConverter#getImage(int[], int, int)}
+   * <p>
+   * Method under test: {@link ImageConverter#getImage(int[], int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BufferedImage ImageConverter.getImage(int[], int, int)"})
   public void testGetImage_whenArrayOfIntWithOneAndZero_thenColorModelReturnDirectColorModel() {
     // Arrange and Act
-    BufferedImage actualImage = ImageConverter.getImage(new int[] {1, 0, 1, 0}, 1, 1);
+    BufferedImage actualImage = ImageConverter.getImage(new int[]{1, 0, 1, 0}, 1, 1);
 
     // Assert
     assertTrue(actualImage.getColorModel() instanceof DirectColorModel);
@@ -96,21 +91,18 @@ public class ImageConverterDiffblueTest {
 
   /**
    * Test {@link ImageConverter#convertImage(Image)}.
-   *
    * <ul>
-   *   <li>Then ColorModel return {@link DirectColorModel}.
+   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ImageConverter#convertImage(Image)}
+   * <p>
+   * Method under test: {@link ImageConverter#convertImage(Image)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BufferedImage ImageConverter.convertImage(Image)"})
   public void testConvertImage_thenColorModelReturnDirectColorModel() {
     // Arrange and Act
-    BufferedImage actualConvertImageResult =
-        ImageConverter.convertImage(new BufferedImage(1, 1, 1));
+    BufferedImage actualConvertImageResult = ImageConverter.convertImage(new BufferedImage(1, 1, 1));
 
     // Assert
     assertTrue(actualConvertImageResult.getColorModel() instanceof DirectColorModel);

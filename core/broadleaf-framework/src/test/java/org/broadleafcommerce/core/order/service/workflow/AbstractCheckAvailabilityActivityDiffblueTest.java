@@ -23,8 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
@@ -45,30 +44,29 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractCheckAvailabilityActivityDiffblueTest {
-  @InjectMocks private CheckAddAvailabilityActivity checkAddAvailabilityActivity;
+  @InjectMocks
+  private CheckAddAvailabilityActivity checkAddAvailabilityActivity;
 
-  @Mock private ContextualInventoryService contextualInventoryService;
+  @Mock
+  private ContextualInventoryService contextualInventoryService;
 
   /**
    * Test {@link AbstractCheckAvailabilityActivity#shouldExecute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractCheckAvailabilityActivity#shouldExecute(ProcessContext)}
+   * <p>
+   * Method under test: {@link AbstractCheckAvailabilityActivity#shouldExecute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean AbstractCheckAvailabilityActivity.shouldExecute(ProcessContext)"})
   public void testShouldExecute_thenReturnFalse() {
     // Arrange
     CheckAddAvailabilityActivity checkAddAvailabilityActivity = new CheckAddAvailabilityActivity();
     NullOrderImpl order = new NullOrderImpl();
 
-    CartOperationRequest cartOperationRequest =
-        new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+    CartOperationRequest cartOperationRequest = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
     cartOperationRequest.setOrder(null);
 
     DefaultProcessContextImpl<CartOperationRequest> context = new DefaultProcessContextImpl<>();
@@ -80,24 +78,21 @@ public class AbstractCheckAvailabilityActivityDiffblueTest {
 
   /**
    * Test {@link AbstractCheckAvailabilityActivity#shouldExecute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractCheckAvailabilityActivity#shouldExecute(ProcessContext)}
+   * <p>
+   * Method under test: {@link AbstractCheckAvailabilityActivity#shouldExecute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean AbstractCheckAvailabilityActivity.shouldExecute(ProcessContext)"})
   public void testShouldExecute_thenReturnTrue() {
     // Arrange
     CheckAddAvailabilityActivity checkAddAvailabilityActivity = new CheckAddAvailabilityActivity();
     NullOrderImpl order = new NullOrderImpl();
 
-    CartOperationRequest cartOperationRequest =
-        new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+    CartOperationRequest cartOperationRequest = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
     cartOperationRequest.setOrder(new NullOrderImpl());
 
     DefaultProcessContextImpl<CartOperationRequest> context = new DefaultProcessContextImpl<>();
@@ -109,25 +104,18 @@ public class AbstractCheckAvailabilityActivityDiffblueTest {
 
   /**
    * Test {@link AbstractCheckAvailabilityActivity#checkSkuAvailability(Order, Sku, Integer)}.
-   *
    * <ul>
-   *   <li>Then calls {@link ContextualInventoryService#checkSkuAvailability(Order, Sku, Integer)}.
+   *   <li>Then calls {@link ContextualInventoryService#checkSkuAvailability(Order, Sku, Integer)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractCheckAvailabilityActivity#checkSkuAvailability(Order, Sku,
-   * Integer)}
+   * <p>
+   * Method under test: {@link AbstractCheckAvailabilityActivity#checkSkuAvailability(Order, Sku, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractCheckAvailabilityActivity.checkSkuAvailability(Order, Sku, Integer)"
-  })
-  public void testCheckSkuAvailability_thenCallsCheckSkuAvailability()
-      throws InventoryUnavailableException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AbstractCheckAvailabilityActivity.checkSkuAvailability(Order, Sku, Integer)"})
+  public void testCheckSkuAvailability_thenCallsCheckSkuAvailability() throws InventoryUnavailableException {
     // Arrange
-    doNothing()
-        .when(contextualInventoryService)
+    doNothing().when(contextualInventoryService)
         .checkSkuAvailability(Mockito.<Order>any(), Mockito.<Sku>any(), Mockito.<Integer>any());
     NullOrderImpl order = new NullOrderImpl();
 
@@ -135,7 +123,6 @@ public class AbstractCheckAvailabilityActivityDiffblueTest {
     checkAddAvailabilityActivity.checkSkuAvailability(order, new SkuImpl(), 1);
 
     // Assert
-    verify(contextualInventoryService)
-        .checkSkuAvailability(isA(Order.class), isA(Sku.class), eq(1));
+    verify(contextualInventoryService).checkSkuAvailability(isA(Order.class), isA(Sku.class), eq(1));
   }
 }

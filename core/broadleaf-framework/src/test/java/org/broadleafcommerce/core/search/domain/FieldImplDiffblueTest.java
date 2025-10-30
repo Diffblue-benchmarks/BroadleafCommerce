@@ -28,8 +28,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,308 +45,359 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FieldImplDiffblueTest {
-  @Autowired private FieldImpl fieldImpl;
+  @Autowired
+  private FieldImpl fieldImpl;
 
   /**
    * Test {@link FieldImpl#setEntityType(FieldEntity)}.
-   *
    * <ul>
-   *   <li>When {@link FieldEntity#CATEGORY}.
-   *   <li>Then {@link FieldImpl} {@link FieldImpl#entityType} is {@code CATEGORY}.
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link FieldImpl} (default constructor) EntityType FriendlyType is {@code Friendly Type}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#setEntityType(FieldEntity)}
+   * <p>
+   * Method under test: {@link FieldImpl#setEntityType(FieldEntity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldImpl.setEntityType(FieldEntity)"})
-  public void testSetEntityType_whenCategory_thenFieldImplEntityTypeIsCategory() {
-    // Arrange and Act
-    fieldImpl.setEntityType(FieldEntity.CATEGORY);
+  public void testSetEntityType_givenType_thenFieldImplEntityTypeFriendlyTypeIsFriendlyType() {
+    // Arrange
+    FieldImpl fieldImpl2 = new FieldImpl();
+    FieldEntity entityType = mock(FieldEntity.class);
+    when(entityType.getType()).thenReturn("Type");
+
+    // Act
+    fieldImpl2.setEntityType(entityType);
 
     // Assert
-    assertEquals("CATEGORY", fieldImpl.entityType);
-    assertEquals("Category.null", fieldImpl.getQualifiedFieldName());
-    assertSame(FieldEntity.CATEGORY, fieldImpl.getEntityType());
+    verify(entityType).getType();
+    FieldEntity entityType2 = fieldImpl2.getEntityType();
+    assertEquals("Friendly Type", entityType2.getFriendlyType());
+    assertEquals("Friendly Type.null", fieldImpl2.getQualifiedFieldName());
+    List<String> allLookupTypes = entityType2.getAllLookupTypes();
+    assertEquals(1, allLookupTypes.size());
+    assertEquals("Type", allLookupTypes.get(0));
+    assertEquals("Type", entityType2.getType());
+    assertEquals("Type", fieldImpl2.entityType);
+  }
+
+  /**
+   * Test {@link FieldImpl#setEntityType(FieldEntity)}.
+   * <ul>
+   *   <li>When {@link FieldEntity#CATEGORY}.</li>
+   *   <li>Then {@link FieldImpl} (default constructor) {@link FieldImpl#entityType} is {@code CATEGORY}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldImpl#setEntityType(FieldEntity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldImpl.setEntityType(FieldEntity)"})
+  public void testSetEntityType_whenCategory_thenFieldImplEntityTypeIsCategory() {
+    // Arrange
+    FieldImpl fieldImpl2 = new FieldImpl();
+    FieldEntity entityType = FieldEntity.CATEGORY;
+
+    // Act
+    fieldImpl2.setEntityType(entityType);
+
+    // Assert
+    assertEquals("CATEGORY", fieldImpl2.entityType);
+    assertEquals("Category.null", fieldImpl2.getQualifiedFieldName());
+    FieldEntity expectedEntityType = entityType.CATEGORY;
+    assertSame(expectedEntityType, fieldImpl2.getEntityType());
   }
 
   /**
    * Test {@link FieldImpl#getOverrideGeneratedPropertyName()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#getOverrideGeneratedPropertyName()}
+   * <p>
+   * Method under test: {@link FieldImpl#getOverrideGeneratedPropertyName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldImpl.getOverrideGeneratedPropertyName()"})
   public void testGetOverrideGeneratedPropertyName_givenFieldImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(fieldImpl.getOverrideGeneratedPropertyName());
+    assertFalse((new FieldImpl()).getOverrideGeneratedPropertyName());
   }
 
   /**
    * Test {@link FieldImpl#getOverrideGeneratedPropertyName()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#getOverrideGeneratedPropertyName()}
+   * <p>
+   * Method under test: {@link FieldImpl#getOverrideGeneratedPropertyName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldImpl.getOverrideGeneratedPropertyName()"})
   public void testGetOverrideGeneratedPropertyName_thenReturnTrue() {
     // Arrange
-    fieldImpl.setOverrideGeneratedPropertyName(true);
+    FieldImpl fieldImpl2 = new FieldImpl();
+    fieldImpl2.setAbbreviation("Abbreviation");
+    fieldImpl2.setEntityType(FieldEntity.CATEGORY);
+    fieldImpl2.setFriendlyName("Friendly Name");
+    fieldImpl2.setId(1L);
+    fieldImpl2.setPropertyName("Property Name");
+    fieldImpl2.setTranslatable(true);
+    fieldImpl2.setOverrideGeneratedPropertyName(true);
 
     // Act and Assert
-    assertTrue(fieldImpl.getOverrideGeneratedPropertyName());
+    assertTrue(fieldImpl2.getOverrideGeneratedPropertyName());
   }
 
   /**
    * Test {@link FieldImpl#setOverrideGeneratedPropertyName(Boolean)}.
-   *
-   * <p>Method under test: {@link FieldImpl#setOverrideGeneratedPropertyName(Boolean)}
+   * <p>
+   * Method under test: {@link FieldImpl#setOverrideGeneratedPropertyName(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldImpl.setOverrideGeneratedPropertyName(Boolean)"})
   public void testSetOverrideGeneratedPropertyName() {
-    // Arrange and Act
-    fieldImpl.setOverrideGeneratedPropertyName(null);
+    // Arrange
+    FieldImpl fieldImpl2 = new FieldImpl();
+    fieldImpl2.setAbbreviation("Abbreviation");
+    fieldImpl2.setEntityType(FieldEntity.CATEGORY);
+    fieldImpl2.setFriendlyName("Friendly Name");
+    fieldImpl2.setId(1L);
+    fieldImpl2.setOverrideGeneratedPropertyName(true);
+    fieldImpl2.setPropertyName("Property Name");
+    fieldImpl2.setTranslatable(true);
 
-    // Assert that nothing has changed
-    assertFalse(fieldImpl.getOverrideGeneratedPropertyName());
-    assertFalse(fieldImpl.overrideGeneratedPropertyName);
+    // Act
+    fieldImpl2.setOverrideGeneratedPropertyName(null);
+
+    // Assert
+    assertFalse(fieldImpl2.getOverrideGeneratedPropertyName());
+    assertFalse(fieldImpl2.overrideGeneratedPropertyName);
   }
 
   /**
    * Test {@link FieldImpl#setOverrideGeneratedPropertyName(Boolean)}.
-   *
    * <ul>
-   *   <li>Then {@link FieldImpl} OverrideGeneratedPropertyName.
+   *   <li>Then {@link FieldImpl} (default constructor) OverrideGeneratedPropertyName.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#setOverrideGeneratedPropertyName(Boolean)}
+   * <p>
+   * Method under test: {@link FieldImpl#setOverrideGeneratedPropertyName(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldImpl.setOverrideGeneratedPropertyName(Boolean)"})
   public void testSetOverrideGeneratedPropertyName_thenFieldImplOverrideGeneratedPropertyName() {
-    // Arrange and Act
-    fieldImpl.setOverrideGeneratedPropertyName(true);
+    // Arrange
+    FieldImpl fieldImpl2 = new FieldImpl();
+
+    // Act
+    fieldImpl2.setOverrideGeneratedPropertyName(true);
 
     // Assert
-    assertTrue(fieldImpl.getOverrideGeneratedPropertyName());
-    assertTrue(fieldImpl.overrideGeneratedPropertyName);
+    assertTrue(fieldImpl2.getOverrideGeneratedPropertyName());
+    assertTrue(fieldImpl2.overrideGeneratedPropertyName);
   }
 
   /**
    * Test {@link FieldImpl#getFriendlyName()}.
-   *
-   * <p>Method under test: {@link FieldImpl#getFriendlyName()}
+   * <p>
+   * Method under test: {@link FieldImpl#getFriendlyName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String FieldImpl.getFriendlyName()"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String FieldImpl.getFriendlyName()"})
   public void testGetFriendlyName() {
     // Arrange, Act and Assert
-    assertNull(fieldImpl.getFriendlyName());
+    assertNull((new FieldImpl()).getFriendlyName());
   }
 
   /**
    * Test {@link FieldImpl#getTranslatable()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldImpl} Translatable is {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldImpl} (default constructor) Translatable is {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#getTranslatable()}
+   * <p>
+   * Method under test: {@link FieldImpl#getTranslatable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldImpl.getTranslatable()"})
   public void testGetTranslatable_givenFieldImplTranslatableIsNull_thenReturnFalse() {
     // Arrange
-    fieldImpl.setTranslatable(null);
+    FieldImpl fieldImpl2 = new FieldImpl();
+    fieldImpl2.setAbbreviation("Abbreviation");
+    fieldImpl2.setEntityType(FieldEntity.CATEGORY);
+    fieldImpl2.setFriendlyName("Friendly Name");
+    fieldImpl2.setId(1L);
+    fieldImpl2.setOverrideGeneratedPropertyName(true);
+    fieldImpl2.setPropertyName("Property Name");
+    fieldImpl2.setTranslatable(null);
 
     // Act and Assert
-    assertFalse(fieldImpl.getTranslatable());
+    assertFalse(fieldImpl2.getTranslatable());
   }
 
   /**
    * Test {@link FieldImpl#getTranslatable()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldImpl} Translatable is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldImpl} (default constructor) Translatable is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#getTranslatable()}
+   * <p>
+   * Method under test: {@link FieldImpl#getTranslatable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldImpl.getTranslatable()"})
   public void testGetTranslatable_givenFieldImplTranslatableIsTrue_thenReturnTrue() {
     // Arrange
-    fieldImpl.setTranslatable(true);
+    FieldImpl fieldImpl2 = new FieldImpl();
+    fieldImpl2.setAbbreviation("Abbreviation");
+    fieldImpl2.setEntityType(FieldEntity.CATEGORY);
+    fieldImpl2.setFriendlyName("Friendly Name");
+    fieldImpl2.setId(1L);
+    fieldImpl2.setOverrideGeneratedPropertyName(true);
+    fieldImpl2.setPropertyName("Property Name");
+    fieldImpl2.setTranslatable(true);
 
     // Act and Assert
-    assertTrue(fieldImpl.getTranslatable());
+    assertTrue(fieldImpl2.getTranslatable());
   }
 
   /**
    * Test {@link FieldImpl#getTranslatable()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#getTranslatable()}
+   * <p>
+   * Method under test: {@link FieldImpl#getTranslatable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldImpl.getTranslatable()"})
   public void testGetTranslatable_givenFieldImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(fieldImpl.getTranslatable());
+    assertFalse((new FieldImpl()).getTranslatable());
   }
 
   /**
    * Test {@link FieldImpl#getSearchConfigs()}.
-   *
-   * <p>Method under test: {@link FieldImpl#getSearchConfigs()}
+   * <p>
+   * Method under test: {@link FieldImpl#getSearchConfigs()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List FieldImpl.getSearchConfigs()"})
   public void testGetSearchConfigs() {
     // Arrange, Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> fieldImpl.getSearchConfigs());
+    assertThrows(UnsupportedOperationException.class, () -> (new FieldImpl()).getSearchConfigs());
   }
 
   /**
    * Test {@link FieldImpl#setSearchConfigs(List)}.
-   *
    * <ul>
-   *   <li>Given {@link SearchConfig}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchConfig}.
+   *   <li>Given {@link SearchConfig}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchConfig}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#setSearchConfigs(List)}
+   * <p>
+   * Method under test: {@link FieldImpl#setSearchConfigs(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldImpl.setSearchConfigs(List)"})
   public void testSetSearchConfigs_givenSearchConfig_whenArrayListAddSearchConfig() {
     // Arrange
+    FieldImpl fieldImpl2 = new FieldImpl();
+
     ArrayList<SearchConfig> searchConfigs = new ArrayList<>();
     searchConfigs.add(mock(SearchConfig.class));
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class, () -> fieldImpl.setSearchConfigs(searchConfigs));
+    assertThrows(UnsupportedOperationException.class, () -> fieldImpl2.setSearchConfigs(searchConfigs));
   }
 
   /**
    * Test {@link FieldImpl#setSearchConfigs(List)}.
-   *
    * <ul>
-   *   <li>Given {@link SearchConfig}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchConfig}.
+   *   <li>Given {@link SearchConfig}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link SearchConfig}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#setSearchConfigs(List)}
+   * <p>
+   * Method under test: {@link FieldImpl#setSearchConfigs(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldImpl.setSearchConfigs(List)"})
   public void testSetSearchConfigs_givenSearchConfig_whenArrayListAddSearchConfig2() {
     // Arrange
+    FieldImpl fieldImpl2 = new FieldImpl();
+
     ArrayList<SearchConfig> searchConfigs = new ArrayList<>();
     searchConfigs.add(mock(SearchConfig.class));
     searchConfigs.add(mock(SearchConfig.class));
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class, () -> fieldImpl.setSearchConfigs(searchConfigs));
+    assertThrows(UnsupportedOperationException.class, () -> fieldImpl2.setSearchConfigs(searchConfigs));
   }
 
   /**
    * Test {@link FieldImpl#setSearchConfigs(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#setSearchConfigs(List)}
+   * <p>
+   * Method under test: {@link FieldImpl#setSearchConfigs(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldImpl.setSearchConfigs(List)"})
   public void testSetSearchConfigs_whenArrayList() {
-    // Arrange, Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class, () -> fieldImpl.setSearchConfigs(new ArrayList<>()));
+    // Arrange
+    FieldImpl fieldImpl2 = new FieldImpl();
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class, () -> fieldImpl2.setSearchConfigs(new ArrayList<>()));
   }
 
   /**
    * Test {@link FieldImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link FieldImpl#getMainEntityName()}
+   * <p>
+   * Method under test: {@link FieldImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String FieldImpl.getMainEntityName()"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String FieldImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull(fieldImpl.getMainEntityName());
+    assertNull((new FieldImpl()).getMainEntityName());
   }
 
   /**
    * Test {@link FieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link FieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link FieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse FieldImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
+    FieldImpl fieldImpl2 = new FieldImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new FieldImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<Field> actualCreateOrRetrieveCopyInstanceResult =
-        fieldImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<Field> actualCreateOrRetrieveCopyInstanceResult = fieldImpl2.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -356,22 +406,19 @@ public class FieldImplDiffblueTest {
 
   /**
    * Test {@link FieldImpl#equals(Object)}, and {@link FieldImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FieldImpl#equals(Object)}
    *   <li>{@link FieldImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldImpl.equals(Object)", "int FieldImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -395,27 +442,25 @@ public class FieldImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fieldImpl, fieldImpl2);
-    assertEquals(fieldImpl.hashCode(), fieldImpl2.hashCode());
+    int expectedHashCodeResult = fieldImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fieldImpl2.hashCode());
   }
 
   /**
    * Test {@link FieldImpl#equals(Object)}, and {@link FieldImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FieldImpl#equals(Object)}
    *   <li>{@link FieldImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldImpl.equals(Object)", "int FieldImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -436,17 +481,15 @@ public class FieldImplDiffblueTest {
 
   /**
    * Test {@link FieldImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldImpl.equals(Object)", "int FieldImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -474,17 +517,15 @@ public class FieldImplDiffblueTest {
 
   /**
    * Test {@link FieldImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldImpl.equals(Object)", "int FieldImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -512,17 +553,15 @@ public class FieldImplDiffblueTest {
 
   /**
    * Test {@link FieldImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldImpl.equals(Object)", "int FieldImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -541,17 +580,15 @@ public class FieldImplDiffblueTest {
 
   /**
    * Test {@link FieldImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldImpl.equals(Object)", "int FieldImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange

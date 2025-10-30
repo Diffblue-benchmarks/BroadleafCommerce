@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.order.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {MessageType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class MessageTypeDiffblueTest {
-  @Autowired private MessageType messageType;
+  @Autowired
+  private MessageType messageType;
 
   /**
    * Test {@link MessageType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link MessageType#getInstance(String)}
+   * <p>
+   * Method under test: {@link MessageType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"MessageType MessageType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,9 +54,8 @@ public class MessageTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MessageType#MessageType()}
    *   <li>{@link MessageType#getFriendlyType()}
@@ -65,13 +63,9 @@ public class MessageTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MessageType.<init>()",
-    "String MessageType.getFriendlyType()",
-    "String MessageType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MessageType.<init>()", "String MessageType.getFriendlyType()",
+      "String MessageType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MessageType actualMessageType = new MessageType();
@@ -84,12 +78,11 @@ public class MessageTypeDiffblueTest {
 
   /**
    * Test {@link MessageType#MessageType(String, String)}.
-   *
-   * <p>Method under test: {@link MessageType#MessageType(String, String)}
+   * <p>
+   * Method under test: {@link MessageType#MessageType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MessageType.<init>(String, String)"})
   public void testNewMessageType() {
     // Arrange and Act
@@ -102,22 +95,19 @@ public class MessageTypeDiffblueTest {
 
   /**
    * Test {@link MessageType#equals(Object)}, and {@link MessageType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MessageType#equals(Object)}
    *   <li>{@link MessageType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -126,85 +116,79 @@ public class MessageTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(messageType, messageType2);
-    assertEquals(messageType.hashCode(), messageType2.hashCode());
+    int expectedHashCodeResult = messageType.hashCode();
+    assertEquals(expectedHashCodeResult, messageType2.hashCode());
   }
 
   /**
    * Test {@link MessageType#equals(Object)}, and {@link MessageType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MessageType#equals(Object)}
    *   <li>{@link MessageType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    MessageType messageType = MessageType.PRODUCT_OPTION;
-    MessageType messageType2 = new MessageType("PRODUCT_OPTION", "PRODUCT_OPTION");
-
-    // Act and Assert
-    assertEquals(messageType, messageType2);
-    assertEquals(messageType.hashCode(), messageType2.hashCode());
-  }
-
-  /**
-   * Test {@link MessageType#equals(Object)}, and {@link MessageType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link MessageType#equals(Object)}
-   *   <li>{@link MessageType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     MessageType messageType = new MessageType();
     MessageType messageType2 = new MessageType();
 
     // Act and Assert
     assertEquals(messageType, messageType2);
-    assertEquals(messageType.hashCode(), messageType2.hashCode());
+    int expectedHashCodeResult = messageType.hashCode();
+    assertEquals(expectedHashCodeResult, messageType2.hashCode());
   }
 
   /**
    * Test {@link MessageType#equals(Object)}, and {@link MessageType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MessageType#equals(Object)}
    *   <li>{@link MessageType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    MessageType messageType = new MessageType("CART", "Friendly Type");
+    MessageType messageType2 = MessageType.CART;
+
+    // Act and Assert
+    assertEquals(messageType, messageType2);
+    int expectedHashCodeResult = messageType.hashCode();
+    assertEquals(expectedHashCodeResult, messageType2.hashCode());
+  }
+
+  /**
+   * Test {@link MessageType#equals(Object)}, and {@link MessageType#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link MessageType#equals(Object)}
+   *   <li>{@link MessageType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -218,17 +202,15 @@ public class MessageTypeDiffblueTest {
 
   /**
    * Test {@link MessageType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MessageType#equals(Object)}
+   * <p>
+   * Method under test: {@link MessageType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -237,17 +219,15 @@ public class MessageTypeDiffblueTest {
 
   /**
    * Test {@link MessageType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MessageType#equals(Object)}
+   * <p>
+   * Method under test: {@link MessageType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -256,17 +236,15 @@ public class MessageTypeDiffblueTest {
 
   /**
    * Test {@link MessageType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MessageType#equals(Object)}
+   * <p>
+   * Method under test: {@link MessageType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -275,17 +253,15 @@ public class MessageTypeDiffblueTest {
 
   /**
    * Test {@link MessageType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MessageType#equals(Object)}
+   * <p>
+   * Method under test: {@link MessageType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MessageType.equals(Object)", "int MessageType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

@@ -19,7 +19,6 @@ package org.broadleafcommerce.core.web.checkout.validator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.checkout.model.PaymentInfoForm;
 import org.junit.jupiter.api.DisplayName;
@@ -29,17 +28,15 @@ import org.junit.jupiter.api.Test;
 class PaymentInfoFormValidatorDiffblueTest {
   /**
    * Test {@link PaymentInfoFormValidator#supports(Class)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentInfoFormValidator#supports(Class)}
+   * <p>
+   * Method under test: {@link PaymentInfoFormValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean PaymentInfoFormValidator.supports(Class)"})
   void testSupports_thenReturnTrue() {
     // Arrange
@@ -52,18 +49,16 @@ class PaymentInfoFormValidatorDiffblueTest {
 
   /**
    * Test {@link PaymentInfoFormValidator#supports(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PaymentInfoFormValidator#supports(Class)}
+   * <p>
+   * Method under test: {@link PaymentInfoFormValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean PaymentInfoFormValidator.supports(Class)"})
   void testSupports_whenJavaLangObject_thenReturnFalse() {
     // Arrange

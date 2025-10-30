@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.extensibility.context.merge;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor.BeanPackage;
 import org.junit.Test;
@@ -34,29 +33,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/context/merge/local.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EarlyStageMergeBeanPostProcessorDiffblueTest {
-  @Autowired private EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor;
+  @Autowired
+  private EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EarlyStageMergeBeanPostProcessor#setOrder(int)}
    *   <li>{@link EarlyStageMergeBeanPostProcessor#getOrder()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "int EarlyStageMergeBeanPostProcessor.getOrder()",
-    "void EarlyStageMergeBeanPostProcessor.setOrder(int)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int EarlyStageMergeBeanPostProcessor.getOrder()",
+      "void EarlyStageMergeBeanPostProcessor.setOrder(int)"})
   public void testGettersAndSetters() {
     // Arrange
-    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor =
-        new EarlyStageMergeBeanPostProcessor();
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
 
     // Act
     earlyStageMergeBeanPostProcessor.setOrder(1);
@@ -67,18 +62,15 @@ public class EarlyStageMergeBeanPostProcessorDiffblueTest {
 
   /**
    * Test new {@link EarlyStageMergeBeanPostProcessor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * EarlyStageMergeBeanPostProcessor}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link EarlyStageMergeBeanPostProcessor}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EarlyStageMergeBeanPostProcessor.<init>()"})
   public void testNewEarlyStageMergeBeanPostProcessor() {
     // Arrange and Act
-    EarlyStageMergeBeanPostProcessor actualEarlyStageMergeBeanPostProcessor =
-        new EarlyStageMergeBeanPostProcessor();
+    EarlyStageMergeBeanPostProcessor actualEarlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
 
     // Assert
     assertNull(actualEarlyStageMergeBeanPostProcessor.getCollectionRef());

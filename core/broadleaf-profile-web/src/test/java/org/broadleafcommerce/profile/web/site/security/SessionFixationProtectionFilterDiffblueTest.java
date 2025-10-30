@@ -18,17 +18,14 @@
 package org.broadleafcommerce.profile.web.site.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Collection;
@@ -58,9 +55,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 @ContextConfiguration(classes = {SessionFixationProtectionFilter.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class SessionFixationProtectionFilterDiffblueTest {
   @MockBean(name = "blCookieUtils")
   private CookieUtils cookieUtils;
@@ -68,33 +65,56 @@ class SessionFixationProtectionFilterDiffblueTest {
   @MockBean(name = "blSessionFixationEncryptionModule")
   private EncryptionModule encryptionModule;
 
-  @Autowired private SessionFixationProtectionFilter sessionFixationProtectionFilter;
+  @Autowired
+  private SessionFixationProtectionFilter sessionFixationProtectionFilter;
 
   /**
-   * Test {@link SessionFixationProtectionFilter#doFilter(ServletRequest, ServletResponse,
-   * FilterChain)}.
-   *
+   * Test {@link SessionFixationProtectionFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Given {@code null}.
+   *   <li>Given {@code blCookieUtils}.</li>
+   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.</li>
+   *   <li>Then calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SessionFixationProtectionFilter#doFilter(ServletRequest,
-   * ServletResponse, FilterChain)}
+   * <p>
+   * Method under test: {@link SessionFixationProtectionFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}
+   */
+  @Test
+  @DisplayName("Test doFilter(ServletRequest, ServletResponse, FilterChain); given 'blCookieUtils'; when MockHttpServletRequest(); then calls doFilter(ServletRequest, ServletResponse)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void SessionFixationProtectionFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"})
+  void testDoFilter_givenBlCookieUtils_whenMockHttpServletRequest_thenCallsDoFilter()
+      throws IOException, ServletException {
+    // Arrange
+    MockHttpServletRequest sRequest = new MockHttpServletRequest();
+    MockHttpServletResponse sResponse = new MockHttpServletResponse();
+    FilterChain chain = mock(FilterChain.class);
+    doNothing().when(chain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    sessionFixationProtectionFilter.doFilter(sRequest, sResponse, chain);
+
+    // Assert
+    verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+  }
+
+  /**
+   * Test {@link SessionFixationProtectionFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SessionFixationProtectionFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
   @DisplayName("Test doFilter(ServletRequest, ServletResponse, FilterChain); given 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SessionFixationProtectionFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void SessionFixationProtectionFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"})
   void testDoFilter_givenNull() throws IOException, ServletException {
     // Arrange
     DefaultMultipartHttpServletRequest sRequest = mock(DefaultMultipartHttpServletRequest.class);
     when(sRequest.isSecure()).thenReturn(true);
     when(sRequest.getSession(anyBoolean())).thenReturn(null);
     MockHttpServletResponse sResponse = new MockHttpServletResponse();
-
     FilterChain chain = mock(FilterChain.class);
     doNothing().when(chain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
@@ -104,105 +124,24 @@ class SessionFixationProtectionFilterDiffblueTest {
     // Assert
     verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(sRequest).isSecure();
-    verify(sRequest).getSession(false);
+    verify(sRequest).getSession(eq(false));
   }
 
   /**
-   * Test {@link SessionFixationProtectionFilter#doFilter(ServletRequest, ServletResponse,
-   * FilterChain)}.
-   *
+   * Test {@link SessionFixationProtectionFilter#abortUser(HttpServletRequest, HttpServletResponse)}.
    * <ul>
-   *   <li>Then throw {@link ServletException}.
+   *   <li>Then {@link MockHttpServletResponse} (default constructor) HeaderNames size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SessionFixationProtectionFilter#doFilter(ServletRequest,
-   * ServletResponse, FilterChain)}
+   * <p>
+   * Method under test: {@link SessionFixationProtectionFilter#abortUser(HttpServletRequest, HttpServletResponse)}
    */
   @Test
-  @DisplayName(
-      "Test doFilter(ServletRequest, ServletResponse, FilterChain); then throw ServletException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SessionFixationProtectionFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"
-  })
-  void testDoFilter_thenThrowServletException() throws IOException, ServletException {
-    // Arrange
-    MockHttpServletRequest sRequest = new MockHttpServletRequest();
-    MockHttpServletResponse sResponse = new MockHttpServletResponse();
-
-    FilterChain chain = mock(FilterChain.class);
-    doThrow(new ServletException("An error occurred"))
-        .when(chain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act and Assert
-    assertThrows(
-        ServletException.class,
-        () -> sessionFixationProtectionFilter.doFilter(sRequest, sResponse, chain));
-    verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-  }
-
-  /**
-   * Test {@link SessionFixationProtectionFilter#doFilter(ServletRequest, ServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.
-   *   <li>Then calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SessionFixationProtectionFilter#doFilter(ServletRequest,
-   * ServletResponse, FilterChain)}
-   */
-  @Test
-  @DisplayName(
-      "Test doFilter(ServletRequest, ServletResponse, FilterChain); when MockHttpServletRequest(); then calls doFilter(ServletRequest, ServletResponse)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SessionFixationProtectionFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"
-  })
-  void testDoFilter_whenMockHttpServletRequest_thenCallsDoFilter()
-      throws IOException, ServletException {
-    // Arrange
-    MockHttpServletRequest sRequest = new MockHttpServletRequest();
-    MockHttpServletResponse sResponse = new MockHttpServletResponse();
-
-    FilterChain chain = mock(FilterChain.class);
-    doNothing().when(chain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act
-    sessionFixationProtectionFilter.doFilter(sRequest, sResponse, chain);
-
-    // Assert
-    verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-  }
-
-  /**
-   * Test {@link SessionFixationProtectionFilter#abortUser(HttpServletRequest,
-   * HttpServletResponse)}.
-   *
-   * <ul>
-   *   <li>Then {@link MockHttpServletResponse} (default constructor) HeaderNames size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SessionFixationProtectionFilter#abortUser(HttpServletRequest,
-   * HttpServletResponse)}
-   */
-  @Test
-  @DisplayName(
-      "Test abortUser(HttpServletRequest, HttpServletResponse); then MockHttpServletResponse (default constructor) HeaderNames size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SessionFixationProtectionFilter.abortUser(HttpServletRequest, HttpServletResponse)"
-  })
+  @DisplayName("Test abortUser(HttpServletRequest, HttpServletResponse); then MockHttpServletResponse (default constructor) HeaderNames size is one")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void SessionFixationProtectionFilter.abortUser(HttpServletRequest, HttpServletResponse)"})
   void testAbortUser_thenMockHttpServletResponseHeaderNamesSizeIsOne() throws IOException {
     // Arrange
-    doNothing()
-        .when(cookieUtils)
-        .invalidateCookie(Mockito.<HttpServletResponse>any(), Mockito.<String>any());
+    doNothing().when(cookieUtils).invalidateCookie(Mockito.<HttpServletResponse>any(), Mockito.<String>any());
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();
 

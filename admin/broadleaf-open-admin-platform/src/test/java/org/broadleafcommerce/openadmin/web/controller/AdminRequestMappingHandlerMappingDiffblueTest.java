@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.web.controller.entity.AdminBasicEntityController;
 import org.junit.Test;
@@ -34,17 +33,15 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMetho
 public class AdminRequestMappingHandlerMappingDiffblueTest {
   /**
    * Test {@link AdminRequestMappingHandlerMapping#isHandler(Class)}.
-   *
-   * <p>Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
+   * <p>
+   * Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean AdminRequestMappingHandlerMapping.isHandler(Class)"})
   public void testIsHandler() {
     // Arrange
-    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping =
-        new AdminRequestMappingHandlerMapping();
+    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping = new AdminRequestMappingHandlerMapping();
     Class<AdminBasicEntityController> beanType = AdminBasicEntityController.class;
 
     // Act and Assert
@@ -53,22 +50,19 @@ public class AdminRequestMappingHandlerMappingDiffblueTest {
 
   /**
    * Test {@link AdminRequestMappingHandlerMapping#isHandler(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
+   * <p>
+   * Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean AdminRequestMappingHandlerMapping.isHandler(Class)"})
   public void testIsHandler_whenJavaLangObject_thenReturnFalse() {
     // Arrange
-    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping =
-        new AdminRequestMappingHandlerMapping();
+    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping = new AdminRequestMappingHandlerMapping();
     Class<Object> beanType = Object.class;
 
     // Act and Assert
@@ -77,26 +71,21 @@ public class AdminRequestMappingHandlerMappingDiffblueTest {
 
   /**
    * Test new {@link AdminRequestMappingHandlerMapping} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AdminRequestMappingHandlerMapping}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link AdminRequestMappingHandlerMapping}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminRequestMappingHandlerMapping.<init>()"})
   public void testNewAdminRequestMappingHandlerMapping() {
     // Arrange and Act
-    AdminRequestMappingHandlerMapping actualAdminRequestMappingHandlerMapping =
-        new AdminRequestMappingHandlerMapping();
+    AdminRequestMappingHandlerMapping actualAdminRequestMappingHandlerMapping = new AdminRequestMappingHandlerMapping();
 
     // Assert
     assertTrue(actualAdminRequestMappingHandlerMapping.getPathMatcher() instanceof AntPathMatcher);
-    assertTrue(
-        actualAdminRequestMappingHandlerMapping.getCorsProcessor() instanceof DefaultCorsProcessor);
-    assertTrue(
-        actualAdminRequestMappingHandlerMapping.getNamingStrategy()
-            instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
+    assertTrue(actualAdminRequestMappingHandlerMapping.getCorsProcessor() instanceof DefaultCorsProcessor);
+    assertTrue(actualAdminRequestMappingHandlerMapping
+        .getNamingStrategy() instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
     assertNull(actualAdminRequestMappingHandlerMapping.getDefaultHandler());
     assertNull(actualAdminRequestMappingHandlerMapping.getFileExtensions());
     assertNull(actualAdminRequestMappingHandlerMapping.getCorsConfigurationSource());

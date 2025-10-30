@@ -20,8 +20,7 @@ package org.broadleafcommerce.openadmin.server.service.persistence;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,24 +33,21 @@ import org.junit.experimental.categories.Category;
 public class PersistenceManagerEventHandlerResponseDiffblueTest {
   /**
    * Test {@link PersistenceManagerEventHandlerResponse#withEntity(Entity)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerEventHandlerResponse#withEntity(Entity)}
+   * <p>
+   * Method under test: {@link PersistenceManagerEventHandlerResponse#withEntity(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistenceManagerEventHandlerResponse PersistenceManagerEventHandlerResponse.withEntity(Entity)"
-  })
+      "PersistenceManagerEventHandlerResponse PersistenceManagerEventHandlerResponse.withEntity(Entity)"})
   public void testWithEntity() {
     // Arrange
-    PersistenceManagerEventHandlerResponse persistenceManagerEventHandlerResponse =
-        new PersistenceManagerEventHandlerResponse();
+    PersistenceManagerEventHandlerResponse persistenceManagerEventHandlerResponse = new PersistenceManagerEventHandlerResponse();
     Entity entity = new Entity();
 
     // Act
-    PersistenceManagerEventHandlerResponse actualWithEntityResult =
-        persistenceManagerEventHandlerResponse.withEntity(entity);
+    PersistenceManagerEventHandlerResponse actualWithEntityResult = persistenceManagerEventHandlerResponse
+        .withEntity(entity);
 
     // Assert
     assertSame(entity, persistenceManagerEventHandlerResponse.getEntity());
@@ -59,56 +55,45 @@ public class PersistenceManagerEventHandlerResponseDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * PersistenceManagerEventHandlerResponse#withStatus(PersistenceManagerEventHandlerResponseStatus)}.
-   *
-   * <p>Method under test: {@link
-   * PersistenceManagerEventHandlerResponse#withStatus(PersistenceManagerEventHandlerResponseStatus)}
+   * Test {@link PersistenceManagerEventHandlerResponse#withStatus(PersistenceManagerEventHandlerResponseStatus)}.
+   * <p>
+   * Method under test: {@link PersistenceManagerEventHandlerResponse#withStatus(PersistenceManagerEventHandlerResponseStatus)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistenceManagerEventHandlerResponse PersistenceManagerEventHandlerResponse.withStatus(PersistenceManagerEventHandlerResponseStatus)"
-  })
+      "PersistenceManagerEventHandlerResponse PersistenceManagerEventHandlerResponse.withStatus(PersistenceManagerEventHandlerResponseStatus)"})
   public void testWithStatus() {
     // Arrange
-    PersistenceManagerEventHandlerResponse persistenceManagerEventHandlerResponse =
-        new PersistenceManagerEventHandlerResponse();
+    PersistenceManagerEventHandlerResponse persistenceManagerEventHandlerResponse = new PersistenceManagerEventHandlerResponse();
 
     // Act
-    PersistenceManagerEventHandlerResponse actualWithStatusResult =
-        persistenceManagerEventHandlerResponse.withStatus(
-            PersistenceManagerEventHandlerResponseStatus.HANDLED);
+    PersistenceManagerEventHandlerResponse actualWithStatusResult = persistenceManagerEventHandlerResponse
+        .withStatus(PersistenceManagerEventHandlerResponseStatus.HANDLED);
 
     // Assert
-    assertEquals(
-        PersistenceManagerEventHandlerResponseStatus.HANDLED,
+    assertEquals(PersistenceManagerEventHandlerResponseStatus.HANDLED,
         persistenceManagerEventHandlerResponse.getStatus());
     assertSame(persistenceManagerEventHandlerResponse, actualWithStatusResult);
   }
 
   /**
    * Test {@link PersistenceManagerEventHandlerResponse#withDynamicResultSet(DynamicResultSet)}.
-   *
-   * <p>Method under test: {@link
-   * PersistenceManagerEventHandlerResponse#withDynamicResultSet(DynamicResultSet)}
+   * <p>
+   * Method under test: {@link PersistenceManagerEventHandlerResponse#withDynamicResultSet(DynamicResultSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistenceManagerEventHandlerResponse PersistenceManagerEventHandlerResponse.withDynamicResultSet(DynamicResultSet)"
-  })
+      "PersistenceManagerEventHandlerResponse PersistenceManagerEventHandlerResponse.withDynamicResultSet(DynamicResultSet)"})
   public void testWithDynamicResultSet() {
     // Arrange
-    PersistenceManagerEventHandlerResponse persistenceManagerEventHandlerResponse =
-        new PersistenceManagerEventHandlerResponse();
+    PersistenceManagerEventHandlerResponse persistenceManagerEventHandlerResponse = new PersistenceManagerEventHandlerResponse();
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
 
     // Act
-    PersistenceManagerEventHandlerResponse actualWithDynamicResultSetResult =
-        persistenceManagerEventHandlerResponse.withDynamicResultSet(dynamicResultSet);
+    PersistenceManagerEventHandlerResponse actualWithDynamicResultSetResult = persistenceManagerEventHandlerResponse
+        .withDynamicResultSet(dynamicResultSet);
 
     // Assert
     assertSame(dynamicResultSet, persistenceManagerEventHandlerResponse.getDynamicResultSet());
@@ -117,24 +102,21 @@ public class PersistenceManagerEventHandlerResponseDiffblueTest {
 
   /**
    * Test {@link PersistenceManagerEventHandlerResponse#withAdditionalData(Map)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerEventHandlerResponse#withAdditionalData(Map)}
+   * <p>
+   * Method under test: {@link PersistenceManagerEventHandlerResponse#withAdditionalData(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PersistenceManagerEventHandlerResponse PersistenceManagerEventHandlerResponse.withAdditionalData(Map)"
-  })
+      "PersistenceManagerEventHandlerResponse PersistenceManagerEventHandlerResponse.withAdditionalData(Map)"})
   public void testWithAdditionalData() {
     // Arrange
-    PersistenceManagerEventHandlerResponse persistenceManagerEventHandlerResponse =
-        new PersistenceManagerEventHandlerResponse();
+    PersistenceManagerEventHandlerResponse persistenceManagerEventHandlerResponse = new PersistenceManagerEventHandlerResponse();
     HashMap<String, Object> additionalData = new HashMap<>();
 
     // Act
-    PersistenceManagerEventHandlerResponse actualWithAdditionalDataResult =
-        persistenceManagerEventHandlerResponse.withAdditionalData(additionalData);
+    PersistenceManagerEventHandlerResponse actualWithAdditionalDataResult = persistenceManagerEventHandlerResponse
+        .withAdditionalData(additionalData);
 
     // Assert
     assertSame(additionalData, persistenceManagerEventHandlerResponse.getAdditionalData());
@@ -143,16 +125,14 @@ public class PersistenceManagerEventHandlerResponseDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PersistenceManagerEventHandlerResponse}
    *   <li>{@link PersistenceManagerEventHandlerResponse#setAdditionalData(Map)}
    *   <li>{@link PersistenceManagerEventHandlerResponse#setDynamicResultSet(DynamicResultSet)}
    *   <li>{@link PersistenceManagerEventHandlerResponse#setEntity(Entity)}
-   *   <li>{@link
-   *       PersistenceManagerEventHandlerResponse#setStatus(PersistenceManagerEventHandlerResponseStatus)}
+   *   <li>{@link PersistenceManagerEventHandlerResponse#setStatus(PersistenceManagerEventHandlerResponseStatus)}
    *   <li>{@link PersistenceManagerEventHandlerResponse#getAdditionalData()}
    *   <li>{@link PersistenceManagerEventHandlerResponse#getDynamicResultSet()}
    *   <li>{@link PersistenceManagerEventHandlerResponse#getEntity()}
@@ -160,40 +140,32 @@ public class PersistenceManagerEventHandlerResponseDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerEventHandlerResponse.<init>()",
-    "Map PersistenceManagerEventHandlerResponse.getAdditionalData()",
-    "DynamicResultSet PersistenceManagerEventHandlerResponse.getDynamicResultSet()",
-    "Entity PersistenceManagerEventHandlerResponse.getEntity()",
-    "PersistenceManagerEventHandlerResponseStatus PersistenceManagerEventHandlerResponse.getStatus()",
-    "void PersistenceManagerEventHandlerResponse.setAdditionalData(Map)",
-    "void PersistenceManagerEventHandlerResponse.setDynamicResultSet(DynamicResultSet)",
-    "void PersistenceManagerEventHandlerResponse.setEntity(Entity)",
-    "void PersistenceManagerEventHandlerResponse.setStatus(PersistenceManagerEventHandlerResponseStatus)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistenceManagerEventHandlerResponse.<init>()",
+      "Map PersistenceManagerEventHandlerResponse.getAdditionalData()",
+      "DynamicResultSet PersistenceManagerEventHandlerResponse.getDynamicResultSet()",
+      "Entity PersistenceManagerEventHandlerResponse.getEntity()",
+      "PersistenceManagerEventHandlerResponseStatus PersistenceManagerEventHandlerResponse.getStatus()",
+      "void PersistenceManagerEventHandlerResponse.setAdditionalData(Map)",
+      "void PersistenceManagerEventHandlerResponse.setDynamicResultSet(DynamicResultSet)",
+      "void PersistenceManagerEventHandlerResponse.setEntity(Entity)",
+      "void PersistenceManagerEventHandlerResponse.setStatus(PersistenceManagerEventHandlerResponseStatus)"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    PersistenceManagerEventHandlerResponse actualPersistenceManagerEventHandlerResponse =
-        new PersistenceManagerEventHandlerResponse();
+    PersistenceManagerEventHandlerResponse actualPersistenceManagerEventHandlerResponse = new PersistenceManagerEventHandlerResponse();
     HashMap<String, Object> additionalData = new HashMap<>();
     actualPersistenceManagerEventHandlerResponse.setAdditionalData(additionalData);
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
     actualPersistenceManagerEventHandlerResponse.setDynamicResultSet(dynamicResultSet);
     Entity entity = new Entity();
     actualPersistenceManagerEventHandlerResponse.setEntity(entity);
-    actualPersistenceManagerEventHandlerResponse.setStatus(
-        PersistenceManagerEventHandlerResponseStatus.HANDLED);
-    Map<String, Object> actualAdditionalData =
-        actualPersistenceManagerEventHandlerResponse.getAdditionalData();
-    DynamicResultSet actualDynamicResultSet =
-        actualPersistenceManagerEventHandlerResponse.getDynamicResultSet();
+    actualPersistenceManagerEventHandlerResponse.setStatus(PersistenceManagerEventHandlerResponseStatus.HANDLED);
+    Map<String, Object> actualAdditionalData = actualPersistenceManagerEventHandlerResponse.getAdditionalData();
+    DynamicResultSet actualDynamicResultSet = actualPersistenceManagerEventHandlerResponse.getDynamicResultSet();
     Entity actualEntity = actualPersistenceManagerEventHandlerResponse.getEntity();
 
     // Assert
-    assertEquals(
-        PersistenceManagerEventHandlerResponseStatus.HANDLED,
+    assertEquals(PersistenceManagerEventHandlerResponseStatus.HANDLED,
         actualPersistenceManagerEventHandlerResponse.getStatus());
     assertTrue(actualAdditionalData.isEmpty());
     assertSame(additionalData, actualAdditionalData);

@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.persistence.transaction;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,26 +32,21 @@ import org.junit.experimental.categories.Category;
 
 public class LifecycleAwareJDBCServicesInitiatorDiffblueTest {
   /**
-   * Test {@link LifecycleAwareJDBCServicesInitiator#initiateService(Map,
-   * ServiceRegistryImplementor)}.
-   *
-   * <p>Method under test: {@link LifecycleAwareJDBCServicesInitiator#initiateService(Map,
-   * ServiceRegistryImplementor)}
+   * Test {@link LifecycleAwareJDBCServicesInitiator#initiateService(Map, ServiceRegistryImplementor)}.
+   * <p>
+   * Method under test: {@link LifecycleAwareJDBCServicesInitiator#initiateService(Map, ServiceRegistryImplementor)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "JdbcServices LifecycleAwareJDBCServicesInitiator.initiateService(Map, ServiceRegistryImplementor)"
-  })
+      "JdbcServices LifecycleAwareJDBCServicesInitiator.initiateService(Map, ServiceRegistryImplementor)"})
   public void testInitiateService() {
     // Arrange
     HashMap<Object, Object> configurationValues = new HashMap<>();
 
     // Act
-    JdbcServices actualInitiateServiceResult =
-        LifecycleAwareJDBCServicesInitiator.INSTANCE.initiateService(
-            configurationValues, new BootstrapServiceRegistryImpl());
+    JdbcServices actualInitiateServiceResult = LifecycleAwareJDBCServicesInitiator.INSTANCE
+        .initiateService(configurationValues, new BootstrapServiceRegistryImpl());
 
     // Assert
     assertTrue(actualInitiateServiceResult instanceof LifecycleAwareJDBCServices);
@@ -65,25 +59,20 @@ public class LifecycleAwareJDBCServicesInitiatorDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link LifecycleAwareJDBCServicesInitiator}
    *   <li>{@link LifecycleAwareJDBCServicesInitiator#getServiceInitiated()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void LifecycleAwareJDBCServicesInitiator.<init>()",
-    "Class LifecycleAwareJDBCServicesInitiator.getServiceInitiated()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LifecycleAwareJDBCServicesInitiator.<init>()",
+      "Class LifecycleAwareJDBCServicesInitiator.getServiceInitiated()"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    Class<JdbcServices> actualServiceInitiated =
-        new LifecycleAwareJDBCServicesInitiator().getServiceInitiated();
+    Class<JdbcServices> actualServiceInitiated = (new LifecycleAwareJDBCServicesInitiator()).getServiceInitiated();
 
     // Assert
     Class<JdbcServices> expectedServiceInitiated = JdbcServices.class;

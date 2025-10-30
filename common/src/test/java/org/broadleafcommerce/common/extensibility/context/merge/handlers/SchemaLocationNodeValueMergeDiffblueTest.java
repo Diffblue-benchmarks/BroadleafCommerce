@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Set;
 import javax.imageio.metadata.IIOMetadataNode;
@@ -37,32 +36,30 @@ import org.w3c.dom.Node;
 @ContextConfiguration(classes = {SchemaLocationNodeValueMerge.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SchemaLocationNodeValueMergeDiffblueTest {
-  @Autowired private SchemaLocationNodeValueMerge schemaLocationNodeValueMerge;
+  @Autowired
+  private SchemaLocationNodeValueMerge schemaLocationNodeValueMerge;
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getMergedNodeValues(Node, Node)}.
-   *
    * <ul>
-   *   <li>Given {@code spring-U-9.9.xsd}.
-   *   <li>Then return size is two.
+   *   <li>Given {@code spring-U-9.9.xsd}.</li>
+   *   <li>Then return size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getMergedNodeValues(Node, Node)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getMergedNodeValues(Node, Node)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set SchemaLocationNodeValueMerge.getMergedNodeValues(Node, Node)"})
   public void testGetMergedNodeValues_givenSpringU99Xsd_thenReturnSizeIsTwo() {
     // Arrange
     SchemaLocationNodeValueMerge schemaLocationNodeValueMerge = new SchemaLocationNodeValueMerge();
 
-    IIOMetadataNode node1 = new IIOMetadataNode();
+    IIOMetadataNode node1 = new IIOMetadataNode("foo");
     node1.setNodeValue("spring-U-9.9.xsd");
 
     // Act
-    Set<String> actualMergedNodeValues =
-        schemaLocationNodeValueMerge.getMergedNodeValues(node1, new AttrNSImpl());
+    Set<String> actualMergedNodeValues = schemaLocationNodeValueMerge.getMergedNodeValues(node1, new AttrNSImpl());
 
     // Assert
     assertEquals(2, actualMergedNodeValues.size());
@@ -72,17 +69,15 @@ public class SchemaLocationNodeValueMergeDiffblueTest {
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getMergedNodeValues(Node, Node)}.
-   *
    * <ul>
-   *   <li>When {@link AttrNSImpl#AttrNSImpl()}.
-   *   <li>Then return size is one.
+   *   <li>When {@link AttrNSImpl#AttrNSImpl()}.</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getMergedNodeValues(Node, Node)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getMergedNodeValues(Node, Node)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set SchemaLocationNodeValueMerge.getMergedNodeValues(Node, Node)"})
   public void testGetMergedNodeValues_whenAttrNSImpl_thenReturnSizeIsOne() {
     // Arrange
@@ -90,8 +85,7 @@ public class SchemaLocationNodeValueMergeDiffblueTest {
     AttrNSImpl node1 = new AttrNSImpl();
 
     // Act
-    Set<String> actualMergedNodeValues =
-        schemaLocationNodeValueMerge.getMergedNodeValues(node1, new AttrNSImpl());
+    Set<String> actualMergedNodeValues = schemaLocationNodeValueMerge.getMergedNodeValues(node1, new AttrNSImpl());
 
     // Assert
     assertEquals(1, actualMergedNodeValues.size());
@@ -100,827 +94,681 @@ public class SchemaLocationNodeValueMergeDiffblueTest {
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code 42Attribute Valuespring-U.xsd}.
+   *   <li>Then return {@code 42Attribute Valuespring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturn42AttributeValuespringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "42Attribute Valuespring-U.xsd",
+    assertEquals("42Attribute Valuespring-U.xsd",
         schemaLocationNodeValueMerge.getSanitizedValue("42Attribute Valuespring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code 42(spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.
+   *   <li>Then return {@code 42(spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturn42SpringW0909XsdSpringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "42(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "42(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
+    assertEquals("42(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd",
+        schemaLocationNodeValueMerge.getSanitizedValue("42(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code 42spring-U.xsdAttribute Value}.
+   *   <li>Then return {@code 42spring-U.xsdAttribute Value}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturn42springUXsdAttributeValue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "42spring-U.xsdAttribute Value",
+    assertEquals("42spring-U.xsdAttribute Value",
         schemaLocationNodeValueMerge.getSanitizedValue("42spring-U-9.9.xsdAttribute Value"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code 42spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.
+   *   <li>Then return {@code 42spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturn42springUXsdSpringW0909Xsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "42spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "42spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
+    assertEquals("42spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
+        schemaLocationNodeValueMerge.getSanitizedValue("42spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code 42spring-U.xsdspring-U.xsd}.
+   *   <li>Then return {@code 42spring-U.xsdspring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturn42springUXsdspringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "42spring-U.xsdspring-U.xsd",
+    assertEquals("42spring-U.xsdspring-U.xsd",
         schemaLocationNodeValueMerge.getSanitizedValue("42spring-U-9.9.xsdspring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Attribute Value42spring-U.xsd}.
+   *   <li>Then return {@code Attribute Value42spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnAttributeValue42springUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Attribute Value42spring-U.xsd",
+    assertEquals("Attribute Value42spring-U.xsd",
         schemaLocationNodeValueMerge.getSanitizedValue("Attribute Value42spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Attribute ValueAttribute Valuespring-U.xsd}.
+   *   <li>Then return {@code Attribute ValueAttribute Valuespring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnAttributeValueAttributeValuespringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Attribute ValueAttribute Valuespring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "Attribute ValueAttribute Valuespring-U-9.9.xsd"));
+    assertEquals("Attribute ValueAttribute Valuespring-U.xsd",
+        schemaLocationNodeValueMerge.getSanitizedValue("Attribute ValueAttribute Valuespring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Attribute Value(spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.
+   *   <li>Then return {@code Attribute Value(spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnAttributeValueSpringW0909XsdSpringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Attribute Value(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "Attribute Value(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
+    assertEquals("Attribute Value(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd", schemaLocationNodeValueMerge
+        .getSanitizedValue("Attribute Value(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Attribute Valuespring-U.xsd}.
+   *   <li>Then return {@code Attribute Valuespring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnAttributeValuespringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Attribute Valuespring-U.xsd",
+    assertEquals("Attribute Valuespring-U.xsd",
         schemaLocationNodeValueMerge.getSanitizedValue("Attribute Valuespring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Attribute Valuespring-U.xsd42}.
+   *   <li>Then return {@code Attribute Valuespring-U.xsd42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnAttributeValuespringUXsd42() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Attribute Valuespring-U.xsd42",
+    assertEquals("Attribute Valuespring-U.xsd42",
         schemaLocationNodeValueMerge.getSanitizedValue("Attribute Valuespring-U-9.9.xsd42"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Attribute Valuespring-U.xsdAttribute Value}.
+   *   <li>Then return {@code Attribute Valuespring-U.xsdAttribute Value}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnAttributeValuespringUXsdAttributeValue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Attribute Valuespring-U.xsdAttribute Value",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "Attribute Valuespring-U-9.9.xsdAttribute Value"));
+    assertEquals("Attribute Valuespring-U.xsdAttribute Value",
+        schemaLocationNodeValueMerge.getSanitizedValue("Attribute Valuespring-U-9.9.xsdAttribute Value"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Attribute Valuespring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.
+   *   <li>Then return {@code Attribute Valuespring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnAttributeValuespringUXsdSpringW0909Xsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Attribute Valuespring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "Attribute Valuespring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
+    assertEquals("Attribute Valuespring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)", schemaLocationNodeValueMerge
+        .getSanitizedValue("Attribute Valuespring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code Attribute Valuespring-U.xsdspring-U.xsd}.
+   *   <li>Then return {@code Attribute Valuespring-U.xsdspring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnAttributeValuespringUXsdspringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Attribute Valuespring-U.xsdspring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "Attribute Valuespring-U-9.9.xsdspring-U-9.9.xsd"));
+    assertEquals("Attribute Valuespring-U.xsdspring-U.xsd",
+        schemaLocationNodeValueMerge.getSanitizedValue("Attribute Valuespring-U-9.9.xsdspring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsd42Attribute Value}.
+   *   <li>Then return {@code spring-U.xsd42Attribute Value}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsd42AttributeValue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd42Attribute Value",
+    assertEquals("spring-U.xsd42Attribute Value",
         schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd42Attribute Value"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsd42(spring-\w*-[0-9]\.[0-9]\.xsd)}.
+   *   <li>Then return {@code spring-U.xsd42(spring-\w*-[0-9]\.[0-9]\.xsd)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsd42SpringW0909Xsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd42(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsd42(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
+    assertEquals("spring-U.xsd42(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
+        schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd42(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsd42spring-U.xsd}.
+   *   <li>Then return {@code spring-U.xsd42spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsd42springUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd42spring-U.xsd",
+    assertEquals("spring-U.xsd42spring-U.xsd",
         schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd42spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdAttribute Value}.
+   *   <li>Then return {@code spring-U.xsdAttribute Value}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdAttributeValue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdAttribute Value",
+    assertEquals("spring-U.xsdAttribute Value",
         schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsdAttribute Value"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdAttribute Value42}.
+   *   <li>Then return {@code spring-U.xsdAttribute Value42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdAttributeValue42() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdAttribute Value42",
+    assertEquals("spring-U.xsdAttribute Value42",
         schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsdAttribute Value42"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdAttribute ValueAttribute Value}.
+   *   <li>Then return {@code spring-U.xsdAttribute ValueAttribute Value}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdAttributeValueAttributeValue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdAttribute ValueAttribute Value",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsdAttribute ValueAttribute Value"));
+    assertEquals("spring-U.xsdAttribute ValueAttribute Value",
+        schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsdAttribute ValueAttribute Value"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdAttribute Value(spring-\w*-[0-9]\.[0-9]\.xsd)}.
+   *   <li>Then return {@code spring-U.xsdAttribute Value(spring-\w*-[0-9]\.[0-9]\.xsd)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdAttributeValueSpringW0909Xsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdAttribute Value(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsdAttribute Value(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
+    assertEquals("spring-U.xsdAttribute Value(spring-\\w*-[0-9]\\.[0-9]\\.xsd)", schemaLocationNodeValueMerge
+        .getSanitizedValue("spring-U-9.9.xsdAttribute Value(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdAttribute Valuespring-U.xsd}.
+   *   <li>Then return {@code spring-U.xsdAttribute Valuespring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdAttributeValuespringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdAttribute Valuespring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsdAttribute Valuespring-U-9.9.xsd"));
+    assertEquals("spring-U.xsdAttribute Valuespring-U.xsd",
+        schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsdAttribute Valuespring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.
+   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdSpringW0909Xsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
+    assertEquals("spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
+        schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)42}.
+   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdSpringW0909Xsd42() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)42",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)42"));
+    assertEquals("spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)42",
+        schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)42"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)Attribute Value}.
+   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)Attribute Value}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdSpringW0909XsdAttributeValue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)Attribute Value",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)Attribute Value"));
+    assertEquals("spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)Attribute Value", schemaLocationNodeValueMerge
+        .getSanitizedValue("spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)Attribute Value"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.
+   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdSpringW0909XsdSpringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
+    assertEquals("spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd", schemaLocationNodeValueMerge
+        .getSanitizedValue("spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code
-   *       spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)(spring-\w*-[0-9]\.[0-9]\.xsd)}.
+   *   <li>Then return {@code spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)(spring-\w*-[0-9]\.[0-9]\.xsd)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdSpringW0909XsdSpringW0909Xsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
+    assertEquals("spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
+        schemaLocationNodeValueMerge
+            .getSanitizedValue("spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdspring-U.xsd}.
+   *   <li>Then return {@code spring-U.xsdspring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdspringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdspring-U.xsd",
+    assertEquals("spring-U.xsdspring-U.xsd",
         schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsdspring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdspring-U.xsd42}.
+   *   <li>Then return {@code spring-U.xsdspring-U.xsd42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdspringUXsd42() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdspring-U.xsd42",
+    assertEquals("spring-U.xsdspring-U.xsd42",
         schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsdspring-U-9.9.xsd42"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdspring-U.xsdAttribute Value}.
+   *   <li>Then return {@code spring-U.xsdspring-U.xsdAttribute Value}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdspringUXsdAttributeValue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdspring-U.xsdAttribute Value",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsdspring-U-9.9.xsdAttribute Value"));
+    assertEquals("spring-U.xsdspring-U.xsdAttribute Value",
+        schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsdspring-U-9.9.xsdAttribute Value"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdspring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.
+   *   <li>Then return {@code spring-U.xsdspring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdspringUXsdSpringW0909Xsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdspring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsdspring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
+    assertEquals("spring-U.xsdspring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)", schemaLocationNodeValueMerge
+        .getSanitizedValue("spring-U-9.9.xsdspring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code spring-U.xsdspring-U.xsdspring-U.xsd}.
+   *   <li>Then return {@code spring-U.xsdspring-U.xsdspring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringUXsdspringUXsdspringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsdspring-U.xsdspring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "spring-U-9.9.xsdspring-U-9.9.xsdspring-U-9.9.xsd"));
+    assertEquals("spring-U.xsdspring-U.xsdspring-U.xsd",
+        schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsdspring-U-9.9.xsdspring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)42spring-U.xsd}.
+   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)42spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringW0909Xsd42springUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)42spring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)42spring-U-9.9.xsd"));
+    assertEquals("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)42spring-U.xsd",
+        schemaLocationNodeValueMerge.getSanitizedValue("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)42spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)Attribute Valuespring-U.xsd}.
+   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)Attribute Valuespring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringW0909XsdAttributeValuespringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)Attribute Valuespring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)Attribute Valuespring-U-9.9.xsd"));
+    assertEquals("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)Attribute Valuespring-U.xsd", schemaLocationNodeValueMerge
+        .getSanitizedValue("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)Attribute Valuespring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.
+   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringW0909XsdSpringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
+    assertEquals("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd",
+        schemaLocationNodeValueMerge.getSanitizedValue("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd42}.
+   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringW0909XsdSpringUXsd42() {
     // Arrange, Act and Assert
-    assertEquals(
-        "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd42",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd42"));
+    assertEquals("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd42",
+        schemaLocationNodeValueMerge.getSanitizedValue("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd42"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsdAttribute Value}.
+   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsdAttribute Value}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringW0909XsdSpringUXsdAttributeValue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsdAttribute Value",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsdAttribute Value"));
+    assertEquals("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsdAttribute Value", schemaLocationNodeValueMerge
+        .getSanitizedValue("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsdAttribute Value"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code
-   *       (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.
+   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd(spring-\w*-[0-9]\.[0-9]\.xsd)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringW0909XsdSpringUXsdSpringW0909Xsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
+    assertEquals("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)",
+        schemaLocationNodeValueMerge
+            .getSanitizedValue("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd(spring-\\w*-[0-9]\\.[0-9]\\.xsd)"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsdspring-U.xsd}.
+   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsdspring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringW0909XsdSpringUXsdspringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsdspring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsdspring-U-9.9.xsd"));
+    assertEquals("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsdspring-U.xsd", schemaLocationNodeValueMerge
+        .getSanitizedValue("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsdspring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code
-   *       (spring-\w*-[0-9]\.[0-9]\.xsd)(spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.
+   *   <li>Then return {@code (spring-\w*-[0-9]\.[0-9]\.xsd)(spring-\w*-[0-9]\.[0-9]\.xsd)spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_thenReturnSpringW0909XsdSpringW0909XsdSpringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd",
-        schemaLocationNodeValueMerge.getSanitizedValue(
-            "(spring-\\w*-[0-9]\\.[0-9]\\.xsd)(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
+    assertEquals("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U.xsd",
+        schemaLocationNodeValueMerge
+            .getSanitizedValue("(spring-\\w*-[0-9]\\.[0-9]\\.xsd)(spring-\\w*-[0-9]\\.[0-9]\\.xsd)spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42}.
-   *   <li>Then return {@code 42}.
+   *   <li>When {@code 42}.</li>
+   *   <li>Then return {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_when42_thenReturn42() {
     // Arrange, Act and Assert
@@ -929,138 +777,117 @@ public class SchemaLocationNodeValueMergeDiffblueTest {
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42spring-U-9.9.xsd42}.
-   *   <li>Then return {@code 42spring-U.xsd42}.
+   *   <li>When {@code 42spring-U-9.9.xsd42}.</li>
+   *   <li>Then return {@code 42spring-U.xsd42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_when42springU99Xsd42_thenReturn42springUXsd42() {
     // Arrange, Act and Assert
-    assertEquals(
-        "42spring-U.xsd42", schemaLocationNodeValueMerge.getSanitizedValue("42spring-U-9.9.xsd42"));
+    assertEquals("42spring-U.xsd42", schemaLocationNodeValueMerge.getSanitizedValue("42spring-U-9.9.xsd42"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42spring-U-9.9.xsd}.
-   *   <li>Then return {@code 42spring-U.xsd}.
+   *   <li>When {@code 42spring-U-9.9.xsd}.</li>
+   *   <li>Then return {@code 42spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_when42springU99Xsd_thenReturn42springUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "42spring-U.xsd", schemaLocationNodeValueMerge.getSanitizedValue("42spring-U-9.9.xsd"));
+    assertEquals("42spring-U.xsd", schemaLocationNodeValueMerge.getSanitizedValue("42spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code 4242spring-U-9.9.xsd}.
-   *   <li>Then return {@code 4242spring-U.xsd}.
+   *   <li>When {@code 4242spring-U-9.9.xsd}.</li>
+   *   <li>Then return {@code 4242spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_when4242springU99Xsd_thenReturn4242springUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "4242spring-U.xsd", schemaLocationNodeValueMerge.getSanitizedValue("4242spring-U-9.9.xsd"));
+    assertEquals("4242spring-U.xsd", schemaLocationNodeValueMerge.getSanitizedValue("4242spring-U-9.9.xsd"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code spring-U-9.9.xsd42}.
-   *   <li>Then return {@code spring-U.xsd42}.
+   *   <li>When {@code spring-U-9.9.xsd42}.</li>
+   *   <li>Then return {@code spring-U.xsd42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_whenSpringU99Xsd42_thenReturnSpringUXsd42() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd42", schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd42"));
+    assertEquals("spring-U.xsd42", schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd42"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code spring-U-9.9.xsd4242}.
-   *   <li>Then return {@code spring-U.xsd4242}.
+   *   <li>When {@code spring-U-9.9.xsd4242}.</li>
+   *   <li>Then return {@code spring-U.xsd4242}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_whenSpringU99Xsd4242_thenReturnSpringUXsd4242() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd4242", schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd4242"));
+    assertEquals("spring-U.xsd4242", schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd4242"));
   }
 
   /**
    * Test {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code spring-U-9.9.xsd}.
-   *   <li>Then return {@code spring-U.xsd}.
+   *   <li>When {@code spring-U-9.9.xsd}.</li>
+   *   <li>Then return {@code spring-U.xsd}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
+   * <p>
+   * Method under test: {@link SchemaLocationNodeValueMerge#getSanitizedValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SchemaLocationNodeValueMerge.getSanitizedValue(String)"})
   public void testGetSanitizedValue_whenSpringU99Xsd_thenReturnSpringUXsd() {
     // Arrange, Act and Assert
-    assertEquals(
-        "spring-U.xsd", schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd"));
+    assertEquals("spring-U.xsd", schemaLocationNodeValueMerge.getSanitizedValue("spring-U-9.9.xsd"));
   }
 
   /**
    * Test new {@link SchemaLocationNodeValueMerge} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * SchemaLocationNodeValueMerge}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SchemaLocationNodeValueMerge}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SchemaLocationNodeValueMerge.<init>()"})
   public void testNewSchemaLocationNodeValueMerge() {
     // Arrange and Act
-    SchemaLocationNodeValueMerge actualSchemaLocationNodeValueMerge =
-        new SchemaLocationNodeValueMerge();
+    SchemaLocationNodeValueMerge actualSchemaLocationNodeValueMerge = new SchemaLocationNodeValueMerge();
 
     // Assert
     assertEquals(" ", actualSchemaLocationNodeValueMerge.getDelimiter());

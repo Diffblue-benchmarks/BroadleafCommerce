@@ -19,8 +19,7 @@ package org.broadleafcommerce.cms.web;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,44 +40,34 @@ public class DefaultURLHandlerFilterExtensionHandlerDiffblueTest {
   private DefaultURLHandlerFilterExtensionHandler defaultURLHandlerFilterExtensionHandler;
 
   /**
-   * Test {@link DefaultURLHandlerFilterExtensionHandler#processPreRedirect(HttpServletRequest,
-   * HttpServletResponse, String)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultURLHandlerFilterExtensionHandler#processPreRedirect(HttpServletRequest,
-   * HttpServletResponse, String)}
+   * Test {@link DefaultURLHandlerFilterExtensionHandler#processPreRedirect(HttpServletRequest, HttpServletResponse, String)}.
+   * <p>
+   * Method under test: {@link DefaultURLHandlerFilterExtensionHandler#processPreRedirect(HttpServletRequest, HttpServletResponse, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType DefaultURLHandlerFilterExtensionHandler.processPreRedirect(HttpServletRequest, HttpServletResponse, String)"
-  })
+      "ExtensionResultStatusType DefaultURLHandlerFilterExtensionHandler.processPreRedirect(HttpServletRequest, HttpServletResponse, String)"})
   public void testProcessPreRedirect() {
     // Arrange
     MockHttpServletRequest request = new MockHttpServletRequest();
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        defaultURLHandlerFilterExtensionHandler.processPreRedirect(
-            request, new MockHttpServletResponse(), "https://example.org/example"));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, defaultURLHandlerFilterExtensionHandler
+        .processPreRedirect(request, new MockHttpServletResponse(), "https://example.org/example"));
   }
 
   /**
    * Test new {@link DefaultURLHandlerFilterExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * DefaultURLHandlerFilterExtensionHandler}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link DefaultURLHandlerFilterExtensionHandler}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultURLHandlerFilterExtensionHandler.<init>()"})
   public void testNewDefaultURLHandlerFilterExtensionHandler() {
     // Arrange and Act
-    DefaultURLHandlerFilterExtensionHandler actualDefaultURLHandlerFilterExtensionHandler =
-        new DefaultURLHandlerFilterExtensionHandler();
+    DefaultURLHandlerFilterExtensionHandler actualDefaultURLHandlerFilterExtensionHandler = new DefaultURLHandlerFilterExtensionHandler();
 
     // Assert
     assertEquals(0, actualDefaultURLHandlerFilterExtensionHandler.getPriority());

@@ -22,8 +22,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import java.util.Set;
@@ -49,33 +48,29 @@ public class EntityInformationServiceImplDiffblueTest {
   @MockBean(name = "blEntityInformationServiceExtensionManager")
   private EntityInformationServiceExtensionManager entityInformationServiceExtensionManager;
 
-  @Autowired private EntityInformationServiceImpl entityInformationServiceImpl;
+  @Autowired
+  private EntityInformationServiceImpl entityInformationServiceImpl;
 
   /**
    * Test {@link EntityInformationServiceImpl#buildEntityInformationForObject(Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceImpl#buildEntityInformationForObject(Object)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#buildEntityInformationForObject(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "EntityInformationDto EntityInformationServiceImpl.buildEntityInformationForObject(Object)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityInformationDto EntityInformationServiceImpl.buildEntityInformationForObject(Object)"})
   public void testBuildEntityInformationForObject() {
     // Arrange
-    when(entityInformationServiceExtensionManager.updateEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(entityInformationServiceExtensionManager.updateEntityInformationDto(Mockito.<EntityInformationDto>any(),
+        Mockito.<Object>any())).thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    EntityInformationDto actualBuildEntityInformationForObjectResult =
-        entityInformationServiceImpl.buildEntityInformationForObject(BLCFieldUtils.NULL_FIELD);
+    EntityInformationDto actualBuildEntityInformationForObjectResult = entityInformationServiceImpl
+        .buildEntityInformationForObject(BLCFieldUtils.NULL_FIELD);
 
     // Assert
-    verify(entityInformationServiceExtensionManager)
-        .updateEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
+    verify(entityInformationServiceExtensionManager).updateEntityInformationDto(isA(EntityInformationDto.class),
+        isA(Object.class));
     assertNull(actualBuildEntityInformationForObjectResult.getOwnerToCatalogRelationshipActive());
     assertNull(actualBuildEntityInformationForObjectResult.getCatalogId());
     assertNull(actualBuildEntityInformationForObjectResult.getCatalogOwner());
@@ -87,31 +82,25 @@ public class EntityInformationServiceImplDiffblueTest {
 
   /**
    * Test {@link EntityInformationServiceImpl#buildBasicEntityInformationForObject(Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceImpl#buildBasicEntityInformationForObject(Object)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#buildBasicEntityInformationForObject(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "EntityInformationDto EntityInformationServiceImpl.buildBasicEntityInformationForObject(Object)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityInformationDto EntityInformationServiceImpl.buildBasicEntityInformationForObject(Object)"})
   public void testBuildBasicEntityInformationForObject() {
     // Arrange
-    when(entityInformationServiceExtensionManager.updateBasicEntityInformationDto(
-            Mockito.<EntityInformationDto>any(), Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(entityInformationServiceExtensionManager.updateBasicEntityInformationDto(Mockito.<EntityInformationDto>any(),
+        Mockito.<Object>any())).thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    EntityInformationDto actualBuildBasicEntityInformationForObjectResult =
-        entityInformationServiceImpl.buildBasicEntityInformationForObject(BLCFieldUtils.NULL_FIELD);
+    EntityInformationDto actualBuildBasicEntityInformationForObjectResult = entityInformationServiceImpl
+        .buildBasicEntityInformationForObject(BLCFieldUtils.NULL_FIELD);
 
     // Assert
-    verify(entityInformationServiceExtensionManager)
-        .updateBasicEntityInformationDto(isA(EntityInformationDto.class), isA(Object.class));
-    assertNull(
-        actualBuildBasicEntityInformationForObjectResult.getOwnerToCatalogRelationshipActive());
+    verify(entityInformationServiceExtensionManager).updateBasicEntityInformationDto(isA(EntityInformationDto.class),
+        isA(Object.class));
+    assertNull(actualBuildBasicEntityInformationForObjectResult.getOwnerToCatalogRelationshipActive());
     assertNull(actualBuildBasicEntityInformationForObjectResult.getCatalogId());
     assertNull(actualBuildBasicEntityInformationForObjectResult.getCatalogOwner());
     assertNull(actualBuildBasicEntityInformationForObjectResult.getOwningSiteId());
@@ -122,61 +111,54 @@ public class EntityInformationServiceImplDiffblueTest {
 
   /**
    * Test {@link EntityInformationServiceImpl#getBaseProfileIdForSite(Site)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceImpl#getBaseProfileIdForSite(Site)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#getBaseProfileIdForSite(Site)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long EntityInformationServiceImpl.getBaseProfileIdForSite(Site)"})
   public void testGetBaseProfileIdForSite() {
     // Arrange
-    when(entityInformationServiceExtensionManager.getBaseProfileIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(entityInformationServiceExtensionManager.getBaseProfileIdForSite(Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Long>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    Long actualBaseProfileIdForSite =
-        entityInformationServiceImpl.getBaseProfileIdForSite(new SiteImpl());
+    Long actualBaseProfileIdForSite = entityInformationServiceImpl.getBaseProfileIdForSite(new SiteImpl());
 
     // Assert
-    verify(entityInformationServiceExtensionManager)
-        .getBaseProfileIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
+    verify(entityInformationServiceExtensionManager).getBaseProfileIdForSite(isA(Site.class),
+        isA(ExtensionResultHolder.class));
     assertNull(actualBaseProfileIdForSite);
   }
 
   /**
    * Test {@link EntityInformationServiceImpl#getTypeForSite(Site)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceImpl#getTypeForSite(Site)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#getTypeForSite(Site)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityInformationServiceImpl.getTypeForSite(Site)"})
   public void testGetTypeForSite() {
     // Arrange
-    when(entityInformationServiceExtensionManager.getTypeForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<String>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(entityInformationServiceExtensionManager.getTypeForSite(Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
     String actualTypeForSite = entityInformationServiceImpl.getTypeForSite(new SiteImpl());
 
     // Assert
-    verify(entityInformationServiceExtensionManager)
-        .getTypeForSite(isA(Site.class), isA(ExtensionResultHolder.class));
+    verify(entityInformationServiceExtensionManager).getTypeForSite(isA(Site.class), isA(ExtensionResultHolder.class));
     assertNull(actualTypeForSite);
   }
 
   /**
    * Test {@link EntityInformationServiceImpl#getChildSiteIdsForProfile(Site)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceImpl#getChildSiteIdsForProfile(Site)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#getChildSiteIdsForProfile(Site)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set EntityInformationServiceImpl.getChildSiteIdsForProfile(Site)"})
   public void testGetChildSiteIdsForProfile() {
     // Arrange
@@ -184,8 +166,7 @@ public class EntityInformationServiceImplDiffblueTest {
         .thenReturn(new AbstractEntityInformationServiceExtensionHandler());
 
     // Act
-    Set<Long> actualChildSiteIdsForProfile =
-        entityInformationServiceImpl.getChildSiteIdsForProfile(new SiteImpl());
+    Set<Long> actualChildSiteIdsForProfile = entityInformationServiceImpl.getChildSiteIdsForProfile(new SiteImpl());
 
     // Assert
     verify(entityInformationServiceExtensionManager).getProxy();
@@ -194,12 +175,11 @@ public class EntityInformationServiceImplDiffblueTest {
 
   /**
    * Test {@link EntityInformationServiceImpl#getChildSiteIdsForProfile(Site)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceImpl#getChildSiteIdsForProfile(Site)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#getChildSiteIdsForProfile(Site)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set EntityInformationServiceImpl.getChildSiteIdsForProfile(Site)"})
   public void testGetChildSiteIdsForProfile2() {
     // Arrange
@@ -207,8 +187,29 @@ public class EntityInformationServiceImplDiffblueTest {
         .thenReturn(new EntityInformationServiceExtensionManager());
 
     // Act
-    Set<Long> actualChildSiteIdsForProfile =
-        entityInformationServiceImpl.getChildSiteIdsForProfile(new SiteImpl());
+    Set<Long> actualChildSiteIdsForProfile = entityInformationServiceImpl.getChildSiteIdsForProfile(new SiteImpl());
+
+    // Assert
+    verify(entityInformationServiceExtensionManager).getProxy();
+    assertNull(actualChildSiteIdsForProfile);
+  }
+
+  /**
+   * Test {@link EntityInformationServiceImpl#getChildSiteIdsForProfile(Site)}.
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#getChildSiteIdsForProfile(Site)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set EntityInformationServiceImpl.getChildSiteIdsForProfile(Site)"})
+  public void testGetChildSiteIdsForProfile3() {
+    // Arrange
+    EntityInformationServiceExtensionManager entityInformationServiceExtensionManager2 = new EntityInformationServiceExtensionManager();
+    entityInformationServiceExtensionManager2.registerHandler(new AbstractEntityInformationServiceExtensionHandler());
+    when(entityInformationServiceExtensionManager.getProxy()).thenReturn(entityInformationServiceExtensionManager2);
+
+    // Act
+    Set<Long> actualChildSiteIdsForProfile = entityInformationServiceImpl.getChildSiteIdsForProfile(new SiteImpl());
 
     // Assert
     verify(entityInformationServiceExtensionManager).getProxy();
@@ -217,119 +218,104 @@ public class EntityInformationServiceImplDiffblueTest {
 
   /**
    * Test {@link EntityInformationServiceImpl#getParentSiteForProfile(Site)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceImpl#getParentSiteForProfile(Site)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#getParentSiteForProfile(Site)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Site EntityInformationServiceImpl.getParentSiteForProfile(Site)"})
   public void testGetParentSiteForProfile() {
     // Arrange
-    when(entityInformationServiceExtensionManager.getParentSiteForProfile(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Site>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(entityInformationServiceExtensionManager.getParentSiteForProfile(Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Site>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    Site actualParentSiteForProfile =
-        entityInformationServiceImpl.getParentSiteForProfile(new SiteImpl());
+    Site actualParentSiteForProfile = entityInformationServiceImpl.getParentSiteForProfile(new SiteImpl());
 
     // Assert
-    verify(entityInformationServiceExtensionManager)
-        .getParentSiteForProfile(isA(Site.class), isA(ExtensionResultHolder.class));
+    verify(entityInformationServiceExtensionManager).getParentSiteForProfile(isA(Site.class),
+        isA(ExtensionResultHolder.class));
     assertNull(actualParentSiteForProfile);
   }
 
   /**
    * Test {@link EntityInformationServiceImpl#getOkayToUseSiteDiscriminator(Object)}.
-   *
-   * <p>Method under test: {@link
-   * EntityInformationServiceImpl#getOkayToUseSiteDiscriminator(Object)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#getOkayToUseSiteDiscriminator(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean EntityInformationServiceImpl.getOkayToUseSiteDiscriminator(Object)"})
   public void testGetOkayToUseSiteDiscriminator() {
     // Arrange
-    when(entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(entityInformationServiceExtensionManager.getOkayToUseSiteDiscriminator(Mockito.<Object>any(),
+        Mockito.<ExtensionResultHolder<Boolean>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    boolean actualOkayToUseSiteDiscriminator =
-        entityInformationServiceImpl.getOkayToUseSiteDiscriminator(BLCFieldUtils.NULL_FIELD);
+    boolean actualOkayToUseSiteDiscriminator = entityInformationServiceImpl
+        .getOkayToUseSiteDiscriminator(BLCFieldUtils.NULL_FIELD);
 
     // Assert
-    verify(entityInformationServiceExtensionManager)
-        .getOkayToUseSiteDiscriminator(isA(Object.class), isA(ExtensionResultHolder.class));
+    verify(entityInformationServiceExtensionManager).getOkayToUseSiteDiscriminator(isA(Object.class),
+        isA(ExtensionResultHolder.class));
     assertFalse(actualOkayToUseSiteDiscriminator);
   }
 
   /**
    * Test {@link EntityInformationServiceImpl#getDefaultCatalogIdForSite(Site)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceImpl#getDefaultCatalogIdForSite(Site)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#getDefaultCatalogIdForSite(Site)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long EntityInformationServiceImpl.getDefaultCatalogIdForSite(Site)"})
   public void testGetDefaultCatalogIdForSite() {
     // Arrange
-    when(entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Long>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(entityInformationServiceExtensionManager.getDefaultCatalogIdForSite(Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Long>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    Long actualDefaultCatalogIdForSite =
-        entityInformationServiceImpl.getDefaultCatalogIdForSite(new SiteImpl());
+    Long actualDefaultCatalogIdForSite = entityInformationServiceImpl.getDefaultCatalogIdForSite(new SiteImpl());
 
     // Assert
-    verify(entityInformationServiceExtensionManager)
-        .getDefaultCatalogIdForSite(isA(Site.class), isA(ExtensionResultHolder.class));
+    verify(entityInformationServiceExtensionManager).getDefaultCatalogIdForSite(isA(Site.class),
+        isA(ExtensionResultHolder.class));
     assertNull(actualDefaultCatalogIdForSite);
   }
 
   /**
    * Test {@link EntityInformationServiceImpl#findAllCatalogs()}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceImpl#findAllCatalogs()}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#findAllCatalogs()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List EntityInformationServiceImpl.findAllCatalogs()"})
   public void testFindAllCatalogs() {
     // Arrange
-    when(entityInformationServiceExtensionManager.findAllCatalogs(
-            Mockito.<ExtensionResultHolder<List<Catalog>>>any()))
+    when(entityInformationServiceExtensionManager.findAllCatalogs(Mockito.<ExtensionResultHolder<List<Catalog>>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
     List<Catalog> actualFindAllCatalogsResult = entityInformationServiceImpl.findAllCatalogs();
 
     // Assert
-    verify(entityInformationServiceExtensionManager)
-        .findAllCatalogs(isA(ExtensionResultHolder.class));
+    verify(entityInformationServiceExtensionManager).findAllCatalogs(isA(ExtensionResultHolder.class));
     assertNull(actualFindAllCatalogsResult);
   }
 
   /**
    * Test {@link EntityInformationServiceImpl#createEntityInformationDto(Object)}.
-   *
-   * <p>Method under test: {@link EntityInformationServiceImpl#createEntityInformationDto(Object)}
+   * <p>
+   * Method under test: {@link EntityInformationServiceImpl#createEntityInformationDto(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "EntityInformationDto EntityInformationServiceImpl.createEntityInformationDto(Object)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"EntityInformationDto EntityInformationServiceImpl.createEntityInformationDto(Object)"})
   public void testCreateEntityInformationDto() {
     // Arrange and Act
-    EntityInformationDto actualCreateEntityInformationDtoResult =
-        entityInformationServiceImpl.createEntityInformationDto(BLCFieldUtils.NULL_FIELD);
+    EntityInformationDto actualCreateEntityInformationDtoResult = entityInformationServiceImpl
+        .createEntityInformationDto(BLCFieldUtils.NULL_FIELD);
 
     // Assert
     assertNull(actualCreateEntityInformationDtoResult.getOwnerToCatalogRelationshipActive());

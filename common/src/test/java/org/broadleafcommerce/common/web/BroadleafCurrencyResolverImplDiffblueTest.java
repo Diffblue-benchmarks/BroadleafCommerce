@@ -30,11 +30,9 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
@@ -54,31 +52,28 @@ import org.springframework.web.context.request.WebRequest;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BroadleafCurrencyResolverImplDiffblueTest {
-  @InjectMocks private BroadleafCurrencyResolverImpl broadleafCurrencyResolverImpl;
+  @InjectMocks
+  private BroadleafCurrencyResolverImpl broadleafCurrencyResolverImpl;
 
-  @Mock private BroadleafCurrencyService broadleafCurrencyService;
+  @Mock
+  private BroadleafCurrencyService broadleafCurrencyService;
 
   /**
-   * Test {@link BroadleafCurrencyResolverImpl#resolveCurrency(HttpServletRequest)} with {@code
-   * HttpServletRequest}.
-   *
-   * <p>Method under test: {@link BroadleafCurrencyResolverImpl#resolveCurrency(HttpServletRequest)}
+   * Test {@link BroadleafCurrencyResolverImpl#resolveCurrency(HttpServletRequest)} with {@code HttpServletRequest}.
+   * <p>
+   * Method under test: {@link BroadleafCurrencyResolverImpl#resolveCurrency(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafRequestedCurrencyDto BroadleafCurrencyResolverImpl.resolveCurrency(HttpServletRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafRequestedCurrencyDto BroadleafCurrencyResolverImpl.resolveCurrency(HttpServletRequest)"})
   public void testResolveCurrencyWithHttpServletRequest() {
     // Arrange
     BroadleafCurrencyImpl broadleafCurrencyImpl = new BroadleafCurrencyImpl();
     when(broadleafCurrencyService.findDefaultBroadleafCurrency()).thenReturn(broadleafCurrencyImpl);
-    HttpServletRequestWrapper request = new HttpServletRequestWrapper(new MockHttpServletRequest());
+    MockHttpServletRequest request = new MockHttpServletRequest();
 
     // Act
-    BroadleafRequestedCurrencyDto actualResolveCurrencyResult =
-        broadleafCurrencyResolverImpl.resolveCurrency(request);
+    BroadleafRequestedCurrencyDto actualResolveCurrencyResult = broadleafCurrencyResolverImpl.resolveCurrency(request);
 
     // Assert
     verify(broadleafCurrencyService).findDefaultBroadleafCurrency();
@@ -86,30 +81,24 @@ public class BroadleafCurrencyResolverImplDiffblueTest {
     assertTrue(session instanceof MockHttpSession);
     assertSame(broadleafCurrencyImpl, actualResolveCurrencyResult.getCurrencyToUse());
     assertSame(broadleafCurrencyImpl, actualResolveCurrencyResult.getRequestedCurrency());
-    assertArrayEquals(new String[] {"blCurrency"}, session.getValueNames());
+    assertArrayEquals(new String[]{"blCurrency"}, session.getValueNames());
   }
 
   /**
    * Test {@link BroadleafCurrencyResolverImpl#resolveCurrency(WebRequest)} with {@code WebRequest}.
-   *
-   * <p>Method under test: {@link BroadleafCurrencyResolverImpl#resolveCurrency(WebRequest)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyResolverImpl#resolveCurrency(WebRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafRequestedCurrencyDto BroadleafCurrencyResolverImpl.resolveCurrency(WebRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafRequestedCurrencyDto BroadleafCurrencyResolverImpl.resolveCurrency(WebRequest)"})
   public void testResolveCurrencyWithWebRequest() {
     // Arrange
-    when(broadleafCurrencyService.findDefaultBroadleafCurrency())
-        .thenReturn(new BroadleafCurrencyImpl());
-    ServletWebRequest request =
-        new ServletWebRequest(new HttpServletRequestWrapper(new MockHttpServletRequest()));
+    when(broadleafCurrencyService.findDefaultBroadleafCurrency()).thenReturn(new BroadleafCurrencyImpl());
+    ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
 
     // Act
-    BroadleafRequestedCurrencyDto actualResolveCurrencyResult =
-        broadleafCurrencyResolverImpl.resolveCurrency(request);
+    BroadleafRequestedCurrencyDto actualResolveCurrencyResult = broadleafCurrencyResolverImpl.resolveCurrency(request);
 
     // Assert
     verify(broadleafCurrencyService).findDefaultBroadleafCurrency();
@@ -123,43 +112,35 @@ public class BroadleafCurrencyResolverImplDiffblueTest {
     assertNull(currencyToUse.getJavaCurrency());
     assertFalse(currencyToUse.getDefaultFlag());
     assertSame(currencyToUse, actualResolveCurrencyResult.getRequestedCurrency());
-    assertArrayEquals(
-        new String[] {"blCurrency"}, ((MockHttpSession) sessionMutex).getValueNames());
+    assertArrayEquals(new String[]{"blCurrency"}, ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
    * Test {@link BroadleafCurrencyResolverImpl#resolveCurrency(WebRequest)} with {@code WebRequest}.
-   *
-   * <p>Method under test: {@link BroadleafCurrencyResolverImpl#resolveCurrency(WebRequest)}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyResolverImpl#resolveCurrency(WebRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafRequestedCurrencyDto BroadleafCurrencyResolverImpl.resolveCurrency(WebRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"BroadleafRequestedCurrencyDto BroadleafCurrencyResolverImpl.resolveCurrency(WebRequest)"})
   public void testResolveCurrencyWithWebRequest2() {
     // Arrange
-    when(broadleafCurrencyService.findCurrencyByCode(Mockito.<String>any()))
-        .thenReturn(new BroadleafCurrencyImpl());
-    when(broadleafCurrencyService.findDefaultBroadleafCurrency())
-        .thenReturn(new BroadleafCurrencyImpl());
-
+    when(broadleafCurrencyService.findCurrencyByCode(Mockito.<String>any())).thenReturn(new BroadleafCurrencyImpl());
+    when(broadleafCurrencyService.findDefaultBroadleafCurrency()).thenReturn(new BroadleafCurrencyImpl());
     WebRequest request = mock(WebRequest.class);
     when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(null);
     when(request.getHeader(Mockito.<String>any())).thenReturn("Header");
     doNothing().when(request).setAttribute(Mockito.<String>any(), Mockito.<Object>any(), anyInt());
 
     // Act
-    BroadleafRequestedCurrencyDto actualResolveCurrencyResult =
-        broadleafCurrencyResolverImpl.resolveCurrency(request);
+    BroadleafRequestedCurrencyDto actualResolveCurrencyResult = broadleafCurrencyResolverImpl.resolveCurrency(request);
 
     // Assert
-    verify(broadleafCurrencyService).findCurrencyByCode("Header");
+    verify(broadleafCurrencyService).findCurrencyByCode(eq("Header"));
     verify(broadleafCurrencyService).findDefaultBroadleafCurrency();
     verify(request, atLeast(1)).getAttribute(Mockito.<String>any(), eq(0));
     verify(request).setAttribute(eq("blCurrency"), isA(Object.class), eq(1));
-    verify(request, atLeast(1)).getHeader("blCurrencyCode");
+    verify(request, atLeast(1)).getHeader(eq("blCurrencyCode"));
     assertTrue(actualResolveCurrencyResult.getCurrencyToUse() instanceof BroadleafCurrencyImpl);
     BroadleafCurrency requestedCurrency = actualResolveCurrencyResult.getRequestedCurrency();
     assertTrue(requestedCurrency instanceof BroadleafCurrencyImpl);

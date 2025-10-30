@@ -20,8 +20,7 @@ package org.broadleafcommerce.openadmin.server.security.remote;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +30,8 @@ import org.junit.experimental.categories.Category;
 public class AdminUserDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link AdminUser}
    *   <li>{@link AdminUser#setCurrentSandBoxId(String)}
@@ -55,27 +53,13 @@ public class AdminUserDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUser.<init>()",
-    "String AdminUser.getCurrentSandBoxId()",
-    "String AdminUser.getEmail()",
-    "Long AdminUser.getId()",
-    "String AdminUser.getName()",
-    "List AdminUser.getPermissions()",
-    "String AdminUser.getPhoneNumber()",
-    "List AdminUser.getRoles()",
-    "String AdminUser.getUserName()",
-    "void AdminUser.setCurrentSandBoxId(String)",
-    "void AdminUser.setEmail(String)",
-    "void AdminUser.setId(Long)",
-    "void AdminUser.setName(String)",
-    "void AdminUser.setPermissions(List)",
-    "void AdminUser.setPhoneNumber(String)",
-    "void AdminUser.setRoles(List)",
-    "void AdminUser.setUserName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminUser.<init>()", "String AdminUser.getCurrentSandBoxId()", "String AdminUser.getEmail()",
+      "Long AdminUser.getId()", "String AdminUser.getName()", "List AdminUser.getPermissions()",
+      "String AdminUser.getPhoneNumber()", "List AdminUser.getRoles()", "String AdminUser.getUserName()",
+      "void AdminUser.setCurrentSandBoxId(String)", "void AdminUser.setEmail(String)", "void AdminUser.setId(Long)",
+      "void AdminUser.setName(String)", "void AdminUser.setPermissions(List)", "void AdminUser.setPhoneNumber(String)",
+      "void AdminUser.setRoles(List)", "void AdminUser.setUserName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminUser actualAdminUser = new AdminUser();

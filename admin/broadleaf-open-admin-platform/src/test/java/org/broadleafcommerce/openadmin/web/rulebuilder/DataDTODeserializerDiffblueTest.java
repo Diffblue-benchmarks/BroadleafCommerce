@@ -21,35 +21,28 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.core.FormatSchema;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.StreamReadCapability;
 import com.fasterxml.jackson.core.util.JacksonFeatureSet;
 import com.fasterxml.jackson.core.util.JsonParserDelegate;
-import com.fasterxml.jackson.core.util.JsonParserSequence;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.cfg.DeserializerFactoryConfig;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory;
 import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext;
 import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.Impl;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper.Builder;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BinaryNode;
-import com.fasterxml.jackson.databind.node.DoubleNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.MissingNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import java.io.IOException;
@@ -57,17 +50,15 @@ import java.io.UnsupportedEncodingException;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataDTO;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.mockito.Mockito;
 
 public class DataDTODeserializerDiffblueTest {
   /**
    * Test new {@link DataDTODeserializer} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link DataDTODeserializer}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link DataDTODeserializer}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DataDTODeserializer.<init>()"})
   public void testNewDataDTODeserializer() {
     // Arrange and Act
@@ -80,97 +71,33 @@ public class DataDTODeserializerDiffblueTest {
   }
 
   /**
-   * Test {@link DataDTODeserializer#deserialize(JsonParser, DeserializationContext)} with {@code
-   * jp}, {@code ctxt}.
-   *
-   * <p>Method under test: {@link DataDTODeserializer#deserialize(JsonParser,
-   * DeserializationContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"DataDTO DataDTODeserializer.deserialize(JsonParser, DeserializationContext)"})
-  public void testDeserializeWithJpCtxt() throws IOException {
-    // Arrange
-    DataDTODeserializer dataDTODeserializer = new DataDTODeserializer();
-
-    Builder builderResult = JsonMapper.builder();
-    builderResult.setDefaultTyping(new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT));
-    JsonMapper jsonMapper = builderResult.findAndAddModules().build();
-
-    JsonParserSequence d = mock(JsonParserSequence.class);
-    doNothing().when(d).clearCurrentToken();
-    JacksonFeatureSet<StreamReadCapability> fromBitmaskResult = JacksonFeatureSet.fromBitmask(1);
-    when(d.getReadCapabilities()).thenReturn(fromBitmaskResult);
-    when(d.currentTokenId()).thenReturn(1);
-    when(d.currentToken()).thenReturn(JsonToken.NOT_AVAILABLE);
-    when(d.nextToken()).thenReturn(JsonToken.NOT_AVAILABLE);
-    when(d.getCodec()).thenReturn(jsonMapper);
-    doNothing().when(d).setSchema(Mockito.<FormatSchema>any());
-
-    JsonParserDelegate jp = new JsonParserDelegate(d);
-    jp.setSchema(mock(FormatSchema.class));
-
-    // Act
-    DataDTO actualDeserializeResult =
-        dataDTODeserializer.deserialize(
-            jp, new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig())));
-
-    // Assert
-    verify(d).clearCurrentToken();
-    verify(d, atLeast(1)).currentToken();
-    verify(d).currentTokenId();
-    verify(d).getCodec();
-    verify(d).getReadCapabilities();
-    verify(d).setSchema(isA(FormatSchema.class));
-    verify(d).nextToken();
-    assertNull(actualDeserializeResult.getQuantity());
-    assertNull(actualDeserializeResult.getContainedPk());
-    assertNull(actualDeserializeResult.getPk());
-    assertNull(actualDeserializeResult.getPreviousContainedPk());
-    assertNull(actualDeserializeResult.getPreviousPk());
-    assertNull(actualDeserializeResult.getCondition());
-    assertFalse(actualDeserializeResult.isCreatedFromSubGroup());
-    assertTrue(actualDeserializeResult.getRules().isEmpty());
-  }
-
-  /**
-   * Test {@link DataDTODeserializer#deserialize(JsonParser, DeserializationContext)} with {@code
-   * jp}, {@code ctxt}.
-   *
+   * Test {@link DataDTODeserializer#deserialize(JsonParser, DeserializationContext)} with {@code jp}, {@code ctxt}.
    * <ul>
-   *   <li>Given one.
-   *   <li>Then return Quantity is {@code null}.
+   *   <li>Given one.</li>
+   *   <li>Then return Quantity is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDTODeserializer#deserialize(JsonParser,
-   * DeserializationContext)}
+   * <p>
+   * Method under test: {@link DataDTODeserializer#deserialize(JsonParser, DeserializationContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"DataDTO DataDTODeserializer.deserialize(JsonParser, DeserializationContext)"})
   public void testDeserializeWithJpCtxt_givenOne_thenReturnQuantityIsNull() throws IOException {
     // Arrange
     DataDTODeserializer dataDTODeserializer = new DataDTODeserializer();
-
-    JsonParserSequence d = mock(JsonParserSequence.class);
+    JsonParser d = mock(JsonParser.class);
     doNothing().when(d).clearCurrentToken();
     JacksonFeatureSet<StreamReadCapability> fromBitmaskResult = JacksonFeatureSet.fromBitmask(1);
     when(d.getReadCapabilities()).thenReturn(fromBitmaskResult);
     when(d.currentTokenId()).thenReturn(1);
-    when(d.currentToken()).thenReturn(JsonToken.NOT_AVAILABLE);
     when(d.nextToken()).thenReturn(JsonToken.NOT_AVAILABLE);
+    when(d.currentToken()).thenReturn(JsonToken.NOT_AVAILABLE);
     when(d.getCodec()).thenReturn(JsonMapper.builder().findAndAddModules().build());
-    doNothing().when(d).setSchema(Mockito.<FormatSchema>any());
-
     JsonParserDelegate jp = new JsonParserDelegate(d);
-    jp.setSchema(mock(FormatSchema.class));
 
     // Act
-    DataDTO actualDeserializeResult =
-        dataDTODeserializer.deserialize(
-            jp, new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig())));
+    DataDTO actualDeserializeResult = dataDTODeserializer.deserialize(jp,
+        new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig())));
 
     // Assert
     verify(d).clearCurrentToken();
@@ -178,7 +105,6 @@ public class DataDTODeserializerDiffblueTest {
     verify(d).currentTokenId();
     verify(d).getCodec();
     verify(d).getReadCapabilities();
-    verify(d).setSchema(isA(FormatSchema.class));
     verify(d).nextToken();
     assertNull(actualDeserializeResult.getQuantity());
     assertNull(actualDeserializeResult.getContainedPk());
@@ -192,83 +118,79 @@ public class DataDTODeserializerDiffblueTest {
 
   /**
    * Test {@link DataDTODeserializer#getNullAwareText(JsonNode)}.
-   *
    * <ul>
-   *   <li>Then return {@code QVhBWEFYQVg=}.
+   *   <li>Then return {@code QVhBWEFYQVg=}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDTODeserializer#getNullAwareText(JsonNode)}
+   * <p>
+   * Method under test: {@link DataDTODeserializer#getNullAwareText(JsonNode)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DataDTODeserializer.getNullAwareText(JsonNode)"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String DataDTODeserializer.getNullAwareText(JsonNode)"})
   public void testGetNullAwareText_thenReturnQVhBWEFYQVg() throws UnsupportedEncodingException {
     // Arrange
     DataDTODeserializer dataDTODeserializer = new DataDTODeserializer();
 
-    // Act
-    String actualNullAwareText =
-        dataDTODeserializer.getNullAwareText(new BinaryNode("AXAXAXAX".getBytes("UTF-8")));
-
-    // Assert
-    assertEquals("QVhBWEFYQVg=", actualNullAwareText);
+    // Act and Assert
+    assertEquals("QVhBWEFYQVg=", dataDTODeserializer.getNullAwareText(new BinaryNode("AXAXAXAX".getBytes("UTF-8"))));
   }
 
   /**
    * Test {@link DataDTODeserializer#getNullAwareText(JsonNode)}.
-   *
    * <ul>
-   *   <li>When Instance.
-   *   <li>Then return empty string.
+   *   <li>When {@link ArrayNode#ArrayNode(JsonNodeFactory)} with nf is withExactBigDecimals {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDTODeserializer#getNullAwareText(JsonNode)}
+   * <p>
+   * Method under test: {@link DataDTODeserializer#getNullAwareText(JsonNode)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DataDTODeserializer.getNullAwareText(JsonNode)"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String DataDTODeserializer.getNullAwareText(JsonNode)"})
+  public void testGetNullAwareText_whenArrayNodeWithNfIsWithExactBigDecimalsTrue() {
+    // Arrange
+    DataDTODeserializer dataDTODeserializer = new DataDTODeserializer();
+
+    // Act and Assert
+    assertEquals("", dataDTODeserializer.getNullAwareText(new ArrayNode(JsonNodeFactory.withExactBigDecimals(true))));
+  }
+
+  /**
+   * Test {@link DataDTODeserializer#getNullAwareText(JsonNode)}.
+   * <ul>
+   *   <li>When Instance.</li>
+   *   <li>Then return empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DataDTODeserializer#getNullAwareText(JsonNode)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String DataDTODeserializer.getNullAwareText(JsonNode)"})
   public void testGetNullAwareText_whenInstance_thenReturnEmptyString() {
-    // Arrange, Act and Assert
-    assertEquals("", new DataDTODeserializer().getNullAwareText(MissingNode.getInstance()));
+    // Arrange
+    DataDTODeserializer dataDTODeserializer = new DataDTODeserializer();
+
+    // Act and Assert
+    assertEquals("", dataDTODeserializer.getNullAwareText(MissingNode.getInstance()));
   }
 
   /**
    * Test {@link DataDTODeserializer#getNullAwareText(JsonNode)}.
-   *
    * <ul>
-   *   <li>When Instance.
-   *   <li>Then return {@code null}.
+   *   <li>When Instance.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataDTODeserializer#getNullAwareText(JsonNode)}
+   * <p>
+   * Method under test: {@link DataDTODeserializer#getNullAwareText(JsonNode)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DataDTODeserializer.getNullAwareText(JsonNode)"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String DataDTODeserializer.getNullAwareText(JsonNode)"})
   public void testGetNullAwareText_whenInstance_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new DataDTODeserializer().getNullAwareText(NullNode.getInstance()));
-  }
+    // Arrange
+    DataDTODeserializer dataDTODeserializer = new DataDTODeserializer();
 
-  /**
-   * Test {@link DataDTODeserializer#getNullAwareText(JsonNode)}.
-   *
-   * <ul>
-   *   <li>When valueOf ten.
-   *   <li>Then return {@code 10.0}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDTODeserializer#getNullAwareText(JsonNode)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DataDTODeserializer.getNullAwareText(JsonNode)"})
-  public void testGetNullAwareText_whenValueOfTen_thenReturn100() {
-    // Arrange, Act and Assert
-    assertEquals("10.0", new DataDTODeserializer().getNullAwareText(DoubleNode.valueOf(10.0d)));
+    // Act and Assert
+    assertNull(dataDTODeserializer.getNullAwareText(NullNode.getInstance()));
   }
 }

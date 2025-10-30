@@ -18,8 +18,7 @@
 package org.broadleafcommerce.common.i18n.service;
 
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ItemStatus;
 import org.broadleafcommerce.common.extension.StandardCacheItem;
@@ -30,9 +29,8 @@ import org.junit.experimental.categories.Category;
 public class LocalePairDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link LocalePair}
    *   <li>{@link LocalePair#setGeneralItem(StandardCacheItem)}
@@ -42,15 +40,10 @@ public class LocalePairDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void LocalePair.<init>()",
-    "StandardCacheItem LocalePair.getGeneralItem()",
-    "StandardCacheItem LocalePair.getSpecificItem()",
-    "void LocalePair.setGeneralItem(StandardCacheItem)",
-    "void LocalePair.setSpecificItem(StandardCacheItem)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocalePair.<init>()", "StandardCacheItem LocalePair.getGeneralItem()",
+      "StandardCacheItem LocalePair.getSpecificItem()", "void LocalePair.setGeneralItem(StandardCacheItem)",
+      "void LocalePair.setSpecificItem(StandardCacheItem)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     LocalePair actualLocalePair = new LocalePair();

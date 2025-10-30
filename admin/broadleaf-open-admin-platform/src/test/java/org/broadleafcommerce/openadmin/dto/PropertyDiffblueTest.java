@@ -25,8 +25,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -41,19 +40,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {Property.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PropertyDiffblueTest {
-  @Autowired private Property property;
+  @Autowired
+  private Property property;
 
   /**
    * Test {@link Property#Property()}.
-   *
-   * <p>Method under test: {@link Property#Property()}
+   * <p>
+   * Method under test: {@link Property#Property()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Property.<init>()"})
   public void testNewProperty() {
     // Arrange and Act
@@ -78,12 +77,11 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#Property(String, String)}.
-   *
-   * <p>Method under test: {@link Property#Property(String, String)}
+   * <p>
+   * Method under test: {@link Property#Property(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Property.<init>(String, String)"})
   public void testNewProperty2() {
     // Arrange and Act
@@ -108,18 +106,16 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#setValue(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Property} RawValue is {@code foo}.
-   *   <li>When {@code null}.
-   *   <li>Then {@link Property} RawValue is {@code foo}.
+   *   <li>Given {@link Property} RawValue is {@code foo}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link Property} RawValue is {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#setValue(String)}
+   * <p>
+   * Method under test: {@link Property#setValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Property.setValue(String)"})
   public void testSetValue_givenPropertyRawValueIsFoo_whenNull_thenPropertyRawValueIsFoo() {
     // Arrange
@@ -136,17 +132,15 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#setValue(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Property} UnHtmlEncodedValue is {@code null}.
-   *   <li>Then {@link Property} RawValue is {@code null}.
+   *   <li>Given {@link Property} UnHtmlEncodedValue is {@code null}.</li>
+   *   <li>Then {@link Property} RawValue is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#setValue(String)}
+   * <p>
+   * Method under test: {@link Property#setValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Property.setValue(String)"})
   public void testSetValue_givenPropertyUnHtmlEncodedValueIsNull_thenPropertyRawValueIsNull() {
     // Arrange
@@ -166,18 +160,16 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#setValue(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Property}.
-   *   <li>When {@code 42}.
-   *   <li>Then {@link Property} RawValue is {@code 42}.
+   *   <li>Given {@link Property}.</li>
+   *   <li>When {@code 42}.</li>
+   *   <li>Then {@link Property} RawValue is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#setValue(String)}
+   * <p>
+   * Method under test: {@link Property#setValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Property.setValue(String)"})
   public void testSetValue_givenProperty_when42_thenPropertyRawValueIs42() {
     // Arrange and Act
@@ -193,16 +185,14 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#setValue(String)}.
-   *
    * <ul>
-   *   <li>Then {@link Property} UnHtmlEncodedValue is {@code foo}.
+   *   <li>Then {@link Property} UnHtmlEncodedValue is {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#setValue(String)}
+   * <p>
+   * Method under test: {@link Property#setValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Property.setValue(String)"})
   public void testSetValue_thenPropertyUnHtmlEncodedValueIsFoo() {
     // Arrange
@@ -219,85 +209,75 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#getUnHtmlEncodedValue()}.
-   *
    * <ul>
-   *   <li>Given {@link Property#Property()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Property#Property()} UnHtmlEncodedValue is {@code null}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#getUnHtmlEncodedValue()}
+   * <p>
+   * Method under test: {@link Property#getUnHtmlEncodedValue()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Property.getUnHtmlEncodedValue()"})
-  public void testGetUnHtmlEncodedValue_givenProperty_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new Property().getUnHtmlEncodedValue());
-  }
-
-  /**
-   * Test {@link Property#getUnHtmlEncodedValue()}.
-   *
-   * <ul>
-   *   <li>Then return {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link Property#getUnHtmlEncodedValue()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String Property.getUnHtmlEncodedValue()"})
-  public void testGetUnHtmlEncodedValue_thenReturn42() {
+  public void testGetUnHtmlEncodedValue_givenPropertyUnHtmlEncodedValueIsNull_thenReturnFoo() {
     // Arrange
-    Property property = new Property("Name", "42");
+    Property property = new Property();
     property.setUnHtmlEncodedValue(null);
-
-    // Act and Assert
-    assertEquals("42", property.getUnHtmlEncodedValue());
-  }
-
-  /**
-   * Test {@link Property#getUnHtmlEncodedValue()}.
-   *
-   * <ul>
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link Property#getUnHtmlEncodedValue()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String Property.getUnHtmlEncodedValue()"})
-  public void testGetUnHtmlEncodedValue_thenReturnFoo() {
-    // Arrange
-    Property property = new Property("Name", null);
-    property.setUnHtmlEncodedValue("foo");
+    property.setValue("foo");
 
     // Act and Assert
     assertEquals("foo", property.getUnHtmlEncodedValue());
   }
 
   /**
-   * Test {@link Property#getRawValue()}.
-   *
+   * Test {@link Property#getUnHtmlEncodedValue()}.
    * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}
-   *       RawValue is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code 42}.</li>
+   *   <li>Then return {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#getRawValue()}
+   * <p>
+   * Method under test: {@link Property#getUnHtmlEncodedValue()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Property.getUnHtmlEncodedValue()"})
+  public void testGetUnHtmlEncodedValue_givenPropertyWithNameAndValueIs42_thenReturn42() {
+    // Arrange, Act and Assert
+    assertEquals("42", (new Property("Name", "42")).getUnHtmlEncodedValue());
+  }
+
+  /**
+   * Test {@link Property#getUnHtmlEncodedValue()}.
+   * <ul>
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Property#getUnHtmlEncodedValue()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Property.getUnHtmlEncodedValue()"})
+  public void testGetUnHtmlEncodedValue_givenProperty_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new Property()).getUnHtmlEncodedValue());
+  }
+
+  /**
+   * Test {@link Property#getRawValue()}.
+   * <ul>
+   *   <li>Given {@link Property#Property()} RawValue is {@code foo}.</li>
+   *   <li>Then return {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Property#getRawValue()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Property.getRawValue()"})
-  public void testGetRawValue_givenPropertyWithNameAndValueIs42RawValueIsFoo_thenReturnFoo() {
+  public void testGetRawValue_givenPropertyRawValueIsFoo_thenReturnFoo() {
     // Arrange
-    Property property = new Property("Name", "42");
+    Property property = new Property();
     property.setRawValue("foo");
 
     // Act and Assert
@@ -306,28 +286,25 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#getRawValue()}.
-   *
    * <ul>
-   *   <li>Given {@link Property#Property()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#getRawValue()}
+   * <p>
+   * Method under test: {@link Property#getRawValue()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Property.getRawValue()"})
   public void testGetRawValue_givenProperty_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new Property().getRawValue());
+    assertNull((new Property()).getRawValue());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#setAdvancedCollection(boolean)}
    *   <li>{@link Property#setDeployDate(Date)}
@@ -353,39 +330,23 @@ public class PropertyDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Date Property.getDeployDate()",
-    "String Property.getDisplayValue()",
-    "boolean Property.getEnabled()",
-    "Boolean Property.getIsDirty()",
-    "FieldMetadata Property.getMetadata()",
-    "String Property.getName()",
-    "String Property.getOriginalDisplayValue()",
-    "String Property.getOriginalValue()",
-    "String Property.getValue()",
-    "boolean Property.isAdvancedCollection()",
-    "void Property.setAdvancedCollection(boolean)",
-    "void Property.setDeployDate(Date)",
-    "void Property.setDisplayValue(String)",
-    "void Property.setEnabled(boolean)",
-    "void Property.setIsDirty(Boolean)",
-    "void Property.setMetadata(FieldMetadata)",
-    "void Property.setName(String)",
-    "void Property.setOriginalDisplayValue(String)",
-    "void Property.setOriginalValue(String)",
-    "void Property.setRawValue(String)",
-    "void Property.setUnHtmlEncodedValue(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Date Property.getDeployDate()", "String Property.getDisplayValue()",
+      "boolean Property.getEnabled()", "Boolean Property.getIsDirty()", "FieldMetadata Property.getMetadata()",
+      "String Property.getName()", "String Property.getOriginalDisplayValue()", "String Property.getOriginalValue()",
+      "String Property.getValue()", "boolean Property.isAdvancedCollection()",
+      "void Property.setAdvancedCollection(boolean)", "void Property.setDeployDate(Date)",
+      "void Property.setDisplayValue(String)", "void Property.setEnabled(boolean)", "void Property.setIsDirty(Boolean)",
+      "void Property.setMetadata(FieldMetadata)", "void Property.setName(String)",
+      "void Property.setOriginalDisplayValue(String)", "void Property.setOriginalValue(String)",
+      "void Property.setRawValue(String)", "void Property.setUnHtmlEncodedValue(String)"})
   public void testGettersAndSetters() {
     // Arrange
     Property property = new Property();
 
     // Act
     property.setAdvancedCollection(true);
-    Date deployDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date deployDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     property.setDeployDate(deployDate);
     property.setDisplayValue("42");
     property.setEnabled(true);
@@ -422,62 +383,55 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#toString()}.
-   *
    * <ul>
-   *   <li>Then return {@code Property{name='Name', value='42', isDirty=false, enabled=true}}.
+   *   <li>Then return {@code Property{name='null', value='foo', isDirty=false, enabled=true}}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#toString()}
+   * <p>
+   * Method under test: {@link Property#toString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Property.toString()"})
-  public void testToString_thenReturnPropertyNameNameValue42IsDirtyFalseEnabledTrue() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "Property{name='Name', value='42', isDirty=false, enabled=true}",
-        new Property("Name", "42").toString());
+  public void testToString_thenReturnPropertyNameNullValueFooIsDirtyFalseEnabledTrue() {
+    // Arrange
+    Property property = new Property();
+    property.setValue("foo");
+
+    // Act and Assert
+    assertEquals("Property{name='null', value='foo', isDirty=false, enabled=true}", property.toString());
   }
 
   /**
    * Test {@link Property#toString()}.
-   *
    * <ul>
-   *   <li>Then return {@code Property{name='null', value='null', isDirty=false, enabled=true}}.
+   *   <li>Then return {@code Property{name='null', value='null', isDirty=false, enabled=true}}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#toString()}
+   * <p>
+   * Method under test: {@link Property#toString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Property.toString()"})
   public void testToString_thenReturnPropertyNameNullValueNullIsDirtyFalseEnabledTrue() {
     // Arrange, Act and Assert
-    assertEquals(
-        "Property{name='null', value='null', isDirty=false, enabled=true}",
-        new Property().toString());
+    assertEquals("Property{name='null', value='null', isDirty=false, enabled=true}", (new Property()).toString());
   }
 
   /**
    * Test {@link Property#equals(Object)}, and {@link Property#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#equals(Object)}
    *   <li>{@link Property#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -486,27 +440,25 @@ public class PropertyDiffblueTest {
 
     // Act and Assert
     assertEquals(property, property2);
-    assertEquals(property.hashCode(), property2.hashCode());
+    int expectedHashCodeResult = property.hashCode();
+    assertEquals(expectedHashCodeResult, property2.hashCode());
   }
 
   /**
    * Test {@link Property#equals(Object)}, and {@link Property#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#equals(Object)}
    *   <li>{@link Property#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -516,27 +468,25 @@ public class PropertyDiffblueTest {
 
     // Act and Assert
     assertEquals(property, property2);
-    assertEquals(property.hashCode(), property2.hashCode());
+    int expectedHashCodeResult = property.hashCode();
+    assertEquals(expectedHashCodeResult, property2.hashCode());
   }
 
   /**
    * Test {@link Property#equals(Object)}, and {@link Property#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#equals(Object)}
    *   <li>{@link Property#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -547,27 +497,25 @@ public class PropertyDiffblueTest {
 
     // Act and Assert
     assertEquals(property, property2);
-    assertEquals(property.hashCode(), property2.hashCode());
+    int expectedHashCodeResult = property.hashCode();
+    assertEquals(expectedHashCodeResult, property2.hashCode());
   }
 
   /**
    * Test {@link Property#equals(Object)}, and {@link Property#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#equals(Object)}
    *   <li>{@link Property#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
@@ -578,27 +526,25 @@ public class PropertyDiffblueTest {
 
     // Act and Assert
     assertEquals(property, property2);
-    assertEquals(property.hashCode(), property2.hashCode());
+    int expectedHashCodeResult = property.hashCode();
+    assertEquals(expectedHashCodeResult, property2.hashCode());
   }
 
   /**
    * Test {@link Property#equals(Object)}, and {@link Property#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#equals(Object)}
    *   <li>{@link Property#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
@@ -608,27 +554,25 @@ public class PropertyDiffblueTest {
 
     // Act and Assert
     assertEquals(property, property2);
-    assertEquals(property.hashCode(), property2.hashCode());
+    int expectedHashCodeResult = property.hashCode();
+    assertEquals(expectedHashCodeResult, property2.hashCode());
   }
 
   /**
    * Test {@link Property#equals(Object)}, and {@link Property#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#equals(Object)}
    *   <li>{@link Property#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
@@ -643,27 +587,25 @@ public class PropertyDiffblueTest {
 
     // Act and Assert
     assertEquals(property, property2);
-    assertNotEquals(property.hashCode(), property2.hashCode());
+    int notExpectedHashCodeResult = property.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, property2.hashCode());
   }
 
   /**
    * Test {@link Property#equals(Object)}, and {@link Property#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#equals(Object)}
    *   <li>{@link Property#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
     // Arrange
@@ -672,7 +614,6 @@ public class PropertyDiffblueTest {
 
     Property property = new Property();
     property.setMetadata(metadata);
-
     BasicFieldMetadata metadata2 = mock(BasicFieldMetadata.class);
     when(metadata2.getMergedPropertyType()).thenReturn(MergedPropertyType.PRIMARY);
 
@@ -681,27 +622,25 @@ public class PropertyDiffblueTest {
 
     // Act and Assert
     assertEquals(property, property2);
-    assertEquals(property.hashCode(), property2.hashCode());
+    int expectedHashCodeResult = property.hashCode();
+    assertEquals(expectedHashCodeResult, property2.hashCode());
   }
 
   /**
    * Test {@link Property#equals(Object)}, and {@link Property#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Property#equals(Object)}
    *   <li>{@link Property#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -715,17 +654,15 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#equals(Object)}
+   * <p>
+   * Method under test: {@link Property#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -737,17 +674,15 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#equals(Object)}
+   * <p>
+   * Method under test: {@link Property#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -759,17 +694,15 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#equals(Object)}
+   * <p>
+   * Method under test: {@link Property#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
@@ -785,17 +718,15 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#equals(Object)}
+   * <p>
+   * Method under test: {@link Property#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
@@ -804,7 +735,6 @@ public class PropertyDiffblueTest {
 
     Property property = new Property();
     property.setMetadata(metadata);
-
     BasicFieldMetadata metadata2 = mock(BasicFieldMetadata.class);
     when(metadata2.getMergedPropertyType()).thenReturn(MergedPropertyType.PRIMARY);
 
@@ -817,17 +747,15 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#equals(Object)}
+   * <p>
+   * Method under test: {@link Property#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -836,17 +764,15 @@ public class PropertyDiffblueTest {
 
   /**
    * Test {@link Property#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Property#equals(Object)}
+   * <p>
+   * Method under test: {@link Property#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Property.equals(Object)", "int Property.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

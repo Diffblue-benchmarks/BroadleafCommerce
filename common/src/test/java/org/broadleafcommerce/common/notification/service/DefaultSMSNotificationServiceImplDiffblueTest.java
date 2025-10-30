@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.notification.service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.notification.service.type.Notification;
 import org.broadleafcommerce.common.notification.service.type.SMSNotification;
@@ -34,20 +33,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DefaultSMSNotificationServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DefaultSMSNotificationServiceImplDiffblueTest {
-  @Autowired private DefaultSMSNotificationServiceImpl defaultSMSNotificationServiceImpl;
+  @Autowired
+  private DefaultSMSNotificationServiceImpl defaultSMSNotificationServiceImpl;
 
   /**
    * Test {@link DefaultSMSNotificationServiceImpl#canHandle(Class)}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DefaultSMSNotificationServiceImpl#canHandle(Class)}
+   * <p>
+   * Method under test: {@link DefaultSMSNotificationServiceImpl#canHandle(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DefaultSMSNotificationServiceImpl.canHandle(Class)"})
   public void testCanHandle_thenReturnFalse() {
     // Arrange
@@ -59,16 +57,14 @@ public class DefaultSMSNotificationServiceImplDiffblueTest {
 
   /**
    * Test {@link DefaultSMSNotificationServiceImpl#canHandle(Class)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DefaultSMSNotificationServiceImpl#canHandle(Class)}
+   * <p>
+   * Method under test: {@link DefaultSMSNotificationServiceImpl#canHandle(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DefaultSMSNotificationServiceImpl.canHandle(Class)"})
   public void testCanHandle_thenReturnTrue() {
     // Arrange

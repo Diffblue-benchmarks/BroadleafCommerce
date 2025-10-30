@@ -24,25 +24,18 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.exception.ServiceException;
-import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.service.CustomerService;
@@ -58,6 +51,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.TestingAuthenticationToken;
@@ -73,43 +67,41 @@ import org.springframework.web.context.request.RequestAttributes;
 
 @ExtendWith(MockitoExtension.class)
 class BroadleafSocialRegisterControllerDiffblueTest {
-  @InjectMocks private BroadleafSocialRegisterController broadleafSocialRegisterController;
+  @InjectMocks
+  private BroadleafSocialRegisterController broadleafSocialRegisterController;
 
-  @Mock private CustomerService customerService;
+  @Mock
+  private CustomerService customerService;
 
-  @Mock private LoginService loginService;
+  @Mock
+  private LoginService loginService;
 
-  @Mock private ProviderSignInUtils providerSignInUtils;
+  @Mock
+  private ProviderSignInUtils providerSignInUtils;
 
-  @Mock private RegisterCustomerValidator registerCustomerValidator;
+  @Mock
+  private RegisterCustomerValidator registerCustomerValidator;
 
-  @Mock private RegistrationService registrationService;
+  @Mock
+  private RegistrationService registrationService;
 
   /**
-   * Test {@link BroadleafSocialRegisterController#register(RegisterCustomerForm,
-   * HttpServletRequest, HttpServletResponse, Model)}.
-   *
+   * Test {@link BroadleafSocialRegisterController#register(RegisterCustomerForm, HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
-   *   <li>Then {@link RegisterCustomerForm} (default constructor) Customer MainEntityName is {@code
-   *       null}.
+   *   <li>Then {@link RegisterCustomerForm} (default constructor) Customer MainEntityName is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafSocialRegisterController#register(RegisterCustomerForm,
-   * HttpServletRequest, HttpServletResponse, Model)}
+   * <p>
+   * Method under test: {@link BroadleafSocialRegisterController#register(RegisterCustomerForm, HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @DisplayName(
-      "Test register(RegisterCustomerForm, HttpServletRequest, HttpServletResponse, Model); then RegisterCustomerForm (default constructor) Customer MainEntityName is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test register(RegisterCustomerForm, HttpServletRequest, HttpServletResponse, Model); then RegisterCustomerForm (default constructor) Customer MainEntityName is 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "String BroadleafSocialRegisterController.register(RegisterCustomerForm, HttpServletRequest, HttpServletResponse, Model)"
-  })
+      "String BroadleafSocialRegisterController.register(RegisterCustomerForm, HttpServletRequest, HttpServletResponse, Model)"})
   void testRegister_thenRegisterCustomerFormCustomerMainEntityNameIsNull() {
     // Arrange
     doNothing().when(registrationService).addRedirectUrlToForm(Mockito.<RegisterCustomerForm>any());
-    Mockito.<Connection<?>>when(
-            providerSignInUtils.getConnectionFromSession(Mockito.<RequestAttributes>any()))
+    Mockito.<Connection<?>>when(providerSignInUtils.getConnectionFromSession(Mockito.<RequestAttributes>any()))
         .thenReturn(null);
 
     RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
@@ -117,13 +109,13 @@ class BroadleafSocialRegisterControllerDiffblueTest {
     registerCustomerForm.setPassword("iloveyou");
     registerCustomerForm.setPasswordConfirm("Password Confirm");
     registerCustomerForm.setRedirectUrl("https://example.org/example");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    broadleafSocialRegisterController.register(
-        registerCustomerForm, request, response, new ConcurrentModel());
+    broadleafSocialRegisterController.register(registerCustomerForm, request, response, new ConcurrentModel());
 
     // Assert that nothing has changed
     verify(registrationService).addRedirectUrlToForm(isA(RegisterCustomerForm.class));
@@ -134,395 +126,231 @@ class BroadleafSocialRegisterControllerDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm,
-   * BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
-   *
+   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
+   *   <li>Given empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult,
-   * HttpServletRequest, HttpServletResponse, Model)}
+   * <p>
+   * Method under test: {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @DisplayName(
-      "Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); given Auditable (default constructor) CreatedBy is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); given empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"
-  })
-  void testProcessRegister_givenAuditableCreatedByIsOne()
-      throws ServiceException, PricingException {
-    // Arrange
-    when(customerService.registerCustomer(
-            Mockito.<Customer>any(), Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(loginService.loginCustomer(Mockito.<Customer>any()))
-        .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
-    doNothing()
-        .when(registerCustomerValidator)
-        .validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
-    doNothing()
-        .when(providerSignInUtils)
-        .doPostSignUp(Mockito.<String>any(), Mockito.<RequestAttributes>any());
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customer = new CustomerImpl();
-    customer.setAuditable(auditable);
-    customer.setChallengeAnswer("Challenge Answer");
-    customer.setChallengeQuestion(new ChallengeQuestionImpl());
-    customer.setCustomerAddresses(new ArrayList<>());
-    customer.setCustomerAttributes(new HashMap<>());
-    customer.setCustomerLocale(new LocaleImpl());
-    customer.setCustomerPayments(new ArrayList<>());
-    customer.setCustomerPhones(new ArrayList<>());
-    customer.setDeactivated(true);
-    customer.setExternalId("42");
-    customer.setFirstName("Jane");
-    customer.setId(1L);
-    customer.setLastName("Doe");
-    customer.setPassword("iloveyou");
-    customer.setPasswordChangeRequired(true);
-    customer.setReceiveEmail(true);
-    customer.setRegistered(true);
-    customer.setUnencodedChallengeAnswer("secret");
-    customer.setUnencodedPassword("secret");
-    customer.setUsername("janedoe");
-    customer.setEmailAddress("bob@example.com");
-
-    RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
-    registerCustomerForm.setPassword("iloveyou");
-    registerCustomerForm.setPasswordConfirm("Password Confirm");
-    registerCustomerForm.setRedirectUrl(" ");
-    registerCustomerForm.setCustomer(customer);
-    BindException errors = new BindException("Target", "Object Name");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-
-    // Act
-    String actualProcessRegisterResult =
-        broadleafSocialRegisterController.processRegister(
-            registerCustomerForm, errors, request, response, new ConcurrentModel());
-
-    // Assert
-    verify(customerService)
-        .registerCustomer(isA(Customer.class), eq("iloveyou"), eq("Password Confirm"));
-    verify(registerCustomerValidator).validate(isA(Object.class), isA(Errors.class), eq(false));
-    verify(loginService).loginCustomer(isA(Customer.class));
-    verify(providerSignInUtils).doPostSignUp(isNull(), isA(RequestAttributes.class));
-    assertEquals("ajaxredirect:", actualProcessRegisterResult);
-  }
-
-  /**
-   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm,
-   * BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
-   *
-   * <ul>
-   *   <li>Given empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult,
-   * HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName(
-      "Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); given empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"
-  })
+      "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"})
   void testProcessRegister_givenEmptyString() throws ServiceException, PricingException {
     // Arrange
-    when(customerService.registerCustomer(
-            Mockito.<Customer>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(customerService.registerCustomer(Mockito.<Customer>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(new CustomerImpl());
     when(loginService.loginCustomer(Mockito.<Customer>any()))
         .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
-    doNothing()
-        .when(registerCustomerValidator)
-        .validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
-    doNothing()
-        .when(providerSignInUtils)
-        .doPostSignUp(Mockito.<String>any(), Mockito.<RequestAttributes>any());
-
-    RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
-    registerCustomerForm.setCustomer(new CustomerImpl());
-    registerCustomerForm.setPassword("iloveyou");
-    registerCustomerForm.setPasswordConfirm("Password Confirm");
-    registerCustomerForm.setRedirectUrl("");
-    BindException errors = new BindException("Target", "Object Name");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-
-    // Act
-    String actualProcessRegisterResult =
-        broadleafSocialRegisterController.processRegister(
-            registerCustomerForm, errors, request, response, new ConcurrentModel());
-
-    // Assert
-    verify(customerService)
-        .registerCustomer(isA(Customer.class), eq("iloveyou"), eq("Password Confirm"));
-    verify(registerCustomerValidator).validate(isA(Object.class), isA(Errors.class), eq(false));
-    verify(loginService).loginCustomer(isA(Customer.class));
-    verify(providerSignInUtils).doPostSignUp(isNull(), isA(RequestAttributes.class));
-    assertEquals("ajaxredirect:", actualProcessRegisterResult);
-  }
-
-  /**
-   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm,
-   * BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
-   *
-   * <ul>
-   *   <li>Given {@code https://example.org/example}.
-   *   <li>Then return {@code ajaxredirect:}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult,
-   * HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName(
-      "Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); given 'https://example.org/example'; then return 'ajaxredirect:'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"
-  })
-  void testProcessRegister_givenHttpsExampleOrgExample_thenReturnAjaxredirect()
-      throws ServiceException, PricingException {
-    // Arrange
-    when(customerService.registerCustomer(
-            Mockito.<Customer>any(), Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(loginService.loginCustomer(Mockito.<Customer>any()))
-        .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
-    doNothing()
-        .when(registerCustomerValidator)
-        .validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
-    doNothing()
-        .when(providerSignInUtils)
-        .doPostSignUp(Mockito.<String>any(), Mockito.<RequestAttributes>any());
-
-    RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
+    doNothing().when(registerCustomerValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
+    doNothing().when(providerSignInUtils).doPostSignUp(Mockito.<String>any(), Mockito.<RequestAttributes>any());
+    RegisterCustomerForm registerCustomerForm = mock(RegisterCustomerForm.class);
+    when(registerCustomerForm.getPassword()).thenReturn("iloveyou");
+    when(registerCustomerForm.getPasswordConfirm()).thenReturn("Password Confirm");
+    when(registerCustomerForm.getRedirectUrl()).thenReturn("");
+    when(registerCustomerForm.getCustomer()).thenReturn(new CustomerImpl());
+    doNothing().when(registerCustomerForm).setCustomer(Mockito.<Customer>any());
+    doNothing().when(registerCustomerForm).setPassword(Mockito.<String>any());
+    doNothing().when(registerCustomerForm).setPasswordConfirm(Mockito.<String>any());
+    doNothing().when(registerCustomerForm).setRedirectUrl(Mockito.<String>any());
     registerCustomerForm.setCustomer(new CustomerImpl());
     registerCustomerForm.setPassword("iloveyou");
     registerCustomerForm.setPasswordConfirm("Password Confirm");
     registerCustomerForm.setRedirectUrl("https://example.org/example");
     BindException errors = new BindException("Target", "Object Name");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    String actualProcessRegisterResult =
-        broadleafSocialRegisterController.processRegister(
-            registerCustomerForm, errors, request, response, new ConcurrentModel());
+    String actualProcessRegisterResult = broadleafSocialRegisterController.processRegister(registerCustomerForm, errors,
+        request, response, new ConcurrentModel());
 
     // Assert
-    verify(customerService)
-        .registerCustomer(isA(Customer.class), eq("iloveyou"), eq("Password Confirm"));
+    verify(customerService).registerCustomer(isA(Customer.class), eq("iloveyou"), eq("Password Confirm"));
     verify(registerCustomerValidator).validate(isA(Object.class), isA(Errors.class), eq(false));
+    verify(registerCustomerForm, atLeast(1)).getCustomer();
+    verify(registerCustomerForm).getPassword();
+    verify(registerCustomerForm).getPasswordConfirm();
+    verify(registerCustomerForm).getRedirectUrl();
+    verify(registerCustomerForm).setCustomer(isA(Customer.class));
+    verify(registerCustomerForm).setPassword(eq("iloveyou"));
+    verify(registerCustomerForm).setPasswordConfirm(eq("Password Confirm"));
+    verify(registerCustomerForm).setRedirectUrl(eq("https://example.org/example"));
     verify(loginService).loginCustomer(isA(Customer.class));
     verify(providerSignInUtils).doPostSignUp(isNull(), isA(RequestAttributes.class));
     assertEquals("ajaxredirect:", actualProcessRegisterResult);
   }
 
   /**
-   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm,
-   * BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
-   *
+   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link RegisterCustomerForm} (default constructor) RedirectUrl is {@code null}.
+   *   <li>Given {@code foo}.</li>
+   *   <li>Then return {@code redirect:foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult,
-   * HttpServletRequest, HttpServletResponse, Model)}
+   * <p>
+   * Method under test: {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @DisplayName(
-      "Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); given 'null'; when RegisterCustomerForm (default constructor) RedirectUrl is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); given 'foo'; then return 'redirect:foo'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"
-  })
-  void testProcessRegister_givenNull_whenRegisterCustomerFormRedirectUrlIsNull()
-      throws ServiceException, PricingException {
+      "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"})
+  void testProcessRegister_givenFoo_thenReturnRedirectFoo() throws ServiceException, PricingException {
     // Arrange
-    when(customerService.registerCustomer(
-            Mockito.<Customer>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(customerService.registerCustomer(Mockito.<Customer>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(new CustomerImpl());
     when(loginService.loginCustomer(Mockito.<Customer>any()))
         .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
-    doNothing()
-        .when(registerCustomerValidator)
-        .validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
-    doNothing()
-        .when(providerSignInUtils)
-        .doPostSignUp(Mockito.<String>any(), Mockito.<RequestAttributes>any());
-
-    RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
+    doNothing().when(registerCustomerValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
+    doNothing().when(providerSignInUtils).doPostSignUp(Mockito.<String>any(), Mockito.<RequestAttributes>any());
+    RegisterCustomerForm registerCustomerForm = mock(RegisterCustomerForm.class);
+    when(registerCustomerForm.getPassword()).thenReturn("iloveyou");
+    when(registerCustomerForm.getPasswordConfirm()).thenReturn("Password Confirm");
+    when(registerCustomerForm.getRedirectUrl()).thenReturn("foo");
+    when(registerCustomerForm.getCustomer()).thenReturn(new CustomerImpl());
+    doNothing().when(registerCustomerForm).setCustomer(Mockito.<Customer>any());
+    doNothing().when(registerCustomerForm).setPassword(Mockito.<String>any());
+    doNothing().when(registerCustomerForm).setPasswordConfirm(Mockito.<String>any());
+    doNothing().when(registerCustomerForm).setRedirectUrl(Mockito.<String>any());
     registerCustomerForm.setCustomer(new CustomerImpl());
     registerCustomerForm.setPassword("iloveyou");
     registerCustomerForm.setPasswordConfirm("Password Confirm");
-    registerCustomerForm.setRedirectUrl(null);
+    registerCustomerForm.setRedirectUrl("https://example.org/example");
     BindException errors = new BindException("Target", "Object Name");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    String actualProcessRegisterResult =
-        broadleafSocialRegisterController.processRegister(
-            registerCustomerForm, errors, request, response, new ConcurrentModel());
+    String actualProcessRegisterResult = broadleafSocialRegisterController.processRegister(registerCustomerForm, errors,
+        request, response, new ConcurrentModel());
 
     // Assert
-    verify(customerService)
-        .registerCustomer(isA(Customer.class), eq("iloveyou"), eq("Password Confirm"));
+    verify(customerService).registerCustomer(isA(Customer.class), eq("iloveyou"), eq("Password Confirm"));
     verify(registerCustomerValidator).validate(isA(Object.class), isA(Errors.class), eq(false));
+    verify(registerCustomerForm, atLeast(1)).getCustomer();
+    verify(registerCustomerForm).getPassword();
+    verify(registerCustomerForm).getPasswordConfirm();
+    verify(registerCustomerForm).getRedirectUrl();
+    verify(registerCustomerForm).setCustomer(isA(Customer.class));
+    verify(registerCustomerForm).setPassword(eq("iloveyou"));
+    verify(registerCustomerForm).setPasswordConfirm(eq("Password Confirm"));
+    verify(registerCustomerForm).setRedirectUrl(eq("https://example.org/example"));
     verify(loginService).loginCustomer(isA(Customer.class));
     verify(providerSignInUtils).doPostSignUp(isNull(), isA(RequestAttributes.class));
-    assertEquals("ajaxredirect:", actualProcessRegisterResult);
+    assertEquals("redirect:foo", actualProcessRegisterResult);
   }
 
   /**
-   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm,
-   * BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
-   *
+   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
-   *   <li>Given {@code Redirect Url}.
-   *   <li>Then return {@code redirect:Redirect Url}.
+   *   <li>Then return {@code authentication/register}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult,
-   * HttpServletRequest, HttpServletResponse, Model)}
+   * <p>
+   * Method under test: {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @DisplayName(
-      "Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); given 'Redirect Url'; then return 'redirect:Redirect Url'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); then return 'authentication/register'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"
-  })
-  void testProcessRegister_givenRedirectUrl_thenReturnRedirectRedirectUrl()
-      throws ServiceException, PricingException {
+      "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"})
+  void testProcessRegister_thenReturnAuthenticationRegister() throws ServiceException, PricingException {
     // Arrange
-    when(customerService.registerCustomer(
-            Mockito.<Customer>any(), Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(loginService.loginCustomer(Mockito.<Customer>any()))
-        .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
-    doNothing()
-        .when(registerCustomerValidator)
-        .validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
-    doNothing()
-        .when(providerSignInUtils)
-        .doPostSignUp(Mockito.<String>any(), Mockito.<RequestAttributes>any());
-
-    RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
-    registerCustomerForm.setCustomer(new CustomerImpl());
-    registerCustomerForm.setPassword("iloveyou");
-    registerCustomerForm.setPasswordConfirm("Password Confirm");
-    registerCustomerForm.setRedirectUrl("Redirect Url");
-    BindException errors = new BindException("Target", "Object Name");
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-
-    // Act
-    String actualProcessRegisterResult =
-        broadleafSocialRegisterController.processRegister(
-            registerCustomerForm, errors, request, response, new ConcurrentModel());
-
-    // Assert
-    verify(customerService)
-        .registerCustomer(isA(Customer.class), eq("iloveyou"), eq("Password Confirm"));
-    verify(registerCustomerValidator).validate(isA(Object.class), isA(Errors.class), eq(false));
-    verify(loginService).loginCustomer(isA(Customer.class));
-    verify(providerSignInUtils).doPostSignUp(isNull(), isA(RequestAttributes.class));
-    assertEquals("redirect:Redirect Url", actualProcessRegisterResult);
-  }
-
-  /**
-   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm,
-   * BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
-   *
-   * <ul>
-   *   <li>Then return {@code authentication/register}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult,
-   * HttpServletRequest, HttpServletResponse, Model)}
-   */
-  @Test
-  @DisplayName(
-      "Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); then return 'authentication/register'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"
-  })
-  void testProcessRegister_thenReturnAuthenticationRegister()
-      throws ServiceException, PricingException {
-    // Arrange
-    doNothing()
-        .when(registerCustomerValidator)
-        .validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
-
-    RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
+    doNothing().when(registerCustomerValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
+    RegisterCustomerForm registerCustomerForm = mock(RegisterCustomerForm.class);
+    doNothing().when(registerCustomerForm).setCustomer(Mockito.<Customer>any());
+    doNothing().when(registerCustomerForm).setPassword(Mockito.<String>any());
+    doNothing().when(registerCustomerForm).setPasswordConfirm(Mockito.<String>any());
+    doNothing().when(registerCustomerForm).setRedirectUrl(Mockito.<String>any());
     registerCustomerForm.setCustomer(new CustomerImpl());
     registerCustomerForm.setPassword("iloveyou");
     registerCustomerForm.setPasswordConfirm("Password Confirm");
     registerCustomerForm.setRedirectUrl("https://example.org/example");
 
     BindException errors = new BindException("Target", "Object Name");
-    errors.addError(new ObjectError(":", ":"));
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    errors.addError(new ObjectError("Object Name", "Default Message"));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    String actualProcessRegisterResult =
-        broadleafSocialRegisterController.processRegister(
-            registerCustomerForm, errors, request, response, new ConcurrentModel());
+    String actualProcessRegisterResult = broadleafSocialRegisterController.processRegister(registerCustomerForm, errors,
+        request, response, new ConcurrentModel());
 
     // Assert
     verify(registerCustomerValidator).validate(isA(Object.class), isA(Errors.class), eq(false));
+    verify(registerCustomerForm).setCustomer(isA(Customer.class));
+    verify(registerCustomerForm).setPassword(eq("iloveyou"));
+    verify(registerCustomerForm).setPasswordConfirm(eq("Password Confirm"));
+    verify(registerCustomerForm).setRedirectUrl(eq("https://example.org/example"));
     assertEquals("authentication/register", actualProcessRegisterResult);
   }
 
   /**
+   * Test {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)}.
+   * <ul>
+   *   <li>When {@link RegisterCustomerForm} (default constructor) Customer is {@link CustomerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafSocialRegisterController#processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)}
+   */
+  @Test
+  @DisplayName("Test processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model); when RegisterCustomerForm (default constructor) Customer is CustomerImpl (default constructor)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "String BroadleafSocialRegisterController.processRegister(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse, Model)"})
+  void testProcessRegister_whenRegisterCustomerFormCustomerIsCustomerImpl() throws ServiceException, PricingException {
+    // Arrange
+    when(customerService.registerCustomer(Mockito.<Customer>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(new CustomerImpl());
+    when(loginService.loginCustomer(Mockito.<Customer>any()))
+        .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
+    doNothing().when(registerCustomerValidator).validate(Mockito.<Object>any(), Mockito.<Errors>any(), anyBoolean());
+    doNothing().when(providerSignInUtils).doPostSignUp(Mockito.<String>any(), Mockito.<RequestAttributes>any());
+
+    RegisterCustomerForm registerCustomerForm = new RegisterCustomerForm();
+    registerCustomerForm.setCustomer(new CustomerImpl());
+    registerCustomerForm.setPassword("iloveyou");
+    registerCustomerForm.setPasswordConfirm("Password Confirm");
+    registerCustomerForm.setRedirectUrl("https://example.org/example");
+    BindException errors = new BindException("Target", "Object Name");
+
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act
+    String actualProcessRegisterResult = broadleafSocialRegisterController.processRegister(registerCustomerForm, errors,
+        request, response, new ConcurrentModel());
+
+    // Assert
+    verify(customerService).registerCustomer(isA(Customer.class), eq("iloveyou"), eq("Password Confirm"));
+    verify(registerCustomerValidator).validate(isA(Object.class), isA(Errors.class), eq(false));
+    verify(loginService).loginCustomer(isA(Customer.class));
+    verify(providerSignInUtils).doPostSignUp(isNull(), isA(RequestAttributes.class));
+    assertEquals("ajaxredirect:", actualProcessRegisterResult);
+  }
+
+  /**
    * Test new {@link BroadleafSocialRegisterController} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BroadleafSocialRegisterController}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link BroadleafSocialRegisterController}
    */
   @Test
   @DisplayName("Test new BroadleafSocialRegisterController (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void BroadleafSocialRegisterController.<init>()"})
   void testNewBroadleafSocialRegisterController() {
     // Arrange, Act and Assert
-    assertFalse(new BroadleafSocialRegisterController().isUseEmailForLogin());
+    assertFalse((new BroadleafSocialRegisterController()).isUseEmailForLogin());
   }
 }

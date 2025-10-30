@@ -18,17 +18,23 @@
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -40,31 +46,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OfferItemCriteriaImplDiffblueTest {
-  @Autowired private OfferItemCriteriaImpl offerItemCriteriaImpl;
+  @Autowired
+  private OfferItemCriteriaImpl offerItemCriteriaImpl;
 
   /**
-   * Test {@link OfferItemCriteriaImpl#equals(Object)}, and {@link
-   * OfferItemCriteriaImpl#hashCode()}.
-   *
+   * Test {@link OfferItemCriteriaImpl#equals(Object)}, and {@link OfferItemCriteriaImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferItemCriteriaImpl#equals(Object)}
    *   <li>{@link OfferItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OfferItemCriteriaImpl.equals(Object)",
-    "int OfferItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemCriteriaImpl.equals(Object)", "int OfferItemCriteriaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferItemCriteriaImpl offerItemCriteriaImpl = new OfferItemCriteriaImpl();
@@ -79,32 +79,26 @@ public class OfferItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(offerItemCriteriaImpl, offerItemCriteriaImpl2);
-    assertEquals(offerItemCriteriaImpl.hashCode(), offerItemCriteriaImpl2.hashCode());
+    int expectedHashCodeResult = offerItemCriteriaImpl.hashCode();
+    assertEquals(expectedHashCodeResult, offerItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link OfferItemCriteriaImpl#equals(Object)}, and {@link
-   * OfferItemCriteriaImpl#hashCode()}.
-   *
+   * Test {@link OfferItemCriteriaImpl#equals(Object)}, and {@link OfferItemCriteriaImpl#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferItemCriteriaImpl#equals(Object)}
    *   <li>{@link OfferItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OfferItemCriteriaImpl.equals(Object)",
-    "int OfferItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemCriteriaImpl.equals(Object)", "int OfferItemCriteriaImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferItemCriteriaImpl offerItemCriteriaImpl = new OfferItemCriteriaImpl();
@@ -120,21 +114,16 @@ public class OfferItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link OfferItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OfferItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OfferItemCriteriaImpl.equals(Object)",
-    "int OfferItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemCriteriaImpl.equals(Object)", "int OfferItemCriteriaImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OfferItemCriteriaImpl offerItemCriteriaImpl = new OfferItemCriteriaImpl();
@@ -153,21 +142,16 @@ public class OfferItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link OfferItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OfferItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OfferItemCriteriaImpl.equals(Object)",
-    "int OfferItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemCriteriaImpl.equals(Object)", "int OfferItemCriteriaImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OfferItemCriteriaImpl offerItemCriteriaImpl = new OfferItemCriteriaImpl();
@@ -181,21 +165,16 @@ public class OfferItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link OfferItemCriteriaImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferItemCriteriaImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OfferItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OfferItemCriteriaImpl.equals(Object)",
-    "int OfferItemCriteriaImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OfferItemCriteriaImpl.equals(Object)", "int OfferItemCriteriaImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OfferItemCriteriaImpl offerItemCriteriaImpl = new OfferItemCriteriaImpl();
@@ -209,25 +188,23 @@ public class OfferItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link OfferItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link OfferItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse OfferItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
+    OfferItemCriteriaImpl offerItemCriteriaImpl2 = new OfferItemCriteriaImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new OfferItemCriteriaImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OfferItemCriteria> actualCreateOrRetrieveCopyInstanceResult =
-        offerItemCriteriaImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<OfferItemCriteria> actualCreateOrRetrieveCopyInstanceResult = offerItemCriteriaImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -236,36 +213,47 @@ public class OfferItemCriteriaImplDiffblueTest {
 
   /**
    * Test {@link OfferItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <ul>
+   *   <li>Then Clone return {@link OfferItemCriteriaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse OfferItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance_thenCloneReturnOfferItemCriteriaImpl()
+      throws CloneNotSupportedException {
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(offerItemCriteriaImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    OfferItemCriteriaImpl offerItemCriteriaImpl2 = new OfferItemCriteriaImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<OfferItemCriteria> actualCreateOrRetrieveCopyInstanceResult =
-        offerItemCriteriaImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<OfferItemCriteria> actualCreateOrRetrieveCopyInstanceResult = offerItemCriteriaImpl2
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService)
+        .getCeilingImplClass(eq("org.broadleafcommerce.core.offer.domain.OfferItemCriteriaImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    OfferItemCriteria clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof OfferItemCriteriaImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(offerItemCriteriaImpl2, clone);
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link OfferItemCriteriaImpl}
    *   <li>{@link OfferItemCriteriaImpl#setId(Long)}
@@ -277,17 +265,11 @@ public class OfferItemCriteriaImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OfferItemCriteriaImpl.<init>()",
-    "Long OfferItemCriteriaImpl.getId()",
-    "String OfferItemCriteriaImpl.getMatchRule()",
-    "Integer OfferItemCriteriaImpl.getQuantity()",
-    "void OfferItemCriteriaImpl.setId(Long)",
-    "void OfferItemCriteriaImpl.setMatchRule(String)",
-    "void OfferItemCriteriaImpl.setQuantity(Integer)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferItemCriteriaImpl.<init>()", "Long OfferItemCriteriaImpl.getId()",
+      "String OfferItemCriteriaImpl.getMatchRule()", "Integer OfferItemCriteriaImpl.getQuantity()",
+      "void OfferItemCriteriaImpl.setId(Long)", "void OfferItemCriteriaImpl.setMatchRule(String)",
+      "void OfferItemCriteriaImpl.setQuantity(Integer)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferItemCriteriaImpl actualOfferItemCriteriaImpl = new OfferItemCriteriaImpl();

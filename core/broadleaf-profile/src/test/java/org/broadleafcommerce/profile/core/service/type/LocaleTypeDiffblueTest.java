@@ -23,8 +23,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -35,12 +34,11 @@ import org.junit.experimental.categories.Category;
 public class LocaleTypeDiffblueTest {
   /**
    * Test {@link LocaleType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link LocaleType#getInstance(String)}
+   * <p>
+   * Method under test: {@link LocaleType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"LocaleType LocaleType.getInstance(String)"})
   public void testGetInstance() throws MissingResourceException {
     // Arrange and Act
@@ -70,9 +68,8 @@ public class LocaleTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LocaleType#LocaleType()}
    *   <li>{@link LocaleType#getFriendlyType()}
@@ -81,14 +78,9 @@ public class LocaleTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void LocaleType.<init>()",
-    "String LocaleType.getFriendlyType()",
-    "Locale LocaleType.getLocale()",
-    "String LocaleType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LocaleType.<init>()", "String LocaleType.getFriendlyType()", "Locale LocaleType.getLocale()",
+      "String LocaleType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     LocaleType actualLocaleType = new LocaleType();
@@ -103,70 +95,71 @@ public class LocaleTypeDiffblueTest {
 
   /**
    * Test {@link LocaleType#LocaleType(String, String, Locale)}.
-   *
    * <ul>
-   *   <li>When Default.
-   *   <li>Then return Type is {@code en}.
+   *   <li>When Default.</li>
+   *   <li>Then return Type is {@code en}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LocaleType#LocaleType(String, String, Locale)}
+   * <p>
+   * Method under test: {@link LocaleType#LocaleType(String, String, Locale)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void LocaleType.<init>(String, String, Locale)"})
   public void testNewLocaleType_whenDefault_thenReturnTypeIsEn() {
-    // Arrange and Act
-    LocaleType actualLocaleType = new LocaleType("en", "en", Locale.getDefault());
+    // Arrange
+    Locale locale = Locale.getDefault();
+
+    // Act
+    LocaleType actualLocaleType = new LocaleType("en", "en", locale);
 
     // Assert
     assertEquals("en", actualLocaleType.getFriendlyType());
     assertEquals("en", actualLocaleType.getType());
-    assertSame(Locale.ENGLISH, actualLocaleType.getLocale());
+    Locale expectedLocale = locale.ENGLISH;
+    assertSame(expectedLocale, actualLocaleType.getLocale());
   }
 
   /**
    * Test {@link LocaleType#LocaleType(String, String, Locale)}.
-   *
    * <ul>
-   *   <li>When {@code Type}.
-   *   <li>Then return {@code Type}.
+   *   <li>When {@code FR}.</li>
+   *   <li>Then return Type is {@code FR}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LocaleType#LocaleType(String, String, Locale)}
+   * <p>
+   * Method under test: {@link LocaleType#LocaleType(String, String, Locale)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void LocaleType.<init>(String, String, Locale)"})
-  public void testNewLocaleType_whenType_thenReturnType() {
-    // Arrange and Act
-    LocaleType actualLocaleType = new LocaleType("Type", "en", Locale.getDefault());
+  public void testNewLocaleType_whenFr_thenReturnTypeIsFr() {
+    // Arrange
+    Locale locale = Locale.getDefault();
+
+    // Act
+    LocaleType actualLocaleType = new LocaleType("FR", "en", locale);
 
     // Assert
-    assertEquals("Type", actualLocaleType.getType());
+    assertEquals("FR", actualLocaleType.getType());
     assertEquals("en", actualLocaleType.getFriendlyType());
-    assertSame(Locale.ENGLISH, actualLocaleType.getLocale());
+    Locale expectedLocale = locale.ENGLISH;
+    assertSame(expectedLocale, actualLocaleType.getLocale());
   }
 
   /**
    * Test {@link LocaleType#equals(Object)}, and {@link LocaleType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LocaleType#equals(Object)}
    *   <li>{@link LocaleType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -175,27 +168,25 @@ public class LocaleTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(localeType, localeType2);
-    assertEquals(localeType.hashCode(), localeType2.hashCode());
+    int expectedHashCodeResult = localeType.hashCode();
+    assertEquals(expectedHashCodeResult, localeType2.hashCode());
   }
 
   /**
    * Test {@link LocaleType#equals(Object)}, and {@link LocaleType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LocaleType#equals(Object)}
    *   <li>{@link LocaleType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -204,27 +195,25 @@ public class LocaleTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(localeType, localeType2);
-    assertEquals(localeType.hashCode(), localeType2.hashCode());
+    int expectedHashCodeResult = localeType.hashCode();
+    assertEquals(expectedHashCodeResult, localeType2.hashCode());
   }
 
   /**
    * Test {@link LocaleType#equals(Object)}, and {@link LocaleType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LocaleType#equals(Object)}
    *   <li>{@link LocaleType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -238,17 +227,15 @@ public class LocaleTypeDiffblueTest {
 
   /**
    * Test {@link LocaleType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LocaleType#equals(Object)}
+   * <p>
+   * Method under test: {@link LocaleType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -257,17 +244,15 @@ public class LocaleTypeDiffblueTest {
 
   /**
    * Test {@link LocaleType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LocaleType#equals(Object)}
+   * <p>
+   * Method under test: {@link LocaleType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -276,17 +261,15 @@ public class LocaleTypeDiffblueTest {
 
   /**
    * Test {@link LocaleType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LocaleType#equals(Object)}
+   * <p>
+   * Method under test: {@link LocaleType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -295,17 +278,15 @@ public class LocaleTypeDiffblueTest {
 
   /**
    * Test {@link LocaleType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LocaleType#equals(Object)}
+   * <p>
+   * Method under test: {@link LocaleType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LocaleType.equals(Object)", "int LocaleType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

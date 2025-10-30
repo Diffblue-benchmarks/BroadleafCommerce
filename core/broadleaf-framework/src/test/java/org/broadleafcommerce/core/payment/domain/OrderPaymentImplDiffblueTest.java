@@ -22,34 +22,35 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
 import org.broadleafcommerce.common.payment.PaymentTransactionType;
 import org.broadleafcommerce.common.payment.PaymentType;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
@@ -68,33 +69,30 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class OrderPaymentImplDiffblueTest {
-  @Autowired private OrderPaymentImpl orderPaymentImpl;
+  @Autowired
+  private OrderPaymentImpl orderPaymentImpl;
 
   /**
    * Test {@link OrderPaymentImpl#getAmount()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
+   *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getAmount()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money OrderPaymentImpl.getAmount()"})
   public void testGetAmount_givenOrderImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -114,135 +112,69 @@ public class OrderPaymentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
+
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setBillingAddress(new AddressImpl());
+    orderPaymentImpl2.setId(1L);
+    orderPaymentImpl2.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    orderPaymentImpl2.setReferenceNumber("42");
+    orderPaymentImpl2.setTransactions(new ArrayList<>());
+    orderPaymentImpl2.setType(new PaymentType("Type", "Friendly Type"));
     Money amount = new Money();
-    orderPaymentImpl.setAmount(amount);
-    orderPaymentImpl.setOrder(order);
+    orderPaymentImpl2.setAmount(amount);
+    orderPaymentImpl2.setOrder(order);
 
     // Act and Assert
-    assertEquals(amount, orderPaymentImpl.getAmount());
+    assertEquals(amount, orderPaymentImpl2.getAmount());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getAmount()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getAmount()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money OrderPaymentImpl.getAmount()"})
   public void testGetAmount_givenOrderPaymentImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(orderPaymentImpl.getAmount());
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#getAmount()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getAmount()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money OrderPaymentImpl.getAmount()"})
-  public void testGetAmount_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-    orderPaymentImpl.setAmount(new Money());
-    orderPaymentImpl.setOrder(order);
-
-    // Act
-    Money actualAmount = orderPaymentImpl.getAmount();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualAmount.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualAmount.abs();
-    assertEquals(actualAmount, actualAbsResult);
-    Money actualZeroResult = actualAmount.zero();
-    assertEquals(actualAmount, actualZeroResult);
+    assertNull((new OrderPaymentImpl()).getAmount());
   }
 
   /**
    * Test {@link OrderPaymentImpl#setAmount(Money)}.
-   *
    * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link OrderPaymentImpl} {@link OrderPaymentImpl#amount} is {@link
-   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
+   *   <li>When {@link Money#Money()}.</li>
+   *   <li>Then {@link OrderPaymentImpl} (default constructor) {@link OrderPaymentImpl#amount} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#setAmount(Money)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#setAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentImpl.setAmount(Money)"})
   public void testSetAmount_whenMoney_thenOrderPaymentImplAmountIsBigDecimalWith000() {
     // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
     Money amount = new Money();
 
     // Act
-    orderPaymentImpl.setAmount(amount);
+    orderPaymentImpl2.setAmount(amount);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), orderPaymentImpl.amount);
-    BigDecimal bigDecimal = orderPaymentImpl.amount;
+    assertEquals(new BigDecimal("0.00"), orderPaymentImpl2.amount);
+    BigDecimal bigDecimal = orderPaymentImpl2.amount;
     Money absResult = amount.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -267,31 +199,31 @@ public class OrderPaymentImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentImpl#setAmount(Money)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link OrderPaymentImpl} {@link OrderPaymentImpl#amount} is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link OrderPaymentImpl} (default constructor) {@link OrderPaymentImpl#amount} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#setAmount(Money)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#setAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentImpl.setAmount(Money)"})
   public void testSetAmount_whenNull_thenOrderPaymentImplAmountIsNull() {
-    // Arrange and Act
-    orderPaymentImpl.setAmount(null);
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+
+    // Act
+    orderPaymentImpl2.setAmount(null);
 
     // Assert that nothing has changed
-    assertNull(orderPaymentImpl.amount);
+    assertNull(orderPaymentImpl2.amount);
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderPaymentImpl#setBillingAddress(Address)}
    *   <li>{@link OrderPaymentImpl#setId(Long)}
@@ -306,20 +238,12 @@ public class OrderPaymentImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Address OrderPaymentImpl.getBillingAddress()",
-    "Long OrderPaymentImpl.getId()",
-    "Order OrderPaymentImpl.getOrder()",
-    "String OrderPaymentImpl.getReferenceNumber()",
-    "List OrderPaymentImpl.getTransactions()",
-    "void OrderPaymentImpl.setBillingAddress(Address)",
-    "void OrderPaymentImpl.setId(Long)",
-    "void OrderPaymentImpl.setOrder(Order)",
-    "void OrderPaymentImpl.setReferenceNumber(String)",
-    "void OrderPaymentImpl.setTransactions(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Address OrderPaymentImpl.getBillingAddress()", "Long OrderPaymentImpl.getId()",
+      "Order OrderPaymentImpl.getOrder()", "String OrderPaymentImpl.getReferenceNumber()",
+      "List OrderPaymentImpl.getTransactions()", "void OrderPaymentImpl.setBillingAddress(Address)",
+      "void OrderPaymentImpl.setId(Long)", "void OrderPaymentImpl.setOrder(Order)",
+      "void OrderPaymentImpl.setReferenceNumber(String)", "void OrderPaymentImpl.setTransactions(List)"})
   public void testGettersAndSetters() {
     // Arrange
     OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
@@ -349,307 +273,312 @@ public class OrderPaymentImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentImpl#setType(PaymentType)}.
-   *
    * <ul>
-   *   <li>Given {@code Type}.
-   *   <li>Then {@link OrderPaymentImpl} Type Type is {@code Type}.
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link OrderPaymentImpl} (default constructor) Type Type is {@code Type}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#setType(PaymentType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#setType(PaymentType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentImpl.setType(PaymentType)"})
   public void testSetType_givenType_thenOrderPaymentImplTypeTypeIsType() {
     // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
     PaymentType type = mock(PaymentType.class);
     when(type.getType()).thenReturn("Type");
 
     // Act
-    orderPaymentImpl.setType(type);
+    orderPaymentImpl2.setType(type);
 
     // Assert
     verify(type).getType();
-    assertEquals("Type", orderPaymentImpl.getType().getType());
-    assertEquals("Type", orderPaymentImpl.type);
+    assertEquals("Type", orderPaymentImpl2.getType().getType());
+    assertEquals("Type", orderPaymentImpl2.type);
   }
 
   /**
    * Test {@link OrderPaymentImpl#setType(PaymentType)}.
-   *
    * <ul>
-   *   <li>Then {@link OrderPaymentImpl} Type is {@link PaymentType#PaymentType(String, String)}
-   *       with {@code Type} and {@code Friendly Type}.
+   *   <li>Then {@link OrderPaymentImpl} (default constructor) Type is {@link PaymentType#PaymentType(String, String)} with {@code Type} and {@code Friendly Type}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#setType(PaymentType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#setType(PaymentType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentImpl.setType(PaymentType)"})
   public void testSetType_thenOrderPaymentImplTypeIsPaymentTypeWithTypeAndFriendlyType() {
     // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
     PaymentType type = new PaymentType("Type", "Friendly Type");
 
     // Act
-    orderPaymentImpl.setType(type);
+    orderPaymentImpl2.setType(type);
 
     // Assert
-    assertEquals("Type", orderPaymentImpl.type);
-    assertEquals(type, orderPaymentImpl.getType());
+    assertEquals("Type", orderPaymentImpl2.type);
+    assertEquals(type, orderPaymentImpl2.getType());
   }
 
   /**
    * Test {@link OrderPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentImpl.setPaymentGatewayType(PaymentGatewayType)"})
   public void testSetPaymentGatewayType() {
     // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
     PaymentGatewayType gatewayType = new PaymentGatewayType("Type", "Friendly Type");
 
     // Act
-    orderPaymentImpl.setPaymentGatewayType(gatewayType);
+    orderPaymentImpl2.setPaymentGatewayType(gatewayType);
 
     // Assert
-    assertEquals("Type", orderPaymentImpl.gatewayType);
-    assertEquals(gatewayType, orderPaymentImpl.getGatewayType());
+    assertEquals("Type", orderPaymentImpl2.gatewayType);
+    assertEquals(gatewayType, orderPaymentImpl2.getGatewayType());
   }
 
   /**
    * Test {@link OrderPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}.
-   *
    * <ul>
-   *   <li>Given {@code Type}.
-   *   <li>Then {@link OrderPaymentImpl} GatewayType Type is {@code Type}.
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link OrderPaymentImpl} (default constructor) GatewayType Type is {@code Type}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentImpl.setPaymentGatewayType(PaymentGatewayType)"})
   public void testSetPaymentGatewayType_givenType_thenOrderPaymentImplGatewayTypeTypeIsType() {
     // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
     PaymentGatewayType gatewayType = mock(PaymentGatewayType.class);
     when(gatewayType.getType()).thenReturn("Type");
 
     // Act
-    orderPaymentImpl.setPaymentGatewayType(gatewayType);
+    orderPaymentImpl2.setPaymentGatewayType(gatewayType);
 
     // Assert
     verify(gatewayType).getType();
-    assertEquals("Type", orderPaymentImpl.getGatewayType().getType());
-    assertEquals("Type", orderPaymentImpl.gatewayType);
+    assertEquals("Type", orderPaymentImpl2.getGatewayType().getType());
+    assertEquals("Type", orderPaymentImpl2.gatewayType);
   }
 
   /**
    * Test {@link OrderPaymentImpl#addTransaction(PaymentTransaction)}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#addTransaction(PaymentTransaction)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#addTransaction(PaymentTransaction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentImpl.addTransaction(PaymentTransaction)"})
   public void testAddTransaction() {
     // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
     PaymentTransactionImpl transaction = new PaymentTransactionImpl();
 
     // Act
-    orderPaymentImpl.addTransaction(transaction);
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Assert
-    List<PaymentTransaction> transactions = orderPaymentImpl.getTransactions();
+    List<PaymentTransaction> transactions = orderPaymentImpl2.getTransactions();
     assertEquals(1, transactions.size());
     assertSame(transaction, transactions.get(0));
-    assertSame(transaction, orderPaymentImpl.getInitialTransaction());
+    assertSame(transaction, orderPaymentImpl2.getInitialTransaction());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderPaymentImpl.getTransactionsForType(PaymentTransactionType)"})
   public void testGetTransactionsForType() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("42", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    List<PaymentTransaction> actualTransactionsForType =
-        orderPaymentImpl.getTransactionsForType(null);
+    List<PaymentTransaction> actualTransactionsForType = orderPaymentImpl2
+        .getTransactionsForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getType();
     assertTrue(actualTransactionsForType.isEmpty());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderPaymentImpl.getTransactionsForType(PaymentTransactionType)"})
   public void testGetTransactionsForType2() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType()).thenReturn(mock(PaymentTransactionType.class));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType());
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    List<PaymentTransaction> actualTransactionsForType =
-        orderPaymentImpl.getTransactionsForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    List<PaymentTransaction> actualTransactionsForType = orderPaymentImpl2
+        .getTransactionsForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getType();
     assertTrue(actualTransactionsForType.isEmpty());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderPaymentImpl.getTransactionsForType(PaymentTransactionType)"})
   public void testGetTransactionsForType3() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType()).thenReturn(new PaymentTransactionType());
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(mock(PaymentTransactionType.class));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    List<PaymentTransaction> actualTransactionsForType =
-        orderPaymentImpl.getTransactionsForType(new PaymentTransactionType());
+    List<PaymentTransaction> actualTransactionsForType = orderPaymentImpl2
+        .getTransactionsForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(paymentTransactionImpl).getType();
-    assertEquals(1, actualTransactionsForType.size());
+    verify(transaction).getType();
+    assertTrue(actualTransactionsForType.isEmpty());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderPaymentImpl.getTransactionsForType(PaymentTransactionType)"})
-  public void testGetTransactionsForType_givenOrderPaymentImpl() {
-    // Arrange, Act and Assert
-    assertTrue(
-        orderPaymentImpl
-            .getTransactionsForType(new PaymentTransactionType("Type", "Friendly Type"))
-            .isEmpty());
+  public void testGetTransactionsForType_givenOrderPaymentImpl_thenReturnEmpty() {
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+
+    // Act and Assert
+    assertTrue(orderPaymentImpl2.getTransactionsForType(new PaymentTransactionType("Type", "Friendly Type")).isEmpty());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>Then return size is one.
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderPaymentImpl.getTransactionsForType(PaymentTransactionType)"})
   public void testGetTransactionsForType_thenReturnSizeIsOne() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    List<PaymentTransaction> actualTransactionsForType =
-        orderPaymentImpl.getTransactionsForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    List<PaymentTransaction> actualTransactionsForType = orderPaymentImpl2
+        .getTransactionsForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getType();
     assertEquals(1, actualTransactionsForType.size());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>When {@link PaymentTransactionType#PaymentTransactionType()}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List OrderPaymentImpl.getTransactionsForType(PaymentTransactionType)"})
-  public void testGetTransactionsForType_whenPaymentTransactionType() {
+  public void testGetTransactionsForType_whenNull() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    List<PaymentTransaction> actualTransactionsForType =
-        orderPaymentImpl.getTransactionsForType(new PaymentTransactionType());
+    List<PaymentTransaction> actualTransactionsForType = orderPaymentImpl2.getTransactionsForType(null);
 
     // Assert
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getType();
     assertTrue(actualTransactionsForType.isEmpty());
+  }
+
+  /**
+   * Test {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}.
+   * <ul>
+   *   <li>When {@link PaymentTransactionType#PaymentTransactionType()}.</li>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionsForType(PaymentTransactionType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List OrderPaymentImpl.getTransactionsForType(PaymentTransactionType)"})
+  public void testGetTransactionsForType_whenPaymentTransactionType_thenReturnSizeIsOne() {
+    // Arrange
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType());
+
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
+
+    // Act
+    List<PaymentTransaction> actualTransactionsForType = orderPaymentImpl2
+        .getTransactionsForType(new PaymentTransactionType());
+
+    // Assert
+    verify(transaction).getType();
+    assertEquals(1, actualTransactionsForType.size());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getInitialTransaction()}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getInitialTransaction()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getInitialTransaction()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getInitialTransaction()"})
   public void testGetInitialTransaction() {
     // Arrange
@@ -657,8 +586,8 @@ public class OrderPaymentImplDiffblueTest {
     paymentTransactionImpl.setAdditionalFields(new HashMap<>());
     paymentTransactionImpl.setAmount(new Money());
     paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl.setDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentTransactionImpl
+        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentTransactionImpl.setId(1L);
     paymentTransactionImpl.setOrderPayment(new OrderPaymentImpl());
     paymentTransactionImpl.setRawResponse("Raw Response");
@@ -669,43 +598,48 @@ public class OrderPaymentImplDiffblueTest {
 
     ArrayList<PaymentTransaction> transactions = new ArrayList<>();
     transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setAmount(new Money());
+    orderPaymentImpl2.setBillingAddress(new AddressImpl());
+    orderPaymentImpl2.setId(1L);
+    orderPaymentImpl2.setOrder(new NullOrderImpl());
+    orderPaymentImpl2.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    orderPaymentImpl2.setReferenceNumber("42");
+    orderPaymentImpl2.setType(new PaymentType("Type", "Friendly Type"));
+    orderPaymentImpl2.setTransactions(transactions);
 
     // Act and Assert
-    assertNull(orderPaymentImpl.getInitialTransaction());
+    assertNull(orderPaymentImpl2.getInitialTransaction());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getInitialTransaction()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getInitialTransaction()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getInitialTransaction()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getInitialTransaction()"})
   public void testGetInitialTransaction_givenOrderPaymentImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(orderPaymentImpl.getInitialTransaction());
+    assertNull((new OrderPaymentImpl()).getInitialTransaction());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getInitialTransaction()}.
-   *
    * <ul>
-   *   <li>Then return {@link PaymentTransactionImpl} (default constructor).
+   *   <li>Then return {@link PaymentTransactionImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getInitialTransaction()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getInitialTransaction()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getInitialTransaction()"})
   public void testGetInitialTransaction_thenReturnPaymentTransactionImpl() {
     // Arrange
@@ -713,8 +647,8 @@ public class OrderPaymentImplDiffblueTest {
     paymentTransactionImpl.setAdditionalFields(new HashMap<>());
     paymentTransactionImpl.setAmount(new Money());
     paymentTransactionImpl.setCustomerIpAddress("42 Main St");
-    paymentTransactionImpl.setDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    paymentTransactionImpl
+        .setDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     paymentTransactionImpl.setId(1L);
     paymentTransactionImpl.setOrderPayment(new OrderPaymentImpl());
     paymentTransactionImpl.setRawResponse("Raw Response");
@@ -725,1069 +659,727 @@ public class OrderPaymentImplDiffblueTest {
 
     ArrayList<PaymentTransaction> transactions = new ArrayList<>();
     transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setAmount(new Money());
+    orderPaymentImpl2.setBillingAddress(new AddressImpl());
+    orderPaymentImpl2.setId(1L);
+    orderPaymentImpl2.setOrder(new NullOrderImpl());
+    orderPaymentImpl2.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    orderPaymentImpl2.setReferenceNumber("42");
+    orderPaymentImpl2.setType(new PaymentType("Type", "Friendly Type"));
+    orderPaymentImpl2.setTransactions(transactions);
 
     // Act and Assert
-    assertSame(paymentTransactionImpl, orderPaymentImpl.getInitialTransaction());
+    assertSame(paymentTransactionImpl, orderPaymentImpl2.getInitialTransaction());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getAuthorizeTransaction()}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getAuthorizeTransaction()"})
   public void testGetAuthorizeTransaction() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(new PaymentTransactionImpl());
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    // Act and Assert
+    assertNull(orderPaymentImpl2.getAuthorizeTransaction());
+  }
+
+  /**
+   * Test {@link OrderPaymentImpl#getAuthorizeTransaction()}.
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getAuthorizeTransaction()"})
+  public void testGetAuthorizeTransaction2() {
+    // Arrange
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    PaymentTransaction actualAuthorizeTransaction = orderPaymentImpl.getAuthorizeTransaction();
+    PaymentTransaction actualAuthorizeTransaction = orderPaymentImpl2.getAuthorizeTransaction();
 
     // Assert
-    verify(paymentTransactionImpl, atLeast(1)).getType();
+    verify(transaction, atLeast(1)).getType();
     assertNull(actualAuthorizeTransaction);
   }
 
   /**
    * Test {@link OrderPaymentImpl#getAuthorizeTransaction()}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getAuthorizeTransaction()"})
-  public void testGetAuthorizeTransaction2() {
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("AUTHORIZE", "Friendly Type"));
-
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
-
-    // Act
-    orderPaymentImpl.getAuthorizeTransaction();
-
-    // Assert
-    verify(paymentTransactionImpl).getType();
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#getAuthorizeTransaction()}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getAuthorizeTransaction()"})
   public void testGetAuthorizeTransaction3() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("AUTHORIZE_AND_CAPTURE", "Friendly Type"));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("AUTHORIZE", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    orderPaymentImpl.getAuthorizeTransaction();
+    orderPaymentImpl2.getAuthorizeTransaction();
 
     // Assert
-    verify(paymentTransactionImpl, atLeast(1)).getType();
+    verify(transaction).getType();
   }
 
   /**
    * Test {@link OrderPaymentImpl#getAuthorizeTransaction()}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getAuthorizeTransaction()"})
-  public void testGetAuthorizeTransaction_givenArrayListAddPaymentTransactionImpl() {
+  public void testGetAuthorizeTransaction4() {
     // Arrange
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(new PaymentTransactionImpl());
-    orderPaymentImpl.setTransactions(transactions);
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("AUTHORIZE_AND_CAPTURE", "Friendly Type"));
 
-    // Act and Assert
-    assertNull(orderPaymentImpl.getAuthorizeTransaction());
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
+
+    // Act
+    orderPaymentImpl2.getAuthorizeTransaction();
+
+    // Assert
+    verify(transaction, atLeast(1)).getType();
   }
 
   /**
    * Test {@link OrderPaymentImpl#getAuthorizeTransaction()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getAuthorizeTransaction()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PaymentTransaction OrderPaymentImpl.getAuthorizeTransaction()"})
   public void testGetAuthorizeTransaction_givenOrderPaymentImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(orderPaymentImpl.getAuthorizeTransaction());
+    assertNull((new OrderPaymentImpl()).getAuthorizeTransaction());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money OrderPaymentImpl.getTransactionAmountForType(PaymentTransactionType)"})
   public void testGetTransactionAmountForType() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(new PaymentTransactionImpl());
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(new PaymentTransactionImpl());
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualTransactionAmountForType =
-        orderPaymentImpl.getTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    Money actualTransactionAmountForType = orderPaymentImpl2
+        .getTransactionAmountForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
-    Money actualAbsResult = actualTransactionAmountForType.abs();
-    assertEquals(actualTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualTransactionAmountForType.zero();
-    assertEquals(actualTransactionAmountForType, actualZeroResult);
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.abs());
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money OrderPaymentImpl.getTransactionAmountForType(PaymentTransactionType)"})
   public void testGetTransactionAmountForType2() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
     when(transaction.getType()).thenReturn(new PaymentTransactionType());
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualTransactionAmountForType =
-        orderPaymentImpl.getTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    Money actualTransactionAmountForType = orderPaymentImpl2
+        .getTransactionAmountForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
     verify(transaction).getType();
-    Money actualAbsResult = actualTransactionAmountForType.abs();
-    assertEquals(actualTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualTransactionAmountForType.zero();
-    assertEquals(actualTransactionAmountForType, actualZeroResult);
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.abs());
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getType()} return
-   *       {@code null}.
+   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money OrderPaymentImpl.getTransactionAmountForType(PaymentTransactionType)"})
-  public void testGetTransactionAmountForType_givenPaymentTransactionImplGetTypeReturnNull() {
-    // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(null);
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
-
-    // Act
-    Money actualTransactionAmountForType =
-        orderPaymentImpl.getTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
-
-    // Assert
-    verify(broadleafCurrency).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(transaction).getType();
-    Money actualAbsResult = actualTransactionAmountForType.abs();
-    assertEquals(actualTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualTransactionAmountForType.zero();
-    assertEquals(actualTransactionAmountForType, actualZeroResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money OrderPaymentImpl.getTransactionAmountForType(PaymentTransactionType)"})
   public void testGetTransactionAmountForType_thenCallsGetCurrencyCode() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualTransactionAmountForType =
-        orderPaymentImpl.getTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    Money actualTransactionAmountForType = orderPaymentImpl2
+        .getTransactionAmountForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
-    Money actualAbsResult = actualTransactionAmountForType.abs();
-    assertEquals(actualTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualTransactionAmountForType.zero();
-    assertEquals(actualTransactionAmountForType, actualZeroResult);
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.abs());
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>Then return {@link Money#ZERO}.
+   *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money OrderPaymentImpl.getTransactionAmountForType(PaymentTransactionType)"})
   public void testGetTransactionAmountForType_thenReturnZero() {
     // Arrange
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.setOrder(new NullOrderImpl());
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setOrder(new NullOrderImpl());
 
     // Act
-    Money actualTransactionAmountForType =
-        orderPaymentImpl.getTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    Money actualTransactionAmountForType = orderPaymentImpl2
+        .getTransactionAmountForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    assertEquals(Money.ZERO, actualTransactionAmountForType);
+    assertEquals(actualTransactionAmountForType.ZERO, actualTransactionAmountForType);
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>When {@link PaymentTransactionType#PaymentTransactionType()}.
-   *   <li>Then calls {@link PaymentTransactionImpl#getType()}.
+   *   <li>When {@link PaymentTransactionType#PaymentTransactionType()}.</li>
+   *   <li>Then calls {@link PaymentTransactionImpl#getType()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money OrderPaymentImpl.getTransactionAmountForType(PaymentTransactionType)"})
   public void testGetTransactionAmountForType_whenPaymentTransactionType_thenCallsGetType() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
     when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualTransactionAmountForType =
-        orderPaymentImpl.getTransactionAmountForType(new PaymentTransactionType());
+    Money actualTransactionAmountForType = orderPaymentImpl2.getTransactionAmountForType(new PaymentTransactionType());
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
     verify(transaction).getType();
-    Money actualAbsResult = actualTransactionAmountForType.abs();
-    assertEquals(actualTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualTransactionAmountForType.zero();
-    assertEquals(actualTransactionAmountForType, actualZeroResult);
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.abs());
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>When {@link PaymentTransactionType}.
-   *   <li>Then calls {@link PaymentTransactionImpl#getType()}.
+   *   <li>When {@link PaymentTransactionType}.</li>
+   *   <li>Then calls {@link PaymentTransactionImpl#getType()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Money OrderPaymentImpl.getTransactionAmountForType(PaymentTransactionType)"})
   public void testGetTransactionAmountForType_whenPaymentTransactionType_thenCallsGetType2() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
     when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualTransactionAmountForType =
-        orderPaymentImpl.getTransactionAmountForType(mock(PaymentTransactionType.class));
+    Money actualTransactionAmountForType = orderPaymentImpl2
+        .getTransactionAmountForType(mock(PaymentTransactionType.class));
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
     verify(transaction).getType();
-    Money actualAbsResult = actualTransactionAmountForType.abs();
-    assertEquals(actualTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualTransactionAmountForType.zero();
-    assertEquals(actualTransactionAmountForType, actualZeroResult);
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.abs());
+    assertEquals(actualTransactionAmountForType, actualTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"})
   public void testGetSuccessfulTransactionAmountForType() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(new PaymentTransactionImpl());
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(new PaymentTransactionImpl());
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    Money actualSuccessfulTransactionAmountForType = orderPaymentImpl2
+        .getSuccessfulTransactionAmountForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
-    Money actualAbsResult = actualSuccessfulTransactionAmountForType.abs();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualSuccessfulTransactionAmountForType.zero();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualZeroResult);
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.abs());
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"})
   public void testGetSuccessfulTransactionAmountForType2() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
     when(transaction.getType()).thenReturn(new PaymentTransactionType());
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    Money actualSuccessfulTransactionAmountForType = orderPaymentImpl2
+        .getSuccessfulTransactionAmountForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
     verify(transaction).getType();
-    Money actualAbsResult = actualSuccessfulTransactionAmountForType.abs();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualSuccessfulTransactionAmountForType.zero();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualZeroResult);
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.abs());
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
-  public void testGetSuccessfulTransactionAmountForType3() {
-    // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(null);
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
-
-    // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
-
-    // Assert
-    verify(broadleafCurrency).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(transaction).getType();
-    Money actualAbsResult = actualSuccessfulTransactionAmountForType.abs();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualSuccessfulTransactionAmountForType.zero();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualZeroResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
-  public void testGetSuccessfulTransactionAmountForType4() {
-    // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
-
-    PaymentTransactionImpl transaction2 = new PaymentTransactionImpl();
-    transaction2.setSuccess(false);
-    transaction2.setOrderPayment(mock(OrderPayment.class));
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction2);
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
-
-    // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(new PaymentTransactionType());
-
-    // Assert
-    verify(broadleafCurrency).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(transaction).getType();
-    Money actualAbsResult = actualSuccessfulTransactionAmountForType.abs();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualSuccessfulTransactionAmountForType.zero();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualZeroResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
+   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"})
   public void testGetSuccessfulTransactionAmountForType_thenCallsGetCurrencyCode() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    Money actualSuccessfulTransactionAmountForType = orderPaymentImpl2
+        .getSuccessfulTransactionAmountForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
-    Money actualAbsResult = actualSuccessfulTransactionAmountForType.abs();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualSuccessfulTransactionAmountForType.zero();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualZeroResult);
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.abs());
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.
+   *   <li>Then return {@link Money#ZERO}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
-  public void testGetSuccessfulTransactionAmountForType_thenCallsGetSuccess() {
-    // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getSuccess()).thenReturn(false);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
-
-    PaymentTransactionImpl transaction2 = new PaymentTransactionImpl();
-    transaction2.setOrderPayment(mock(OrderPayment.class));
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction2);
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
-
-    // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
-
-    // Assert
-    verify(broadleafCurrency).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(transaction).getSuccess();
-    verify(transaction).getType();
-    Money actualAbsResult = actualSuccessfulTransactionAmountForType.abs();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualSuccessfulTransactionAmountForType.zero();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualZeroResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
-  public void testGetSuccessfulTransactionAmountForType_thenCallsGetType() {
-    // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
-
-    // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(new PaymentTransactionType());
-
-    // Assert
-    verify(broadleafCurrency).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(transaction).getType();
-    Money actualAbsResult = actualSuccessfulTransactionAmountForType.abs();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualSuccessfulTransactionAmountForType.zero();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualZeroResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
-   * <ul>
-   *   <li>Then return {@link Money#ZERO}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"})
   public void testGetSuccessfulTransactionAmountForType_thenReturnZero() {
     // Arrange
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.setOrder(new NullOrderImpl());
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setOrder(new NullOrderImpl());
 
     // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(
-            new PaymentTransactionType("Type", "Friendly Type"));
+    Money actualSuccessfulTransactionAmountForType = orderPaymentImpl2
+        .getSuccessfulTransactionAmountForType(new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    assertEquals(Money.ZERO, actualSuccessfulTransactionAmountForType);
+    assertEquals(actualSuccessfulTransactionAmountForType.ZERO, actualSuccessfulTransactionAmountForType);
   }
 
   /**
    * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
-   *
    * <ul>
-   *   <li>When {@link PaymentTransactionType}.
+   *   <li>When {@link PaymentTransactionType#PaymentTransactionType()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"})
   public void testGetSuccessfulTransactionAmountForType_whenPaymentTransactionType() {
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
     when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
 
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-    orderPaymentImpl.setOrder(order);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
+    orderPaymentImpl2.setOrder(order);
 
     // Act
-    Money actualSuccessfulTransactionAmountForType =
-        orderPaymentImpl.getSuccessfulTransactionAmountForType(mock(PaymentTransactionType.class));
+    Money actualSuccessfulTransactionAmountForType = orderPaymentImpl2
+        .getSuccessfulTransactionAmountForType(new PaymentTransactionType());
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
     verify(transaction).getType();
-    Money actualAbsResult = actualSuccessfulTransactionAmountForType.abs();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualAbsResult);
-    Money actualZeroResult = actualSuccessfulTransactionAmountForType.zero();
-    assertEquals(actualSuccessfulTransactionAmountForType, actualZeroResult);
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.abs());
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.zero());
+  }
+
+  /**
+   * Test {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}.
+   * <ul>
+   *   <li>When {@link PaymentTransactionType}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getSuccessfulTransactionAmountForType(PaymentTransactionType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Money OrderPaymentImpl.getSuccessfulTransactionAmountForType(PaymentTransactionType)"})
+  public void testGetSuccessfulTransactionAmountForType_whenPaymentTransactionType2() {
+    // Arrange
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
+    orderPaymentImpl2.setOrder(order);
+
+    // Act
+    Money actualSuccessfulTransactionAmountForType = orderPaymentImpl2
+        .getSuccessfulTransactionAmountForType(mock(PaymentTransactionType.class));
+
+    // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
+    verify(order).getCurrency();
+    verify(transaction).getType();
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.abs());
+    assertEquals(actualSuccessfulTransactionAmountForType, actualSuccessfulTransactionAmountForType.zero());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getStatus()}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getStatus()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getStatus()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.payment.service.type.OrderPaymentStatus OrderPaymentImpl.getStatus()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.payment.service.type.OrderPaymentStatus OrderPaymentImpl.getStatus()"})
   public void testGetStatus() {
     // Arrange, Act and Assert
-    assertNull(orderPaymentImpl.getStatus());
+    assertNull((new OrderPaymentImpl()).getStatus());
   }
 
   /**
    * Test {@link OrderPaymentImpl#isConfirmed()}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isConfirmed()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#isConfirmed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.isConfirmed()"})
   public void testIsConfirmed() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    boolean actualIsConfirmedResult = orderPaymentImpl.isConfirmed();
+    boolean actualIsConfirmedResult = orderPaymentImpl2.isConfirmed();
 
     // Assert
-    verify(paymentTransactionImpl, atLeast(1)).getType();
+    verify(transaction, atLeast(1)).getType();
     assertFalse(actualIsConfirmedResult);
   }
 
   /**
    * Test {@link OrderPaymentImpl#isConfirmed()}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isConfirmed()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#isConfirmed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.isConfirmed()"})
   public void testIsConfirmed2() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("AUTHORIZE", "Friendly Type"));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getSuccess()).thenReturn(true);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("AUTHORIZE", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    boolean actualIsConfirmedResult = orderPaymentImpl.isConfirmed();
+    boolean actualIsConfirmedResult = orderPaymentImpl2.isConfirmed();
 
     // Assert
-    verify(paymentTransactionImpl).getSuccess();
-    verify(paymentTransactionImpl, atLeast(1)).getType();
+    verify(transaction).getSuccess();
+    verify(transaction, atLeast(1)).getType();
     assertTrue(actualIsConfirmedResult);
   }
 
   /**
    * Test {@link OrderPaymentImpl#isConfirmed()}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor) addTransaction {@link PaymentTransactionImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isConfirmed()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#isConfirmed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.isConfirmed()"})
-  public void testIsConfirmed_givenArrayListAddPaymentTransactionImpl_thenReturnFalse() {
+  public void testIsConfirmed_givenOrderPaymentImplAddTransactionPaymentTransactionImpl() {
     // Arrange
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(new PaymentTransactionImpl());
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(new PaymentTransactionImpl());
 
     // Act and Assert
-    assertFalse(orderPaymentImpl.isConfirmed());
+    assertFalse(orderPaymentImpl2.isConfirmed());
   }
 
   /**
    * Test {@link OrderPaymentImpl#isConfirmed()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isConfirmed()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#isConfirmed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.isConfirmed()"})
   public void testIsConfirmed_givenOrderPaymentImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(orderPaymentImpl.isConfirmed());
+    assertFalse((new OrderPaymentImpl()).isConfirmed());
   }
 
   /**
    * Test {@link OrderPaymentImpl#isConfirmed()}.
-   *
    * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return
-   *       {@code false}.
+   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isConfirmed()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#isConfirmed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.isConfirmed()"})
   public void testIsConfirmed_givenPaymentTransactionImplGetSuccessReturnFalse() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getSuccess()).thenReturn(false);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("AUTHORIZE_AND_CAPTURE", "Friendly Type"));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getSuccess()).thenReturn(false);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("AUTHORIZE_AND_CAPTURE", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    boolean actualIsConfirmedResult = orderPaymentImpl.isConfirmed();
+    boolean actualIsConfirmedResult = orderPaymentImpl2.isConfirmed();
 
     // Assert
-    verify(paymentTransactionImpl).getSuccess();
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getSuccess();
+    verify(transaction).getType();
     assertFalse(actualIsConfirmedResult);
   }
 
   /**
    * Test {@link OrderPaymentImpl#isConfirmed()}.
-   *
    * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return
-   *       {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isConfirmed()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#isConfirmed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.isConfirmed()"})
   public void testIsConfirmed_givenPaymentTransactionImplGetSuccessReturnTrue_thenReturnTrue() {
     // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
-    when(paymentTransactionImpl.getType())
-        .thenReturn(new PaymentTransactionType("AUTHORIZE_AND_CAPTURE", "Friendly Type"));
+    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
+    when(transaction.getSuccess()).thenReturn(true);
+    when(transaction.getType()).thenReturn(new PaymentTransactionType("AUTHORIZE_AND_CAPTURE", "Friendly Type"));
 
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.addTransaction(transaction);
 
     // Act
-    boolean actualIsConfirmedResult = orderPaymentImpl.isConfirmed();
+    boolean actualIsConfirmedResult = orderPaymentImpl2.isConfirmed();
 
     // Assert
-    verify(paymentTransactionImpl).getSuccess();
-    verify(paymentTransactionImpl).getType();
+    verify(transaction).getSuccess();
+    verify(transaction).getType();
     assertTrue(actualIsConfirmedResult);
   }
 
   /**
-   * Test {@link OrderPaymentImpl#isConfirmed()}.
-   *
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getType()} return
-   *       {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isConfirmed()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderPaymentImpl.isConfirmed()"})
-  public void testIsConfirmed_givenPaymentTransactionImplGetTypeReturnNull_thenReturnFalse() {
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getType()).thenReturn(null);
-
-    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
-    transactions.add(paymentTransactionImpl);
-    orderPaymentImpl.setTransactions(transactions);
-
-    // Act
-    boolean actualIsConfirmedResult = orderPaymentImpl.isConfirmed();
-
-    // Assert
-    verify(paymentTransactionImpl, atLeast(1)).getType();
-    assertFalse(actualIsConfirmedResult);
-  }
-
-  /**
    * Test {@link OrderPaymentImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getCurrency()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BroadleafCurrency OrderPaymentImpl.getCurrency()"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.currency.domain.BroadleafCurrency OrderPaymentImpl.getCurrency()"})
   public void testGetCurrency_givenOrderPaymentImpl() {
     // Arrange, Act and Assert
-    assertNull(orderPaymentImpl.getCurrency());
+    assertNull((new OrderPaymentImpl()).getCurrency());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getCurrency()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl} Order is {@link NullOrderImpl} (default constructor).
+   *   <li>Given {@link OrderPaymentImpl} (default constructor) Amount is {@link Money#Money()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getCurrency()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getCurrency()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BroadleafCurrency OrderPaymentImpl.getCurrency()"})
-  public void testGetCurrency_givenOrderPaymentImplOrderIsNullOrderImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.currency.domain.BroadleafCurrency OrderPaymentImpl.getCurrency()"})
+  public void testGetCurrency_givenOrderPaymentImplAmountIsMoney() {
     // Arrange
-    orderPaymentImpl.setOrder(new NullOrderImpl());
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setAmount(new Money());
+    orderPaymentImpl2.setBillingAddress(new AddressImpl());
+    orderPaymentImpl2.setId(1L);
+    orderPaymentImpl2.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    orderPaymentImpl2.setReferenceNumber("42");
+    orderPaymentImpl2.setTransactions(new ArrayList<>());
+    orderPaymentImpl2.setType(new PaymentType("Type", "Friendly Type"));
+    orderPaymentImpl2.setOrder(new NullOrderImpl());
 
     // Act and Assert
-    assertNull(orderPaymentImpl.getCurrency());
+    assertNull(orderPaymentImpl2.getCurrency());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getCurrencyCode()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl}
-   *       (default constructor).
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getCurrencyCode()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getCurrencyCode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String OrderPaymentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsBroadleafCurrencyImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -1807,40 +1399,45 @@ public class OrderPaymentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(new BroadleafCurrencyImpl());
-    orderPaymentImpl.setOrder(order);
+
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setAmount(new Money());
+    orderPaymentImpl2.setBillingAddress(new AddressImpl());
+    orderPaymentImpl2.setId(1L);
+    orderPaymentImpl2.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    orderPaymentImpl2.setReferenceNumber("42");
+    orderPaymentImpl2.setTransactions(new ArrayList<>());
+    orderPaymentImpl2.setType(new PaymentType("Type", "Friendly Type"));
+    orderPaymentImpl2.setOrder(order);
 
     // Act and Assert
-    assertNull(orderPaymentImpl.getCurrencyCode());
+    assertNull(orderPaymentImpl2.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getCurrencyCode()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getCurrencyCode()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getCurrencyCode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String OrderPaymentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -1860,128 +1457,130 @@ public class OrderPaymentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
-    orderPaymentImpl.setOrder(order);
+
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setAmount(new Money());
+    orderPaymentImpl2.setBillingAddress(new AddressImpl());
+    orderPaymentImpl2.setId(1L);
+    orderPaymentImpl2.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    orderPaymentImpl2.setReferenceNumber("42");
+    orderPaymentImpl2.setTransactions(new ArrayList<>());
+    orderPaymentImpl2.setType(new PaymentType("Type", "Friendly Type"));
+    orderPaymentImpl2.setOrder(order);
 
     // Act and Assert
-    assertNull(orderPaymentImpl.getCurrencyCode());
+    assertNull(orderPaymentImpl2.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getCurrencyCode()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getCurrencyCode()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getCurrencyCode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String OrderPaymentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderPaymentImpl() {
     // Arrange, Act and Assert
-    assertNull(orderPaymentImpl.getCurrencyCode());
+    assertNull((new OrderPaymentImpl()).getCurrencyCode());
   }
 
   /**
    * Test {@link OrderPaymentImpl#getArchived()}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#getArchived()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#getArchived()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Character OrderPaymentImpl.getArchived()"})
   public void testGetArchived() {
     // Arrange, Act and Assert
-    assertEquals('N', orderPaymentImpl.getArchived().charValue());
+    assertEquals('N', (new OrderPaymentImpl()).getArchived().charValue());
   }
 
   /**
    * Test {@link OrderPaymentImpl#setArchived(Character)}.
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#setArchived(Character)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#setArchived(Character)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentImpl.setArchived(Character)"})
   public void testSetArchived() {
-    // Arrange and Act
-    orderPaymentImpl.setArchived('A');
+    // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+
+    // Act
+    orderPaymentImpl2.setArchived('A');
 
     // Assert
-    assertEquals('A', orderPaymentImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', orderPaymentImpl.getArchived().charValue());
+    assertEquals('A', orderPaymentImpl2.archiveStatus.getArchived().charValue());
+    assertEquals('A', orderPaymentImpl2.getArchived().charValue());
   }
 
   /**
    * Test {@link OrderPaymentImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl} Archived is {@code Y}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor) Archived is {@code Y}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isActive()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#isActive()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.isActive()"})
   public void testIsActive_givenOrderPaymentImplArchivedIsY_thenReturnFalse() {
     // Arrange
-    orderPaymentImpl.setArchived('Y');
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    orderPaymentImpl2.setArchived('Y');
 
     // Act and Assert
-    assertFalse(orderPaymentImpl.isActive());
+    assertFalse(orderPaymentImpl2.isActive());
   }
 
   /**
    * Test {@link OrderPaymentImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link OrderPaymentImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#isActive()}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#isActive()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.isActive()"})
   public void testIsActive_givenOrderPaymentImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(orderPaymentImpl.isActive());
+    assertTrue((new OrderPaymentImpl()).isActive());
   }
 
   /**
    * Test {@link OrderPaymentImpl#equals(Object)}, and {@link OrderPaymentImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderPaymentImpl#equals(Object)}
    *   <li>{@link OrderPaymentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.equals(Object)", "int OrderPaymentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -2007,27 +1606,25 @@ public class OrderPaymentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderPaymentImpl, orderPaymentImpl2);
-    assertEquals(orderPaymentImpl.hashCode(), orderPaymentImpl2.hashCode());
+    int expectedHashCodeResult = orderPaymentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, orderPaymentImpl2.hashCode());
   }
 
   /**
    * Test {@link OrderPaymentImpl#equals(Object)}, and {@link OrderPaymentImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderPaymentImpl#equals(Object)}
    *   <li>{@link OrderPaymentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.equals(Object)", "int OrderPaymentImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -2049,17 +1646,15 @@ public class OrderPaymentImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.equals(Object)", "int OrderPaymentImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -2089,17 +1684,15 @@ public class OrderPaymentImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.equals(Object)", "int OrderPaymentImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -2119,17 +1712,15 @@ public class OrderPaymentImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderPaymentImpl.equals(Object)", "int OrderPaymentImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -2149,25 +1740,23 @@ public class OrderPaymentImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new OrderPaymentImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OrderPayment> actualCreateOrRetrieveCopyInstanceResult =
-        orderPaymentImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<OrderPayment> actualCreateOrRetrieveCopyInstanceResult = orderPaymentImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -2176,282 +1765,38 @@ public class OrderPaymentImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(orderPaymentImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<OrderPayment> actualCreateOrRetrieveCopyInstanceResult =
-        orderPaymentImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new PaymentTransactionImpl(), true));
-    when(transaction.isActive()).thenReturn(true);
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OrderPaymentImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    orderPaymentImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(transaction).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(transaction).isActive();
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
-    // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new CloneNotSupportedException());
-    when(transaction.isActive()).thenReturn(true);
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OrderPaymentImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act and Assert
-    assertThrows(
-        CloneNotSupportedException.class,
-        () -> orderPaymentImpl.createOrRetrieveCopyInstance(context));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(transaction).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(transaction).isActive();
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance5() throws CloneNotSupportedException {
-    // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new PaymentTransactionImpl(), true));
-    when(transaction.isActive()).thenReturn(true);
-
-    AddressImpl billingAddress = mock(AddressImpl.class);
-    when(billingAddress.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new AddressImpl(), true));
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.setBillingAddress(billingAddress);
-    orderPaymentImpl.addTransaction(transaction);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OrderPaymentImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    orderPaymentImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(transaction).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(transaction).isActive();
-    verify(billingAddress).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance6() throws CloneNotSupportedException {
-    // Arrange
-    AddressImpl billingAddress = mock(AddressImpl.class);
-    when(billingAddress.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new CloneNotSupportedException());
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.setBillingAddress(billingAddress);
-    orderPaymentImpl.addTransaction(mock(PaymentTransactionImpl.class));
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OrderPaymentImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act and Assert
-    assertThrows(
-        CloneNotSupportedException.class,
-        () -> orderPaymentImpl.createOrRetrieveCopyInstance(context));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(billingAddress).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
    * <ul>
-   *   <li>Given {@link OrderPaymentImpl} (default constructor) Amount is {@link Money#Money()}.
+   *   <li>Then Clone return {@link OrderPaymentImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_givenOrderPaymentImplAmountIsMoney()
-      throws CloneNotSupportedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance_thenCloneReturnOrderPaymentImpl() throws CloneNotSupportedException {
     // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new PaymentTransactionImpl(), true));
-    when(transaction.isActive()).thenReturn(true);
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.setAmount(new Money());
-    orderPaymentImpl.addTransaction(transaction);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OrderPaymentImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    OrderPaymentImpl orderPaymentImpl2 = new OrderPaymentImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    orderPaymentImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<OrderPayment> actualCreateOrRetrieveCopyInstanceResult = orderPaymentImpl2
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(transaction).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(transaction).isActive();
-  }
-
-  /**
-   * Test {@link OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#isActive()} return
-   *       {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OrderPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_givenPaymentTransactionImplIsActiveReturnFalse()
-      throws CloneNotSupportedException {
-    // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.isActive()).thenReturn(false);
-
-    OrderPaymentImpl orderPaymentImpl = new OrderPaymentImpl();
-    orderPaymentImpl.addTransaction(transaction);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OrderPaymentImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    orderPaymentImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(transaction).isActive();
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.core.payment.domain.OrderPaymentImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    OrderPayment clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof OrderPaymentImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(orderPaymentImpl2, clone);
   }
 }

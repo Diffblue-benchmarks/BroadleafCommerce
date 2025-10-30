@@ -18,7 +18,6 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -29,32 +28,31 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ToggleFacetLinkProcessorDiffblueTest {
-  @InjectMocks private ToggleFacetLinkProcessor toggleFacetLinkProcessor;
+  @InjectMocks
+  private ToggleFacetLinkProcessor toggleFacetLinkProcessor;
 
   /**
    * Test {@link ToggleFacetLinkProcessor#getName()}.
-   *
-   * <p>Method under test: {@link ToggleFacetLinkProcessor#getName()}
+   * <p>
+   * Method under test: {@link ToggleFacetLinkProcessor#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"java.lang.String ToggleFacetLinkProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("togglefacetlink", new ToggleFacetLinkProcessor().getName());
+    assertEquals("togglefacetlink", (new ToggleFacetLinkProcessor()).getName());
   }
 
   /**
    * Test {@link ToggleFacetLinkProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link ToggleFacetLinkProcessor#getPrecedence()}
+   * <p>
+   * Method under test: {@link ToggleFacetLinkProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int ToggleFacetLinkProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert

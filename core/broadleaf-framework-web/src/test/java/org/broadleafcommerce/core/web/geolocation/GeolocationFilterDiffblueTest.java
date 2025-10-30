@@ -24,7 +24,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -32,9 +31,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -42,6 +41,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -50,97 +50,74 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.request.WebRequest;
 
 @ContextConfiguration(classes = {GeolocationFilter.class})
-@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
+@ExtendWith(SpringExtension.class)
 class GeolocationFilterDiffblueTest {
-  @Autowired private GeolocationFilter geolocationFilter;
+  @Autowired
+  private GeolocationFilter geolocationFilter;
 
   @MockBean(name = "blGeolocationRequestProcessor")
   private GeolocationRequestProcessor geolocationRequestProcessor;
 
   /**
-   * Test {@link GeolocationFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
+   * Test {@link GeolocationFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Then throw {@link ServletException}.
+   *   <li>Then throw {@link ServletException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * GeolocationFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * <p>
+   * Method under test: {@link GeolocationFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName(
-      "Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); then throw ServletException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); then throw ServletException")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "void GeolocationFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  void testDoFilterInternalUnlessIgnored_thenThrowServletException()
-      throws IOException, ServletException {
+      "void GeolocationFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  void testDoFilterInternalUnlessIgnored_thenThrowServletException() throws IOException, ServletException {
     // Arrange
     doNothing().when(geolocationRequestProcessor).postProcess(Mockito.<WebRequest>any());
     doNothing().when(geolocationRequestProcessor).process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
-
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new ServletException("An error occurred"))
-        .when(filterChain)
+    doThrow(new ServletException("An error occurred")).when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act and Assert
-    assertThrows(
-        ServletException.class,
-        () ->
-            geolocationFilter.doFilterInternalUnlessIgnored(
-                httpServletRequest, httpServletResponse, filterChain));
+    assertThrows(ServletException.class,
+        () -> geolocationFilter.doFilterInternalUnlessIgnored(httpServletRequest, httpServletResponse, filterChain));
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(geolocationRequestProcessor).postProcess(isA(WebRequest.class));
     verify(geolocationRequestProcessor).process(isA(WebRequest.class));
   }
 
   /**
-   * Test {@link GeolocationFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
+   * Test {@link GeolocationFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)}
-   *       does nothing.
+   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)} does nothing.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * GeolocationFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * <p>
+   * Method under test: {@link GeolocationFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName(
-      "Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); when FilterChain doFilter(ServletRequest, ServletResponse) does nothing")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); when FilterChain doFilter(ServletRequest, ServletResponse) does nothing")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "void GeolocationFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  void testDoFilterInternalUnlessIgnored_whenFilterChainDoFilterDoesNothing()
-      throws IOException, ServletException {
+      "void GeolocationFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  void testDoFilterInternalUnlessIgnored_whenFilterChainDoFilterDoesNothing() throws IOException, ServletException {
     // Arrange
     doNothing().when(geolocationRequestProcessor).postProcess(Mockito.<WebRequest>any());
     doNothing().when(geolocationRequestProcessor).process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
-
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    geolocationFilter.doFilterInternalUnlessIgnored(
-        httpServletRequest, httpServletResponse, filterChain);
+    geolocationFilter.doFilterInternalUnlessIgnored(httpServletRequest, httpServletResponse, filterChain);
 
     // Assert
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
@@ -150,16 +127,15 @@ class GeolocationFilterDiffblueTest {
 
   /**
    * Test {@link GeolocationFilter#getOrder()}.
-   *
-   * <p>Method under test: {@link GeolocationFilter#getOrder()}
+   * <p>
+   * Method under test: {@link GeolocationFilter#getOrder()}
    */
   @Test
   @DisplayName("Test getOrder()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int GeolocationFilter.getOrder()"})
   void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(1000000, new GeolocationFilter().getOrder());
+    assertEquals(1000000, (new GeolocationFilter()).getOrder());
   }
 }

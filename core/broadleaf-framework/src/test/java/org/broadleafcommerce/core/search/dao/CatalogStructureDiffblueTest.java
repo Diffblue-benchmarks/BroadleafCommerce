@@ -19,8 +19,7 @@ package org.broadleafcommerce.core.search.dao;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -32,9 +31,8 @@ import org.junit.experimental.categories.Category;
 public class CatalogStructureDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CatalogStructure}
    *   <li>{@link CatalogStructure#setDisplayOrdersByCategoryProduct(Map)}
@@ -46,17 +44,12 @@ public class CatalogStructureDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CatalogStructure.<init>()",
-    "Map CatalogStructure.getDisplayOrdersByCategoryProduct()",
-    "Map CatalogStructure.getParentCategoriesByCategory()",
-    "Map CatalogStructure.getParentCategoriesByProduct()",
-    "void CatalogStructure.setDisplayOrdersByCategoryProduct(Map)",
-    "void CatalogStructure.setParentCategoriesByCategory(Map)",
-    "void CatalogStructure.setParentCategoriesByProduct(Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CatalogStructure.<init>()", "Map CatalogStructure.getDisplayOrdersByCategoryProduct()",
+      "Map CatalogStructure.getParentCategoriesByCategory()", "Map CatalogStructure.getParentCategoriesByProduct()",
+      "void CatalogStructure.setDisplayOrdersByCategoryProduct(Map)",
+      "void CatalogStructure.setParentCategoriesByCategory(Map)",
+      "void CatalogStructure.setParentCategoriesByProduct(Map)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CatalogStructure actualCatalogStructure = new CatalogStructure();
@@ -66,12 +59,10 @@ public class CatalogStructureDiffblueTest {
     actualCatalogStructure.setParentCategoriesByCategory(parentCategoriesByCategory);
     HashMap<Long, Set<Long>> parentCategoriesByProduct = new HashMap<>();
     actualCatalogStructure.setParentCategoriesByProduct(parentCategoriesByProduct);
-    Map<String, BigDecimal> actualDisplayOrdersByCategoryProduct =
-        actualCatalogStructure.getDisplayOrdersByCategoryProduct();
-    Map<Long, Set<Long>> actualParentCategoriesByCategory =
-        actualCatalogStructure.getParentCategoriesByCategory();
-    Map<Long, Set<Long>> actualParentCategoriesByProduct =
-        actualCatalogStructure.getParentCategoriesByProduct();
+    Map<String, BigDecimal> actualDisplayOrdersByCategoryProduct = actualCatalogStructure
+        .getDisplayOrdersByCategoryProduct();
+    Map<Long, Set<Long>> actualParentCategoriesByCategory = actualCatalogStructure.getParentCategoriesByCategory();
+    Map<Long, Set<Long>> actualParentCategoriesByProduct = actualCatalogStructure.getParentCategoriesByProduct();
 
     // Assert
     assertTrue(actualDisplayOrdersByCategoryProduct.isEmpty());

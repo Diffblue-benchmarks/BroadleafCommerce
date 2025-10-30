@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -50,44 +49,36 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-open-admin-contentClient-applicationContext.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EffectsManagerDiffblueTest {
-  @Autowired private EffectsManager effectsManager;
+  @Autowired
+  private EffectsManager effectsManager;
 
   /**
    * Test {@link EffectsManager#buildOperations(Map, InputStream, String)}.
-   *
-   * <p>Method under test: {@link EffectsManager#buildOperations(Map, InputStream, String)}
+   * <p>
+   * Method under test: {@link EffectsManager#buildOperations(Map, InputStream, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation[] EffectsManager.buildOperations(Map, InputStream, String)"
-  })
+      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation[] EffectsManager.buildOperations(Map, InputStream, String)"})
   public void testBuildOperations() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
     // Act and Assert
-    assertEquals(
-        0,
-        effectsManager.buildOperations(
-                parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "text/plain")
-            .length);
+    assertEquals(0, effectsManager.buildOperations(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")),
+        "Mime Type").length);
   }
 
   /**
-   * Test {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[],
-   * BufferedImage)} with {@code effectName}, {@code factor}, {@code parameters}, {@code src}.
-   *
-   * <p>Method under test: {@link EffectsManager#renderEffect(String, Double,
-   * UnmarshalledParameter[], BufferedImage)}
+   * Test {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[], BufferedImage)} with {@code effectName}, {@code factor}, {@code parameters}, {@code src}.
+   * <p>
+   * Method under test: {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[], BufferedImage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "BufferedImage EffectsManager.renderEffect(String, Double, UnmarshalledParameter[], BufferedImage)"
-  })
+      "BufferedImage EffectsManager.renderEffect(String, Double, UnmarshalledParameter[], BufferedImage)"})
   public void testRenderEffectWithEffectNameFactorParametersSrc() throws Exception {
     // Arrange
     UnmarshalledParameter unmarshalledParameter = new UnmarshalledParameter();
@@ -97,30 +88,19 @@ public class EffectsManagerDiffblueTest {
     unmarshalledParameter.setValue("42");
 
     // Act and Assert
-    assertThrows(
-        FilterNotFoundException.class,
-        () ->
-            effectsManager.renderEffect(
-                "Effect Name",
-                10.0d,
-                new UnmarshalledParameter[] {unmarshalledParameter},
-                new BufferedImage(1, 1, 1)));
+    assertThrows(FilterNotFoundException.class, () -> effectsManager.renderEffect("Effect Name", 10.0d,
+        new UnmarshalledParameter[]{unmarshalledParameter}, new BufferedImage(1, 1, 1)));
   }
 
   /**
-   * Test {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[], BufferedImage,
-   * String)} with {@code effectName}, {@code factor}, {@code parameters}, {@code src}, {@code
-   * formatName}.
-   *
-   * <p>Method under test: {@link EffectsManager#renderEffect(String, Double,
-   * UnmarshalledParameter[], BufferedImage, String)}
+   * Test {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[], BufferedImage, String)} with {@code effectName}, {@code factor}, {@code parameters}, {@code src}, {@code formatName}.
+   * <p>
+   * Method under test: {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[], BufferedImage, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "BufferedImage EffectsManager.renderEffect(String, Double, UnmarshalledParameter[], BufferedImage, String)"
-  })
+      "BufferedImage EffectsManager.renderEffect(String, Double, UnmarshalledParameter[], BufferedImage, String)"})
   public void testRenderEffectWithEffectNameFactorParametersSrcFormatName() throws Exception {
     // Arrange
     UnmarshalledParameter unmarshalledParameter = new UnmarshalledParameter();
@@ -130,22 +110,14 @@ public class EffectsManagerDiffblueTest {
     unmarshalledParameter.setValue("42");
 
     // Act and Assert
-    assertThrows(
-        FilterNotFoundException.class,
-        () ->
-            effectsManager.renderEffect(
-                "Effect Name",
-                10.0d,
-                new UnmarshalledParameter[] {unmarshalledParameter},
-                new BufferedImage(1, 1, 1),
-                "Format Name"));
+    assertThrows(FilterNotFoundException.class, () -> effectsManager.renderEffect("Effect Name", 10.0d,
+        new UnmarshalledParameter[]{unmarshalledParameter}, new BufferedImage(1, 1, 1), "Format Name"));
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EffectsManager#setConversionManager(ConversionManager)}
    *   <li>{@link EffectsManager#getConversionManager()}
@@ -153,13 +125,9 @@ public class EffectsManagerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ConversionManager EffectsManager.getConversionManager()",
-    "Map EffectsManager.getFilters()",
-    "void EffectsManager.setConversionManager(ConversionManager)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ConversionManager EffectsManager.getConversionManager()", "Map EffectsManager.getFilters()",
+      "void EffectsManager.setConversionManager(ConversionManager)"})
   public void testGettersAndSetters() {
     // Arrange
     EffectsManager effectsManager = new EffectsManager();

@@ -18,10 +18,10 @@
 package org.broadleafcommerce.core.order.dao;
 
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.money.Money;
@@ -47,30 +47,29 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FulfillmentGroupDaoImplDiffblueTest {
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
-  @InjectMocks private FulfillmentGroupDaoImpl fulfillmentGroupDaoImpl;
+  @InjectMocks
+  private FulfillmentGroupDaoImpl fulfillmentGroupDaoImpl;
 
   /**
    * Test {@link FulfillmentGroupDaoImpl#createDefault()}.
-   *
    * <ul>
-   *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).
+   *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupDaoImpl#createDefault()}
+   * <p>
+   * Method under test: {@link FulfillmentGroupDaoImpl#createDefault()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentGroup FulfillmentGroupDaoImpl.createDefault()"})
   public void testCreateDefault_thenReturnFulfillmentGroupImpl() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
     fulfillmentGroupImpl.setAddress(new AddressImpl());
     fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction(
-        "org.broadleafcommerce.core.order.domain.FulfillmentGroup");
+    fulfillmentGroupImpl.setDeliveryInstruction("org.broadleafcommerce.core.order.domain.FulfillmentGroup");
     fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
     fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
     fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
@@ -86,10 +85,13 @@ public class FulfillmentGroupDaoImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("org.broadleafcommerce.core.order.domain.FulfillmentGroup");
     fulfillmentGroupImpl.setShippingOverride(true);
+    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -98,34 +100,30 @@ public class FulfillmentGroupDaoImplDiffblueTest {
     fulfillmentGroupImpl.setTotalItemTax(new Money());
     fulfillmentGroupImpl.setTotalTax(new Money());
     fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(fulfillmentGroupImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(fulfillmentGroupImpl);
 
     // Act
     FulfillmentGroup actualCreateDefaultResult = fulfillmentGroupDaoImpl.createDefault();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.order.domain.FulfillmentGroup");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.FulfillmentGroup"));
     assertSame(fulfillmentGroupImpl, actualCreateDefaultResult);
   }
 
   /**
    * Test {@link FulfillmentGroupDaoImpl#create()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupDaoImpl#create()}
+   * <p>
+   * Method under test: {@link FulfillmentGroupDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentGroup FulfillmentGroupDaoImpl.create()"})
   public void testCreate() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
     fulfillmentGroupImpl.setAddress(new AddressImpl());
     fulfillmentGroupImpl.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroupImpl.setDeliveryInstruction(
-        "org.broadleafcommerce.core.order.domain.FulfillmentGroup");
+    fulfillmentGroupImpl.setDeliveryInstruction("org.broadleafcommerce.core.order.domain.FulfillmentGroup");
     fulfillmentGroupImpl.setFulfillmentGroupAdjustments(new ArrayList<>());
     fulfillmentGroupImpl.setFulfillmentGroupFees(new ArrayList<>());
     fulfillmentGroupImpl.setFulfillmentGroupItems(new ArrayList<>());
@@ -141,10 +139,13 @@ public class FulfillmentGroupDaoImplDiffblueTest {
     fulfillmentGroupImpl.setPrimary(true);
     fulfillmentGroupImpl.setReferenceNumber("42");
     fulfillmentGroupImpl.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setRetailShippingPrice(new Money());
     fulfillmentGroupImpl.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroupImpl.setSaleShippingPrice(new Money());
     fulfillmentGroupImpl.setSequence(1);
     fulfillmentGroupImpl.setService("org.broadleafcommerce.core.order.domain.FulfillmentGroup");
     fulfillmentGroupImpl.setShippingOverride(true);
+    fulfillmentGroupImpl.setShippingPrice(new Money());
     fulfillmentGroupImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroupImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupImpl.setTotal(new Money());
@@ -153,26 +154,23 @@ public class FulfillmentGroupDaoImplDiffblueTest {
     fulfillmentGroupImpl.setTotalItemTax(new Money());
     fulfillmentGroupImpl.setTotalTax(new Money());
     fulfillmentGroupImpl.setType(FulfillmentType.DIGITAL);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(fulfillmentGroupImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(fulfillmentGroupImpl);
 
     // Act
     FulfillmentGroup actualCreateResult = fulfillmentGroupDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.order.domain.FulfillmentGroup");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.FulfillmentGroup"));
     assertSame(fulfillmentGroupImpl, actualCreateResult);
   }
 
   /**
    * Test {@link FulfillmentGroupDaoImpl#createFulfillmentGroupFee()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupDaoImpl#createFulfillmentGroupFee()}
+   * <p>
+   * Method under test: {@link FulfillmentGroupDaoImpl#createFulfillmentGroupFee()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentGroupFee FulfillmentGroupDaoImpl.createFulfillmentGroupFee()"})
   public void testCreateFulfillmentGroupFee() {
     // Arrange
@@ -181,21 +179,17 @@ public class FulfillmentGroupDaoImplDiffblueTest {
     fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupFeeImpl.setId(1L);
     fulfillmentGroupFeeImpl.setName("org.broadleafcommerce.core.order.domain.FulfillmentGroupFee");
-    fulfillmentGroupFeeImpl.setReportingCode(
-        "org.broadleafcommerce.core.order.domain.FulfillmentGroupFee");
+    fulfillmentGroupFeeImpl.setReportingCode("org.broadleafcommerce.core.order.domain.FulfillmentGroupFee");
     fulfillmentGroupFeeImpl.setTaxable(true);
     fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupFeeImpl.setTotalTax(new Money());
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(fulfillmentGroupFeeImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(fulfillmentGroupFeeImpl);
 
     // Act
-    FulfillmentGroupFee actualCreateFulfillmentGroupFeeResult =
-        fulfillmentGroupDaoImpl.createFulfillmentGroupFee();
+    FulfillmentGroupFee actualCreateFulfillmentGroupFeeResult = fulfillmentGroupDaoImpl.createFulfillmentGroupFee();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.order.domain.FulfillmentGroupFee");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.FulfillmentGroupFee"));
     assertSame(fulfillmentGroupFeeImpl, actualCreateFulfillmentGroupFeeResult);
   }
 }

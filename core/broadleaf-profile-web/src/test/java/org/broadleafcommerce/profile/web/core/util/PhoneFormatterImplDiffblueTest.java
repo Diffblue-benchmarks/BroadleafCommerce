@@ -19,7 +19,6 @@ package org.broadleafcommerce.profile.web.core.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
@@ -34,23 +33,21 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {PhoneFormatterImpl.class})
 @ExtendWith(SpringExtension.class)
 class PhoneFormatterImplDiffblueTest {
-  @Autowired private PhoneFormatterImpl phoneFormatterImpl;
+  @Autowired
+  private PhoneFormatterImpl phoneFormatterImpl;
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is {@code 42}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given '42'; then PhoneImpl (default constructor) PhoneNumber is '42'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); given '42'; then PhoneImpl (default constructor) PhoneNumber is '42'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
   void testFormatPhoneNumber_given42_thenPhoneImplPhoneNumberIs42() {
     // Arrange
@@ -71,89 +68,18 @@ class PhoneFormatterImplDiffblueTest {
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>Given {@code 6625550144\D}.
-   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code 6625550144\D}.
+   *   <li>Given {@code 6625550144}.</li>
+   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is {@code 662-555-0144}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given '6625550144\\D'; when PhoneImpl (default constructor) PhoneNumber is '6625550144\\D'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); given '6625550144'; then PhoneImpl (default constructor) PhoneNumber is '662-555-0144'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
-  void testFormatPhoneNumber_given6625550144D_whenPhoneImplPhoneNumberIs6625550144D() {
-    // Arrange
-    PhoneFormatterImpl phoneFormatterImpl = new PhoneFormatterImpl();
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setDefault(true);
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144\\D");
-
-    // Act
-    phoneFormatterImpl.formatPhoneNumber(phone);
-
-    // Assert
-    assertEquals("662-555-0144", phone.getPhoneNumber());
-  }
-
-  /**
-   * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
-   * <ul>
-   *   <li>Given {@code 6625550144Phone Number}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
-   */
-  @Test
-  @DisplayName("Test formatPhoneNumber(Phone); given '6625550144Phone Number'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
-  void testFormatPhoneNumber_given6625550144PhoneNumber() {
-    // Arrange
-    PhoneFormatterImpl phoneFormatterImpl = new PhoneFormatterImpl();
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setDefault(true);
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144Phone Number");
-
-    // Act
-    phoneFormatterImpl.formatPhoneNumber(phone);
-
-    // Assert
-    assertEquals("662-555-0144", phone.getPhoneNumber());
-  }
-
-  /**
-   * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
-   * <ul>
-   *   <li>Given {@code 6625550144}.
-   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code 6625550144}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
-   */
-  @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given '6625550144'; when PhoneImpl (default constructor) PhoneNumber is '6625550144'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
-  void testFormatPhoneNumber_given6625550144_whenPhoneImplPhoneNumberIs6625550144() {
+  void testFormatPhoneNumber_given6625550144_thenPhoneImplPhoneNumberIs6625550144() {
     // Arrange
     PhoneImpl phone = new PhoneImpl();
     phone.setActive(true);
@@ -172,89 +98,16 @@ class PhoneFormatterImplDiffblueTest {
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>Given {@code 6625550144-}.
-   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code 6625550144-}.
+   *   <li>Given {@code +44 1865 4960636}.</li>
+   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is {@code 441-865-4960}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given '6625550144-'; when PhoneImpl (default constructor) PhoneNumber is '6625550144-'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
-  void testFormatPhoneNumber_given6625550144_whenPhoneImplPhoneNumberIs66255501442() {
-    // Arrange
-    PhoneFormatterImpl phoneFormatterImpl = new PhoneFormatterImpl();
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setDefault(true);
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144-");
-
-    // Act
-    phoneFormatterImpl.formatPhoneNumber(phone);
-
-    // Assert
-    assertEquals("662-555-0144", phone.getPhoneNumber());
-  }
-
-  /**
-   * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
-   * <ul>
-   *   <li>Given {@code 6625550144U}.
-   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code 6625550144U}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
-   */
-  @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given '6625550144U'; when PhoneImpl (default constructor) PhoneNumber is '6625550144U'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
-  void testFormatPhoneNumber_given6625550144u_whenPhoneImplPhoneNumberIs6625550144u() {
-    // Arrange
-    PhoneFormatterImpl phoneFormatterImpl = new PhoneFormatterImpl();
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setDefault(true);
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144U");
-
-    // Act
-    phoneFormatterImpl.formatPhoneNumber(phone);
-
-    // Assert
-    assertEquals("662-555-0144", phone.getPhoneNumber());
-  }
-
-  /**
-   * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
-   * <ul>
-   *   <li>Given {@code +44 1865 4960636}.
-   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is {@code 441-865-4960}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
-   */
-  @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given '+44 1865 4960636'; then PhoneImpl (default constructor) PhoneNumber is '441-865-4960'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); given '+44 1865 4960636'; then PhoneImpl (default constructor) PhoneNumber is '441-865-4960'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
   void testFormatPhoneNumber_given4418654960636_thenPhoneImplPhoneNumberIs4418654960() {
     // Arrange
@@ -275,52 +128,16 @@ class PhoneFormatterImplDiffblueTest {
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>Given {@code 6625550144+44 1865 4960636}.
+   *   <li>Given {@code \D}.</li>
+   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code \D}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName("Test formatPhoneNumber(Phone); given '6625550144+44 1865 4960636'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
-  void testFormatPhoneNumber_given66255501444418654960636() {
-    // Arrange
-    PhoneFormatterImpl phoneFormatterImpl = new PhoneFormatterImpl();
-
-    PhoneImpl phone = new PhoneImpl();
-    phone.setActive(true);
-    phone.setCountryCode("GB");
-    phone.setDefault(true);
-    phone.setExtension("Extension");
-    phone.setId(1L);
-    phone.setPhoneNumber("6625550144+44 1865 4960636");
-
-    // Act
-    phoneFormatterImpl.formatPhoneNumber(phone);
-
-    // Assert
-    assertEquals("662-555-0144", phone.getPhoneNumber());
-  }
-
-  /**
-   * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
-   * <ul>
-   *   <li>Given {@code \D}.
-   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code \D}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
-   */
-  @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given '\\D'; when PhoneImpl (default constructor) PhoneNumber is '\\D'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); given '\\D'; when PhoneImpl (default constructor) PhoneNumber is '\\D'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
   void testFormatPhoneNumber_givenD_whenPhoneImplPhoneNumberIsD() {
     // Arrange
@@ -341,19 +158,16 @@ class PhoneFormatterImplDiffblueTest {
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>Given {@code -}.
-   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code -}.
+   *   <li>Given {@code -}.</li>
+   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code -}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given '-'; when PhoneImpl (default constructor) PhoneNumber is '-'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); given '-'; when PhoneImpl (default constructor) PhoneNumber is '-'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
   void testFormatPhoneNumber_givenDash_whenPhoneImplPhoneNumberIsDash() {
     // Arrange
@@ -374,19 +188,16 @@ class PhoneFormatterImplDiffblueTest {
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>Given empty string.
-   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is empty string.
+   *   <li>Given empty string.</li>
+   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given empty string; then PhoneImpl (default constructor) PhoneNumber is empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); given empty string; then PhoneImpl (default constructor) PhoneNumber is empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
   void testFormatPhoneNumber_givenEmptyString_thenPhoneImplPhoneNumberIsEmptyString() {
     // Arrange
@@ -407,19 +218,16 @@ class PhoneFormatterImplDiffblueTest {
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>Given {@code Phone Number}.
-   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code Phone Number}.
+   *   <li>Given {@code Phone Number}.</li>
+   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code Phone Number}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given 'Phone Number'; when PhoneImpl (default constructor) PhoneNumber is 'Phone Number'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); given 'Phone Number'; when PhoneImpl (default constructor) PhoneNumber is 'Phone Number'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
   void testFormatPhoneNumber_givenPhoneNumber_whenPhoneImplPhoneNumberIsPhoneNumber() {
     // Arrange
@@ -440,19 +248,16 @@ class PhoneFormatterImplDiffblueTest {
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>Given {@code U}.
-   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code U}.
+   *   <li>Given {@code U}.</li>
+   *   <li>When {@link PhoneImpl} (default constructor) PhoneNumber is {@code U}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); given 'U'; when PhoneImpl (default constructor) PhoneNumber is 'U'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); given 'U'; when PhoneImpl (default constructor) PhoneNumber is 'U'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
   void testFormatPhoneNumber_givenU_whenPhoneImplPhoneNumberIsU() {
     // Arrange
@@ -473,19 +278,16 @@ class PhoneFormatterImplDiffblueTest {
 
   /**
    * Test {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}.
-   *
    * <ul>
-   *   <li>When {@link PhoneImpl} (default constructor).
-   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is {@code null}.
+   *   <li>When {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then {@link PhoneImpl} (default constructor) PhoneNumber is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
+   * <p>
+   * Method under test: {@link PhoneFormatterImpl#formatPhoneNumber(Phone)}
    */
   @Test
-  @DisplayName(
-      "Test formatPhoneNumber(Phone); when PhoneImpl (default constructor); then PhoneImpl (default constructor) PhoneNumber is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test formatPhoneNumber(Phone); when PhoneImpl (default constructor); then PhoneImpl (default constructor) PhoneNumber is 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void PhoneFormatterImpl.formatPhoneNumber(Phone)"})
   void testFormatPhoneNumber_whenPhoneImpl_thenPhoneImplPhoneNumberIsNull() {
     // Arrange

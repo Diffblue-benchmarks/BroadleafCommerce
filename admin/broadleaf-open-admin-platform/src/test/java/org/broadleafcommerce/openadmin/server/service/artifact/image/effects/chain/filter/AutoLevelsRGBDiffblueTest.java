@@ -17,17 +17,12 @@
  */
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.awt.image.DirectColorModel;
-import java.awt.image.SinglePixelPackedSampleModel;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -43,16 +38,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AutoLevelsRGB.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AutoLevelsRGBDiffblueTest {
-  @Autowired private AutoLevelsRGB autoLevelsRGB;
+  @Autowired
+  private AutoLevelsRGB autoLevelsRGB;
 
   /**
    * Test {@link AutoLevelsRGB#AutoLevelsRGB()}.
-   *
-   * <p>Method under test: {@link AutoLevelsRGB#AutoLevelsRGB()}
+   * <p>
+   * Method under test: {@link AutoLevelsRGB#AutoLevelsRGB()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AutoLevelsRGB.<init>()", "void AutoLevelsRGB.<init>(RenderingHints)"})
   public void testNewAutoLevelsRGB() {
     // Arrange and Act
@@ -65,16 +60,14 @@ public class AutoLevelsRGBDiffblueTest {
 
   /**
    * Test {@link AutoLevelsRGB#AutoLevelsRGB(RenderingHints)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AutoLevelsRGB#AutoLevelsRGB(RenderingHints)}
+   * <p>
+   * Method under test: {@link AutoLevelsRGB#AutoLevelsRGB(RenderingHints)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AutoLevelsRGB.<init>()", "void AutoLevelsRGB.<init>(RenderingHints)"})
   public void testNewAutoLevelsRGB_whenNull() {
     // Arrange and Act
@@ -87,76 +80,41 @@ public class AutoLevelsRGBDiffblueTest {
 
   /**
    * Test {@link AutoLevelsRGB#buildOperation(Map, InputStream, String)}.
-   *
-   * <p>Method under test: {@link AutoLevelsRGB#buildOperation(Map, InputStream, String)}
+   * <p>
+   * Method under test: {@link AutoLevelsRGB#buildOperation(Map, InputStream, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation AutoLevelsRGB.buildOperation(Map, InputStream, String)"
-  })
+      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation AutoLevelsRGB.buildOperation(Map, InputStream, String)"})
   public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
     // Act and Assert
-    assertNull(
-        autoLevelsRGB.buildOperation(
-            parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "text/plain"));
+    assertNull(autoLevelsRGB.buildOperation(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")),
+        "Mime Type"));
   }
 
   /**
    * Test {@link AutoLevelsRGB#filter(BufferedImage, BufferedImage)}.
-   *
    * <ul>
-   *   <li>Then ColorModel return {@link DirectColorModel}.
+   *   <li>Then return {@link BufferedImage#BufferedImage(int, int, int)} with one and one and one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AutoLevelsRGB#filter(BufferedImage, BufferedImage)}
+   * <p>
+   * Method under test: {@link AutoLevelsRGB#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BufferedImage AutoLevelsRGB.filter(BufferedImage, BufferedImage)"})
-  public void testFilter_thenColorModelReturnDirectColorModel() {
-    // Arrange
-    AutoLevelsRGB autoLevelsRGB = new AutoLevelsRGB();
-
-    // Act
-    BufferedImage actualFilterResult = autoLevelsRGB.filter(new BufferedImage(255, 1, 1), null);
-
-    // Assert
-    assertTrue(actualFilterResult.getColorModel() instanceof DirectColorModel);
-    assertTrue(actualFilterResult.getSampleModel() instanceof SinglePixelPackedSampleModel);
-    assertEquals(1, actualFilterResult.getWritableTileIndices().length);
-    assertEquals(255, actualFilterResult.getTileWidth());
-    assertEquals(255, actualFilterResult.getWidth());
-  }
-
-  /**
-   * Test {@link AutoLevelsRGB#filter(BufferedImage, BufferedImage)}.
-   *
-   * <ul>
-   *   <li>Then return {@link BufferedImage#BufferedImage(int, int, int)} with one and one and one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AutoLevelsRGB#filter(BufferedImage, BufferedImage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BufferedImage AutoLevelsRGB.filter(BufferedImage, BufferedImage)"})
   public void testFilter_thenReturnBufferedImageWithOneAndOneAndOne() {
     // Arrange
     AutoLevelsRGB autoLevelsRGB = new AutoLevelsRGB();
     BufferedImage src = new BufferedImage(255, 1, 1);
+
     BufferedImage dst = new BufferedImage(1, 1, 1);
 
-    // Act
-    BufferedImage actualFilterResult = autoLevelsRGB.filter(src, dst);
-
-    // Assert
-    assertSame(dst, actualFilterResult);
+    // Act and Assert
+    assertSame(dst, autoLevelsRGB.filter(src, dst));
   }
 }

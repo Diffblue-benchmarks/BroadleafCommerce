@@ -18,12 +18,10 @@
 package org.broadleafcommerce.core.order.dao;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -54,32 +52,31 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderItemDaoImplDiffblueTest {
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
-  @InjectMocks private OrderItemDaoImpl orderItemDaoImpl;
+  @InjectMocks
+  private OrderItemDaoImpl orderItemDaoImpl;
 
   /**
    * Test {@link OrderItemDaoImpl#create(OrderItemType)}.
-   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
-   *   <li>Then return {@link BundleOrderItemImpl} (default constructor).
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>When {@link OrderItemType#BASIC}.</li>
+   *   <li>Then return {@link BundleOrderItemImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemDaoImpl#create(OrderItemType)}
+   * <p>
+   * Method under test: {@link OrderItemDaoImpl#create(OrderItemType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderItem OrderItemDaoImpl.create(OrderItemType)"})
-  public void testCreate_givenAuditableCreatedByIsOne_thenReturnBundleOrderItemImpl() {
+  public void testCreate_givenAuditableCreatedByIsOne_whenBasic_thenReturnBundleOrderItemImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
@@ -104,7 +101,6 @@ public class OrderItemDaoImplDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
-    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -113,29 +109,23 @@ public class OrderItemDaoImplDiffblueTest {
     bundleOrderItemImpl.setSalePriceOverride(true);
     bundleOrderItemImpl.setTaxable(true);
     bundleOrderItemImpl.updateSaleAndRetailPrices();
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(bundleOrderItemImpl);
-
-    OrderItemType orderItemType = mock(OrderItemType.class);
-    when(orderItemType.getType()).thenReturn("Type");
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(bundleOrderItemImpl);
 
     // Act
-    OrderItem actualCreateResult = orderItemDaoImpl.create(orderItemType);
+    OrderItem actualCreateResult = orderItemDaoImpl.create(OrderItemType.BASIC);
 
     // Assert
-    verify(entityConfiguration).createEntityInstance("Type");
-    verify(orderItemType, atLeast(1)).getType();
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.OrderItem"));
     assertSame(bundleOrderItemImpl, actualCreateResult);
   }
 
   /**
    * Test {@link OrderItemDaoImpl#createPersonalMessage()}.
-   *
-   * <p>Method under test: {@link OrderItemDaoImpl#createPersonalMessage()}
+   * <p>
+   * Method under test: {@link OrderItemDaoImpl#createPersonalMessage()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersonalMessage OrderItemDaoImpl.createPersonalMessage()"})
   public void testCreatePersonalMessage() {
     // Arrange
@@ -145,26 +135,23 @@ public class OrderItemDaoImplDiffblueTest {
     personalMessageImpl.setMessageFrom("jane.doe@example.org");
     personalMessageImpl.setMessageTo("alice.liddell@example.org");
     personalMessageImpl.setOccasion("Occasion");
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(personalMessageImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(personalMessageImpl);
 
     // Act
     PersonalMessage actualCreatePersonalMessageResult = orderItemDaoImpl.createPersonalMessage();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.order.domain.PersonalMessage");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.PersonalMessage"));
     assertSame(personalMessageImpl, actualCreatePersonalMessageResult);
   }
 
   /**
    * Test {@link OrderItemDaoImpl#createOrderItemPriceDetail()}.
-   *
-   * <p>Method under test: {@link OrderItemDaoImpl#createOrderItemPriceDetail()}
+   * <p>
+   * Method under test: {@link OrderItemDaoImpl#createOrderItemPriceDetail()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderItemPriceDetail OrderItemDaoImpl.createOrderItemPriceDetail()"})
   public void testCreateOrderItemPriceDetail() {
     // Arrange
@@ -174,27 +161,24 @@ public class OrderItemDaoImplDiffblueTest {
     orderItemPriceDetailImpl.setOrderItemAdjustments(new ArrayList<>());
     orderItemPriceDetailImpl.setQuantity(1);
     orderItemPriceDetailImpl.setUseSalePrice(true);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(orderItemPriceDetailImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(orderItemPriceDetailImpl);
 
     // Act
-    OrderItemPriceDetail actualCreateOrderItemPriceDetailResult =
-        orderItemDaoImpl.createOrderItemPriceDetail();
+    OrderItemPriceDetail actualCreateOrderItemPriceDetailResult = orderItemDaoImpl.createOrderItemPriceDetail();
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.order.domain.OrderItemPriceDetail");
+        .createEntityInstance(eq("org.broadleafcommerce.core.order.domain.OrderItemPriceDetail"));
     assertSame(orderItemPriceDetailImpl, actualCreateOrderItemPriceDetailResult);
   }
 
   /**
    * Test {@link OrderItemDaoImpl#createOrderItemQualifier()}.
-   *
-   * <p>Method under test: {@link OrderItemDaoImpl#createOrderItemQualifier()}
+   * <p>
+   * Method under test: {@link OrderItemDaoImpl#createOrderItemQualifier()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderItemQualifier OrderItemDaoImpl.createOrderItemQualifier()"})
   public void testCreateOrderItemQualifier() {
     // Arrange
@@ -202,34 +186,27 @@ public class OrderItemDaoImplDiffblueTest {
     orderItemQualifierImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     orderItemQualifierImpl.setOrderItem(new BundleOrderItemImpl());
     orderItemQualifierImpl.setQuantity(OrderItemQualifierImpl.serialVersionUID);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(orderItemQualifierImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(orderItemQualifierImpl);
 
     // Act
-    OrderItemQualifier actualCreateOrderItemQualifierResult =
-        orderItemDaoImpl.createOrderItemQualifier();
+    OrderItemQualifier actualCreateOrderItemQualifierResult = orderItemDaoImpl.createOrderItemQualifier();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.order.domain.OrderItemQualifier");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.OrderItemQualifier"));
     assertSame(orderItemQualifierImpl, actualCreateOrderItemQualifierResult);
   }
 
   /**
    * Test {@link OrderItemDaoImpl#initializeOrderItemPriceDetails(OrderItem)}.
-   *
    * <ul>
-   *   <li>Then return {@link OrderItemPriceDetailImpl} (default constructor).
+   *   <li>Then return {@link OrderItemPriceDetailImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemDaoImpl#initializeOrderItemPriceDetails(OrderItem)}
+   * <p>
+   * Method under test: {@link OrderItemDaoImpl#initializeOrderItemPriceDetails(OrderItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OrderItemPriceDetail OrderItemDaoImpl.initializeOrderItemPriceDetails(OrderItem)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"OrderItemPriceDetail OrderItemDaoImpl.initializeOrderItemPriceDetails(OrderItem)"})
   public void testInitializeOrderItemPriceDetails_thenReturnOrderItemPriceDetailImpl() {
     // Arrange
     OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
@@ -238,16 +215,15 @@ public class OrderItemDaoImplDiffblueTest {
     orderItemPriceDetailImpl.setOrderItemAdjustments(new ArrayList<>());
     orderItemPriceDetailImpl.setQuantity(1);
     orderItemPriceDetailImpl.setUseSalePrice(true);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(orderItemPriceDetailImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(orderItemPriceDetailImpl);
 
     // Act
-    OrderItemPriceDetail actualInitializeOrderItemPriceDetailsResult =
-        orderItemDaoImpl.initializeOrderItemPriceDetails(new BundleOrderItemImpl());
+    OrderItemPriceDetail actualInitializeOrderItemPriceDetailsResult = orderItemDaoImpl
+        .initializeOrderItemPriceDetails(new BundleOrderItemImpl());
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.order.domain.OrderItemPriceDetail");
+        .createEntityInstance(eq("org.broadleafcommerce.core.order.domain.OrderItemPriceDetail"));
     assertSame(orderItemPriceDetailImpl, actualInitializeOrderItemPriceDetailsResult);
   }
 }

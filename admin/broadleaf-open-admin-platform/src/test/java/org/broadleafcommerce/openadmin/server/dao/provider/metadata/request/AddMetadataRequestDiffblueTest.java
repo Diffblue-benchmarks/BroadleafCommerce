@@ -19,8 +19,7 @@ package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
@@ -30,9 +29,8 @@ import org.junit.experimental.categories.Category;
 public class AddMetadataRequestDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AddMetadataRequest#AddMetadataRequest(Class, Class, DynamicEntityDao, String)}
    *   <li>{@link AddMetadataRequest#getDynamicEntityDao()}
@@ -42,15 +40,10 @@ public class AddMetadataRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AddMetadataRequest.<init>(Class, Class, DynamicEntityDao, String)",
-    "DynamicEntityDao AddMetadataRequest.getDynamicEntityDao()",
-    "Class AddMetadataRequest.getParentClass()",
-    "String AddMetadataRequest.getPrefix()",
-    "Class AddMetadataRequest.getTargetClass()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AddMetadataRequest.<init>(Class, Class, DynamicEntityDao, String)",
+      "DynamicEntityDao AddMetadataRequest.getDynamicEntityDao()", "Class AddMetadataRequest.getParentClass()",
+      "String AddMetadataRequest.getPrefix()", "Class AddMetadataRequest.getTargetClass()"})
   public void testGettersAndSetters() {
     // Arrange
     Class<Object> parentClass = Object.class;
@@ -58,8 +51,8 @@ public class AddMetadataRequestDiffblueTest {
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act
-    AddMetadataRequest actualAddMetadataRequest =
-        new AddMetadataRequest(parentClass, targetClass, dynamicEntityDao, "Prefix");
+    AddMetadataRequest actualAddMetadataRequest = new AddMetadataRequest(parentClass, targetClass, dynamicEntityDao,
+        "Prefix");
     DynamicEntityDao actualDynamicEntityDao = actualAddMetadataRequest.getDynamicEntityDao();
     Class<?> actualParentClass = actualAddMetadataRequest.getParentClass();
     String actualPrefix = actualAddMetadataRequest.getPrefix();

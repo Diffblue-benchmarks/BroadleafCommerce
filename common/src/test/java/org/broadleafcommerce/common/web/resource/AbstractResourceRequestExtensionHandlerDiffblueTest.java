@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.web.resource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
@@ -39,69 +38,60 @@ public class AbstractResourceRequestExtensionHandlerDiffblueTest {
   private AbstractResourceRequestExtensionHandler abstractResourceRequestExtensionHandler;
 
   /**
-   * Test {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}
+   * Test {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractResourceRequestExtensionHandler#getModifiedResource(String, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractResourceRequestExtensionHandler.getModifiedResource(String, ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractResourceRequestExtensionHandler.getModifiedResource(String, ExtensionResultHolder)"})
   public void testGetModifiedResource() {
     // Arrange
+    AbstractResourceRequestExtensionHandler abstractResourceRequestExtensionHandler2 = new AbstractResourceRequestExtensionHandler();
+
     ExtensionResultHolder erh = new ExtensionResultHolder();
     erh.setResult(BLCFieldUtils.NULL_FIELD);
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractResourceRequestExtensionHandler.getModifiedResource("Path", erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractResourceRequestExtensionHandler2.getModifiedResource("Path", erh));
   }
 
   /**
-   * Test {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}
+   * Test {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractResourceRequestExtensionHandler#getOverrideResource(String, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractResourceRequestExtensionHandler.getOverrideResource(String, ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractResourceRequestExtensionHandler.getOverrideResource(String, ExtensionResultHolder)"})
   public void testGetOverrideResource() {
     // Arrange
+    AbstractResourceRequestExtensionHandler abstractResourceRequestExtensionHandler2 = new AbstractResourceRequestExtensionHandler();
+
     ExtensionResultHolder erh = new ExtensionResultHolder();
     erh.setResult(BLCFieldUtils.NULL_FIELD);
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractResourceRequestExtensionHandler.getOverrideResource("Path", erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractResourceRequestExtensionHandler2.getOverrideResource("Path", erh));
   }
 
   /**
    * Test new {@link AbstractResourceRequestExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AbstractResourceRequestExtensionHandler}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link AbstractResourceRequestExtensionHandler}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AbstractResourceRequestExtensionHandler.<init>()"})
   public void testNewAbstractResourceRequestExtensionHandler() {
     // Arrange and Act
-    AbstractResourceRequestExtensionHandler actualAbstractResourceRequestExtensionHandler =
-        new AbstractResourceRequestExtensionHandler();
+    AbstractResourceRequestExtensionHandler actualAbstractResourceRequestExtensionHandler = new AbstractResourceRequestExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractResourceRequestExtensionHandler.getPriority());

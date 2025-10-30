@@ -18,7 +18,6 @@
 package org.broadleafcommerce.core.web.controller.checkout;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -36,13 +35,12 @@ class BroadleafCheckoutControllerExtensionManagerDiffblueTest {
 
   /**
    * Test {@link BroadleafCheckoutControllerExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link BroadleafCheckoutControllerExtensionManager#continueOnHandled()}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutControllerExtensionManager#continueOnHandled()}
    */
   @Test
   @DisplayName("Test continueOnHandled()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean BroadleafCheckoutControllerExtensionManager.continueOnHandled()"})
   void testContinueOnHandled() {
     // Arrange, Act and Assert

@@ -18,13 +18,13 @@
 package org.broadleafcommerce.core.web.social;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -48,63 +49,45 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 @ExtendWith(MockitoExtension.class)
 class BroadleafSocialSignInAdapterDiffblueTest {
-  @InjectMocks private BroadleafSocialSignInAdapter broadleafSocialSignInAdapter;
+  @InjectMocks
+  private BroadleafSocialSignInAdapter broadleafSocialSignInAdapter;
 
-  @Mock private UserDetailsService userDetailsService;
+  @Mock
+  private UserDetailsService userDetailsService;
 
   /**
    * Test {@link BroadleafSocialSignInAdapter#signIn(String, Connection, NativeWebRequest)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafSocialSignInAdapter#signIn(String, Connection,
-   * NativeWebRequest)}
+   * <p>
+   * Method under test: {@link BroadleafSocialSignInAdapter#signIn(String, Connection, NativeWebRequest)}
    */
   @Test
   @DisplayName("Test signIn(String, Connection, NativeWebRequest); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafSocialSignInAdapter.signIn(String, Connection, NativeWebRequest)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafSocialSignInAdapter.signIn(String, Connection, NativeWebRequest)"})
   void testSignIn_thenReturnNull() throws UsernameNotFoundException {
     // Arrange
-    when(userDetailsService.loadUserByUsername(Mockito.<String>any()))
-        .thenReturn(new InetOrgPerson());
-    ConnectionData data =
-        new ConnectionData(
-            "42",
-            "42",
-            "Display Name",
-            "https://example.org/example",
-            "https://example.org/example",
-            "ABC123",
-            "Secret",
-            "ABC123",
-            1L);
-    GenericOAuth1ServiceProvider serviceProvider =
-        new GenericOAuth1ServiceProvider(
-            "Consumer Key",
-            "Consumer Secret",
-            "https://example.org/example",
-            "https://example.org/example",
-            "https://example.org/example",
-            "https://example.org/example",
-            OAuth1Version.CORE_10);
+    when(userDetailsService.loadUserByUsername(Mockito.<String>any())).thenReturn(new InetOrgPerson());
+    ConnectionData data = new ConnectionData("42", "42", "Display Name", "https://example.org/example",
+        "https://example.org/example", "ABC123", "Secret", "ABC123", 1L);
 
-    OAuth1Connection<?> connection =
-        new OAuth1Connection<>(data, serviceProvider, mock(ApiAdapter.class));
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    OAuth1Connection<?> connection = new OAuth1Connection<>(data,
+        new GenericOAuth1ServiceProvider("Consumer Key", "Consumer Secret", "https://example.org/example",
+            "https://example.org/example", "https://example.org/example", "https://example.org/example",
+            OAuth1Version.CORE_10),
+        mock(ApiAdapter.class));
+
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
     // Act
-    String actualSignInResult =
-        broadleafSocialSignInAdapter.signIn("janedoe", connection, new ServletWebRequest(request));
+    String actualSignInResult = broadleafSocialSignInAdapter.signIn("janedoe", connection,
+        new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
 
     // Assert
-    verify(userDetailsService).loadUserByUsername("janedoe");
+    verify(userDetailsService).loadUserByUsername(eq("janedoe"));
     assertNull(actualSignInResult);
   }
 }

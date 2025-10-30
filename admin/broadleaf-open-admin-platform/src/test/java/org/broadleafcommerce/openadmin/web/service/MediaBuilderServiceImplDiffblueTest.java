@@ -18,13 +18,11 @@
 package org.broadleafcommerce.openadmin.web.service;
 
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -46,148 +44,79 @@ public class MediaBuilderServiceImplDiffblueTest {
   @MockBean(name = "blEntityConfiguration")
   private EntityConfiguration entityConfiguration;
 
-  @Autowired private MediaBuilderServiceImpl mediaBuilderServiceImpl;
+  @Autowired
+  private MediaBuilderServiceImpl mediaBuilderServiceImpl;
 
   /**
    * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
+   * <p>
+   * Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
   public void testConvertJsonToMedia() throws JsonProcessingException {
     // Arrange
     MediaDto mediaDto = new MediaDto();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<Media>>any()))
         .thenReturn(mediaDto);
-
-    JsonMapper jsonMapper = JsonMapper.builder().findAndAddModules().build();
-    String json = jsonMapper.writeValueAsString(new MediaDto());
+    JsonMapper buildResult = JsonMapper.builder().findAndAddModules().build();
+    String json = buildResult.writeValueAsString(new MediaDto());
     Class<Object> type = Object.class;
 
     // Act
     Media actualConvertJsonToMediaResult = mediaBuilderServiceImpl.convertJsonToMedia(json, type);
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.media.domain.Media"),
+        isA(Class.class));
     assertSame(mediaDto, actualConvertJsonToMediaResult);
   }
 
   /**
    * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
+   * <p>
+   * Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
   public void testConvertJsonToMedia2() throws JsonProcessingException {
     // Arrange
     MediaDto mediaDto = new MediaDto();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<Media>>any()))
         .thenReturn(mediaDto);
-
-    JsonMapper jsonMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act
-    Media actualConvertJsonToMediaResult =
-        mediaBuilderServiceImpl.convertJsonToMedia(
-            jsonMapper.writeValueAsString(new MediaDto()), null);
-
-    // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
-    assertSame(mediaDto, actualConvertJsonToMediaResult);
-  }
-
-  /**
-   * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
-  public void testConvertJsonToMedia3() throws JsonProcessingException {
-    // Arrange
-    MediaDto mediaDto = new MediaDto();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
-        .thenReturn(mediaDto);
-    String json =
-        JsonMapper.builder()
-            .findAndAddModules()
-            .build()
-            .writeValueAsString(
-                "{\"id\":0,\"url\":\"\",\"title\":\"\",\"altText\":\"\",\"tags\":\"\"}");
+    String json = JsonMapper.builder()
+        .findAndAddModules()
+        .build()
+        .writeValueAsString("{\"id\":0,\"url\":\"\",\"title\":\"\",\"altText\":\"\",\"tags\":\"\"}");
     Class<Object> type = Object.class;
 
     // Act
     Media actualConvertJsonToMediaResult = mediaBuilderServiceImpl.convertJsonToMedia(json, type);
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.media.domain.Media"),
+        isA(Class.class));
     assertSame(mediaDto, actualConvertJsonToMediaResult);
   }
 
   /**
    * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>When {@code 42}.</li>
+   *   <li>Then return {@link MediaDto} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
+   * <p>
+   * Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
-  public void testConvertJsonToMedia_thenThrowRuntimeException() {
-    // Arrange
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
-        .thenThrow(new RuntimeException());
-    Class<Object> type = Object.class;
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class, () -> mediaBuilderServiceImpl.convertJsonToMedia("", type));
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
-  }
-
-  /**
-   * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
-   * <ul>
-   *   <li>When {@code 42}.
-   *   <li>Then return {@link MediaDto} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
   public void testConvertJsonToMedia_when42_thenReturnMediaDto() {
     // Arrange
     MediaDto mediaDto = new MediaDto();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<Media>>any()))
         .thenReturn(mediaDto);
     Class<Object> type = Object.class;
 
@@ -195,31 +124,27 @@ public class MediaBuilderServiceImplDiffblueTest {
     Media actualConvertJsonToMediaResult = mediaBuilderServiceImpl.convertJsonToMedia("42", type);
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.media.domain.Media"),
+        isA(Class.class));
     assertSame(mediaDto, actualConvertJsonToMediaResult);
   }
 
   /**
    * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
    * <ul>
-   *   <li>When builder findAndAddModules build writeValueAsString {@code 42}.
+   *   <li>When builder findAndAddModules build writeValueAsString {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
+   * <p>
+   * Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
   public void testConvertJsonToMedia_whenBuilderFindAndAddModulesBuildWriteValueAsString42()
       throws JsonProcessingException {
     // Arrange
     MediaDto mediaDto = new MediaDto();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<Media>>any()))
         .thenReturn(mediaDto);
     String json = JsonMapper.builder().findAndAddModules().build().writeValueAsString("42");
     Class<Object> type = Object.class;
@@ -228,31 +153,27 @@ public class MediaBuilderServiceImplDiffblueTest {
     Media actualConvertJsonToMediaResult = mediaBuilderServiceImpl.convertJsonToMedia(json, type);
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.media.domain.Media"),
+        isA(Class.class));
     assertSame(mediaDto, actualConvertJsonToMediaResult);
   }
 
   /**
    * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
    * <ul>
-   *   <li>When empty string.
-   *   <li>Then return {@link MediaDto} (default constructor).
+   *   <li>When empty string.</li>
+   *   <li>Then return {@link MediaDto} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
+   * <p>
+   * Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
   public void testConvertJsonToMedia_whenEmptyString_thenReturnMediaDto() {
     // Arrange
     MediaDto mediaDto = new MediaDto();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<Media>>any()))
         .thenReturn(mediaDto);
     Class<Object> type = Object.class;
 
@@ -260,31 +181,27 @@ public class MediaBuilderServiceImplDiffblueTest {
     Media actualConvertJsonToMediaResult = mediaBuilderServiceImpl.convertJsonToMedia("", type);
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.media.domain.Media"),
+        isA(Class.class));
     assertSame(mediaDto, actualConvertJsonToMediaResult);
   }
 
   /**
    * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
    * <ul>
-   *   <li>When {@code Json}.
-   *   <li>Then return {@link MediaDto} (default constructor).
+   *   <li>When {@code Json}.</li>
+   *   <li>Then return {@link MediaDto} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
+   * <p>
+   * Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
   public void testConvertJsonToMedia_whenJson_thenReturnMediaDto() {
     // Arrange
     MediaDto mediaDto = new MediaDto();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<Media>>any()))
         .thenReturn(mediaDto);
     Class<Object> type = Object.class;
 
@@ -292,31 +209,27 @@ public class MediaBuilderServiceImplDiffblueTest {
     Media actualConvertJsonToMediaResult = mediaBuilderServiceImpl.convertJsonToMedia("Json", type);
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.media.domain.Media"),
+        isA(Class.class));
     assertSame(mediaDto, actualConvertJsonToMediaResult);
   }
 
   /**
    * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@link MediaDto} (default constructor).
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@link MediaDto} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
+   * <p>
+   * Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
   public void testConvertJsonToMedia_whenNull_thenReturnMediaDto() {
     // Arrange
     MediaDto mediaDto = new MediaDto();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<Media>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<Media>>any()))
         .thenReturn(mediaDto);
     Class<Object> type = Object.class;
 
@@ -324,9 +237,37 @@ public class MediaBuilderServiceImplDiffblueTest {
     Media actualConvertJsonToMediaResult = mediaBuilderServiceImpl.convertJsonToMedia(null, type);
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.media.domain.Media"), isA(Class.class));
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.media.domain.Media"),
+        isA(Class.class));
+    assertSame(mediaDto, actualConvertJsonToMediaResult);
+  }
+
+  /**
+   * Test {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@link MediaDto} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MediaBuilderServiceImpl#convertJsonToMedia(String, Class)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Media MediaBuilderServiceImpl.convertJsonToMedia(String, Class)"})
+  public void testConvertJsonToMedia_whenNull_thenReturnMediaDto2() throws JsonProcessingException {
+    // Arrange
+    MediaDto mediaDto = new MediaDto();
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<Media>>any()))
+        .thenReturn(mediaDto);
+    JsonMapper buildResult = JsonMapper.builder().findAndAddModules().build();
+
+    // Act
+    Media actualConvertJsonToMediaResult = mediaBuilderServiceImpl
+        .convertJsonToMedia(buildResult.writeValueAsString(new MediaDto()), null);
+
+    // Assert
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.media.domain.Media"),
+        isA(Class.class));
     assertSame(mediaDto, actualConvertJsonToMediaResult);
   }
 }

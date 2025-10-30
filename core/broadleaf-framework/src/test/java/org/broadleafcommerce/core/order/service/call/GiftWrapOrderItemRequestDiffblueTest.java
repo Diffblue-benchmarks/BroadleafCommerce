@@ -22,8 +22,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,28 +33,21 @@ import org.junit.experimental.categories.Category;
 
 public class GiftWrapOrderItemRequestDiffblueTest {
   /**
-   * Test {@link GiftWrapOrderItemRequest#equals(Object)}, and {@link
-   * GiftWrapOrderItemRequest#hashCode()}.
-   *
+   * Test {@link GiftWrapOrderItemRequest#equals(Object)}, and {@link GiftWrapOrderItemRequest#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftWrapOrderItemRequest#equals(Object)}
    *   <li>{@link GiftWrapOrderItemRequest#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftWrapOrderItemRequest.equals(Object)",
-    "int GiftWrapOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     GiftWrapOrderItemRequest giftWrapOrderItemRequest = new GiftWrapOrderItemRequest();
@@ -63,32 +55,26 @@ public class GiftWrapOrderItemRequestDiffblueTest {
 
     // Act and Assert
     assertEquals(giftWrapOrderItemRequest, giftWrapOrderItemRequest2);
-    assertEquals(giftWrapOrderItemRequest.hashCode(), giftWrapOrderItemRequest2.hashCode());
+    int expectedHashCodeResult = giftWrapOrderItemRequest.hashCode();
+    assertEquals(expectedHashCodeResult, giftWrapOrderItemRequest2.hashCode());
   }
 
   /**
-   * Test {@link GiftWrapOrderItemRequest#equals(Object)}, and {@link
-   * GiftWrapOrderItemRequest#hashCode()}.
-   *
+   * Test {@link GiftWrapOrderItemRequest#equals(Object)}, and {@link GiftWrapOrderItemRequest#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftWrapOrderItemRequest#equals(Object)}
    *   <li>{@link GiftWrapOrderItemRequest#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftWrapOrderItemRequest.equals(Object)",
-    "int GiftWrapOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     GiftWrapOrderItemRequest giftWrapOrderItemRequest = new GiftWrapOrderItemRequest();
@@ -101,21 +87,16 @@ public class GiftWrapOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link GiftWrapOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftWrapOrderItemRequest.equals(Object)",
-    "int GiftWrapOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GiftWrapOrderItemRequest(), 1);
@@ -123,21 +104,16 @@ public class GiftWrapOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link GiftWrapOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftWrapOrderItemRequest.equals(Object)",
-    "int GiftWrapOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     ArrayList<OrderItem> wrappedItems = new ArrayList<>();
@@ -152,21 +128,16 @@ public class GiftWrapOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link GiftWrapOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftWrapOrderItemRequest.equals(Object)",
-    "int GiftWrapOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GiftWrapOrderItemRequest(), null);
@@ -174,21 +145,16 @@ public class GiftWrapOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link GiftWrapOrderItemRequest#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
+   * <p>
+   * Method under test: {@link GiftWrapOrderItemRequest#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftWrapOrderItemRequest.equals(Object)",
-    "int GiftWrapOrderItemRequest.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean GiftWrapOrderItemRequest.equals(Object)", "int GiftWrapOrderItemRequest.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new GiftWrapOrderItemRequest(), "Different type to GiftWrapOrderItemRequest");
@@ -196,9 +162,8 @@ public class GiftWrapOrderItemRequestDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link GiftWrapOrderItemRequest}
    *   <li>{@link GiftWrapOrderItemRequest#setWrappedItems(List)}
@@ -206,13 +171,9 @@ public class GiftWrapOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void GiftWrapOrderItemRequest.<init>()",
-    "List GiftWrapOrderItemRequest.getWrappedItems()",
-    "void GiftWrapOrderItemRequest.setWrappedItems(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void GiftWrapOrderItemRequest.<init>()", "List GiftWrapOrderItemRequest.getWrappedItems()",
+      "void GiftWrapOrderItemRequest.setWrappedItems(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     GiftWrapOrderItemRequest actualGiftWrapOrderItemRequest = new GiftWrapOrderItemRequest();

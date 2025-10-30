@@ -18,8 +18,7 @@
 package org.broadleafcommerce.core.store.domain;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,9 +26,8 @@ import org.junit.experimental.categories.Category;
 public class ZipCodeImplDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ZipCodeImpl}
    *   <li>{@link ZipCodeImpl#setId(String)}
@@ -47,23 +45,12 @@ public class ZipCodeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ZipCodeImpl.<init>()",
-    "String ZipCodeImpl.getId()",
-    "String ZipCodeImpl.getZipCity()",
-    "double ZipCodeImpl.getZipLatitude()",
-    "double ZipCodeImpl.getZipLongitude()",
-    "String ZipCodeImpl.getZipState()",
-    "Integer ZipCodeImpl.getZipcode()",
-    "void ZipCodeImpl.setId(String)",
-    "void ZipCodeImpl.setZipCity(String)",
-    "void ZipCodeImpl.setZipLatitude(double)",
-    "void ZipCodeImpl.setZipLongitude(double)",
-    "void ZipCodeImpl.setZipState(String)",
-    "void ZipCodeImpl.setZipcode(Integer)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ZipCodeImpl.<init>()", "String ZipCodeImpl.getId()", "String ZipCodeImpl.getZipCity()",
+      "double ZipCodeImpl.getZipLatitude()", "double ZipCodeImpl.getZipLongitude()", "String ZipCodeImpl.getZipState()",
+      "Integer ZipCodeImpl.getZipcode()", "void ZipCodeImpl.setId(String)", "void ZipCodeImpl.setZipCity(String)",
+      "void ZipCodeImpl.setZipLatitude(double)", "void ZipCodeImpl.setZipLongitude(double)",
+      "void ZipCodeImpl.setZipState(String)", "void ZipCodeImpl.setZipcode(Integer)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ZipCodeImpl actualZipCodeImpl = new ZipCodeImpl();

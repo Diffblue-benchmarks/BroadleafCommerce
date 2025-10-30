@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.extensibility.context.merge;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor.BeanPackage;
 import org.junit.Test;
@@ -29,36 +28,40 @@ import org.junit.experimental.categories.Category;
 
 public class LateStageMergeBeanPostProcessorDiffblueTest {
   /**
-   * Test {@link LateStageMergeBeanPostProcessor#getOrder()}.
-   *
-   * <p>Method under test: {@link LateStageMergeBeanPostProcessor#getOrder()}
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link LateStageMergeBeanPostProcessor#setOrder(int)}
+   *   <li>{@link LateStageMergeBeanPostProcessor#getOrder()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "int LateStageMergeBeanPostProcessor.getOrder()",
-    "void LateStageMergeBeanPostProcessor.setOrder(int)"
-  })
-  public void testGetOrder() {
-    // Arrange, Act and Assert
-    assertEquals(Integer.MAX_VALUE, new LateStageMergeBeanPostProcessor().getOrder());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int LateStageMergeBeanPostProcessor.getOrder()",
+      "void LateStageMergeBeanPostProcessor.setOrder(int)"})
+  public void testGettersAndSetters() {
+    // Arrange
+    LateStageMergeBeanPostProcessor lateStageMergeBeanPostProcessor = new LateStageMergeBeanPostProcessor();
+
+    // Act
+    lateStageMergeBeanPostProcessor.setOrder(1);
+
+    // Assert
+    assertEquals(1, lateStageMergeBeanPostProcessor.getOrder());
   }
 
   /**
    * Test new {@link LateStageMergeBeanPostProcessor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * LateStageMergeBeanPostProcessor}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link LateStageMergeBeanPostProcessor}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void LateStageMergeBeanPostProcessor.<init>()"})
   public void testNewLateStageMergeBeanPostProcessor() {
     // Arrange and Act
-    LateStageMergeBeanPostProcessor actualLateStageMergeBeanPostProcessor =
-        new LateStageMergeBeanPostProcessor();
+    LateStageMergeBeanPostProcessor actualLateStageMergeBeanPostProcessor = new LateStageMergeBeanPostProcessor();
 
     // Assert
     assertNull(actualLateStageMergeBeanPostProcessor.getCollectionRef());

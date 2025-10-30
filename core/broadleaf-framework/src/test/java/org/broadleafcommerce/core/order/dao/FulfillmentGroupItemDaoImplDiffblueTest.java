@@ -18,10 +18,10 @@
 package org.broadleafcommerce.core.order.dao;
 
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.money.Money;
@@ -41,18 +41,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FulfillmentGroupItemDaoImplDiffblueTest {
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
-  @InjectMocks private FulfillmentGroupItemDaoImpl fulfillmentGroupItemDaoImpl;
+  @InjectMocks
+  private FulfillmentGroupItemDaoImpl fulfillmentGroupItemDaoImpl;
 
   /**
    * Test {@link FulfillmentGroupItemDaoImpl#create()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemDaoImpl#create()}
+   * <p>
+   * Method under test: {@link FulfillmentGroupItemDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FulfillmentGroupItem FulfillmentGroupItemDaoImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -67,15 +68,14 @@ public class FulfillmentGroupItemDaoImplDiffblueTest {
     fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
     fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
     fulfillmentGroupItemImpl.setTotalTax(new Money());
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(fulfillmentGroupItemImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(fulfillmentGroupItemImpl);
 
     // Act
     FulfillmentGroupItem actualCreateResult = fulfillmentGroupItemDaoImpl.create();
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.core.order.domain.FulfillmentGroupItem");
+        .createEntityInstance(eq("org.broadleafcommerce.core.order.domain.FulfillmentGroupItem"));
     assertSame(fulfillmentGroupItemImpl, actualCreateResult);
   }
 }

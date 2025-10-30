@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.search.service.solr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,121 +32,110 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {SolrJSONFacet.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SolrJSONFacetDiffblueTest {
-  @Autowired private SolrJSONFacet solrJSONFacet;
+  @Autowired
+  private SolrJSONFacet solrJSONFacet;
 
   /**
    * Test {@link SolrJSONFacet#get(String)}.
-   *
-   * <p>Method under test: {@link SolrJSONFacet#get(String)}
+   * <p>
+   * Method under test: {@link SolrJSONFacet#get(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object SolrJSONFacet.get(String)"})
   public void testGet() {
     // Arrange, Act and Assert
-    assertNull(solrJSONFacet.get("Key"));
+    assertNull((new SolrJSONFacet()).get("Key"));
   }
 
   /**
    * Test {@link SolrJSONFacet#getSubFacet(String)}.
-   *
-   * <p>Method under test: {@link SolrJSONFacet#getSubFacet(String)}
+   * <p>
+   * Method under test: {@link SolrJSONFacet#getSubFacet(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SolrJSONFacet SolrJSONFacet.getSubFacet(String)"})
   public void testGetSubFacet() {
     // Arrange, Act and Assert
-    assertNull(solrJSONFacet.getSubFacet("Key"));
+    assertNull((new SolrJSONFacet()).getSubFacet("Key"));
   }
 
   /**
    * Test {@link SolrJSONFacet#getBuckets()}.
-   *
-   * <p>Method under test: {@link SolrJSONFacet#getBuckets()}
+   * <p>
+   * Method under test: {@link SolrJSONFacet#getBuckets()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List SolrJSONFacet.getBuckets()"})
   public void testGetBuckets() {
     // Arrange, Act and Assert
-    assertNull(new SolrJSONFacet().getBuckets());
+    assertNull((new SolrJSONFacet()).getBuckets());
   }
 
   /**
    * Test {@link SolrJSONFacet#getString(String)} with {@code key}.
-   *
-   * <p>Method under test: {@link SolrJSONFacet#getString(String)}
+   * <p>
+   * Method under test: {@link SolrJSONFacet#getString(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SolrJSONFacet.getString(String)"})
   public void testGetStringWithKey() {
     // Arrange, Act and Assert
-    assertNull(solrJSONFacet.getString("Key"));
+    assertNull((new SolrJSONFacet()).getString("Key"));
   }
 
   /**
-   * Test {@link SolrJSONFacet#getString(String, Object, int)} with {@code key}, {@code object},
-   * {@code tabs}.
-   *
+   * Test {@link SolrJSONFacet#getString(String, Object, int)} with {@code key}, {@code object}, {@code tabs}.
    * <ul>
-   *   <li>When one.
+   *   <li>When one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SolrJSONFacet#getString(String, Object, int)}
+   * <p>
+   * Method under test: {@link SolrJSONFacet#getString(String, Object, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SolrJSONFacet.getString(String, Object, int)"})
   public void testGetStringWithKeyObjectTabs_whenOne() {
     // Arrange, Act and Assert
-    assertEquals("  Key : Object,\n", solrJSONFacet.getString("Key", "Object", 1));
+    assertEquals("  Key : Object,\n", (new SolrJSONFacet()).getString("Key", "Object", 1));
   }
 
   /**
-   * Test {@link SolrJSONFacet#getString(String, Object, int)} with {@code key}, {@code object},
-   * {@code tabs}.
-   *
+   * Test {@link SolrJSONFacet#getString(String, Object, int)} with {@code key}, {@code object}, {@code tabs}.
    * <ul>
-   *   <li>When zero.
+   *   <li>When zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SolrJSONFacet#getString(String, Object, int)}
+   * <p>
+   * Method under test: {@link SolrJSONFacet#getString(String, Object, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SolrJSONFacet.getString(String, Object, int)"})
   public void testGetStringWithKeyObjectTabs_whenZero() {
     // Arrange, Act and Assert
-    assertEquals("Key : Object,\n", solrJSONFacet.getString("Key", "Object", 0));
+    assertEquals("Key : Object,\n", (new SolrJSONFacet()).getString("Key", "Object", 0));
   }
 
   /**
    * Test {@link SolrJSONFacet#toString(int)} with {@code int}.
-   *
-   * <p>Method under test: {@link SolrJSONFacet#toString(int)}
+   * <p>
+   * Method under test: {@link SolrJSONFacet#toString(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SolrJSONFacet.toString(int)"})
   public void testToStringWithInt() {
     // Arrange, Act and Assert
-    assertEquals("", new SolrJSONFacet().toString(1));
+    assertEquals("", (new SolrJSONFacet()).toString(1));
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SolrJSONFacet}
    *   <li>{@link SolrJSONFacet#toString()}
@@ -155,13 +143,9 @@ public class SolrJSONFacetDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SolrJSONFacet.<init>()",
-    "java.util.Map SolrJSONFacet.getMap()",
-    "String SolrJSONFacet.toString()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SolrJSONFacet.<init>()", "java.util.Map SolrJSONFacet.getMap()",
+      "String SolrJSONFacet.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SolrJSONFacet actualSolrJSONFacet = new SolrJSONFacet();

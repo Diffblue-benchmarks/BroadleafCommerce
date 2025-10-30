@@ -23,8 +23,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
@@ -44,29 +43,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {ValidateCheckoutActivity.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ValidateCheckoutActivityDiffblueTest {
-  @Autowired private ValidateCheckoutActivity validateCheckoutActivity;
+  @Autowired
+  private ValidateCheckoutActivity validateCheckoutActivity;
 
   @MockBean(name = "blValidateCheckoutActivityExtensionManager")
   private ValidateCheckoutActivityExtensionManager validateCheckoutActivityExtensionManager;
 
   /**
    * Test {@link ValidateCheckoutActivity#execute(ProcessContext)}.
-   *
-   * <p>Method under test: {@link ValidateCheckoutActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link ValidateCheckoutActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext ValidateCheckoutActivity.execute(ProcessContext)"})
   public void testExecute() throws Exception {
     // Arrange
-    ValidateCheckoutActivityExtensionHandler validateCheckoutActivityExtensionHandler =
-        mock(ValidateCheckoutActivityExtensionHandler.class);
-    when(validateCheckoutActivityExtensionHandler.validateCheckout(
-            Mockito.<CheckoutSeed>any(), Mockito.<ExtensionResultHolder<Exception>>any()))
-        .thenReturn(ExtensionResultStatusType.NOT_HANDLED);
-    when(validateCheckoutActivityExtensionManager.getProxy())
-        .thenReturn(validateCheckoutActivityExtensionHandler);
+    ValidateCheckoutActivityExtensionHandler validateCheckoutActivityExtensionHandler = mock(
+        ValidateCheckoutActivityExtensionHandler.class);
+    when(validateCheckoutActivityExtensionHandler.validateCheckout(Mockito.<CheckoutSeed>any(),
+        Mockito.<ExtensionResultHolder<Exception>>any())).thenReturn(ExtensionResultStatusType.NOT_HANDLED);
+    when(validateCheckoutActivityExtensionManager.getProxy()).thenReturn(validateCheckoutActivityExtensionHandler);
     DefaultProcessContextImpl<CheckoutSeed> context = new DefaultProcessContextImpl<>();
 
     // Act
@@ -74,33 +71,28 @@ public class ValidateCheckoutActivityDiffblueTest {
 
     // Assert
     verify(validateCheckoutActivityExtensionManager).getProxy();
-    verify(validateCheckoutActivityExtensionHandler)
-        .validateCheckout(isNull(), isA(ExtensionResultHolder.class));
+    verify(validateCheckoutActivityExtensionHandler).validateCheckout(isNull(), isA(ExtensionResultHolder.class));
     assertSame(context, actualExecuteResult);
   }
 
   /**
    * Test {@link ValidateCheckoutActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).
+   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ValidateCheckoutActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link ValidateCheckoutActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext ValidateCheckoutActivity.execute(ProcessContext)"})
   public void testExecute_thenReturnDefaultProcessContextImpl() throws Exception {
     // Arrange
-    ValidateCheckoutActivityExtensionHandler validateCheckoutActivityExtensionHandler =
-        mock(ValidateCheckoutActivityExtensionHandler.class);
-    when(validateCheckoutActivityExtensionHandler.validateCheckout(
-            Mockito.<CheckoutSeed>any(), Mockito.<ExtensionResultHolder<Exception>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(validateCheckoutActivityExtensionManager.getProxy())
-        .thenReturn(validateCheckoutActivityExtensionHandler);
+    ValidateCheckoutActivityExtensionHandler validateCheckoutActivityExtensionHandler = mock(
+        ValidateCheckoutActivityExtensionHandler.class);
+    when(validateCheckoutActivityExtensionHandler.validateCheckout(Mockito.<CheckoutSeed>any(),
+        Mockito.<ExtensionResultHolder<Exception>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(validateCheckoutActivityExtensionManager.getProxy()).thenReturn(validateCheckoutActivityExtensionHandler);
     DefaultProcessContextImpl<CheckoutSeed> context = new DefaultProcessContextImpl<>();
 
     // Act
@@ -108,8 +100,7 @@ public class ValidateCheckoutActivityDiffblueTest {
 
     // Assert
     verify(validateCheckoutActivityExtensionManager).getProxy();
-    verify(validateCheckoutActivityExtensionHandler)
-        .validateCheckout(isNull(), isA(ExtensionResultHolder.class));
+    verify(validateCheckoutActivityExtensionHandler).validateCheckout(isNull(), isA(ExtensionResultHolder.class));
     assertSame(context, actualExecuteResult);
   }
 }

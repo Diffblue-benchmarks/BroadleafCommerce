@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.payment.dto.PaymentResponseDTO;
@@ -35,32 +34,28 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {PassthroughPaymentTransactionService.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PassthroughPaymentTransactionServiceDiffblueTest {
-  @Autowired private PassthroughPaymentTransactionService passthroughPaymentTransactionService;
+  @Autowired
+  private PassthroughPaymentTransactionService passthroughPaymentTransactionService;
 
   /**
    * Test {@link PassthroughPaymentTransactionService#authorize(PaymentRequestDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return OrderId is {@code null}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return OrderId is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PassthroughPaymentTransactionService#authorize(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentTransactionService#authorize(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentTransactionService.authorize(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentTransactionService.authorize(PaymentRequestDTO)"})
   public void testAuthorize_given42_thenReturnOrderIdIsNull() throws PaymentException {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
     paymentRequestDTO.transactionTotal("42");
 
     // Act
-    PaymentResponseDTO actualAuthorizeResult =
-        passthroughPaymentTransactionService.authorize(paymentRequestDTO);
+    PaymentResponseDTO actualAuthorizeResult = passthroughPaymentTransactionService.authorize(paymentRequestDTO);
 
     // Assert
     assertNull(actualAuthorizeResult.getOrderId());
@@ -81,28 +76,23 @@ public class PassthroughPaymentTransactionServiceDiffblueTest {
 
   /**
    * Test {@link PassthroughPaymentTransactionService#capture(PaymentRequestDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return OrderId is {@code null}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return OrderId is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PassthroughPaymentTransactionService#capture(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentTransactionService#capture(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentTransactionService.capture(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentTransactionService.capture(PaymentRequestDTO)"})
   public void testCapture_given42_thenReturnOrderIdIsNull() throws PaymentException {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
     paymentRequestDTO.transactionTotal("42");
 
     // Act
-    PaymentResponseDTO actualCaptureResult =
-        passthroughPaymentTransactionService.capture(paymentRequestDTO);
+    PaymentResponseDTO actualCaptureResult = passthroughPaymentTransactionService.capture(paymentRequestDTO);
 
     // Assert
     assertNull(actualCaptureResult.getOrderId());
@@ -123,29 +113,24 @@ public class PassthroughPaymentTransactionServiceDiffblueTest {
 
   /**
    * Test {@link PassthroughPaymentTransactionService#authorizeAndCapture(PaymentRequestDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return OrderId is {@code null}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return OrderId is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentTransactionService#authorizeAndCapture(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentTransactionService#authorizeAndCapture(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentTransactionService.authorizeAndCapture(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentTransactionService.authorizeAndCapture(PaymentRequestDTO)"})
   public void testAuthorizeAndCapture_given42_thenReturnOrderIdIsNull() throws PaymentException {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
     paymentRequestDTO.transactionTotal("42");
 
     // Act
-    PaymentResponseDTO actualAuthorizeAndCaptureResult =
-        passthroughPaymentTransactionService.authorizeAndCapture(paymentRequestDTO);
+    PaymentResponseDTO actualAuthorizeAndCaptureResult = passthroughPaymentTransactionService
+        .authorizeAndCapture(paymentRequestDTO);
 
     // Assert
     assertNull(actualAuthorizeAndCaptureResult.getOrderId());
@@ -166,29 +151,24 @@ public class PassthroughPaymentTransactionServiceDiffblueTest {
 
   /**
    * Test {@link PassthroughPaymentTransactionService#reverseAuthorize(PaymentRequestDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return OrderId is {@code null}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return OrderId is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentTransactionService#reverseAuthorize(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentTransactionService#reverseAuthorize(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentTransactionService.reverseAuthorize(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentTransactionService.reverseAuthorize(PaymentRequestDTO)"})
   public void testReverseAuthorize_given42_thenReturnOrderIdIsNull() throws PaymentException {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
     paymentRequestDTO.transactionTotal("42");
 
     // Act
-    PaymentResponseDTO actualReverseAuthorizeResult =
-        passthroughPaymentTransactionService.reverseAuthorize(paymentRequestDTO);
+    PaymentResponseDTO actualReverseAuthorizeResult = passthroughPaymentTransactionService
+        .reverseAuthorize(paymentRequestDTO);
 
     // Assert
     assertNull(actualReverseAuthorizeResult.getOrderId());
@@ -209,28 +189,23 @@ public class PassthroughPaymentTransactionServiceDiffblueTest {
 
   /**
    * Test {@link PassthroughPaymentTransactionService#refund(PaymentRequestDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return OrderId is {@code null}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return OrderId is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PassthroughPaymentTransactionService#refund(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentTransactionService#refund(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentTransactionService.refund(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentTransactionService.refund(PaymentRequestDTO)"})
   public void testRefund_given42_thenReturnOrderIdIsNull() throws PaymentException {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
     paymentRequestDTO.transactionTotal("42");
 
     // Act
-    PaymentResponseDTO actualRefundResult =
-        passthroughPaymentTransactionService.refund(paymentRequestDTO);
+    PaymentResponseDTO actualRefundResult = passthroughPaymentTransactionService.refund(paymentRequestDTO);
 
     // Assert
     assertNull(actualRefundResult.getOrderId());
@@ -251,29 +226,23 @@ public class PassthroughPaymentTransactionServiceDiffblueTest {
 
   /**
    * Test {@link PassthroughPaymentTransactionService#voidPayment(PaymentRequestDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return OrderId is {@code null}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return OrderId is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentTransactionService#voidPayment(PaymentRequestDTO)}
+   * <p>
+   * Method under test: {@link PassthroughPaymentTransactionService#voidPayment(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentTransactionService.voidPayment(PaymentRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"PaymentResponseDTO PassthroughPaymentTransactionService.voidPayment(PaymentRequestDTO)"})
   public void testVoidPayment_given42_thenReturnOrderIdIsNull() throws PaymentException {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
     paymentRequestDTO.transactionTotal("42");
 
     // Act
-    PaymentResponseDTO actualVoidPaymentResult =
-        passthroughPaymentTransactionService.voidPayment(paymentRequestDTO);
+    PaymentResponseDTO actualVoidPaymentResult = passthroughPaymentTransactionService.voidPayment(paymentRequestDTO);
 
     // Assert
     assertNull(actualVoidPaymentResult.getOrderId());

@@ -20,8 +20,7 @@ package org.broadleafcommerce.openadmin.web.form;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,29 +28,20 @@ import org.junit.experimental.categories.Category;
 public class TranslationFormDiffblueTest {
   /**
    * Test {@link TranslationForm#getIsRte()}.
-   *
    * <ul>
-   *   <li>Given {@link TranslationForm} (default constructor) FieldType is {@code Field Type}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link TranslationForm} (default constructor) IsRte is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TranslationForm#getIsRte()}
+   * <p>
+   * Method under test: {@link TranslationForm#getIsRte()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean TranslationForm.getIsRte()"})
-  public void testGetIsRte_givenTranslationFormFieldTypeIsFieldType_thenReturnTrue() {
+  public void testGetIsRte_givenTranslationFormIsRteIsTrue_thenReturnTrue() {
     // Arrange
     TranslationForm translationForm = new TranslationForm();
-    translationForm.setCeilingEntity("Ceiling Entity");
-    translationForm.setEntityId("42");
-    translationForm.setFieldType("Field Type");
     translationForm.setIsRte(true);
-    translationForm.setLocaleCode("en");
-    translationForm.setPropertyName("Property Name");
-    translationForm.setTranslatedValue("42");
-    translationForm.setTranslationId(1L);
 
     // Act and Assert
     assertTrue(translationForm.getIsRte());
@@ -59,88 +49,25 @@ public class TranslationFormDiffblueTest {
 
   /**
    * Test {@link TranslationForm#getIsRte()}.
-   *
    * <ul>
-   *   <li>Given {@link TranslationForm} (default constructor) FieldType is {@code HTML_BASIC}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link TranslationForm} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TranslationForm#getIsRte()}
+   * <p>
+   * Method under test: {@link TranslationForm#getIsRte()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean TranslationForm.getIsRte()"})
-  public void testGetIsRte_givenTranslationFormFieldTypeIsHtmlBasic_thenReturnTrue() {
-    // Arrange
-    TranslationForm translationForm = new TranslationForm();
-    translationForm.setCeilingEntity("Ceiling Entity");
-    translationForm.setEntityId("42");
-    translationForm.setFieldType("HTML_BASIC");
-    translationForm.setIsRte(true);
-    translationForm.setLocaleCode("en");
-    translationForm.setPropertyName("Property Name");
-    translationForm.setTranslatedValue("42");
-    translationForm.setTranslationId(1L);
-
-    // Act and Assert
-    assertTrue(translationForm.getIsRte());
-  }
-
-  /**
-   * Test {@link TranslationForm#getIsRte()}.
-   *
-   * <ul>
-   *   <li>Given {@link TranslationForm} (default constructor) FieldType is {@code HTML}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TranslationForm#getIsRte()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean TranslationForm.getIsRte()"})
-  public void testGetIsRte_givenTranslationFormFieldTypeIsHtml_thenReturnTrue() {
-    // Arrange
-    TranslationForm translationForm = new TranslationForm();
-    translationForm.setCeilingEntity("Ceiling Entity");
-    translationForm.setEntityId("42");
-    translationForm.setFieldType("HTML");
-    translationForm.setIsRte(true);
-    translationForm.setLocaleCode("en");
-    translationForm.setPropertyName("Property Name");
-    translationForm.setTranslatedValue("42");
-    translationForm.setTranslationId(1L);
-
-    // Act and Assert
-    assertTrue(translationForm.getIsRte());
-  }
-
-  /**
-   * Test {@link TranslationForm#getIsRte()}.
-   *
-   * <ul>
-   *   <li>Given {@link TranslationForm} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TranslationForm#getIsRte()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean TranslationForm.getIsRte()"})
   public void testGetIsRte_givenTranslationForm_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new TranslationForm().getIsRte());
+    assertFalse((new TranslationForm()).getIsRte());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link TranslationForm}
    *   <li>{@link TranslationForm#setCeilingEntity(String)}
@@ -161,26 +88,15 @@ public class TranslationFormDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TranslationForm.<init>()",
-    "String TranslationForm.getCeilingEntity()",
-    "String TranslationForm.getEntityId()",
-    "String TranslationForm.getFieldType()",
-    "String TranslationForm.getLocaleCode()",
-    "String TranslationForm.getPropertyName()",
-    "String TranslationForm.getTranslatedValue()",
-    "Long TranslationForm.getTranslationId()",
-    "void TranslationForm.setCeilingEntity(String)",
-    "void TranslationForm.setEntityId(String)",
-    "void TranslationForm.setFieldType(String)",
-    "void TranslationForm.setIsRte(Boolean)",
-    "void TranslationForm.setLocaleCode(String)",
-    "void TranslationForm.setPropertyName(String)",
-    "void TranslationForm.setTranslatedValue(String)",
-    "void TranslationForm.setTranslationId(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TranslationForm.<init>()", "String TranslationForm.getCeilingEntity()",
+      "String TranslationForm.getEntityId()", "String TranslationForm.getFieldType()",
+      "String TranslationForm.getLocaleCode()", "String TranslationForm.getPropertyName()",
+      "String TranslationForm.getTranslatedValue()", "Long TranslationForm.getTranslationId()",
+      "void TranslationForm.setCeilingEntity(String)", "void TranslationForm.setEntityId(String)",
+      "void TranslationForm.setFieldType(String)", "void TranslationForm.setIsRte(Boolean)",
+      "void TranslationForm.setLocaleCode(String)", "void TranslationForm.setPropertyName(String)",
+      "void TranslationForm.setTranslatedValue(String)", "void TranslationForm.setTranslationId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     TranslationForm actualTranslationForm = new TranslationForm();

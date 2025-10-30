@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.payment.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {OrderPaymentStatus.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderPaymentStatusDiffblueTest {
-  @Autowired private OrderPaymentStatus orderPaymentStatus;
+  @Autowired
+  private OrderPaymentStatus orderPaymentStatus;
 
   /**
    * Test {@link OrderPaymentStatus#getInstance(String)}.
-   *
-   * <p>Method under test: {@link OrderPaymentStatus#getInstance(String)}
+   * <p>
+   * Method under test: {@link OrderPaymentStatus#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatus.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,9 +54,8 @@ public class OrderPaymentStatusDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderPaymentStatus#OrderPaymentStatus()}
    *   <li>{@link OrderPaymentStatus#getFriendlyType()}
@@ -65,13 +63,9 @@ public class OrderPaymentStatusDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderPaymentStatus.<init>()",
-    "String OrderPaymentStatus.getFriendlyType()",
-    "String OrderPaymentStatus.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderPaymentStatus.<init>()", "String OrderPaymentStatus.getFriendlyType()",
+      "String OrderPaymentStatus.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderPaymentStatus actualOrderPaymentStatus = new OrderPaymentStatus();
@@ -84,14 +78,17 @@ public class OrderPaymentStatusDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatus#OrderPaymentStatus(String, String)}.
-   *
-   * <p>Method under test: {@link OrderPaymentStatus#OrderPaymentStatus(String, String)}
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   *   <li>Then return {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderPaymentStatus#OrderPaymentStatus(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderPaymentStatus.<init>(String, String)"})
-  public void testNewOrderPaymentStatus() {
+  public void testNewOrderPaymentStatus_whenType_thenReturnType() {
     // Arrange and Act
     OrderPaymentStatus actualOrderPaymentStatus = new OrderPaymentStatus("Type", "Friendly Type");
 
@@ -101,27 +98,42 @@ public class OrderPaymentStatusDiffblueTest {
   }
 
   /**
-   * Test {@link OrderPaymentStatus#equals(Object)}, and {@link OrderPaymentStatus#hashCode()}.
-   *
+   * Test {@link OrderPaymentStatus#OrderPaymentStatus(String, String)}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When {@code Undetermined}.</li>
+   *   <li>Then return Type is {@code Undetermined}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Method under test: {@link OrderPaymentStatus#OrderPaymentStatus(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderPaymentStatus.<init>(String, String)"})
+  public void testNewOrderPaymentStatus_whenUndetermined_thenReturnTypeIsUndetermined() {
+    // Arrange and Act
+    OrderPaymentStatus actualOrderPaymentStatus = new OrderPaymentStatus("Undetermined", "Friendly Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualOrderPaymentStatus.getFriendlyType());
+    assertEquals("Undetermined", actualOrderPaymentStatus.getType());
+  }
+
+  /**
+   * Test {@link OrderPaymentStatus#equals(Object)}, and {@link OrderPaymentStatus#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderPaymentStatus#equals(Object)}
    *   <li>{@link OrderPaymentStatus#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderPaymentStatus.equals(Object)",
-    "int OrderPaymentStatus.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatus.equals(Object)", "int OrderPaymentStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OrderPaymentStatus orderPaymentStatus = OrderPaymentStatus.AUTHORIZED;
@@ -129,95 +141,80 @@ public class OrderPaymentStatusDiffblueTest {
 
     // Act and Assert
     assertEquals(orderPaymentStatus, orderPaymentStatus2);
-    assertEquals(orderPaymentStatus.hashCode(), orderPaymentStatus2.hashCode());
+    int expectedHashCodeResult = orderPaymentStatus.hashCode();
+    assertEquals(expectedHashCodeResult, orderPaymentStatus2.hashCode());
   }
 
   /**
    * Test {@link OrderPaymentStatus#equals(Object)}, and {@link OrderPaymentStatus#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderPaymentStatus#equals(Object)}
    *   <li>{@link OrderPaymentStatus#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderPaymentStatus.equals(Object)",
-    "int OrderPaymentStatus.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatus.equals(Object)", "int OrderPaymentStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    OrderPaymentStatus orderPaymentStatus = OrderPaymentStatus.COMPLETE;
-    OrderPaymentStatus orderPaymentStatus2 = new OrderPaymentStatus("Complete", "Complete");
-
-    // Act and Assert
-    assertEquals(orderPaymentStatus, orderPaymentStatus2);
-    assertEquals(orderPaymentStatus.hashCode(), orderPaymentStatus2.hashCode());
-  }
-
-  /**
-   * Test {@link OrderPaymentStatus#equals(Object)}, and {@link OrderPaymentStatus#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OrderPaymentStatus#equals(Object)}
-   *   <li>{@link OrderPaymentStatus#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderPaymentStatus.equals(Object)",
-    "int OrderPaymentStatus.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     OrderPaymentStatus orderPaymentStatus = new OrderPaymentStatus();
     OrderPaymentStatus orderPaymentStatus2 = new OrderPaymentStatus();
 
     // Act and Assert
     assertEquals(orderPaymentStatus, orderPaymentStatus2);
-    assertEquals(orderPaymentStatus.hashCode(), orderPaymentStatus2.hashCode());
+    int expectedHashCodeResult = orderPaymentStatus.hashCode();
+    assertEquals(expectedHashCodeResult, orderPaymentStatus2.hashCode());
   }
 
   /**
    * Test {@link OrderPaymentStatus#equals(Object)}, and {@link OrderPaymentStatus#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderPaymentStatus#equals(Object)}
    *   <li>{@link OrderPaymentStatus#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderPaymentStatus.equals(Object)",
-    "int OrderPaymentStatus.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatus.equals(Object)", "int OrderPaymentStatus.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    OrderPaymentStatus orderPaymentStatus = new OrderPaymentStatus("AUTHORIZED", "Friendly Type");
+    OrderPaymentStatus orderPaymentStatus2 = OrderPaymentStatus.AUTHORIZED;
+
+    // Act and Assert
+    assertEquals(orderPaymentStatus, orderPaymentStatus2);
+    int expectedHashCodeResult = orderPaymentStatus.hashCode();
+    assertEquals(expectedHashCodeResult, orderPaymentStatus2.hashCode());
+  }
+
+  /**
+   * Test {@link OrderPaymentStatus#equals(Object)}, and {@link OrderPaymentStatus#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link OrderPaymentStatus#equals(Object)}
+   *   <li>{@link OrderPaymentStatus#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatus.equals(Object)", "int OrderPaymentStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OrderPaymentStatus orderPaymentStatus = OrderPaymentStatus.AUTHORIZED;
@@ -230,21 +227,16 @@ public class OrderPaymentStatusDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatus#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentStatus#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderPaymentStatus#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderPaymentStatus.equals(Object)",
-    "int OrderPaymentStatus.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatus.equals(Object)", "int OrderPaymentStatus.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OrderPaymentStatus.COMPLETE, OrderPaymentStatus.AUTHORIZED);
@@ -252,21 +244,16 @@ public class OrderPaymentStatusDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatus#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentStatus#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderPaymentStatus#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderPaymentStatus.equals(Object)",
-    "int OrderPaymentStatus.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatus.equals(Object)", "int OrderPaymentStatus.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new OrderPaymentStatus(), OrderPaymentStatus.AUTHORIZED);
@@ -274,21 +261,16 @@ public class OrderPaymentStatusDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatus#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentStatus#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderPaymentStatus#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderPaymentStatus.equals(Object)",
-    "int OrderPaymentStatus.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatus.equals(Object)", "int OrderPaymentStatus.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OrderPaymentStatus.AUTHORIZED, null);
@@ -296,21 +278,16 @@ public class OrderPaymentStatusDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatus#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderPaymentStatus#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderPaymentStatus#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderPaymentStatus.equals(Object)",
-    "int OrderPaymentStatus.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderPaymentStatus.equals(Object)", "int OrderPaymentStatus.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OrderPaymentStatus.AUTHORIZED, "Different type to OrderPaymentStatus");

@@ -22,8 +22,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,24 +44,23 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommitTaxRollbackHandlerDiffblueTest {
-  @InjectMocks private CommitTaxRollbackHandler commitTaxRollbackHandler;
+  @InjectMocks
+  private CommitTaxRollbackHandler commitTaxRollbackHandler;
 
-  @Mock private TaxService taxService;
+  @Mock
+  private TaxService taxService;
 
   /**
    * Test {@link CommitTaxRollbackHandler#rollbackState(Activity, ProcessContext, Map)}.
-   *
    * <ul>
-   *   <li>Given {@link TaxService} {@link TaxService#cancelTax(Order)} does nothing.
-   *   <li>Then calls {@link TaxService#cancelTax(Order)}.
+   *   <li>Given {@link TaxService} {@link TaxService#cancelTax(Order)} does nothing.</li>
+   *   <li>Then calls {@link TaxService#cancelTax(Order)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CommitTaxRollbackHandler#rollbackState(Activity, ProcessContext,
-   * Map)}
+   * <p>
+   * Method under test: {@link CommitTaxRollbackHandler#rollbackState(Activity, ProcessContext, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CommitTaxRollbackHandler.rollbackState(Activity, ProcessContext, Map)"})
   public void testRollbackState_givenTaxServiceCancelTaxDoesNothing_thenCallsCancelTax()
       throws TaxException, RollbackFailureException {
@@ -72,8 +70,7 @@ public class CommitTaxRollbackHandlerDiffblueTest {
 
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
     NullOrderImpl order = new NullOrderImpl();
-    CheckoutSeed checkoutSeed = new CheckoutSeed(order, new HashMap<>());
-    processContext.setSeedData(checkoutSeed);
+    processContext.setSeedData(new CheckoutSeed(order, new HashMap<>()));
 
     // Act
     commitTaxRollbackHandler.rollbackState(activity, processContext, new HashMap<>());
@@ -84,32 +81,26 @@ public class CommitTaxRollbackHandlerDiffblueTest {
 
   /**
    * Test {@link CommitTaxRollbackHandler#rollbackState(Activity, ProcessContext, Map)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RollbackFailureException}.
+   *   <li>Then throw {@link RollbackFailureException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CommitTaxRollbackHandler#rollbackState(Activity, ProcessContext,
-   * Map)}
+   * <p>
+   * Method under test: {@link CommitTaxRollbackHandler#rollbackState(Activity, ProcessContext, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CommitTaxRollbackHandler.rollbackState(Activity, ProcessContext, Map)"})
-  public void testRollbackState_thenThrowRollbackFailureException()
-      throws TaxException, RollbackFailureException {
+  public void testRollbackState_thenThrowRollbackFailureException() throws TaxException, RollbackFailureException {
     // Arrange
     doThrow(new TaxException("An error occurred")).when(taxService).cancelTax(Mockito.<Order>any());
     CommitTaxActivity activity = new CommitTaxActivity(commitTaxRollbackHandler);
 
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
     NullOrderImpl order = new NullOrderImpl();
-    CheckoutSeed checkoutSeed = new CheckoutSeed(order, new HashMap<>());
-    processContext.setSeedData(checkoutSeed);
+    processContext.setSeedData(new CheckoutSeed(order, new HashMap<>()));
 
     // Act and Assert
-    assertThrows(
-        RollbackFailureException.class,
+    assertThrows(RollbackFailureException.class,
         () -> commitTaxRollbackHandler.rollbackState(activity, processContext, new HashMap<>()));
     verify(taxService).cancelTax(isA(Order.class));
   }

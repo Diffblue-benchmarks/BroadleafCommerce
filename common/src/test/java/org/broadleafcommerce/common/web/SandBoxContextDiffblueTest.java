@@ -21,43 +21,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class SandBoxContextDiffblueTest {
   /**
-   * Test {@link SandBoxContext#getSandBoxContext()}.
-   *
-   * <p>Method under test: {@link SandBoxContext#getSandBoxContext()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SandBoxContext SandBoxContext.getSandBoxContext()"})
-  public void testGetSandBoxContext() {
-    // Arrange and Act
-    SandBoxContext actualSandBoxContext = SandBoxContext.getSandBoxContext();
-
-    // Assert
-    assertNull(actualSandBoxContext.getSandBoxId());
-    assertFalse(actualSandBoxContext.getPreviewMode());
-  }
-
-  /**
    * Test {@link SandBoxContext#clone()}.
-   *
-   * <p>Method under test: {@link SandBoxContext#clone()}
+   * <p>
+   * Method under test: {@link SandBoxContext#clone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SandBoxContext SandBoxContext.clone()"})
   public void testClone() {
     // Arrange and Act
-    SandBoxContext actualCloneResult = new SandBoxContext().clone();
+    SandBoxContext actualCloneResult = (new SandBoxContext()).clone();
 
     // Assert
     assertNull(actualCloneResult.getSandBoxId());
@@ -66,9 +46,8 @@ public class SandBoxContextDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SandBoxContext}
    *   <li>{@link SandBoxContext#setPreviewMode(Boolean)}
@@ -78,15 +57,10 @@ public class SandBoxContextDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SandBoxContext.<init>()",
-    "Boolean SandBoxContext.getPreviewMode()",
-    "Long SandBoxContext.getSandBoxId()",
-    "void SandBoxContext.setPreviewMode(Boolean)",
-    "void SandBoxContext.setSandBoxId(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SandBoxContext.<init>()", "Boolean SandBoxContext.getPreviewMode()",
+      "Long SandBoxContext.getSandBoxId()", "void SandBoxContext.setPreviewMode(Boolean)",
+      "void SandBoxContext.setSandBoxId(Long)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SandBoxContext actualSandBoxContext = new SandBoxContext();

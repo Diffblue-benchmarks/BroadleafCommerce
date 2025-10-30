@@ -22,8 +22,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
@@ -38,24 +37,24 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BroadleafCurrencyDaoImplDiffblueTest {
-  @InjectMocks private BroadleafCurrencyDaoImpl broadleafCurrencyDaoImpl;
+  @InjectMocks
+  private BroadleafCurrencyDaoImpl broadleafCurrencyDaoImpl;
 
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link BroadleafCurrencyDaoImpl#create()}.
-   *
-   * <p>Method under test: {@link BroadleafCurrencyDaoImpl#create()}
+   * <p>
+   * Method under test: {@link BroadleafCurrencyDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BroadleafCurrency BroadleafCurrencyDaoImpl.create()"})
   public void testCreate() {
     // Arrange
     BroadleafCurrencyImpl broadleafCurrencyImpl = new BroadleafCurrencyImpl();
-    when(entityConfiguration.createEntityInstance(
-            Mockito.<String>any(), Mockito.<Class<BroadleafCurrency>>any()))
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<BroadleafCurrency>>any()))
         .thenReturn(broadleafCurrencyImpl);
 
     // Act
@@ -63,8 +62,7 @@ public class BroadleafCurrencyDaoImplDiffblueTest {
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance(
-            eq("org.broadleafcommerce.common.currency.domain.BroadleafCurrency"), isA(Class.class));
+        .createEntityInstance(eq("org.broadleafcommerce.common.currency.domain.BroadleafCurrency"), isA(Class.class));
     assertSame(broadleafCurrencyImpl, actualCreateResult);
   }
 }

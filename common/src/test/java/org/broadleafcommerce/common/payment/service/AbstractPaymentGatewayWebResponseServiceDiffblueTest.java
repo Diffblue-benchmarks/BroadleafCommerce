@@ -18,11 +18,9 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
@@ -32,27 +30,19 @@ import org.springframework.mock.web.MockHttpServletRequest;
 public class AbstractPaymentGatewayWebResponseServiceDiffblueTest {
   /**
    * Test {@link AbstractPaymentGatewayWebResponseService#translateWebResponse(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractPaymentGatewayWebResponseService#translateWebResponse(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link AbstractPaymentGatewayWebResponseService#translateWebResponse(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayWebResponseService.translateWebResponse(HttpServletRequest)"
-  })
+      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayWebResponseService.translateWebResponse(HttpServletRequest)"})
   public void testTranslateWebResponse() throws PaymentException {
     // Arrange
-    AbstractPaymentGatewayWebResponseService abstractPaymentGatewayWebResponseService =
-        new AbstractPaymentGatewayWebResponseService();
+    AbstractPaymentGatewayWebResponseService abstractPaymentGatewayWebResponseService = new AbstractPaymentGatewayWebResponseService();
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class,
-        () ->
-            abstractPaymentGatewayWebResponseService.translateWebResponse(
-                new HttpServletRequestWrapper(
-                    new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
+    assertThrows(UnsupportedOperationException.class, () -> abstractPaymentGatewayWebResponseService
+        .translateWebResponse(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
   }
 }

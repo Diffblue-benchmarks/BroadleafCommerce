@@ -25,8 +25,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -56,119 +55,82 @@ public class AdornedTargetMaintainedFieldPropertyValidatorDiffblueTest {
   private AdornedTargetAutoPopulateExtensionManager adornedTargetAutoPopulateExtensionManager;
 
   @Autowired
-  private AdornedTargetMaintainedFieldPropertyValidator
-      adornedTargetMaintainedFieldPropertyValidator;
+  private AdornedTargetMaintainedFieldPropertyValidator adornedTargetMaintainedFieldPropertyValidator;
 
   /**
-   * Test {@link AdornedTargetMaintainedFieldPropertyValidator#validate(Entity, Serializable, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
-   * <p>Method under test: {@link AdornedTargetMaintainedFieldPropertyValidator#validate(Entity,
-   * Serializable, Map, BasicFieldMetadata, String, String)}
+   * Test {@link AdornedTargetMaintainedFieldPropertyValidator#validate(Entity, Serializable, Map, BasicFieldMetadata, String, String)}.
+   * <p>
+   * Method under test: {@link AdornedTargetMaintainedFieldPropertyValidator#validate(Entity, Serializable, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PropertyValidationResult AdornedTargetMaintainedFieldPropertyValidator.validate(Entity, Serializable, Map, BasicFieldMetadata, String, String)"
-  })
+      "PropertyValidationResult AdornedTargetMaintainedFieldPropertyValidator.validate(Entity, Serializable, Map, BasicFieldMetadata, String, String)"})
   public void testValidate() {
     // Arrange
-    AdornedTargetAutoPopulateExtensionHandler adornedTargetAutoPopulateExtensionHandler =
-        mock(AdornedTargetAutoPopulateExtensionHandler.class);
-    when(adornedTargetAutoPopulateExtensionHandler.validateSubmittedAdornedTargetManagedFields(
-            Mockito.<Entity>any(),
-            Mockito.<Serializable>any(),
-            Mockito.<Map<String, FieldMetadata>>any(),
-            Mockito.<BasicFieldMetadata>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Boolean>>any()))
+    AdornedTargetAutoPopulateExtensionHandler adornedTargetAutoPopulateExtensionHandler = mock(
+        AdornedTargetAutoPopulateExtensionHandler.class);
+    when(adornedTargetAutoPopulateExtensionHandler.validateSubmittedAdornedTargetManagedFields(Mockito.<Entity>any(),
+        Mockito.<Serializable>any(), Mockito.<Map<String, FieldMetadata>>any(), Mockito.<BasicFieldMetadata>any(),
+        Mockito.<String>any(), Mockito.<String>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adornedTargetAutoPopulateExtensionManager.getProxy())
-        .thenReturn(adornedTargetAutoPopulateExtensionHandler);
+    when(adornedTargetAutoPopulateExtensionManager.getProxy()).thenReturn(adornedTargetAutoPopulateExtensionHandler);
     Entity entity = new Entity();
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        adornedTargetMaintainedFieldPropertyValidator.validate(
-            entity, instance, entityFieldMetadata, new BasicFieldMetadata(), "Property Name", "42");
+    PropertyValidationResult actualValidateResult = adornedTargetMaintainedFieldPropertyValidator.validate(entity,
+        instance, entityFieldMetadata, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     verify(adornedTargetAutoPopulateExtensionManager).getProxy();
-    verify(adornedTargetAutoPopulateExtensionHandler)
-        .validateSubmittedAdornedTargetManagedFields(
-            isA(Entity.class),
-            isA(Serializable.class),
-            isA(Map.class),
-            isA(BasicFieldMetadata.class),
-            eq("Property Name"),
-            eq("42"),
-            isA(ExtensionResultHolder.class));
+    verify(adornedTargetAutoPopulateExtensionHandler).validateSubmittedAdornedTargetManagedFields(isA(Entity.class),
+        isA(Serializable.class), isA(Map.class), isA(BasicFieldMetadata.class), eq("Property Name"), eq("42"),
+        isA(ExtensionResultHolder.class));
     List<String> errorMessages = actualValidateResult.getErrorMessages();
     assertEquals(1, errorMessages.size());
     assertEquals("adornedTargetMaintainedFieldValidationFailure", errorMessages.get(0));
-    assertEquals(
-        "adornedTargetMaintainedFieldValidationFailure", actualValidateResult.getErrorMessage());
+    assertEquals("adornedTargetMaintainedFieldValidationFailure", actualValidateResult.getErrorMessage());
     assertFalse(actualValidateResult.isNotValid());
     assertTrue(actualValidateResult.isValid());
   }
 
   /**
-   * Test {@link AdornedTargetMaintainedFieldPropertyValidator#validate(Entity, Serializable, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
-   * <p>Method under test: {@link AdornedTargetMaintainedFieldPropertyValidator#validate(Entity,
-   * Serializable, Map, BasicFieldMetadata, String, String)}
+   * Test {@link AdornedTargetMaintainedFieldPropertyValidator#validate(Entity, Serializable, Map, BasicFieldMetadata, String, String)}.
+   * <p>
+   * Method under test: {@link AdornedTargetMaintainedFieldPropertyValidator#validate(Entity, Serializable, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PropertyValidationResult AdornedTargetMaintainedFieldPropertyValidator.validate(Entity, Serializable, Map, BasicFieldMetadata, String, String)"
-  })
+      "PropertyValidationResult AdornedTargetMaintainedFieldPropertyValidator.validate(Entity, Serializable, Map, BasicFieldMetadata, String, String)"})
   public void testValidate2() {
     // Arrange
-    AdornedTargetAutoPopulateExtensionHandler adornedTargetAutoPopulateExtensionHandler =
-        mock(AdornedTargetAutoPopulateExtensionHandler.class);
-    when(adornedTargetAutoPopulateExtensionHandler.validateSubmittedAdornedTargetManagedFields(
-            Mockito.<Entity>any(),
-            Mockito.<Serializable>any(),
-            Mockito.<Map<String, FieldMetadata>>any(),
-            Mockito.<BasicFieldMetadata>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Boolean>>any()))
+    AdornedTargetAutoPopulateExtensionHandler adornedTargetAutoPopulateExtensionHandler = mock(
+        AdornedTargetAutoPopulateExtensionHandler.class);
+    when(adornedTargetAutoPopulateExtensionHandler.validateSubmittedAdornedTargetManagedFields(Mockito.<Entity>any(),
+        Mockito.<Serializable>any(), Mockito.<Map<String, FieldMetadata>>any(), Mockito.<BasicFieldMetadata>any(),
+        Mockito.<String>any(), Mockito.<String>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
         .thenReturn(ExtensionResultStatusType.NOT_HANDLED);
-    when(adornedTargetAutoPopulateExtensionManager.getProxy())
-        .thenReturn(adornedTargetAutoPopulateExtensionHandler);
+    when(adornedTargetAutoPopulateExtensionManager.getProxy()).thenReturn(adornedTargetAutoPopulateExtensionHandler);
     Entity entity = new Entity();
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        adornedTargetMaintainedFieldPropertyValidator.validate(
-            entity, instance, entityFieldMetadata, new BasicFieldMetadata(), "Property Name", "42");
+    PropertyValidationResult actualValidateResult = adornedTargetMaintainedFieldPropertyValidator.validate(entity,
+        instance, entityFieldMetadata, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     verify(adornedTargetAutoPopulateExtensionManager).getProxy();
-    verify(adornedTargetAutoPopulateExtensionHandler)
-        .validateSubmittedAdornedTargetManagedFields(
-            isA(Entity.class),
-            isA(Serializable.class),
-            isA(Map.class),
-            isA(BasicFieldMetadata.class),
-            eq("Property Name"),
-            eq("42"),
-            isA(ExtensionResultHolder.class));
+    verify(adornedTargetAutoPopulateExtensionHandler).validateSubmittedAdornedTargetManagedFields(isA(Entity.class),
+        isA(Serializable.class), isA(Map.class), isA(BasicFieldMetadata.class), eq("Property Name"), eq("42"),
+        isA(ExtensionResultHolder.class));
     List<String> errorMessages = actualValidateResult.getErrorMessages();
     assertEquals(1, errorMessages.size());
     assertEquals("adornedTargetMaintainedFieldValidationFailure", errorMessages.get(0));
-    assertEquals(
-        "adornedTargetMaintainedFieldValidationFailure", actualValidateResult.getErrorMessage());
+    assertEquals("adornedTargetMaintainedFieldValidationFailure", actualValidateResult.getErrorMessage());
     assertFalse(actualValidateResult.isNotValid());
     assertTrue(actualValidateResult.isValid());
   }

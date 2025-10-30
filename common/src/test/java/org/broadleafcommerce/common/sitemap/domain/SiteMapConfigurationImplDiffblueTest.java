@@ -22,11 +22,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import org.broadleafcommerce.common.audit.Auditable;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -37,19 +40,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SiteMapConfigurationImplDiffblueTest {
-  @Autowired private SiteMapConfigurationImpl siteMapConfigurationImpl;
+  @Autowired
+  private SiteMapConfigurationImpl siteMapConfigurationImpl;
 
   /**
    * Test new {@link SiteMapConfigurationImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SiteMapConfigurationImpl}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SiteMapConfigurationImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SiteMapConfigurationImpl.<init>()"})
   public void testNewSiteMapConfigurationImpl() {
     // Arrange and Act
@@ -76,9 +79,8 @@ public class SiteMapConfigurationImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteMapConfigurationImpl#setIndexedSiteMapFileName(String)}
    *   <li>{@link SiteMapConfigurationImpl#setIndexedSiteMapFilePattern(String)}
@@ -89,16 +91,13 @@ public class SiteMapConfigurationImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List SiteMapConfigurationImpl.getSiteMapGeneratorConfigurations()",
-    "void SiteMapConfigurationImpl.setIndexedSiteMapFileName(String)",
-    "void SiteMapConfigurationImpl.setIndexedSiteMapFilePattern(String)",
-    "void SiteMapConfigurationImpl.setMaximumUrlEntriesPerFile(Integer)",
-    "void SiteMapConfigurationImpl.setSiteMapFileName(String)",
-    "void SiteMapConfigurationImpl.setSiteMapGeneratorConfigurations(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List SiteMapConfigurationImpl.getSiteMapGeneratorConfigurations()",
+      "void SiteMapConfigurationImpl.setIndexedSiteMapFileName(String)",
+      "void SiteMapConfigurationImpl.setIndexedSiteMapFilePattern(String)",
+      "void SiteMapConfigurationImpl.setMaximumUrlEntriesPerFile(Integer)",
+      "void SiteMapConfigurationImpl.setSiteMapFileName(String)",
+      "void SiteMapConfigurationImpl.setSiteMapGeneratorConfigurations(List)"})
   public void testGettersAndSetters() {
     // Arrange
     SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
@@ -110,8 +109,8 @@ public class SiteMapConfigurationImplDiffblueTest {
     siteMapConfigurationImpl.setSiteMapFileName("foo.txt");
     ArrayList<SiteMapGeneratorConfiguration> siteMapGeneratorConfigurations = new ArrayList<>();
     siteMapConfigurationImpl.setSiteMapGeneratorConfigurations(siteMapGeneratorConfigurations);
-    List<SiteMapGeneratorConfiguration> actualSiteMapGeneratorConfigurations =
-        siteMapConfigurationImpl.getSiteMapGeneratorConfigurations();
+    List<SiteMapGeneratorConfiguration> actualSiteMapGeneratorConfigurations = siteMapConfigurationImpl
+        .getSiteMapGeneratorConfigurations();
 
     // Assert
     assertTrue(actualSiteMapGeneratorConfigurations.isEmpty());
@@ -120,317 +119,491 @@ public class SiteMapConfigurationImplDiffblueTest {
 
   /**
    * Test {@link SiteMapConfigurationImpl#getMaximumUrlEntriesPerFile()}.
-   *
    * <ul>
-   *   <li>Then return intValue is {@code 50000}.
+   *   <li>Then return intValue is {@code 50000}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getMaximumUrlEntriesPerFile()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getMaximumUrlEntriesPerFile()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Integer SiteMapConfigurationImpl.getMaximumUrlEntriesPerFile()"})
   public void testGetMaximumUrlEntriesPerFile_thenReturnIntValueIs50000() {
     // Arrange, Act and Assert
-    assertEquals(50000, siteMapConfigurationImpl.getMaximumUrlEntriesPerFile().intValue());
+    assertEquals(50000, (new SiteMapConfigurationImpl()).getMaximumUrlEntriesPerFile().intValue());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getMaximumUrlEntriesPerFile()}.
-   *
    * <ul>
-   *   <li>Then return intValue is one.
+   *   <li>Then return intValue is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getMaximumUrlEntriesPerFile()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getMaximumUrlEntriesPerFile()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Integer SiteMapConfigurationImpl.getMaximumUrlEntriesPerFile()"})
   public void testGetMaximumUrlEntriesPerFile_thenReturnIntValueIsOne() {
     // Arrange
-    siteMapConfigurationImpl.setMaximumUrlEntriesPerFile(1);
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern("Indexed Site Map File Pattern");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(1);
 
     // Act and Assert
-    assertEquals(1, siteMapConfigurationImpl.getMaximumUrlEntriesPerFile().intValue());
+    assertEquals(1, siteMapConfigurationImpl2.getMaximumUrlEntriesPerFile().intValue());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}.
-   *
    * <ul>
-   *   <li>When {@code https://example.org/example}.
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.fixSiteUrlPath(String)"})
-  public void testFixSiteUrlPath_whenHttpsExampleOrgExample_thenReturnHttpsExampleOrgExample() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        siteMapConfigurationImpl.fixSiteUrlPath("https://example.org/example"));
+  public void testFixSiteUrlPath_givenAuditableCreatedByIsOne_whenNull_thenReturnNull() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern("Indexed Site Map File Pattern");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(3);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+
+    // Act and Assert
+    assertNull(siteMapConfigurationImpl2.fixSiteUrlPath(null));
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>When {@code /}.</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.fixSiteUrlPath(String)"})
-  public void testFixSiteUrlPath_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(siteMapConfigurationImpl.fixSiteUrlPath(null));
+  public void testFixSiteUrlPath_givenAuditableCreatedByIsOne_whenSlash_thenReturnEmptyString() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern("Indexed Site Map File Pattern");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(3);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+
+    // Act and Assert
+    assertEquals("", siteMapConfigurationImpl2.fixSiteUrlPath("/"));
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}.
-   *
    * <ul>
-   *   <li>When {@code /}.
-   *   <li>Then return empty string.
+   *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#fixSiteUrlPath(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.fixSiteUrlPath(String)"})
-  public void testFixSiteUrlPath_whenSlash_thenReturnEmptyString() {
+  public void testFixSiteUrlPath_thenReturnHttpsExampleOrgExample() {
     // Arrange, Act and Assert
-    assertEquals("", siteMapConfigurationImpl.fixSiteUrlPath("/"));
+    assertEquals("https://example.org/example",
+        (new SiteMapConfigurationImpl()).fixSiteUrlPath("https://example.org/example"));
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getSiteMapFileName()}.
-   *
    * <ul>
-   *   <li>Given {@link SiteMapConfigurationImpl} SiteMapFileName is empty string.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getSiteMapFileName()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getSiteMapFileName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapFileName()"})
+  public void testGetSiteMapFileName_givenAuditableCreatedByIsOne_thenReturnFoo() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern("Indexed Site Map File Pattern");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(3);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+    siteMapConfigurationImpl2.setSiteMapFileName("foo");
+
+    // Act and Assert
+    assertEquals("foo", siteMapConfigurationImpl2.getSiteMapFileName());
+  }
+
+  /**
+   * Test {@link SiteMapConfigurationImpl#getSiteMapFileName()}.
+   * <ul>
+   *   <li>Given {@link SiteMapConfigurationImpl} (default constructor) SiteMapFileName is empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getSiteMapFileName()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapFileName()"})
   public void testGetSiteMapFileName_givenSiteMapConfigurationImplSiteMapFileNameIsEmptyString() {
     // Arrange
-    siteMapConfigurationImpl.setSiteMapFileName("");
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2.setSiteMapFileName("");
 
     // Act and Assert
-    assertEquals("sitemap.xml", siteMapConfigurationImpl.getSiteMapFileName());
+    assertEquals("sitemap.xml", siteMapConfigurationImpl2.getSiteMapFileName());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getSiteMapFileName()}.
-   *
    * <ul>
-   *   <li>Given {@link SiteMapConfigurationImpl}.
-   *   <li>Then return {@code sitemap.xml}.
+   *   <li>Given {@link SiteMapConfigurationImpl} (default constructor).</li>
+   *   <li>Then return {@code sitemap.xml}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getSiteMapFileName()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getSiteMapFileName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapFileName()"})
   public void testGetSiteMapFileName_givenSiteMapConfigurationImpl_thenReturnSitemapXml() {
     // Arrange, Act and Assert
-    assertEquals("sitemap.xml", siteMapConfigurationImpl.getSiteMapFileName());
-  }
-
-  /**
-   * Test {@link SiteMapConfigurationImpl#getSiteMapFileName()}.
-   *
-   * <ul>
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getSiteMapFileName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapFileName()"})
-  public void testGetSiteMapFileName_thenReturnFoo() {
-    // Arrange
-    siteMapConfigurationImpl.setSiteMapFileName("foo");
-
-    // Act and Assert
-    assertEquals("foo", siteMapConfigurationImpl.getSiteMapFileName());
+    assertEquals("sitemap.xml", (new SiteMapConfigurationImpl()).getSiteMapFileName());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}.
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getIndexedSiteMapFileName()"})
   public void testGetIndexedSiteMapFileName() {
     // Arrange
-    siteMapConfigurationImpl.setIndexedSiteMapFileName("foo");
-    siteMapConfigurationImpl.setSiteMapFileName("");
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern("Indexed Site Map File Pattern");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(3);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName(null);
+    siteMapConfigurationImpl2.setSiteMapFileName("foo");
 
     // Act and Assert
-    assertEquals("foo", siteMapConfigurationImpl.getIndexedSiteMapFileName());
+    assertEquals("foo", siteMapConfigurationImpl2.getIndexedSiteMapFileName());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapConfigurationImpl} SiteMapFileName is {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getIndexedSiteMapFileName()"})
-  public void testGetIndexedSiteMapFileName_givenSiteMapConfigurationImplSiteMapFileNameIsFoo() {
+  public void testGetIndexedSiteMapFileName2() {
     // Arrange
-    siteMapConfigurationImpl.setIndexedSiteMapFileName("");
-    siteMapConfigurationImpl.setSiteMapFileName("foo");
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern("Indexed Site Map File Pattern");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(3);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName("foo");
+    siteMapConfigurationImpl2.setSiteMapFileName(null);
 
     // Act and Assert
-    assertEquals("foo", siteMapConfigurationImpl.getIndexedSiteMapFileName());
+    assertEquals("foo", siteMapConfigurationImpl2.getIndexedSiteMapFileName());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapConfigurationImpl}.
-   *   <li>Then return {@code sitemap.xml}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SiteMapConfigurationImpl.getIndexedSiteMapFileName()"})
+  public void testGetIndexedSiteMapFileName3() {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2.setSiteMapFileName("");
+
+    // Act and Assert
+    assertEquals("sitemap.xml", siteMapConfigurationImpl2.getIndexedSiteMapFileName());
+  }
+
+  /**
+   * Test {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}.
+   * <ul>
+   *   <li>Given {@link SiteMapConfigurationImpl} (default constructor).</li>
+   *   <li>Then return {@code sitemap.xml}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getIndexedSiteMapFileName()"})
   public void testGetIndexedSiteMapFileName_givenSiteMapConfigurationImpl_thenReturnSitemapXml() {
     // Arrange, Act and Assert
-    assertEquals("sitemap.xml", siteMapConfigurationImpl.getIndexedSiteMapFileName());
-  }
-
-  /**
-   * Test {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}.
-   *
-   * <ul>
-   *   <li>Then return {@code sitemap.xml}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getIndexedSiteMapFileName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SiteMapConfigurationImpl.getIndexedSiteMapFileName()"})
-  public void testGetIndexedSiteMapFileName_thenReturnSitemapXml() {
-    // Arrange
-    siteMapConfigurationImpl.setIndexedSiteMapFileName("");
-    siteMapConfigurationImpl.setSiteMapFileName("");
-
-    // Act and Assert
-    assertEquals("sitemap.xml", siteMapConfigurationImpl.getIndexedSiteMapFileName());
+    assertEquals("sitemap.xml", (new SiteMapConfigurationImpl()).getIndexedSiteMapFileName());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}.
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapIndexFilePattern()"})
   public void testGetSiteMapIndexFilePattern() {
     // Arrange
-    siteMapConfigurationImpl.setIndexedSiteMapFilePattern("");
-    siteMapConfigurationImpl.setSiteMapFileName(".xml");
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(3);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern(null);
+    siteMapConfigurationImpl2.setSiteMapFileName("foo");
 
     // Act and Assert
-    assertEquals("sitemap###.xml", siteMapConfigurationImpl.getSiteMapIndexFilePattern());
+    assertEquals("sitemap###.xml", siteMapConfigurationImpl2.getSiteMapIndexFilePattern());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}.
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapIndexFilePattern()"})
   public void testGetSiteMapIndexFilePattern2() {
     // Arrange
-    siteMapConfigurationImpl.setIndexedSiteMapFilePattern("foo");
-    siteMapConfigurationImpl.setSiteMapFileName(".xml");
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(3);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern("foo");
+    siteMapConfigurationImpl2.setSiteMapFileName(null);
 
     // Act and Assert
-    assertEquals("sitemap###.xml", siteMapConfigurationImpl.getSiteMapIndexFilePattern());
+    assertEquals("sitemap###.xml", siteMapConfigurationImpl2.getSiteMapIndexFilePattern());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapConfigurationImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapIndexFilePattern()"})
+  public void testGetSiteMapIndexFilePattern3() {
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2.setSiteMapFileName("");
+
+    // Act and Assert
+    assertEquals("sitemap###.xml", siteMapConfigurationImpl2.getSiteMapIndexFilePattern());
+  }
+
+  /**
+   * Test {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}.
+   * <ul>
+   *   <li>Given {@link SiteMapConfigurationImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapIndexFilePattern()"})
   public void testGetSiteMapIndexFilePattern_givenSiteMapConfigurationImpl() {
     // Arrange, Act and Assert
-    assertEquals("sitemap###.xml", siteMapConfigurationImpl.getSiteMapIndexFilePattern());
+    assertEquals("sitemap###.xml", (new SiteMapConfigurationImpl()).getSiteMapIndexFilePattern());
   }
 
   /**
    * Test {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}.
-   *
    * <ul>
-   *   <li>Then return {@code ###}.
+   *   <li>Then return {@code ###}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
+   * <p>
+   * Method under test: {@link SiteMapConfigurationImpl#getSiteMapIndexFilePattern()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SiteMapConfigurationImpl.getSiteMapIndexFilePattern()"})
   public void testGetSiteMapIndexFilePattern_thenReturnNumberSignNumberSignNumberSign() {
     // Arrange
-    siteMapConfigurationImpl.setIndexedSiteMapFilePattern("###");
-    siteMapConfigurationImpl.setSiteMapFileName(".xml");
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl2 = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl2
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl2.setArchived('A');
+    siteMapConfigurationImpl2.setAuditable(auditable);
+    siteMapConfigurationImpl2.setId(1L);
+    siteMapConfigurationImpl2.setIndexedSiteMapFileName("foo.txt");
+    siteMapConfigurationImpl2.setIsDefault(true);
+    siteMapConfigurationImpl2.setMaximumUrlEntriesPerFile(3);
+    siteMapConfigurationImpl2.setModuleName("Name");
+    siteMapConfigurationImpl2.setPriority(1);
+    siteMapConfigurationImpl2.setSiteMapGeneratorConfigurations(new ArrayList<>());
+    siteMapConfigurationImpl2.setIndexedSiteMapFilePattern("###");
+    siteMapConfigurationImpl2.setSiteMapFileName(null);
 
     // Act and Assert
-    assertEquals("###", siteMapConfigurationImpl.getSiteMapIndexFilePattern());
+    assertEquals("###", siteMapConfigurationImpl2.getSiteMapIndexFilePattern());
   }
 }

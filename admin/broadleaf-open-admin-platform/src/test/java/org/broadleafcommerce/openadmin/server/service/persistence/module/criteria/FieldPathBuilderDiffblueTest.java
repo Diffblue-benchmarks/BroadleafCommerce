@@ -20,8 +20,7 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +33,8 @@ import org.junit.experimental.categories.Category;
 public class FieldPathBuilderDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FieldPathBuilder#setRestrictions(List)}
    *   <li>{@link FieldPathBuilder#getCriteria()}
@@ -44,14 +42,9 @@ public class FieldPathBuilderDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CriteriaQuery FieldPathBuilder.getCriteria()",
-    "List FieldPathBuilder.getRestrictions()",
-    "void FieldPathBuilder.setCriteria(CriteriaQuery)",
-    "void FieldPathBuilder.setRestrictions(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CriteriaQuery FieldPathBuilder.getCriteria()", "List FieldPathBuilder.getRestrictions()",
+      "void FieldPathBuilder.setCriteria(CriteriaQuery)", "void FieldPathBuilder.setRestrictions(List)"})
   public void testGettersAndSetters() {
     // Arrange
     FieldPathBuilder fieldPathBuilder = new FieldPathBuilder();
@@ -70,12 +63,11 @@ public class FieldPathBuilderDiffblueTest {
 
   /**
    * Test new {@link FieldPathBuilder} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link FieldPathBuilder}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link FieldPathBuilder}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldPathBuilder.<init>()"})
   public void testNewFieldPathBuilder() {
     // Arrange and Act

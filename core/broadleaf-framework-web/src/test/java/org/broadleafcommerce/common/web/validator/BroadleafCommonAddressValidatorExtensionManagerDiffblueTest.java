@@ -18,7 +18,6 @@
 package org.broadleafcommerce.common.web.validator;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -32,19 +31,16 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 class BroadleafCommonAddressValidatorExtensionManagerDiffblueTest {
   @Autowired
-  private BroadleafCommonAddressValidatorExtensionManager
-      broadleafCommonAddressValidatorExtensionManager;
+  private BroadleafCommonAddressValidatorExtensionManager broadleafCommonAddressValidatorExtensionManager;
 
   /**
    * Test {@link BroadleafCommonAddressValidatorExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafCommonAddressValidatorExtensionManager#continueOnHandled()}
+   * <p>
+   * Method under test: {@link BroadleafCommonAddressValidatorExtensionManager#continueOnHandled()}
    */
   @Test
   @DisplayName("Test continueOnHandled()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean BroadleafCommonAddressValidatorExtensionManager.continueOnHandled()"})
   void testContinueOnHandled() {
     // Arrange, Act and Assert

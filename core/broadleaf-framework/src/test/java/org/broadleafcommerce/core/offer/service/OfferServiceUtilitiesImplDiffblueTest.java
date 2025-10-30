@@ -24,8 +24,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -71,38 +70,33 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OfferServiceUtilitiesImplDiffblueTest {
-  @InjectMocks private OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
+  @InjectMocks
+  private OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
 
   /**
    * Test {@link OfferServiceUtilitiesImpl#buildOrderItemList(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferServiceUtilitiesImpl#buildOrderItemList(Order)}
+   * <p>
+   * Method under test: {@link OfferServiceUtilitiesImpl#buildOrderItemList(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List OfferServiceUtilitiesImpl.buildOrderItemList(Order)"})
   public void testBuildOrderItemList_givenAuditableCreatedByIsOne_thenReturnArrayList() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     ArrayList<DiscreteOrderItem> discreteOrderItems = new ArrayList<>();
@@ -129,7 +123,6 @@ public class OfferServiceUtilitiesImplDiffblueTest {
     bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
     bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
     bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
-    bundleOrderItemImpl.setPrice(new Money());
     bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
     bundleOrderItemImpl.setQuantity(1);
     bundleOrderItemImpl.setRetailPrice(new Money());
@@ -160,11 +153,11 @@ public class OfferServiceUtilitiesImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setOrderItems(orderItems);
 
@@ -174,28 +167,25 @@ public class OfferServiceUtilitiesImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}
+   * <p>
+   * Method under test: {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map OfferServiceUtilitiesImpl.buildPromotableItemMap(PromotableOrder)"})
-  public void testBuildPromotableItemMap_thenReturnEmpty() {
+  public void testBuildPromotableItemMap_givenAuditableCreatedByIsOne_thenReturnEmpty() {
     // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl =
-        new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl());
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
+        new PromotableOfferUtilityImpl());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -216,44 +206,40 @@ public class OfferServiceUtilitiesImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrder =
-        new PromotableOrderImpl(
-            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act and Assert
-    assertTrue(offerServiceUtilitiesImpl.buildPromotableItemMap(promotableOrder).isEmpty());
+    assertTrue(offerServiceUtilitiesImpl
+        .buildPromotableItemMap(
+            new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .isEmpty());
   }
 
   /**
    * Test {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}.
-   *
    * <ul>
-   *   <li>Then return size is one.
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}
+   * <p>
+   * Method under test: {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map OfferServiceUtilitiesImpl.buildPromotableItemMap(PromotableOrder)"})
   public void testBuildPromotableItemMap_thenReturnSizeIsOne() {
     // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl =
-        new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl());
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
+        new PromotableOfferUtilityImpl());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<OrderItem> orderItems = new ArrayList<>();
@@ -277,40 +263,36 @@ public class OfferServiceUtilitiesImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
-    PromotableOrderImpl promotableOrder =
-        new PromotableOrderImpl(
-            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act and Assert
-    assertEquals(1, offerServiceUtilitiesImpl.buildPromotableItemMap(promotableOrder).size());
+    assertEquals(1,
+        offerServiceUtilitiesImpl
+            .buildPromotableItemMap(
+                new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+            .size());
   }
 
   /**
    * Test {@link OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}.
-   *
    * <ul>
-   *   <li>Then return size is one.
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}
+   * <p>
+   * Method under test: {@link OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map OfferServiceUtilitiesImpl.buildItemDetailAdjustmentMap(OrderItemPriceDetail)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceUtilitiesImpl.buildItemDetailAdjustmentMap(OrderItemPriceDetail)"})
   public void testBuildItemDetailAdjustmentMap_thenReturnSizeIsOne() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = mock(
+        OrderItemPriceDetailAdjustmentImpl.class);
     when(orderItemPriceDetailAdjustmentImpl.getOffer()).thenReturn(new OfferImpl());
 
     ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
@@ -324,8 +306,8 @@ public class OfferServiceUtilitiesImplDiffblueTest {
     itemDetail.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
 
     // Act
-    Map<Long, OrderItemPriceDetailAdjustment> actualBuildItemDetailAdjustmentMapResult =
-        offerServiceUtilitiesImpl.buildItemDetailAdjustmentMap(itemDetail);
+    Map<Long, OrderItemPriceDetailAdjustment> actualBuildItemDetailAdjustmentMapResult = offerServiceUtilitiesImpl
+        .buildItemDetailAdjustmentMap(itemDetail);
 
     // Assert
     verify(orderItemPriceDetailAdjustmentImpl, atLeast(1)).getOffer();
@@ -335,34 +317,25 @@ public class OfferServiceUtilitiesImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}.
-   *
    * <ul>
-   *   <li>When {@link OrderItemPriceDetailImpl} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>When {@link OrderItemPriceDetailImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}
+   * <p>
+   * Method under test: {@link OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map OfferServiceUtilitiesImpl.buildItemDetailAdjustmentMap(OrderItemPriceDetail)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map OfferServiceUtilitiesImpl.buildItemDetailAdjustmentMap(OrderItemPriceDetail)"})
   public void testBuildItemDetailAdjustmentMap_whenOrderItemPriceDetailImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(
-        offerServiceUtilitiesImpl
-            .buildItemDetailAdjustmentMap(new OrderItemPriceDetailImpl())
-            .isEmpty());
+    assertTrue(offerServiceUtilitiesImpl.buildItemDetailAdjustmentMap(new OrderItemPriceDetailImpl()).isEmpty());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferServiceUtilitiesImpl#setGenericEntityService(GenericEntityService)}
    *   <li>{@link OfferServiceUtilitiesImpl#setOfferDao(OfferDao)}
@@ -373,34 +346,28 @@ public class OfferServiceUtilitiesImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GenericEntityService OfferServiceUtilitiesImpl.getGenericEntityService()",
-    "OfferDao OfferServiceUtilitiesImpl.getOfferDao()",
-    "PromotableItemFactory OfferServiceUtilitiesImpl.getPromotableItemFactory()",
-    "void OfferServiceUtilitiesImpl.setGenericEntityService(GenericEntityService)",
-    "void OfferServiceUtilitiesImpl.setOfferDao(OfferDao)",
-    "void OfferServiceUtilitiesImpl.setPromotableItemFactory(PromotableItemFactory)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"GenericEntityService OfferServiceUtilitiesImpl.getGenericEntityService()",
+      "OfferDao OfferServiceUtilitiesImpl.getOfferDao()",
+      "PromotableItemFactory OfferServiceUtilitiesImpl.getPromotableItemFactory()",
+      "void OfferServiceUtilitiesImpl.setGenericEntityService(GenericEntityService)",
+      "void OfferServiceUtilitiesImpl.setOfferDao(OfferDao)",
+      "void OfferServiceUtilitiesImpl.setPromotableItemFactory(PromotableItemFactory)"})
   public void testGettersAndSetters() {
     // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl =
-        new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl());
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
+        new PromotableOfferUtilityImpl());
     GenericEntityServiceImpl entityService = new GenericEntityServiceImpl();
 
     // Act
     offerServiceUtilitiesImpl.setGenericEntityService(entityService);
     OfferDaoImpl offerDao = new OfferDaoImpl();
     offerServiceUtilitiesImpl.setOfferDao(offerDao);
-    PromotableItemFactoryImpl promotableItemFactory =
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
+    PromotableItemFactoryImpl promotableItemFactory = new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
     offerServiceUtilitiesImpl.setPromotableItemFactory(promotableItemFactory);
-    GenericEntityService actualGenericEntityService =
-        offerServiceUtilitiesImpl.getGenericEntityService();
+    GenericEntityService actualGenericEntityService = offerServiceUtilitiesImpl.getGenericEntityService();
     OfferDao actualOfferDao = offerServiceUtilitiesImpl.getOfferDao();
-    PromotableItemFactory actualPromotableItemFactory =
-        offerServiceUtilitiesImpl.getPromotableItemFactory();
+    PromotableItemFactory actualPromotableItemFactory = offerServiceUtilitiesImpl.getPromotableItemFactory();
 
     // Assert
     assertTrue(actualGenericEntityService instanceof GenericEntityServiceImpl);

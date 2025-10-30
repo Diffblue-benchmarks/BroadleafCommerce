@@ -18,24 +18,32 @@
 package org.broadleafcommerce.common.extensibility.cache;
 
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DefaultJCacheUriProviderDiffblueTest {
+  @InjectMocks
+  private DefaultJCacheUriProvider defaultJCacheUriProvider;
+
+  @InjectMocks
+  private String string;
+
   /**
    * Test {@link DefaultJCacheUriProvider#getJCacheUri()}.
-   *
-   * <p>Method under test: {@link DefaultJCacheUriProvider#getJCacheUri()}
+   * <p>
+   * Method under test: {@link DefaultJCacheUriProvider#getJCacheUri()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.net.URI DefaultJCacheUriProvider.getJCacheUri()"})
   public void testGetJCacheUri() {
     // Arrange, Act and Assert
-    assertNull(new DefaultJCacheUriProvider().getJCacheUri());
+    assertNull(defaultJCacheUriProvider.getJCacheUri());
   }
 }

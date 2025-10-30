@@ -26,8 +26,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,52 +44,40 @@ import org.mockito.Mockito;
 
 public class UpdateExecutorDiffblueTest {
   /**
-   * Test {@link UpdateExecutor#executeUpdateQuery(EntityManager, String, Object[], Type[], List)}
-   * with {@code em}, {@code template}, {@code params}, {@code types}, {@code ids}.
-   *
+   * Test {@link UpdateExecutor#executeUpdateQuery(EntityManager, String, Object[], Type[], List)} with {@code em}, {@code template}, {@code params}, {@code types}, {@code ids}.
    * <ul>
-   *   <li>Then return one.
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link UpdateExecutor#executeUpdateQuery(EntityManager, String, Object[],
-   * Type[], List)}
+   * <p>
+   * Method under test: {@link UpdateExecutor#executeUpdateQuery(EntityManager, String, Object[], Type[], List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "int UpdateExecutor.executeUpdateQuery(EntityManager, String, Object[], Type[], List)"
-  })
-  public void testExecuteUpdateQueryWithEmTemplateParamsTypesIds_thenReturnOne()
-      throws HibernateException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"int UpdateExecutor.executeUpdateQuery(EntityManager, String, Object[], Type[], List)"})
+  public void testExecuteUpdateQueryWithEmTemplateParamsTypesIds_thenReturnOne() throws HibernateException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
     NativeQueryImpl nativeQueryImpl = mock(NativeQueryImpl.class);
     when(nativeQueryImpl.executeUpdate()).thenReturn(1);
-    when(nativeQueryImpl.setParameter(anyInt(), Mockito.<Object>any(), Mockito.<Type>any()))
-        .thenReturn(null);
-
+    when(nativeQueryImpl.setParameter(anyInt(), Mockito.<Object>any(), Mockito.<Type>any())).thenReturn(null);
     SessionDelegatorBaseImpl sessionDelegatorBaseImpl = mock(SessionDelegatorBaseImpl.class);
     when(sessionDelegatorBaseImpl.getHibernateFlushMode()).thenReturn(FlushMode.MANUAL);
     doNothing().when(sessionDelegatorBaseImpl).setFlushMode(Mockito.<FlushMode>any());
-    when(sessionDelegatorBaseImpl.createSQLQuery(Mockito.<String>any()))
-        .thenReturn(nativeQueryImpl);
-
+    when(sessionDelegatorBaseImpl.createSQLQuery(Mockito.<String>any())).thenReturn(nativeQueryImpl);
     SessionDelegatorBaseImpl em = mock(SessionDelegatorBaseImpl.class);
     when(em.unwrap(Mockito.<Class<Session>>any())).thenReturn(sessionDelegatorBaseImpl);
 
     // Act
-    int actualExecuteUpdateQueryResult =
-        UpdateExecutor.executeUpdateQuery(
-            em,
-            "Template",
-            new Object[] {BLCFieldUtils.NULL_FIELD},
-            new Type[] {new BigDecimalType()},
-            new ArrayList<>());
+    int actualExecuteUpdateQueryResult = UpdateExecutor.executeUpdateQuery(em, "Template",
+        new Object[]{BLCFieldUtils.NULL_FIELD}, new Type[]{new BigDecimalType()}, new ArrayList<>());
 
     // Assert
-    verify(sessionDelegatorBaseImpl).createSQLQuery("Template");
+    verify(sessionDelegatorBaseImpl).createSQLQuery(eq("Template"));
     verify(sessionDelegatorBaseImpl).getHibernateFlushMode();
-    verify(sessionDelegatorBaseImpl, atLeast(1)).setFlushMode(FlushMode.MANUAL);
+    verify(sessionDelegatorBaseImpl, atLeast(1)).setFlushMode(eq(FlushMode.MANUAL));
     verify(em, atLeast(1)).unwrap(isA(Class.class));
     verify(nativeQueryImpl).executeUpdate();
     verify(nativeQueryImpl).setParameter(eq(1), isA(Object.class), isA(Type.class));

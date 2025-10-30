@@ -19,7 +19,6 @@ package org.broadleafcommerce.core.web.checkout.validator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.checkout.model.PaymentInfoForm;
 import org.junit.jupiter.api.DisplayName;
@@ -30,26 +29,22 @@ import org.springframework.validation.Errors;
 
 class CheckoutPaymentInfoFormValidatorDiffblueTest {
   /**
-   * Test {@link CheckoutPaymentInfoFormValidator#validate(Object, Errors)} with {@code obj}, {@code
-   * errors}.
-   *
-   * <p>Method under test: {@link CheckoutPaymentInfoFormValidator#validate(Object, Errors)}
+   * Test {@link CheckoutPaymentInfoFormValidator#validate(Object, Errors)} with {@code obj}, {@code errors}.
+   * <p>
+   * Method under test: {@link CheckoutPaymentInfoFormValidator#validate(Object, Errors)}
    */
   @Test
   @DisplayName("Test validate(Object, Errors) with 'obj', 'errors'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CheckoutPaymentInfoFormValidator.validate(Object, Errors)"})
   void testValidateWithObjErrors() {
     // Arrange
-    CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator =
-        new CheckoutPaymentInfoFormValidator();
+    CheckoutPaymentInfoFormValidator checkoutPaymentInfoFormValidator = new CheckoutPaymentInfoFormValidator();
 
     PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
     paymentInfoForm.setShouldUseCustomerPayment(true);
-    BindException errors =
-        new BindException(
-            paymentInfoForm, "org.broadleafcommerce.core.web.checkout.model.PaymentInfoForm");
+    BindException errors = new BindException(paymentInfoForm,
+        "org.broadleafcommerce.core.web.checkout.model.PaymentInfoForm");
 
     // Act
     checkoutPaymentInfoFormValidator.validate(paymentInfoForm, errors);

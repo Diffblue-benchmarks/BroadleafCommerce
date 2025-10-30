@@ -20,8 +20,7 @@ package org.broadleafcommerce.cms.web;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -31,12 +30,11 @@ import org.springframework.web.cors.DefaultCorsProcessor;
 public class PageHandlerMappingDiffblueTest {
   /**
    * Test new {@link PageHandlerMapping} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link PageHandlerMapping}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link PageHandlerMapping}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PageHandlerMapping.<init>()"})
   public void testNewPageHandlerMapping() {
     // Arrange and Act

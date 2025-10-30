@@ -19,8 +19,7 @@ package org.broadleafcommerce.openadmin.server.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.classmate.types.TypePlaceHolder;
 import java.lang.reflect.Type;
@@ -30,9 +29,8 @@ import org.junit.experimental.categories.Category;
 public class FieldInfoDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldInfo}
    *   <li>{@link FieldInfo#setGenericType(Type)}
@@ -52,25 +50,14 @@ public class FieldInfoDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FieldInfo.<init>()",
-    "Type FieldInfo.getGenericType()",
-    "String FieldInfo.getManyToManyMappedBy()",
-    "String FieldInfo.getManyToManyTargetEntity()",
-    "String FieldInfo.getMapKey()",
-    "String FieldInfo.getName()",
-    "String FieldInfo.getOneToManyMappedBy()",
-    "String FieldInfo.getOneToManyTargetEntity()",
-    "void FieldInfo.setGenericType(Type)",
-    "void FieldInfo.setManyToManyMappedBy(String)",
-    "void FieldInfo.setManyToManyTargetEntity(String)",
-    "void FieldInfo.setMapKey(String)",
-    "void FieldInfo.setName(String)",
-    "void FieldInfo.setOneToManyMappedBy(String)",
-    "void FieldInfo.setOneToManyTargetEntity(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldInfo.<init>()", "Type FieldInfo.getGenericType()",
+      "String FieldInfo.getManyToManyMappedBy()", "String FieldInfo.getManyToManyTargetEntity()",
+      "String FieldInfo.getMapKey()", "String FieldInfo.getName()", "String FieldInfo.getOneToManyMappedBy()",
+      "String FieldInfo.getOneToManyTargetEntity()", "void FieldInfo.setGenericType(Type)",
+      "void FieldInfo.setManyToManyMappedBy(String)", "void FieldInfo.setManyToManyTargetEntity(String)",
+      "void FieldInfo.setMapKey(String)", "void FieldInfo.setName(String)",
+      "void FieldInfo.setOneToManyMappedBy(String)", "void FieldInfo.setOneToManyTargetEntity(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldInfo actualFieldInfo = new FieldInfo();

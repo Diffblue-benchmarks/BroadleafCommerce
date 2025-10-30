@@ -19,11 +19,11 @@ package org.broadleafcommerce.profile.core.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +40,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StateServiceImplDiffblueTest {
-  @Mock private StateDao stateDao;
+  @Mock
+  private StateDao stateDao;
 
-  @InjectMocks private StateServiceImpl stateServiceImpl;
+  @InjectMocks
+  private StateServiceImpl stateServiceImpl;
 
   /**
    * Test {@link StateServiceImpl#findStates()}.
-   *
-   * <p>Method under test: {@link StateServiceImpl#findStates()}
+   * <p>
+   * Method under test: {@link StateServiceImpl#findStates()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List StateServiceImpl.findStates()"})
   public void testFindStates() {
     // Arrange
@@ -67,12 +68,11 @@ public class StateServiceImplDiffblueTest {
 
   /**
    * Test {@link StateServiceImpl#findStates(String)} with {@code String}.
-   *
-   * <p>Method under test: {@link StateServiceImpl#findStates(String)}
+   * <p>
+   * Method under test: {@link StateServiceImpl#findStates(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List StateServiceImpl.findStates(String)"})
   public void testFindStatesWithString() {
     // Arrange
@@ -82,18 +82,17 @@ public class StateServiceImplDiffblueTest {
     List<State> actualFindStatesResult = stateServiceImpl.findStates("GB");
 
     // Assert
-    verify(stateDao).findStates("GB");
+    verify(stateDao).findStates(eq("GB"));
     assertTrue(actualFindStatesResult.isEmpty());
   }
 
   /**
    * Test {@link StateServiceImpl#findStateByAbbreviation(String)}.
-   *
-   * <p>Method under test: {@link StateServiceImpl#findStateByAbbreviation(String)}
+   * <p>
+   * Method under test: {@link StateServiceImpl#findStateByAbbreviation(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"State StateServiceImpl.findStateByAbbreviation(String)"})
   public void testFindStateByAbbreviation() {
     // Arrange
@@ -101,22 +100,20 @@ public class StateServiceImplDiffblueTest {
     when(stateDao.findStateByAbbreviation(Mockito.<String>any())).thenReturn(stateImpl);
 
     // Act
-    State actualFindStateByAbbreviationResult =
-        stateServiceImpl.findStateByAbbreviation("Abbreviation");
+    State actualFindStateByAbbreviationResult = stateServiceImpl.findStateByAbbreviation("Abbreviation");
 
     // Assert
-    verify(stateDao).findStateByAbbreviation("Abbreviation");
+    verify(stateDao).findStateByAbbreviation(eq("Abbreviation"));
     assertSame(stateImpl, actualFindStateByAbbreviationResult);
   }
 
   /**
    * Test {@link StateServiceImpl#save(State)}.
-   *
-   * <p>Method under test: {@link StateServiceImpl#save(State)}
+   * <p>
+   * Method under test: {@link StateServiceImpl#save(State)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"State StateServiceImpl.save(State)"})
   public void testSave() {
     // Arrange

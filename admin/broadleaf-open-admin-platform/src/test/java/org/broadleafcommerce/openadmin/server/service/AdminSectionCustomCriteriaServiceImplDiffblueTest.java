@@ -23,8 +23,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Map;
@@ -43,27 +42,23 @@ public class AdminSectionCustomCriteriaServiceImplDiffblueTest {
   @Mock
   private AdminSectionCustomCriteriaExtensionManager adminSectionCustomCriteriaExtensionManager;
 
-  @InjectMocks private AdminSectionCustomCriteriaServiceImpl adminSectionCustomCriteriaServiceImpl;
+  @InjectMocks
+  private AdminSectionCustomCriteriaServiceImpl adminSectionCustomCriteriaServiceImpl;
 
-  @Mock private Map<String, ArrayList<String>> map;
+  @Mock
+  private Map<String, ArrayList<String>> map;
 
   /**
-   * Test {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String,
-   * String[])}.
-   *
+   * Test {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}.
    * <ul>
-   *   <li>Then return array length is zero.
+   *   <li>Then return array length is zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}
+   * <p>
+   * Method under test: {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String[] AdminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(String, String[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] AdminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(String, String[])"})
   public void testMergeSectionCustomCriteria_thenReturnArrayLengthIsZero() {
     // Arrange
     when(map.get(Mockito.<Object>any())).thenReturn(new ArrayList<>());
@@ -71,9 +66,8 @@ public class AdminSectionCustomCriteriaServiceImplDiffblueTest {
         .thenReturn(new AbstractAdminSectionCustomCriteriaExtensionHandler());
 
     // Act
-    String[] actualMergeSectionCustomCriteriaResult =
-        adminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(
-            "Ceiling Entity Class Name", null);
+    String[] actualMergeSectionCustomCriteriaResult = adminSectionCustomCriteriaServiceImpl
+        .mergeSectionCustomCriteria("Ceiling Entity Class Name", null);
 
     // Assert
     verify(map).get(isA(Object.class));
@@ -82,22 +76,16 @@ public class AdminSectionCustomCriteriaServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String,
-   * String[])}.
-   *
+   * Test {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}.
    * <ul>
-   *   <li>Then return array of {@link String} with {@code Controller Criteria}.
+   *   <li>Then return array of {@link String} with {@code Controller Criteria}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}
+   * <p>
+   * Method under test: {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String[] AdminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(String, String[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] AdminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(String, String[])"})
   public void testMergeSectionCustomCriteria_thenReturnArrayOfStringWithControllerCriteria() {
     // Arrange
     when(map.get(Mockito.<Object>any())).thenReturn(new ArrayList<>());
@@ -105,44 +93,36 @@ public class AdminSectionCustomCriteriaServiceImplDiffblueTest {
         .thenReturn(new AbstractAdminSectionCustomCriteriaExtensionHandler());
 
     // Act
-    String[] actualMergeSectionCustomCriteriaResult =
-        adminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(
-            "Ceiling Entity Class Name", new String[] {"Controller Criteria"});
+    String[] actualMergeSectionCustomCriteriaResult = adminSectionCustomCriteriaServiceImpl
+        .mergeSectionCustomCriteria("Ceiling Entity Class Name", new String[]{"Controller Criteria"});
 
     // Assert
     verify(map).get(isA(Object.class));
     verify(adminSectionCustomCriteriaExtensionManager).getProxy();
-    assertArrayEquals(new String[] {"Controller Criteria"}, actualMergeSectionCustomCriteriaResult);
+    assertArrayEquals(new String[]{"Controller Criteria"}, actualMergeSectionCustomCriteriaResult);
   }
 
   /**
-   * Test {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String,
-   * String[])}.
-   *
+   * Test {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}.
    * <ul>
-   *   <li>Then return array of {@link String} with {@code Controller Criteria}.
+   *   <li>Then return array of {@link String} with {@code Controller Criteria}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}
+   * <p>
+   * Method under test: {@link AdminSectionCustomCriteriaServiceImpl#mergeSectionCustomCriteria(String, String[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String[] AdminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(String, String[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String[] AdminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(String, String[])"})
   public void testMergeSectionCustomCriteria_thenReturnArrayOfStringWithControllerCriteria2() {
     // Arrange
     when(map.get(Mockito.<Object>any())).thenReturn(new ArrayList<>());
 
     // Act
-    String[] actualMergeSectionCustomCriteriaResult =
-        adminSectionCustomCriteriaServiceImpl.mergeSectionCustomCriteria(
-            null, new String[] {"Controller Criteria"});
+    String[] actualMergeSectionCustomCriteriaResult = adminSectionCustomCriteriaServiceImpl
+        .mergeSectionCustomCriteria(null, new String[]{"Controller Criteria"});
 
     // Assert
     verify(map).get(isNull());
-    assertArrayEquals(new String[] {"Controller Criteria"}, actualMergeSectionCustomCriteriaResult);
+    assertArrayEquals(new String[]{"Controller Criteria"}, actualMergeSectionCustomCriteriaResult);
   }
 }

@@ -18,8 +18,7 @@
 package org.broadleafcommerce.common.breadcrumbs.dto;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,17 +26,15 @@ import org.junit.experimental.categories.Category;
 public class BreadcrumbDTODiffblueTest {
   /**
    * Test {@link BreadcrumbDTO#getType()}.
-   *
    * <ul>
-   *   <li>Given {@link BreadcrumbDTO} (default constructor) Link is {@code Link}.
-   *   <li>Then return {@code CATEGORY}.
+   *   <li>Given {@link BreadcrumbDTO} (default constructor) Link is {@code Link}.</li>
+   *   <li>Then return {@code CATEGORY}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BreadcrumbDTO#getType()}
+   * <p>
+   * Method under test: {@link BreadcrumbDTO#getType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BreadcrumbDTO.getType()"})
   public void testGetType_givenBreadcrumbDTOLinkIsLink_thenReturnCategory() {
     // Arrange
@@ -52,28 +49,25 @@ public class BreadcrumbDTODiffblueTest {
 
   /**
    * Test {@link BreadcrumbDTO#getType()}.
-   *
    * <ul>
-   *   <li>Given {@link BreadcrumbDTO} (default constructor).
-   *   <li>Then return empty string.
+   *   <li>Given {@link BreadcrumbDTO} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BreadcrumbDTO#getType()}
+   * <p>
+   * Method under test: {@link BreadcrumbDTO#getType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BreadcrumbDTO.getType()"})
   public void testGetType_givenBreadcrumbDTO_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals("", new BreadcrumbDTO().getType());
+    assertEquals("", (new BreadcrumbDTO()).getType());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BreadcrumbDTO}
    *   <li>{@link BreadcrumbDTO#setLink(String)}
@@ -84,16 +78,10 @@ public class BreadcrumbDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BreadcrumbDTO.<init>()",
-    "String BreadcrumbDTO.getLink()",
-    "String BreadcrumbDTO.getText()",
-    "void BreadcrumbDTO.setLink(String)",
-    "void BreadcrumbDTO.setText(String)",
-    "void BreadcrumbDTO.setType(BreadcrumbDTOType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BreadcrumbDTO.<init>()", "String BreadcrumbDTO.getLink()", "String BreadcrumbDTO.getText()",
+      "void BreadcrumbDTO.setLink(String)", "void BreadcrumbDTO.setText(String)",
+      "void BreadcrumbDTO.setType(BreadcrumbDTOType)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BreadcrumbDTO actualBreadcrumbDTO = new BreadcrumbDTO();

@@ -24,11 +24,11 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.List;
@@ -45,16 +45,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {PersistencePackage.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class PersistencePackageDiffblueTest {
-  @Autowired private PersistencePackage persistencePackage;
+  @Autowired
+  private PersistencePackage persistencePackage;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PersistencePackage#PersistencePackage()}
    *   <li>{@link PersistencePackage#setAddOperationInspect(boolean)}
@@ -92,52 +92,39 @@ public class PersistencePackageDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistencePackage.<init>()",
-    "void PersistencePackage.<init>(String, String, Entity, PersistencePerspective, String[], String)",
-    "void PersistencePackage.<init>(String, Entity, PersistencePerspective, String[], String)",
-    "String PersistencePackage.getCeilingEntityFullyQualifiedClassname()",
-    "String PersistencePackage.getCsrfToken()",
-    "String[] PersistencePackage.getCustomCriteria()",
-    "Map PersistencePackage.getDeferredOperations()",
-    "Entity PersistencePackage.getEntity()",
-    "String PersistencePackage.getFetchTypeFullyQualifiedClassname()",
-    "PersistencePerspective PersistencePackage.getPersistencePerspective()",
-    "String PersistencePackage.getRequestingEntityName()",
-    "SectionCrumb[] PersistencePackage.getSectionCrumbs()",
-    "String PersistencePackage.getSectionEntityField()",
-    "Map PersistencePackage.getSubPackages()",
-    "boolean PersistencePackage.isAddOperationInspect()",
-    "boolean PersistencePackage.isProcessedInternal()",
-    "boolean PersistencePackage.isTreeCollection()",
-    "boolean PersistencePackage.isValidateUnsubmittedProperties()",
-    "void PersistencePackage.setAddOperationInspect(boolean)",
-    "void PersistencePackage.setCeilingEntityFullyQualifiedClassname(String)",
-    "void PersistencePackage.setCsrfToken(String)",
-    "void PersistencePackage.setCustomCriteria(String[])",
-    "void PersistencePackage.setDeferredOperations(Map)",
-    "void PersistencePackage.setEntity(Entity)",
-    "void PersistencePackage.setFetchTypeFullyQualifiedClassname(String)",
-    "void PersistencePackage.setIsTreeCollection(boolean)",
-    "void PersistencePackage.setPersistencePerspective(PersistencePerspective)",
-    "void PersistencePackage.setProcessedInternal(boolean)",
-    "void PersistencePackage.setRequestingEntityName(String)",
-    "void PersistencePackage.setSectionCrumbs(SectionCrumb[])",
-    "void PersistencePackage.setSectionEntityField(String)",
-    "void PersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname(String)",
-    "void PersistencePackage.setSubPackages(Map)",
-    "void PersistencePackage.setValidateUnsubmittedProperties(boolean)",
-    "String PersistencePackage.toString()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePackage.<init>()",
+      "void PersistencePackage.<init>(String, String, Entity, PersistencePerspective, String[], String)",
+      "void PersistencePackage.<init>(String, Entity, PersistencePerspective, String[], String)",
+      "String PersistencePackage.getCeilingEntityFullyQualifiedClassname()", "String PersistencePackage.getCsrfToken()",
+      "String[] PersistencePackage.getCustomCriteria()", "Map PersistencePackage.getDeferredOperations()",
+      "Entity PersistencePackage.getEntity()", "String PersistencePackage.getFetchTypeFullyQualifiedClassname()",
+      "PersistencePerspective PersistencePackage.getPersistencePerspective()",
+      "String PersistencePackage.getRequestingEntityName()", "SectionCrumb[] PersistencePackage.getSectionCrumbs()",
+      "String PersistencePackage.getSectionEntityField()", "Map PersistencePackage.getSubPackages()",
+      "boolean PersistencePackage.isAddOperationInspect()", "boolean PersistencePackage.isProcessedInternal()",
+      "boolean PersistencePackage.isTreeCollection()", "boolean PersistencePackage.isValidateUnsubmittedProperties()",
+      "void PersistencePackage.setAddOperationInspect(boolean)",
+      "void PersistencePackage.setCeilingEntityFullyQualifiedClassname(String)",
+      "void PersistencePackage.setCsrfToken(String)", "void PersistencePackage.setCustomCriteria(String[])",
+      "void PersistencePackage.setDeferredOperations(Map)", "void PersistencePackage.setEntity(Entity)",
+      "void PersistencePackage.setFetchTypeFullyQualifiedClassname(String)",
+      "void PersistencePackage.setIsTreeCollection(boolean)",
+      "void PersistencePackage.setPersistencePerspective(PersistencePerspective)",
+      "void PersistencePackage.setProcessedInternal(boolean)",
+      "void PersistencePackage.setRequestingEntityName(String)",
+      "void PersistencePackage.setSectionCrumbs(SectionCrumb[])",
+      "void PersistencePackage.setSectionEntityField(String)",
+      "void PersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname(String)",
+      "void PersistencePackage.setSubPackages(Map)",
+      "void PersistencePackage.setValidateUnsubmittedProperties(boolean)", "String PersistencePackage.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PersistencePackage actualPersistencePackage = new PersistencePackage();
     actualPersistencePackage.setAddOperationInspect(true);
     actualPersistencePackage.setCeilingEntityFullyQualifiedClassname("Dr Jane Doe");
     actualPersistencePackage.setCsrfToken("ABC123");
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    String[] customCriteria = new String[]{"Custom Criteria"};
     actualPersistencePackage.setCustomCriteria(customCriteria);
     HashMap<ChangeType, List<PersistencePackage>> deferredOperations = new HashMap<>();
     actualPersistencePackage.setDeferredOperations(deferredOperations);
@@ -153,7 +140,7 @@ public class PersistencePackageDiffblueTest {
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-    SectionCrumb[] sectionCrumbs = new SectionCrumb[] {sectionCrumb};
+    SectionCrumb[] sectionCrumbs = new SectionCrumb[]{sectionCrumb};
     actualPersistencePackage.setSectionCrumbs(sectionCrumbs);
     actualPersistencePackage.setSectionEntityField("Section Entity Field");
     actualPersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname("Dr Jane Doe");
@@ -161,17 +148,15 @@ public class PersistencePackageDiffblueTest {
     actualPersistencePackage.setSubPackages(subPackages);
     actualPersistencePackage.setValidateUnsubmittedProperties(true);
     String actualToStringResult = actualPersistencePackage.toString();
-    String actualCeilingEntityFullyQualifiedClassname =
-        actualPersistencePackage.getCeilingEntityFullyQualifiedClassname();
+    String actualCeilingEntityFullyQualifiedClassname = actualPersistencePackage
+        .getCeilingEntityFullyQualifiedClassname();
     String actualCsrfToken = actualPersistencePackage.getCsrfToken();
     String[] actualCustomCriteria = actualPersistencePackage.getCustomCriteria();
-    Map<ChangeType, List<PersistencePackage>> actualDeferredOperations =
-        actualPersistencePackage.getDeferredOperations();
+    Map<ChangeType, List<PersistencePackage>> actualDeferredOperations = actualPersistencePackage
+        .getDeferredOperations();
     Entity actualEntity = actualPersistencePackage.getEntity();
-    String actualFetchTypeFullyQualifiedClassname =
-        actualPersistencePackage.getFetchTypeFullyQualifiedClassname();
-    PersistencePerspective actualPersistencePerspective =
-        actualPersistencePackage.getPersistencePerspective();
+    String actualFetchTypeFullyQualifiedClassname = actualPersistencePackage.getFetchTypeFullyQualifiedClassname();
+    PersistencePerspective actualPersistencePerspective = actualPersistencePackage.getPersistencePerspective();
     String actualRequestingEntityName = actualPersistencePackage.getRequestingEntityName();
     SectionCrumb[] actualSectionCrumbs = actualPersistencePackage.getSectionCrumbs();
     String actualSectionEntityField = actualPersistencePackage.getSectionEntityField();
@@ -179,22 +164,19 @@ public class PersistencePackageDiffblueTest {
     boolean actualIsAddOperationInspectResult = actualPersistencePackage.isAddOperationInspect();
     boolean actualIsProcessedInternalResult = actualPersistencePackage.isProcessedInternal();
     boolean actualIsTreeCollectionResult = actualPersistencePackage.isTreeCollection();
-    boolean actualIsValidateUnsubmittedPropertiesResult =
-        actualPersistencePackage.isValidateUnsubmittedProperties();
+    boolean actualIsValidateUnsubmittedPropertiesResult = actualPersistencePackage.isValidateUnsubmittedProperties();
 
     // Assert
     assertEquals("ABC123", actualCsrfToken);
     assertEquals("Dr Jane Doe", actualCeilingEntityFullyQualifiedClassname);
     assertEquals("Dr Jane Doe", actualFetchTypeFullyQualifiedClassname);
-    assertEquals(
-        "PersistencePackage{ceilingEntityFullyQualifiedClassname='Dr Jane Doe', securityCeilingEntityFullyQua"
-            + "lifiedClassname='Dr Jane Doe', sectionEntityField='Section Entity Field', fetchTypeFullyQualifiedClassname"
-            + "='Dr Jane Doe', persistencePerspective=PersistencePerspective{persistencePerspectiveItems={},"
-            + " configurationKey='null'}, customCriteria=[Custom Criteria], entity=Entity{isValidationFailure=false,"
-            + " isDirty=false, properties=null, type=null}, csrfToken='ABC123', requestingEntityName='Requesting"
-            + " Entity Name', subPackages={}, validateUnsubmittedProperties=true, sectionCrumbs=[SectionCrumb"
-            + "{sectionIdentifier='42', sectionId='42'}]}",
-        actualToStringResult);
+    assertEquals("PersistencePackage{ceilingEntityFullyQualifiedClassname='Dr Jane Doe', securityCeilingEntityFullyQua"
+        + "lifiedClassname='Dr Jane Doe', sectionEntityField='Section Entity Field', fetchTypeFullyQualifiedClassname"
+        + "='Dr Jane Doe', persistencePerspective=PersistencePerspective{persistencePerspectiveItems={},"
+        + " configurationKey='null'}, customCriteria=[Custom Criteria], entity=Entity{isValidationFailure=false,"
+        + " isDirty=false, properties=null, type=null}, csrfToken='ABC123', requestingEntityName='Requesting"
+        + " Entity Name', subPackages={}, validateUnsubmittedProperties=true, sectionCrumbs=[SectionCrumb"
+        + "{sectionIdentifier='42', sectionId='42'}]}", actualToStringResult);
     assertEquals("Requesting Entity Name", actualRequestingEntityName);
     assertEquals("Section Entity Field", actualSectionEntityField);
     assertTrue(actualDeferredOperations.isEmpty());
@@ -209,21 +191,18 @@ public class PersistencePackageDiffblueTest {
     assertSame(persistencePerspective, actualPersistencePerspective);
     assertSame(customCriteria, actualCustomCriteria);
     assertSame(sectionCrumbs, actualSectionCrumbs);
-    assertArrayEquals(new String[] {"Custom Criteria"}, actualCustomCriteria);
+    assertArrayEquals(new String[]{"Custom Criteria"}, actualCustomCriteria);
   }
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code Dr Jane Doe}.
+   *   <li>When {@code Dr Jane Doe}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link PersistencePackage#PersistencePackage(String, String, Entity,
-   *       PersistencePerspective, String[], String)}
+   *   <li>{@link PersistencePackage#PersistencePackage(String, String, Entity, PersistencePerspective, String[], String)}
    *   <li>{@link PersistencePackage#setAddOperationInspect(boolean)}
    *   <li>{@link PersistencePackage#setCeilingEntityFullyQualifiedClassname(String)}
    *   <li>{@link PersistencePackage#setCsrfToken(String)}
@@ -259,64 +238,44 @@ public class PersistencePackageDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistencePackage.<init>()",
-    "void PersistencePackage.<init>(String, String, Entity, PersistencePerspective, String[], String)",
-    "void PersistencePackage.<init>(String, Entity, PersistencePerspective, String[], String)",
-    "String PersistencePackage.getCeilingEntityFullyQualifiedClassname()",
-    "String PersistencePackage.getCsrfToken()",
-    "String[] PersistencePackage.getCustomCriteria()",
-    "Map PersistencePackage.getDeferredOperations()",
-    "Entity PersistencePackage.getEntity()",
-    "String PersistencePackage.getFetchTypeFullyQualifiedClassname()",
-    "PersistencePerspective PersistencePackage.getPersistencePerspective()",
-    "String PersistencePackage.getRequestingEntityName()",
-    "SectionCrumb[] PersistencePackage.getSectionCrumbs()",
-    "String PersistencePackage.getSectionEntityField()",
-    "Map PersistencePackage.getSubPackages()",
-    "boolean PersistencePackage.isAddOperationInspect()",
-    "boolean PersistencePackage.isProcessedInternal()",
-    "boolean PersistencePackage.isTreeCollection()",
-    "boolean PersistencePackage.isValidateUnsubmittedProperties()",
-    "void PersistencePackage.setAddOperationInspect(boolean)",
-    "void PersistencePackage.setCeilingEntityFullyQualifiedClassname(String)",
-    "void PersistencePackage.setCsrfToken(String)",
-    "void PersistencePackage.setCustomCriteria(String[])",
-    "void PersistencePackage.setDeferredOperations(Map)",
-    "void PersistencePackage.setEntity(Entity)",
-    "void PersistencePackage.setFetchTypeFullyQualifiedClassname(String)",
-    "void PersistencePackage.setIsTreeCollection(boolean)",
-    "void PersistencePackage.setPersistencePerspective(PersistencePerspective)",
-    "void PersistencePackage.setProcessedInternal(boolean)",
-    "void PersistencePackage.setRequestingEntityName(String)",
-    "void PersistencePackage.setSectionCrumbs(SectionCrumb[])",
-    "void PersistencePackage.setSectionEntityField(String)",
-    "void PersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname(String)",
-    "void PersistencePackage.setSubPackages(Map)",
-    "void PersistencePackage.setValidateUnsubmittedProperties(boolean)",
-    "String PersistencePackage.toString()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePackage.<init>()",
+      "void PersistencePackage.<init>(String, String, Entity, PersistencePerspective, String[], String)",
+      "void PersistencePackage.<init>(String, Entity, PersistencePerspective, String[], String)",
+      "String PersistencePackage.getCeilingEntityFullyQualifiedClassname()", "String PersistencePackage.getCsrfToken()",
+      "String[] PersistencePackage.getCustomCriteria()", "Map PersistencePackage.getDeferredOperations()",
+      "Entity PersistencePackage.getEntity()", "String PersistencePackage.getFetchTypeFullyQualifiedClassname()",
+      "PersistencePerspective PersistencePackage.getPersistencePerspective()",
+      "String PersistencePackage.getRequestingEntityName()", "SectionCrumb[] PersistencePackage.getSectionCrumbs()",
+      "String PersistencePackage.getSectionEntityField()", "Map PersistencePackage.getSubPackages()",
+      "boolean PersistencePackage.isAddOperationInspect()", "boolean PersistencePackage.isProcessedInternal()",
+      "boolean PersistencePackage.isTreeCollection()", "boolean PersistencePackage.isValidateUnsubmittedProperties()",
+      "void PersistencePackage.setAddOperationInspect(boolean)",
+      "void PersistencePackage.setCeilingEntityFullyQualifiedClassname(String)",
+      "void PersistencePackage.setCsrfToken(String)", "void PersistencePackage.setCustomCriteria(String[])",
+      "void PersistencePackage.setDeferredOperations(Map)", "void PersistencePackage.setEntity(Entity)",
+      "void PersistencePackage.setFetchTypeFullyQualifiedClassname(String)",
+      "void PersistencePackage.setIsTreeCollection(boolean)",
+      "void PersistencePackage.setPersistencePerspective(PersistencePerspective)",
+      "void PersistencePackage.setProcessedInternal(boolean)",
+      "void PersistencePackage.setRequestingEntityName(String)",
+      "void PersistencePackage.setSectionCrumbs(SectionCrumb[])",
+      "void PersistencePackage.setSectionEntityField(String)",
+      "void PersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname(String)",
+      "void PersistencePackage.setSubPackages(Map)",
+      "void PersistencePackage.setValidateUnsubmittedProperties(boolean)", "String PersistencePackage.toString()"})
   public void testGettersAndSetters_whenDrJaneDoe() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
     // Act
-    PersistencePackage actualPersistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe",
-            "Dr Jane Doe",
-            entity,
-            new PersistencePerspective(),
-            customCriteria,
-            "ABC123");
+    PersistencePackage actualPersistencePackage = new PersistencePackage("Dr Jane Doe", "Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123");
     actualPersistencePackage.setAddOperationInspect(true);
     actualPersistencePackage.setCeilingEntityFullyQualifiedClassname("Dr Jane Doe");
     actualPersistencePackage.setCsrfToken("ABC123");
-    String[] customCriteria2 = new String[] {"Custom Criteria"};
-    actualPersistencePackage.setCustomCriteria(customCriteria2);
+    String[] customCriteria = new String[]{"Custom Criteria"};
+    actualPersistencePackage.setCustomCriteria(customCriteria);
     HashMap<ChangeType, List<PersistencePackage>> deferredOperations = new HashMap<>();
     actualPersistencePackage.setDeferredOperations(deferredOperations);
     Entity entity2 = new Entity();
@@ -331,7 +290,7 @@ public class PersistencePackageDiffblueTest {
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-    SectionCrumb[] sectionCrumbs = new SectionCrumb[] {sectionCrumb};
+    SectionCrumb[] sectionCrumbs = new SectionCrumb[]{sectionCrumb};
     actualPersistencePackage.setSectionCrumbs(sectionCrumbs);
     actualPersistencePackage.setSectionEntityField("Section Entity Field");
     actualPersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname("Dr Jane Doe");
@@ -339,17 +298,15 @@ public class PersistencePackageDiffblueTest {
     actualPersistencePackage.setSubPackages(subPackages);
     actualPersistencePackage.setValidateUnsubmittedProperties(true);
     String actualToStringResult = actualPersistencePackage.toString();
-    String actualCeilingEntityFullyQualifiedClassname =
-        actualPersistencePackage.getCeilingEntityFullyQualifiedClassname();
+    String actualCeilingEntityFullyQualifiedClassname = actualPersistencePackage
+        .getCeilingEntityFullyQualifiedClassname();
     String actualCsrfToken = actualPersistencePackage.getCsrfToken();
     String[] actualCustomCriteria = actualPersistencePackage.getCustomCriteria();
-    Map<ChangeType, List<PersistencePackage>> actualDeferredOperations =
-        actualPersistencePackage.getDeferredOperations();
+    Map<ChangeType, List<PersistencePackage>> actualDeferredOperations = actualPersistencePackage
+        .getDeferredOperations();
     Entity actualEntity = actualPersistencePackage.getEntity();
-    String actualFetchTypeFullyQualifiedClassname =
-        actualPersistencePackage.getFetchTypeFullyQualifiedClassname();
-    PersistencePerspective actualPersistencePerspective =
-        actualPersistencePackage.getPersistencePerspective();
+    String actualFetchTypeFullyQualifiedClassname = actualPersistencePackage.getFetchTypeFullyQualifiedClassname();
+    PersistencePerspective actualPersistencePerspective = actualPersistencePackage.getPersistencePerspective();
     String actualRequestingEntityName = actualPersistencePackage.getRequestingEntityName();
     SectionCrumb[] actualSectionCrumbs = actualPersistencePackage.getSectionCrumbs();
     String actualSectionEntityField = actualPersistencePackage.getSectionEntityField();
@@ -357,22 +314,19 @@ public class PersistencePackageDiffblueTest {
     boolean actualIsAddOperationInspectResult = actualPersistencePackage.isAddOperationInspect();
     boolean actualIsProcessedInternalResult = actualPersistencePackage.isProcessedInternal();
     boolean actualIsTreeCollectionResult = actualPersistencePackage.isTreeCollection();
-    boolean actualIsValidateUnsubmittedPropertiesResult =
-        actualPersistencePackage.isValidateUnsubmittedProperties();
+    boolean actualIsValidateUnsubmittedPropertiesResult = actualPersistencePackage.isValidateUnsubmittedProperties();
 
     // Assert
     assertEquals("ABC123", actualCsrfToken);
     assertEquals("Dr Jane Doe", actualCeilingEntityFullyQualifiedClassname);
     assertEquals("Dr Jane Doe", actualFetchTypeFullyQualifiedClassname);
-    assertEquals(
-        "PersistencePackage{ceilingEntityFullyQualifiedClassname='Dr Jane Doe', securityCeilingEntityFullyQua"
-            + "lifiedClassname='Dr Jane Doe', sectionEntityField='Section Entity Field', fetchTypeFullyQualifiedClassname"
-            + "='Dr Jane Doe', persistencePerspective=PersistencePerspective{persistencePerspectiveItems={},"
-            + " configurationKey='null'}, customCriteria=[Custom Criteria], entity=Entity{isValidationFailure=false,"
-            + " isDirty=false, properties=null, type=null}, csrfToken='ABC123', requestingEntityName='Requesting"
-            + " Entity Name', subPackages={}, validateUnsubmittedProperties=true, sectionCrumbs=[SectionCrumb"
-            + "{sectionIdentifier='42', sectionId='42'}]}",
-        actualToStringResult);
+    assertEquals("PersistencePackage{ceilingEntityFullyQualifiedClassname='Dr Jane Doe', securityCeilingEntityFullyQua"
+        + "lifiedClassname='Dr Jane Doe', sectionEntityField='Section Entity Field', fetchTypeFullyQualifiedClassname"
+        + "='Dr Jane Doe', persistencePerspective=PersistencePerspective{persistencePerspectiveItems={},"
+        + " configurationKey='null'}, customCriteria=[Custom Criteria], entity=Entity{isValidationFailure=false,"
+        + " isDirty=false, properties=null, type=null}, csrfToken='ABC123', requestingEntityName='Requesting"
+        + " Entity Name', subPackages={}, validateUnsubmittedProperties=true, sectionCrumbs=[SectionCrumb"
+        + "{sectionIdentifier='42', sectionId='42'}]}", actualToStringResult);
     assertEquals("Requesting Entity Name", actualRequestingEntityName);
     assertEquals("Section Entity Field", actualSectionEntityField);
     assertTrue(actualDeferredOperations.isEmpty());
@@ -385,23 +339,20 @@ public class PersistencePackageDiffblueTest {
     assertSame(subPackages, actualSubPackages);
     assertSame(entity2, actualEntity);
     assertSame(persistencePerspective, actualPersistencePerspective);
-    assertSame(customCriteria2, actualCustomCriteria);
+    assertSame(customCriteria, actualCustomCriteria);
     assertSame(sectionCrumbs, actualSectionCrumbs);
-    assertArrayEquals(new String[] {"Custom Criteria"}, actualCustomCriteria);
+    assertArrayEquals(new String[]{"Custom Criteria"}, actualCustomCriteria);
   }
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code Dr Jane Doe}.
+   *   <li>When {@code Dr Jane Doe}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link PersistencePackage#PersistencePackage(String, Entity, PersistencePerspective,
-   *       String[], String)}
+   *   <li>{@link PersistencePackage#PersistencePackage(String, Entity, PersistencePerspective, String[], String)}
    *   <li>{@link PersistencePackage#setAddOperationInspect(boolean)}
    *   <li>{@link PersistencePackage#setCeilingEntityFullyQualifiedClassname(String)}
    *   <li>{@link PersistencePackage#setCsrfToken(String)}
@@ -437,59 +388,44 @@ public class PersistencePackageDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistencePackage.<init>()",
-    "void PersistencePackage.<init>(String, String, Entity, PersistencePerspective, String[], String)",
-    "void PersistencePackage.<init>(String, Entity, PersistencePerspective, String[], String)",
-    "String PersistencePackage.getCeilingEntityFullyQualifiedClassname()",
-    "String PersistencePackage.getCsrfToken()",
-    "String[] PersistencePackage.getCustomCriteria()",
-    "Map PersistencePackage.getDeferredOperations()",
-    "Entity PersistencePackage.getEntity()",
-    "String PersistencePackage.getFetchTypeFullyQualifiedClassname()",
-    "PersistencePerspective PersistencePackage.getPersistencePerspective()",
-    "String PersistencePackage.getRequestingEntityName()",
-    "SectionCrumb[] PersistencePackage.getSectionCrumbs()",
-    "String PersistencePackage.getSectionEntityField()",
-    "Map PersistencePackage.getSubPackages()",
-    "boolean PersistencePackage.isAddOperationInspect()",
-    "boolean PersistencePackage.isProcessedInternal()",
-    "boolean PersistencePackage.isTreeCollection()",
-    "boolean PersistencePackage.isValidateUnsubmittedProperties()",
-    "void PersistencePackage.setAddOperationInspect(boolean)",
-    "void PersistencePackage.setCeilingEntityFullyQualifiedClassname(String)",
-    "void PersistencePackage.setCsrfToken(String)",
-    "void PersistencePackage.setCustomCriteria(String[])",
-    "void PersistencePackage.setDeferredOperations(Map)",
-    "void PersistencePackage.setEntity(Entity)",
-    "void PersistencePackage.setFetchTypeFullyQualifiedClassname(String)",
-    "void PersistencePackage.setIsTreeCollection(boolean)",
-    "void PersistencePackage.setPersistencePerspective(PersistencePerspective)",
-    "void PersistencePackage.setProcessedInternal(boolean)",
-    "void PersistencePackage.setRequestingEntityName(String)",
-    "void PersistencePackage.setSectionCrumbs(SectionCrumb[])",
-    "void PersistencePackage.setSectionEntityField(String)",
-    "void PersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname(String)",
-    "void PersistencePackage.setSubPackages(Map)",
-    "void PersistencePackage.setValidateUnsubmittedProperties(boolean)",
-    "String PersistencePackage.toString()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePackage.<init>()",
+      "void PersistencePackage.<init>(String, String, Entity, PersistencePerspective, String[], String)",
+      "void PersistencePackage.<init>(String, Entity, PersistencePerspective, String[], String)",
+      "String PersistencePackage.getCeilingEntityFullyQualifiedClassname()", "String PersistencePackage.getCsrfToken()",
+      "String[] PersistencePackage.getCustomCriteria()", "Map PersistencePackage.getDeferredOperations()",
+      "Entity PersistencePackage.getEntity()", "String PersistencePackage.getFetchTypeFullyQualifiedClassname()",
+      "PersistencePerspective PersistencePackage.getPersistencePerspective()",
+      "String PersistencePackage.getRequestingEntityName()", "SectionCrumb[] PersistencePackage.getSectionCrumbs()",
+      "String PersistencePackage.getSectionEntityField()", "Map PersistencePackage.getSubPackages()",
+      "boolean PersistencePackage.isAddOperationInspect()", "boolean PersistencePackage.isProcessedInternal()",
+      "boolean PersistencePackage.isTreeCollection()", "boolean PersistencePackage.isValidateUnsubmittedProperties()",
+      "void PersistencePackage.setAddOperationInspect(boolean)",
+      "void PersistencePackage.setCeilingEntityFullyQualifiedClassname(String)",
+      "void PersistencePackage.setCsrfToken(String)", "void PersistencePackage.setCustomCriteria(String[])",
+      "void PersistencePackage.setDeferredOperations(Map)", "void PersistencePackage.setEntity(Entity)",
+      "void PersistencePackage.setFetchTypeFullyQualifiedClassname(String)",
+      "void PersistencePackage.setIsTreeCollection(boolean)",
+      "void PersistencePackage.setPersistencePerspective(PersistencePerspective)",
+      "void PersistencePackage.setProcessedInternal(boolean)",
+      "void PersistencePackage.setRequestingEntityName(String)",
+      "void PersistencePackage.setSectionCrumbs(SectionCrumb[])",
+      "void PersistencePackage.setSectionEntityField(String)",
+      "void PersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname(String)",
+      "void PersistencePackage.setSubPackages(Map)",
+      "void PersistencePackage.setValidateUnsubmittedProperties(boolean)", "String PersistencePackage.toString()"})
   public void testGettersAndSetters_whenDrJaneDoe2() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
     // Act
-    PersistencePackage actualPersistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage actualPersistencePackage = new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123");
     actualPersistencePackage.setAddOperationInspect(true);
     actualPersistencePackage.setCeilingEntityFullyQualifiedClassname("Dr Jane Doe");
     actualPersistencePackage.setCsrfToken("ABC123");
-    String[] customCriteria2 = new String[] {"Custom Criteria"};
-    actualPersistencePackage.setCustomCriteria(customCriteria2);
+    String[] customCriteria = new String[]{"Custom Criteria"};
+    actualPersistencePackage.setCustomCriteria(customCriteria);
     HashMap<ChangeType, List<PersistencePackage>> deferredOperations = new HashMap<>();
     actualPersistencePackage.setDeferredOperations(deferredOperations);
     Entity entity2 = new Entity();
@@ -504,7 +440,7 @@ public class PersistencePackageDiffblueTest {
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-    SectionCrumb[] sectionCrumbs = new SectionCrumb[] {sectionCrumb};
+    SectionCrumb[] sectionCrumbs = new SectionCrumb[]{sectionCrumb};
     actualPersistencePackage.setSectionCrumbs(sectionCrumbs);
     actualPersistencePackage.setSectionEntityField("Section Entity Field");
     actualPersistencePackage.setSecurityCeilingEntityFullyQualifiedClassname("Dr Jane Doe");
@@ -512,17 +448,15 @@ public class PersistencePackageDiffblueTest {
     actualPersistencePackage.setSubPackages(subPackages);
     actualPersistencePackage.setValidateUnsubmittedProperties(true);
     String actualToStringResult = actualPersistencePackage.toString();
-    String actualCeilingEntityFullyQualifiedClassname =
-        actualPersistencePackage.getCeilingEntityFullyQualifiedClassname();
+    String actualCeilingEntityFullyQualifiedClassname = actualPersistencePackage
+        .getCeilingEntityFullyQualifiedClassname();
     String actualCsrfToken = actualPersistencePackage.getCsrfToken();
     String[] actualCustomCriteria = actualPersistencePackage.getCustomCriteria();
-    Map<ChangeType, List<PersistencePackage>> actualDeferredOperations =
-        actualPersistencePackage.getDeferredOperations();
+    Map<ChangeType, List<PersistencePackage>> actualDeferredOperations = actualPersistencePackage
+        .getDeferredOperations();
     Entity actualEntity = actualPersistencePackage.getEntity();
-    String actualFetchTypeFullyQualifiedClassname =
-        actualPersistencePackage.getFetchTypeFullyQualifiedClassname();
-    PersistencePerspective actualPersistencePerspective =
-        actualPersistencePackage.getPersistencePerspective();
+    String actualFetchTypeFullyQualifiedClassname = actualPersistencePackage.getFetchTypeFullyQualifiedClassname();
+    PersistencePerspective actualPersistencePerspective = actualPersistencePackage.getPersistencePerspective();
     String actualRequestingEntityName = actualPersistencePackage.getRequestingEntityName();
     SectionCrumb[] actualSectionCrumbs = actualPersistencePackage.getSectionCrumbs();
     String actualSectionEntityField = actualPersistencePackage.getSectionEntityField();
@@ -530,22 +464,19 @@ public class PersistencePackageDiffblueTest {
     boolean actualIsAddOperationInspectResult = actualPersistencePackage.isAddOperationInspect();
     boolean actualIsProcessedInternalResult = actualPersistencePackage.isProcessedInternal();
     boolean actualIsTreeCollectionResult = actualPersistencePackage.isTreeCollection();
-    boolean actualIsValidateUnsubmittedPropertiesResult =
-        actualPersistencePackage.isValidateUnsubmittedProperties();
+    boolean actualIsValidateUnsubmittedPropertiesResult = actualPersistencePackage.isValidateUnsubmittedProperties();
 
     // Assert
     assertEquals("ABC123", actualCsrfToken);
     assertEquals("Dr Jane Doe", actualCeilingEntityFullyQualifiedClassname);
     assertEquals("Dr Jane Doe", actualFetchTypeFullyQualifiedClassname);
-    assertEquals(
-        "PersistencePackage{ceilingEntityFullyQualifiedClassname='Dr Jane Doe', securityCeilingEntityFullyQua"
-            + "lifiedClassname='Dr Jane Doe', sectionEntityField='Section Entity Field', fetchTypeFullyQualifiedClassname"
-            + "='Dr Jane Doe', persistencePerspective=PersistencePerspective{persistencePerspectiveItems={},"
-            + " configurationKey='null'}, customCriteria=[Custom Criteria], entity=Entity{isValidationFailure=false,"
-            + " isDirty=false, properties=null, type=null}, csrfToken='ABC123', requestingEntityName='Requesting"
-            + " Entity Name', subPackages={}, validateUnsubmittedProperties=true, sectionCrumbs=[SectionCrumb"
-            + "{sectionIdentifier='42', sectionId='42'}]}",
-        actualToStringResult);
+    assertEquals("PersistencePackage{ceilingEntityFullyQualifiedClassname='Dr Jane Doe', securityCeilingEntityFullyQua"
+        + "lifiedClassname='Dr Jane Doe', sectionEntityField='Section Entity Field', fetchTypeFullyQualifiedClassname"
+        + "='Dr Jane Doe', persistencePerspective=PersistencePerspective{persistencePerspectiveItems={},"
+        + " configurationKey='null'}, customCriteria=[Custom Criteria], entity=Entity{isValidationFailure=false,"
+        + " isDirty=false, properties=null, type=null}, csrfToken='ABC123', requestingEntityName='Requesting"
+        + " Entity Name', subPackages={}, validateUnsubmittedProperties=true, sectionCrumbs=[SectionCrumb"
+        + "{sectionIdentifier='42', sectionId='42'}]}", actualToStringResult);
     assertEquals("Requesting Entity Name", actualRequestingEntityName);
     assertEquals("Section Entity Field", actualSectionEntityField);
     assertTrue(actualDeferredOperations.isEmpty());
@@ -558,85 +489,69 @@ public class PersistencePackageDiffblueTest {
     assertSame(subPackages, actualSubPackages);
     assertSame(entity2, actualEntity);
     assertSame(persistencePerspective, actualPersistencePerspective);
-    assertSame(customCriteria2, actualCustomCriteria);
+    assertSame(customCriteria, actualCustomCriteria);
     assertSame(sectionCrumbs, actualSectionCrumbs);
-    assertArrayEquals(new String[] {"Custom Criteria"}, actualCustomCriteria);
+    assertArrayEquals(new String[]{"Custom Criteria"}, actualCustomCriteria);
   }
 
   /**
    * Test {@link PersistencePackage#findProperty(String)}.
-   *
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return {@link
-   *       Property#Property()}.
-   *   <li>Then return {@link Property#Property()}.
+   *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
+   *   <li>Then return {@link Property#Property()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#findProperty(String)}
+   * <p>
+   * Method under test: {@link PersistencePackage#findProperty(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Property PersistencePackage.findProperty(String)"})
   public void testFindProperty_givenEntityFindPropertyReturnProperty_thenReturnProperty() {
     // Arrange
     Entity entity = mock(Entity.class);
     Property property = new Property();
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act
-    Property actualFindPropertyResult = persistencePackage.findProperty("Name");
+    Property actualFindPropertyResult = (new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123")).findProperty("Name");
 
     // Assert
-    verify(entity).findProperty("Name");
+    verify(entity).findProperty(eq("Name"));
     assertSame(property, actualFindPropertyResult);
   }
 
   /**
    * Test {@link PersistencePackage#findProperty(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#findProperty(String)}
+   * <p>
+   * Method under test: {@link PersistencePackage#findProperty(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Property PersistencePackage.findProperty(String)"})
   public void testFindProperty_thenReturnNull() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertNull(persistencePackage.findProperty("Name"));
+    assertNull((new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123")).findProperty("Name"));
   }
 
   /**
    * Test {@link PersistencePackage#getProperties()}.
-   *
    * <ul>
-   *   <li>Given {@link PersistencePackage#PersistencePackage()} Entity is {@link Entity} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link PersistencePackage#PersistencePackage()} Entity is {@link Entity} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getProperties()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getProperties()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Property[] PersistencePackage.getProperties()"})
   public void testGetProperties_givenPersistencePackageEntityIsEntity_thenReturnNull() {
     // Arrange
@@ -649,18 +564,15 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#getPMap()}.
-   *
    * <ul>
-   *   <li>Given {@link PersistencePackage#PersistencePackage()} Entity is {@link Entity} (default
-   *       constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link PersistencePackage#PersistencePackage()} Entity is {@link Entity} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getPMap()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getPMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map PersistencePackage.getPMap()"})
   public void testGetPMap_givenPersistencePackageEntityIsEntity_thenReturnEmpty() {
     // Arrange
@@ -673,55 +585,18 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#getSecurityCeilingEntityFullyQualifiedClassname()}.
-   *
    * <ul>
-   *   <li>Then return {@code Dr Jane Doe}.
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PersistencePackage#getSecurityCeilingEntityFullyQualifiedClassname()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getSecurityCeilingEntityFullyQualifiedClassname()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PersistencePackage.getSecurityCeilingEntityFullyQualifiedClassname()"})
-  public void testGetSecurityCeilingEntityFullyQualifiedClassname_thenReturnDrJaneDoe() {
-    // Arrange
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setSecurityCeilingEntityFullyQualifiedClassname(" ");
-
-    // Act and Assert
-    assertEquals(
-        "Dr Jane Doe", persistencePackage.getSecurityCeilingEntityFullyQualifiedClassname());
-  }
-
-  /**
-   * Test {@link PersistencePackage#getSecurityCeilingEntityFullyQualifiedClassname()}.
-   *
-   * <ul>
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PersistencePackage#getSecurityCeilingEntityFullyQualifiedClassname()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PersistencePackage.getSecurityCeilingEntityFullyQualifiedClassname()"})
   public void testGetSecurityCeilingEntityFullyQualifiedClassname_thenReturnFoo() {
     // Arrange
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setSecurityCeilingEntityFullyQualifiedClassname("foo");
 
     // Act and Assert
@@ -730,117 +605,68 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#getSecurityCeilingEntityFullyQualifiedClassname()}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * PersistencePackage#getSecurityCeilingEntityFullyQualifiedClassname()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getSecurityCeilingEntityFullyQualifiedClassname()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String PersistencePackage.getSecurityCeilingEntityFullyQualifiedClassname()"})
   public void testGetSecurityCeilingEntityFullyQualifiedClassname_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new PersistencePackage().getSecurityCeilingEntityFullyQualifiedClassname());
+    assertNull((new PersistencePackage()).getSecurityCeilingEntityFullyQualifiedClassname());
   }
 
   /**
    * Test {@link PersistencePackage#addCustomCriteria(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackage#addCustomCriteria(String)}
+   * <p>
+   * Method under test: {@link PersistencePackage#addCustomCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackage.addCustomCriteria(String)"})
   public void testAddCustomCriteria() {
     // Arrange and Act
     persistencePackage.addCustomCriteria("Criteria");
 
     // Assert
-    assertArrayEquals(new String[] {"Criteria"}, persistencePackage.getCustomCriteria());
+    assertArrayEquals(new String[]{"Criteria"}, persistencePackage.getCustomCriteria());
   }
 
   /**
    * Test {@link PersistencePackage#addCustomCriteria(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackage#addCustomCriteria(String)}
+   * <p>
+   * Method under test: {@link PersistencePackage#addCustomCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackage.addCustomCriteria(String)"})
   public void testAddCustomCriteria2() {
     // Arrange
-    persistencePackage.setCustomCriteria(new String[] {"foo"});
+    persistencePackage.setCustomCriteria(new String[]{"foo"});
 
     // Act
     persistencePackage.addCustomCriteria(null);
 
     // Assert
-    assertArrayEquals(new String[] {"foo", null}, persistencePackage.getCustomCriteria());
+    assertArrayEquals(new String[]{"foo", null}, persistencePackage.getCustomCriteria());
   }
 
   /**
    * Test {@link PersistencePackage#removeCustomCriteria(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
+   * <p>
+   * Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
   public void testRemoveCustomCriteria() {
     // Arrange
-    persistencePackage.setCustomCriteria(new String[] {"foo"});
-
-    // Act
-    persistencePackage.removeCustomCriteria(null);
-
-    // Assert that nothing has changed
-    assertEquals(1, persistencePackage.getCustomCriteria().length);
-  }
-
-  /**
-   * Test {@link PersistencePackage#removeCustomCriteria(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
-  public void testRemoveCustomCriteria2() {
-    // Arrange
-    persistencePackage.setCustomCriteria(new String[] {null});
-
-    // Act
-    persistencePackage.removeCustomCriteria(null);
-
-    // Assert
-    assertEquals(0, persistencePackage.getCustomCriteria().length);
-  }
-
-  /**
-   * Test {@link PersistencePackage#removeCustomCriteria(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
-  public void testRemoveCustomCriteria3() {
-    // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
 
     // Act
     persistencePackage.removeCustomCriteria("Criteria");
@@ -851,39 +677,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#removeCustomCriteria(String)}.
-   *
    * <ul>
-   *   <li>Given {@link PersistencePackage}.
+   *   <li>Then array length is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
+   * <p>
+   * Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
-  public void testRemoveCustomCriteria_givenPersistencePackage() {
-    // Arrange and Act
-    persistencePackage.removeCustomCriteria("Criteria");
-
-    // Assert that nothing has changed
-    assertNull(persistencePackage.getCustomCriteria());
-  }
-
-  /**
-   * Test {@link PersistencePackage#removeCustomCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistencePackage#PersistencePackage()} addCustomCriteria {@code Criteria}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
-  public void testRemoveCustomCriteria_givenPersistencePackageAddCustomCriteriaCriteria() {
+  public void testRemoveCustomCriteria_thenArrayLengthIsOne() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.addCustomCriteria("Criteria");
@@ -898,61 +701,14 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#removeCustomCriteria(String)}.
-   *
    * <ul>
-   *   <li>Given {@link PersistencePackage} CustomCriteria is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
-  public void testRemoveCustomCriteria_givenPersistencePackageCustomCriteriaIsNull() {
-    // Arrange
-    persistencePackage.setCustomCriteria(null);
-
-    // Act
-    persistencePackage.removeCustomCriteria(null);
-
-    // Assert that nothing has changed
-    assertNull(persistencePackage.getCustomCriteria());
-  }
-
-  /**
-   * Test {@link PersistencePackage#removeCustomCriteria(String)}.
-   * <ul>
-   *   <li>Given {@link PersistencePackage}.</li>
-   *   <li>When {@code PersistencePackage{}.</li>
+   *   <li>Then array length is zero.</li>
    * </ul>
    * <p>
    * Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
-  public void testRemoveCustomCriteria_givenPersistencePackage_whenPersistencePackage() {
-    // Arrange and Act
-    persistencePackage.removeCustomCriteria("PersistencePackage{");
-
-    // Assert that nothing has changed
-    assertNull(persistencePackage.getCustomCriteria());
-  }
-
-  /**
-   * Test {@link PersistencePackage#removeCustomCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Then array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
   public void testRemoveCustomCriteria_thenArrayLengthIsZero() {
     // Arrange
@@ -967,264 +723,65 @@ public class PersistencePackageDiffblueTest {
   }
 
   /**
-   * Test {@link PersistencePackage#getCriteriaIndex(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackage#getCriteriaIndex(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int PersistencePackage.getCriteriaIndex(String)"})
-  public void testGetCriteriaIndex() {
-    // Arrange
-    persistencePackage.setCustomCriteria(new String[] {null});
-
-    // Act and Assert
-    assertEquals(0, persistencePackage.getCriteriaIndex(null));
-  }
-
-  /**
-   * Test {@link PersistencePackage#getCriteriaIndex(String)}.
-   *
+   * Test {@link PersistencePackage#removeCustomCriteria(String)}.
    * <ul>
-   *   <li>Given {@link PersistencePackage#PersistencePackage()} addCustomCriteria {@code Criteria}.
+   *   <li>Then {@link PersistencePackage#PersistencePackage()} CustomCriteria is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getCriteriaIndex(String)}
+   * <p>
+   * Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int PersistencePackage.getCriteriaIndex(String)"})
-  public void testGetCriteriaIndex_givenPersistencePackageAddCustomCriteriaCriteria() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PersistencePackage.removeCustomCriteria(String)"})
+  public void testRemoveCustomCriteria_thenPersistencePackageCustomCriteriaIsNull() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.addCustomCriteria("Criteria");
 
-    // Act and Assert
-    assertEquals(0, persistencePackage.getCriteriaIndex("Criteria"));
+    // Act
+    persistencePackage.removeCustomCriteria("Criteria");
+
+    // Assert that nothing has changed
+    assertNull(persistencePackage.getCustomCriteria());
   }
 
   /**
    * Test {@link PersistencePackage#getCriteriaIndex(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistencePackage} CustomCriteria is array of {@link String} with {@code
-   *       foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getCriteriaIndex(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int PersistencePackage.getCriteriaIndex(String)"})
-  public void testGetCriteriaIndex_givenPersistencePackageCustomCriteriaIsArrayOfStringWithFoo() {
-    // Arrange
-    persistencePackage.setCustomCriteria(new String[] {"foo"});
-
-    // Act and Assert
-    assertEquals(-1, persistencePackage.getCriteriaIndex(null));
-  }
-
-  /**
-   * Test {@link PersistencePackage#getCriteriaIndex(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistencePackage} CustomCriteria is array of {@link String} with {@code
-   *       foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getCriteriaIndex(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int PersistencePackage.getCriteriaIndex(String)"})
-  public void testGetCriteriaIndex_givenPersistencePackageCustomCriteriaIsArrayOfStringWithFoo2() {
-    // Arrange
-    persistencePackage.setCustomCriteria(new String[] {"foo"});
-
-    // Act and Assert
-    assertEquals(-1, persistencePackage.getCriteriaIndex("Criteria"));
-  }
-
-  /**
-   * Test {@link PersistencePackage#getCriteriaIndex(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistencePackage}.
-   *   <li>When {@code Criteria}.
-   *   <li>Then return minus one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getCriteriaIndex(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int PersistencePackage.getCriteriaIndex(String)"})
-  public void testGetCriteriaIndex_givenPersistencePackage_whenCriteria_thenReturnMinusOne() {
-    // Arrange, Act and Assert
-    assertEquals(-1, persistencePackage.getCriteriaIndex("Criteria"));
-  }
-
-  /**
-   * Test {@link PersistencePackage#getCriteriaIndex(String)}.
-   * <ul>
-   *   <li>Given {@link PersistencePackage}.</li>
-   *   <li>When {@code PersistencePackage{}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link PersistencePackage#getCriteriaIndex(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int PersistencePackage.getCriteriaIndex(String)"})
-  public void testGetCriteriaIndex_givenPersistencePackage_whenPersistencePackage() {
+  public void testGetCriteriaIndex() {
     // Arrange, Act and Assert
-    assertEquals(-1, persistencePackage.getCriteriaIndex("PersistencePackage{"));
+    assertEquals(-1, persistencePackage.getCriteriaIndex("Criteria"));
   }
 
   /**
    * Test {@link PersistencePackage#containsCriteria(String)}.
-   *
-   * <p>Method under test: {@link PersistencePackage#containsCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PersistencePackage.containsCriteria(String)"})
-  public void testContainsCriteria() {
-    // Arrange
-    persistencePackage.setCustomCriteria(new String[] {null});
-
-    // Act and Assert
-    assertTrue(persistencePackage.containsCriteria(null));
-  }
-
-  /**
-   * Test {@link PersistencePackage#containsCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistencePackage#PersistencePackage()} addCustomCriteria {@code Criteria}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#containsCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PersistencePackage.containsCriteria(String)"})
-  public void testContainsCriteria_givenPersistencePackageAddCustomCriteriaCriteria() {
-    // Arrange
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.addCustomCriteria("Criteria");
-
-    // Act and Assert
-    assertTrue(persistencePackage.containsCriteria("Criteria"));
-  }
-
-  /**
-   * Test {@link PersistencePackage#containsCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistencePackage} CustomCriteria is array of {@link String} with {@code
-   *       foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#containsCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PersistencePackage.containsCriteria(String)"})
-  public void testContainsCriteria_givenPersistencePackageCustomCriteriaIsArrayOfStringWithFoo() {
-    // Arrange
-    persistencePackage.setCustomCriteria(new String[] {"foo"});
-
-    // Act and Assert
-    assertFalse(persistencePackage.containsCriteria(null));
-  }
-
-  /**
-   * Test {@link PersistencePackage#containsCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistencePackage} CustomCriteria is array of {@link String} with {@code
-   *       foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#containsCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PersistencePackage.containsCriteria(String)"})
-  public void testContainsCriteria_givenPersistencePackageCustomCriteriaIsArrayOfStringWithFoo2() {
-    // Arrange
-    persistencePackage.setCustomCriteria(new String[] {"foo"});
-
-    // Act and Assert
-    assertFalse(persistencePackage.containsCriteria("Criteria"));
-  }
-
-  /**
-   * Test {@link PersistencePackage#containsCriteria(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistencePackage}.
-   *   <li>When {@code Criteria}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#containsCriteria(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PersistencePackage.containsCriteria(String)"})
-  public void testContainsCriteria_givenPersistencePackage_whenCriteria_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(persistencePackage.containsCriteria("Criteria"));
-  }
-
-  /**
-   * Test {@link PersistencePackage#containsCriteria(String)}.
-   * <ul>
-   *   <li>Given {@link PersistencePackage}.</li>
-   *   <li>When {@code PersistencePackage{}.</li>
-   * </ul>
    * <p>
    * Method under test: {@link PersistencePackage#containsCriteria(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PersistencePackage.containsCriteria(String)"})
-  public void testContainsCriteria_givenPersistencePackage_whenPersistencePackage() {
+  public void testContainsCriteria() {
     // Arrange, Act and Assert
-    assertFalse(persistencePackage.containsCriteria("PersistencePackage{"));
+    assertFalse(persistencePackage.containsCriteria("Criteria"));
   }
 
   /**
    * Test {@link PersistencePackage#getPersistencePerspectiveItems()}.
-   *
-   * <p>Method under test: {@link PersistencePackage#getPersistencePerspectiveItems()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getPersistencePerspectiveItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map PersistencePackage.getPersistencePerspectiveItems()"})
   public void testGetPersistencePerspectiveItems() {
     // Arrange
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(new PersistencePerspective());
 
     // Act and Assert
     assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
@@ -1232,87 +789,29 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#getPersistencePerspectiveItems()}.
-   *
    * <ul>
-   *   <li>Given {@link PersistencePackage#PersistencePackage()}.
+   *   <li>Given {@link PersistencePackage#PersistencePackage()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getPersistencePerspectiveItems()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getPersistencePerspectiveItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map PersistencePackage.getPersistencePerspectiveItems()"})
   public void testGetPersistencePerspectiveItems_givenPersistencePackage() {
     // Arrange, Act and Assert
-    assertTrue(new PersistencePackage().getPersistencePerspectiveItems().isEmpty());
+    assertTrue((new PersistencePackage()).getPersistencePerspectiveItems().isEmpty());
   }
 
   /**
    * Test {@link PersistencePackage#getClosetCrumb(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link SectionCrumb} (default constructor) SectionIdentifier is {@code 42}.
-   *   <li>Then return {@link SectionCrumb} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getClosetCrumb(String)}
+   * <p>
+   * Method under test: {@link PersistencePackage#getClosetCrumb(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SectionCrumb PersistencePackage.getClosetCrumb(String)"})
-  public void testGetClosetCrumb_givenSectionCrumbSectionIdentifierIs42_thenReturnSectionCrumb() {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-
-    // Act and Assert
-    assertSame(sectionCrumb, persistencePackage.getClosetCrumb("My Ceiling"));
-  }
-
-  /**
-   * Test {@link PersistencePackage#getClosetCrumb(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link SectionCrumb} (default constructor) SectionIdentifier is {@code My Ceiling}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getClosetCrumb(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SectionCrumb PersistencePackage.getClosetCrumb(String)"})
-  public void testGetClosetCrumb_givenSectionCrumbSectionIdentifierIsMyCeiling() {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("My Ceiling");
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-
-    // Act and Assert
-    assertSame(sectionCrumb, persistencePackage.getClosetCrumb("My Ceiling"));
-  }
-
-  /**
-   * Test {@link PersistencePackage#getClosetCrumb(String)}.
-   *
-   * <ul>
-   *   <li>Then return OriginalSectionIdentifier is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getClosetCrumb(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SectionCrumb PersistencePackage.getClosetCrumb(String)"})
-  public void testGetClosetCrumb_thenReturnOriginalSectionIdentifierIsNull() {
+  public void testGetClosetCrumb() {
     // Arrange and Act
     SectionCrumb actualClosetCrumb = persistencePackage.getClosetCrumb("My Ceiling");
 
@@ -1324,20 +823,18 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#getBottomCrumb()}.
-   *
    * <ul>
-   *   <li>Then return OriginalSectionIdentifier is {@code null}.
+   *   <li>Then return OriginalSectionIdentifier is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getBottomCrumb()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getBottomCrumb()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SectionCrumb PersistencePackage.getBottomCrumb()"})
   public void testGetBottomCrumb_thenReturnOriginalSectionIdentifierIsNull() {
     // Arrange and Act
-    SectionCrumb actualBottomCrumb = new PersistencePackage().getBottomCrumb();
+    SectionCrumb actualBottomCrumb = (new PersistencePackage()).getBottomCrumb();
 
     // Assert
     assertNull(actualBottomCrumb.getOriginalSectionIdentifier());
@@ -1347,16 +844,14 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#getBottomCrumb()}.
-   *
    * <ul>
-   *   <li>Then return {@link SectionCrumb} (default constructor).
+   *   <li>Then return {@link SectionCrumb} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getBottomCrumb()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getBottomCrumb()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SectionCrumb PersistencePackage.getBottomCrumb()"})
   public void testGetBottomCrumb_thenReturnSectionCrumb() {
     // Arrange
@@ -1364,13 +859,9 @@ public class PersistencePackageDiffblueTest {
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
 
     // Act and Assert
     assertSame(sectionCrumb, persistencePackage.getBottomCrumb());
@@ -1378,20 +869,18 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#getTopCrumb()}.
-   *
    * <ul>
-   *   <li>Then return OriginalSectionIdentifier is {@code null}.
+   *   <li>Then return OriginalSectionIdentifier is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getTopCrumb()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getTopCrumb()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SectionCrumb PersistencePackage.getTopCrumb()"})
   public void testGetTopCrumb_thenReturnOriginalSectionIdentifierIsNull() {
     // Arrange and Act
-    SectionCrumb actualTopCrumb = new PersistencePackage().getTopCrumb();
+    SectionCrumb actualTopCrumb = (new PersistencePackage()).getTopCrumb();
 
     // Assert
     assertNull(actualTopCrumb.getOriginalSectionIdentifier());
@@ -1401,16 +890,14 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#getTopCrumb()}.
-   *
    * <ul>
-   *   <li>Then return {@link SectionCrumb} (default constructor).
+   *   <li>Then return {@link SectionCrumb} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#getTopCrumb()}
+   * <p>
+   * Method under test: {@link PersistencePackage#getTopCrumb()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SectionCrumb PersistencePackage.getTopCrumb()"})
   public void testGetTopCrumb_thenReturnSectionCrumb() {
     // Arrange
@@ -1418,13 +905,9 @@ public class PersistencePackageDiffblueTest {
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
 
     // Act and Assert
     assertSame(sectionCrumb, persistencePackage.getTopCrumb());
@@ -1432,26 +915,20 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}, and {@link PersistencePackage#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PersistencePackage#equals(Object)}
    *   <li>{@link PersistencePackage#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1459,73 +936,57 @@ public class PersistencePackageDiffblueTest {
 
     // Act and Assert
     assertEquals(persistencePackage, persistencePackage2);
-    assertEquals(persistencePackage.hashCode(), persistencePackage2.hashCode());
+    int expectedHashCodeResult = persistencePackage.hashCode();
+    assertEquals(expectedHashCodeResult, persistencePackage2.hashCode());
   }
 
   /**
    * Test {@link PersistencePackage#equals(Object)}, and {@link PersistencePackage#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PersistencePackage#equals(Object)}
    *   <li>{@link PersistencePackage#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
     Entity entity2 = new Entity();
-    String[] customCriteria2 = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage2 =
-        new PersistencePackage(
-            "Dr Jane Doe", entity2, new PersistencePerspective(), customCriteria2, "ABC123");
+    PersistencePackage persistencePackage2 = new PersistencePackage("Dr Jane Doe", entity2,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123");
 
     // Act and Assert
     assertEquals(persistencePackage, persistencePackage2);
-    assertEquals(persistencePackage.hashCode(), persistencePackage2.hashCode());
+    int expectedHashCodeResult = persistencePackage.hashCode();
+    assertEquals(expectedHashCodeResult, persistencePackage2.hashCode());
   }
 
   /**
    * Test {@link PersistencePackage#equals(Object)}, and {@link PersistencePackage#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PersistencePackage#equals(Object)}
    *   <li>{@link PersistencePackage#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1536,31 +997,26 @@ public class PersistencePackageDiffblueTest {
 
     // Act and Assert
     assertEquals(persistencePackage, persistencePackage2);
-    assertEquals(persistencePackage.hashCode(), persistencePackage2.hashCode());
+    int expectedHashCodeResult = persistencePackage.hashCode();
+    assertEquals(expectedHashCodeResult, persistencePackage2.hashCode());
   }
 
   /**
    * Test {@link PersistencePackage#equals(Object)}, and {@link PersistencePackage#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PersistencePackage#equals(Object)}
    *   <li>{@link PersistencePackage#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1571,31 +1027,26 @@ public class PersistencePackageDiffblueTest {
 
     // Act and Assert
     assertEquals(persistencePackage, persistencePackage2);
-    assertEquals(persistencePackage.hashCode(), persistencePackage2.hashCode());
+    int expectedHashCodeResult = persistencePackage.hashCode();
+    assertEquals(expectedHashCodeResult, persistencePackage2.hashCode());
   }
 
   /**
    * Test {@link PersistencePackage#equals(Object)}, and {@link PersistencePackage#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PersistencePackage#equals(Object)}
    *   <li>{@link PersistencePackage#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1608,29 +1059,21 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
 
     // Act and Assert
     assertNotEquals(persistencePackage, new PersistencePackage());
@@ -1638,21 +1081,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1664,21 +1102,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1691,51 +1124,38 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
     // Act and Assert
-    assertNotEquals(
-        persistencePackage,
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123"));
+    assertNotEquals(persistencePackage, new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123"));
   }
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1747,21 +1167,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1773,21 +1188,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1799,21 +1209,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1825,29 +1230,21 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
 
     PersistencePackage persistencePackage2 = new PersistencePackage();
     persistencePackage2.setCeilingEntityFullyQualifiedClassname("Dr Jane Doe");
@@ -1858,61 +1255,40 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
     Entity entity2 = new Entity();
-    String[] customCriteria2 = new String[] {"Custom Criteria"};
 
     // Act and Assert
-    assertNotEquals(
-        persistencePackage,
-        new PersistencePackage(
-            "Dr Jane Doe",
-            "Dr Jane Doe",
-            entity2,
-            new PersistencePerspective(),
-            customCriteria2,
-            "ABC123"));
+    assertNotEquals(persistencePackage, new PersistencePackage("Dr Jane Doe", "Dr Jane Doe", entity2,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123"));
   }
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1926,21 +1302,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1954,21 +1325,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -1982,21 +1348,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -2010,21 +1371,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new PersistencePackage(), null);
@@ -2032,21 +1388,16 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PersistencePackage#equals(Object)}
+   * <p>
+   * Method under test: {@link PersistencePackage#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PersistencePackage.equals(Object)",
-    "int PersistencePackage.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PersistencePackage.equals(Object)", "int PersistencePackage.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new PersistencePackage(), "Different type to PersistencePackage");

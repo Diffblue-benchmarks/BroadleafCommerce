@@ -18,10 +18,10 @@
 package org.broadleafcommerce.common.cache;
 
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -37,23 +37,23 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractCacheMissAwareDiffblueTest {
-  @Mock private CacheManager cacheManager;
+  @Mock
+  private CacheManager cacheManager;
 
-  @InjectMocks private SystemPropertiesDaoImpl systemPropertiesDaoImpl;
+  @InjectMocks
+  private SystemPropertiesDaoImpl systemPropertiesDaoImpl;
 
   /**
    * Test {@link AbstractCacheMissAware#getCache(String)}.
-   *
    * <ul>
-   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractCacheMissAware#getCache(String)}
+   * <p>
+   * Method under test: {@link AbstractCacheMissAware#getCache(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Cache AbstractCacheMissAware.getCache(String)"})
   public void testGetCache_givenCacheManagerGetCacheReturnNull_thenReturnNull() {
     // Arrange
@@ -63,7 +63,7 @@ public class AbstractCacheMissAwareDiffblueTest {
     Cache<String, SystemProperty> actualCache = systemPropertiesDaoImpl.getCache("Cache Name");
 
     // Assert
-    verify(cacheManager).getCache("Cache Name");
+    verify(cacheManager).getCache(eq("Cache Name"));
     assertNull(actualCache);
   }
 }

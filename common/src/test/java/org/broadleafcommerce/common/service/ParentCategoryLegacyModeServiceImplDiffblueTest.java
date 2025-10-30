@@ -18,48 +18,36 @@
 package org.broadleafcommerce.common.service;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.springframework.beans.BeansException;
+import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 public class ParentCategoryLegacyModeServiceImplDiffblueTest {
   /**
-   * Test {@link ParentCategoryLegacyModeServiceImpl#isLegacyMode()}.
-   *
-   * <p>Method under test: {@link ParentCategoryLegacyModeServiceImpl#isLegacyMode()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ParentCategoryLegacyModeServiceImpl.isLegacyMode()",
-    "void ParentCategoryLegacyModeServiceImpl.setApplicationContext(org.springframework.context.ApplicationContext)"
-  })
-  public void testIsLegacyMode() {
-    // Arrange, Act and Assert
-    assertFalse(new ParentCategoryLegacyModeServiceImpl().isLegacyMode());
-  }
-
-  /**
-   * Test {@link ParentCategoryLegacyModeServiceImpl#getLegacyModeService()}.
-   *
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>{@link ParentCategoryLegacyModeServiceImpl#setApplicationContext(ApplicationContext)}
+   *   <li>{@link ParentCategoryLegacyModeServiceImpl#isLegacyMode()}
    * </ul>
-   *
-   * <p>Method under test: {@link ParentCategoryLegacyModeServiceImpl#getLegacyModeService()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.service.ParentCategoryLegacyModeService ParentCategoryLegacyModeServiceImpl.getLegacyModeService()"
-  })
-  public void testGetLegacyModeService_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(ParentCategoryLegacyModeServiceImpl.getLegacyModeService());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ParentCategoryLegacyModeServiceImpl.isLegacyMode()",
+      "void ParentCategoryLegacyModeServiceImpl.setApplicationContext(ApplicationContext)"})
+  public void testGettersAndSetters() throws BeansException {
+    // Arrange
+    ParentCategoryLegacyModeServiceImpl parentCategoryLegacyModeServiceImpl = new ParentCategoryLegacyModeServiceImpl();
+
+    // Act
+    parentCategoryLegacyModeServiceImpl.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
+
+    // Assert
+    assertFalse(parentCategoryLegacyModeServiceImpl.isLegacyMode());
   }
 }

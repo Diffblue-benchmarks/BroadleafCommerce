@@ -20,8 +20,7 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,12 +30,11 @@ import org.junit.experimental.categories.Category;
 public class DataWrapperDiffblueTest {
   /**
    * Test {@link DataWrapper#serialize()}.
-   *
-   * <p>Method under test: {@link DataWrapper#serialize()}
+   * <p>
+   * Method under test: {@link DataWrapper#serialize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String DataWrapper.serialize()"})
   public void testSerialize() throws IOException {
     // Arrange
@@ -78,20 +76,17 @@ public class DataWrapperDiffblueTest {
 
   /**
    * Test {@link DataWrapper#serialize()}.
-   *
    * <ul>
-   *   <li>Given {@link DataDTO} (default constructor) Condition is {@code Condition}.
-   *   <li>Then return a string.
+   *   <li>Given {@link DataDTO} (default constructor) Condition is {@code Condition}.</li>
+   *   <li>Then return a string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataWrapper#serialize()}
+   * <p>
+   * Method under test: {@link DataWrapper#serialize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String DataWrapper.serialize()"})
-  public void testSerialize_givenDataDTOConditionIsCondition_thenReturnAString()
-      throws IOException {
+  public void testSerialize_givenDataDTOConditionIsCondition_thenReturnAString() throws IOException {
     // Arrange
     DataDTO dataDTO = new DataDTO();
     dataDTO.setCondition("Condition");
@@ -118,20 +113,17 @@ public class DataWrapperDiffblueTest {
 
   /**
    * Test {@link DataWrapper#serialize()}.
-   *
    * <ul>
-   *   <li>Given {@link DataWrapper} (default constructor) Data is {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code {"data":[],"error":null,"rawMvel":null}}.
+   *   <li>Given {@link DataWrapper} (default constructor) Data is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code {"data":[],"error":null,"rawMvel":null}}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataWrapper#serialize()}
+   * <p>
+   * Method under test: {@link DataWrapper#serialize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String DataWrapper.serialize()"})
-  public void testSerialize_givenDataWrapperDataIsArrayList_thenReturnDataErrorNullRawMvelNull()
-      throws IOException {
+  public void testSerialize_givenDataWrapperDataIsArrayList_thenReturnDataErrorNullRawMvelNull() throws IOException {
     // Arrange
     DataWrapper dataWrapper = new DataWrapper();
     dataWrapper.setData(new ArrayList<>());
@@ -142,42 +134,36 @@ public class DataWrapperDiffblueTest {
 
   /**
    * Test {@link DataWrapper#serialize()}.
-   *
    * <ul>
-   *   <li>Given {@link DataWrapper} (default constructor).
-   *   <li>Then return {@code {"data":[],"error":null,"rawMvel":null}}.
+   *   <li>Given {@link DataWrapper} (default constructor).</li>
+   *   <li>Then return {@code {"data":[],"error":null,"rawMvel":null}}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataWrapper#serialize()}
+   * <p>
+   * Method under test: {@link DataWrapper#serialize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String DataWrapper.serialize()"})
-  public void testSerialize_givenDataWrapper_thenReturnDataErrorNullRawMvelNull()
-      throws IOException {
+  public void testSerialize_givenDataWrapper_thenReturnDataErrorNullRawMvelNull() throws IOException {
     // Arrange, Act and Assert
-    assertEquals("{\"data\":[],\"error\":null,\"rawMvel\":null}", new DataWrapper().serialize());
+    assertEquals("{\"data\":[],\"error\":null,\"rawMvel\":null}", (new DataWrapper()).serialize());
   }
 
   /**
    * Test {@link DataWrapper#equals(Object)}, and {@link DataWrapper#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DataWrapper#equals(Object)}
    *   <li>{@link DataWrapper#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DataWrapper.equals(Object)", "int DataWrapper.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -186,27 +172,25 @@ public class DataWrapperDiffblueTest {
 
     // Act and Assert
     assertEquals(dataWrapper, dataWrapper2);
-    assertEquals(dataWrapper.hashCode(), dataWrapper2.hashCode());
+    int expectedHashCodeResult = dataWrapper.hashCode();
+    assertEquals(expectedHashCodeResult, dataWrapper2.hashCode());
   }
 
   /**
    * Test {@link DataWrapper#equals(Object)}, and {@link DataWrapper#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link DataWrapper#equals(Object)}
    *   <li>{@link DataWrapper#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DataWrapper.equals(Object)", "int DataWrapper.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -220,17 +204,15 @@ public class DataWrapperDiffblueTest {
 
   /**
    * Test {@link DataWrapper#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataWrapper#equals(Object)}
+   * <p>
+   * Method under test: {@link DataWrapper#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DataWrapper.equals(Object)", "int DataWrapper.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -243,17 +225,15 @@ public class DataWrapperDiffblueTest {
 
   /**
    * Test {@link DataWrapper#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataWrapper#equals(Object)}
+   * <p>
+   * Method under test: {@link DataWrapper#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DataWrapper.equals(Object)", "int DataWrapper.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -262,17 +242,15 @@ public class DataWrapperDiffblueTest {
 
   /**
    * Test {@link DataWrapper#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DataWrapper#equals(Object)}
+   * <p>
+   * Method under test: {@link DataWrapper#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DataWrapper.equals(Object)", "int DataWrapper.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -281,9 +259,8 @@ public class DataWrapperDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link DataWrapper}
    *   <li>{@link DataWrapper#setData(ArrayList)}
@@ -295,17 +272,10 @@ public class DataWrapperDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void DataWrapper.<init>()",
-    "ArrayList DataWrapper.getData()",
-    "String DataWrapper.getError()",
-    "String DataWrapper.getRawMvel()",
-    "void DataWrapper.setData(ArrayList)",
-    "void DataWrapper.setError(String)",
-    "void DataWrapper.setRawMvel(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DataWrapper.<init>()", "ArrayList DataWrapper.getData()", "String DataWrapper.getError()",
+      "String DataWrapper.getRawMvel()", "void DataWrapper.setData(ArrayList)", "void DataWrapper.setError(String)",
+      "void DataWrapper.setRawMvel(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     DataWrapper actualDataWrapper = new DataWrapper();

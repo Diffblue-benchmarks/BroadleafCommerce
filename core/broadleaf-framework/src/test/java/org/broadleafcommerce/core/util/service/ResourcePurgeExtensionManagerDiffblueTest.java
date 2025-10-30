@@ -18,8 +18,7 @@
 package org.broadleafcommerce.core.util.service;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -31,16 +30,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {ResourcePurgeExtensionManager.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ResourcePurgeExtensionManagerDiffblueTest {
-  @Autowired private ResourcePurgeExtensionManager resourcePurgeExtensionManager;
+  @Autowired
+  private ResourcePurgeExtensionManager resourcePurgeExtensionManager;
 
   /**
    * Test {@link ResourcePurgeExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link ResourcePurgeExtensionManager#continueOnHandled()}
+   * <p>
+   * Method under test: {@link ResourcePurgeExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ResourcePurgeExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
     // Arrange, Act and Assert

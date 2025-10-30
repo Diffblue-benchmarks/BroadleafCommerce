@@ -22,19 +22,17 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import org.broadleafcommerce.core.catalog.dao.CategoryDao;
 import org.broadleafcommerce.core.catalog.dao.ProductDao;
@@ -44,13 +42,10 @@ import org.broadleafcommerce.core.catalog.domain.FeaturedProduct;
 import org.broadleafcommerce.core.catalog.domain.FeaturedProductImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductImpl;
 import org.broadleafcommerce.core.catalog.domain.PromotableProduct;
 import org.broadleafcommerce.core.catalog.domain.RelatedProduct;
 import org.broadleafcommerce.core.catalog.domain.RelatedProductDTO;
 import org.broadleafcommerce.core.catalog.domain.RelatedProductTypeEnum;
-import org.broadleafcommerce.core.inventory.service.type.InventoryType;
-import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -61,24 +56,26 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RelatedProductsServiceImplDiffblueTest {
-  @Mock private CategoryDao categoryDao;
+  @InjectMocks
+  private RelatedProductsServiceImpl relatedProductsServiceImpl;
 
-  @Mock private ProductDao productDao;
+  @Mock
+  private CategoryDao categoryDao;
 
-  @InjectMocks private RelatedProductsServiceImpl relatedProductsServiceImpl;
+  @Mock
+  private ProductDao productDao;
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
   public void testFindRelatedProducts() {
     // Arrange
-    when(productDao.readProductById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
+    when(productDao.readProductById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("FEATURED"));
 
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
     relatedProductDTO.setCategoryId(1L);
@@ -88,177 +85,150 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
+    assertThrows(IllegalArgumentException.class,
         () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
-    verify(productDao).readProductById(1L);
+    verify(productDao).readProductById(eq(1L));
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts2() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    Product product = mock(Product.class);
-    when(product.getDefaultCategory()).thenThrow(new IllegalArgumentException());
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.FEATURED);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product).getDefaultCategory();
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link RelatedProductDTO} (default constructor) ProductId is {@code null}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FeaturedProductImpl} (default constructor).</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_givenNull_whenRelatedProductDTOProductIdIsNull() {
+  public void testFindRelatedProducts_givenArrayListAddFeaturedProductImpl_thenReturnArrayList() {
     // Arrange
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
 
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
+    featuredProductList.add(new FeaturedProductImpl());
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getFeaturedProducts()).thenReturn(featuredProductList);
+    Product product = mock(Product.class);
+    when(product.getId()).thenReturn(1L);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.FEATURED);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(null);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
     relatedProductDTO.setQuantity(1);
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertTrue(actualFindRelatedProductsResult.isEmpty());
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(categoryImpl).getFeaturedProducts();
+    verify(product).getDefaultCategory();
+    verify(product).getId();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertSame(featuredProductList, actualFindRelatedProductsResult);
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link RelatedProductDTO} (default constructor) ProductId is {@code null}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FeaturedProductImpl} (default constructor).</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_givenNull_whenRelatedProductDTOProductIdIsNull2() {
+  public void testFindRelatedProducts_givenArrayListAddFeaturedProductImpl_thenReturnArrayList2() {
     // Arrange
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
 
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(null);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
-
-    // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertTrue(actualFindRelatedProductsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) Id is one.
-   *   <li>Then calls {@link RelatedProduct#getRelatedProduct()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_givenProductBundleImplIdIsOne_thenCallsGetRelatedProduct() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
-    productBundleImpl.setId(1L);
-
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getRelatedProduct()).thenReturn(productBundleImpl);
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-
+    ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
+    featuredProductList.add(new FeaturedProductImpl());
+    featuredProductList.add(new FeaturedProductImpl());
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getFeaturedProducts()).thenReturn(featuredProductList);
     Product product = mock(Product.class);
     when(product.getId()).thenReturn(1L);
-    when(product.getUpSaleProducts()).thenReturn(relatedProductList);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
     when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.FEATURED);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
+    relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
     relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product).getId();
-    verify(product).getUpSaleProducts();
-    verify(relatedProduct).getRelatedProduct();
-    assertTrue(actualFindRelatedProductsResult.isEmpty());
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(categoryImpl).getFeaturedProducts();
+    verify(product).getDefaultCategory();
+    verify(product, atLeast(1)).getId();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertSame(featuredProductList, actualFindRelatedProductsResult);
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Given {@link ProductDao} {@link ProductDao#readProductById(Long)} return {@code null}.
+   *   <li>Given {@link ProductDao} {@link ProductDao#readProductById(Long)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
   public void testFindRelatedProducts_givenProductDaoReadProductByIdReturnNull() {
     // Arrange
@@ -273,28 +243,25 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
     assertTrue(actualFindRelatedProductsResult.isEmpty());
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Given {@link ProductDao} {@link ProductDao#readProductById(Long)} return {@link
-   *       ProductBundleImpl} (default constructor).
+   *   <li>Given {@link ProductDao} {@link ProductDao#readProductById(Long)} return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
   public void testFindRelatedProducts_givenProductDaoReadProductByIdReturnProductBundleImpl() {
     // Arrange
@@ -309,682 +276,514 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
     assertTrue(actualFindRelatedProductsResult.isEmpty());
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Given {@link ProductDao} {@link ProductDao#readProductById(Long)} return {@link
-   *       ProductBundleImpl} (default constructor).
+   *   <li>Given {@link Product} {@link Product#getDefaultCategory()} return {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_givenProductDaoReadProductByIdReturnProductBundleImpl2() {
+  public void testFindRelatedProducts_givenProductGetDefaultCategoryReturnCategoryImpl() {
     // Arrange
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-
-    // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    assertTrue(actualFindRelatedProductsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductDao} {@link ProductDao#readProductById(Long)} return {@link
-   *       ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_givenProductDaoReadProductByIdReturnProductBundleImpl3() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
-
-    // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    assertTrue(actualFindRelatedProductsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@link Product} {@link Product#getId()} throw {@link
-   *       IllegalArgumentException#IllegalArgumentException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_givenProductGetIdThrowIllegalArgumentException() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
-
-    Product product = mock(Product.class);
-    when(product.getId()).thenThrow(new IllegalArgumentException());
-    when(product.getUpSaleProducts()).thenReturn(relatedProductList);
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product).getId();
-    verify(product).getUpSaleProducts();
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@link RelatedProductTypeEnum#RelatedProductTypeEnum()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_givenRelatedProductTypeEnum() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(new RelatedProductTypeEnum());
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Product#getCrossSaleProducts()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenCallsGetCrossSaleProducts() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    Product product = mock(Product.class);
-    when(product.getCrossSaleProducts()).thenThrow(new IllegalArgumentException());
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product).getCrossSaleProducts();
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Product#getCumulativeCrossSaleProducts()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenCallsGetCumulativeCrossSaleProducts() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    Product product = mock(Product.class);
-    when(product.getCumulativeCrossSaleProducts()).thenThrow(new IllegalArgumentException());
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product).getCumulativeCrossSaleProducts();
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Product#getDefaultCategory()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenCallsGetDefaultCategory() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
     Product product = mock(Product.class);
     when(product.getDefaultCategory()).thenReturn(new CategoryImpl());
     when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.FEATURED);
-
-    // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product).getDefaultCategory();
-    assertTrue(actualFindRelatedProductsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Product#getDefaultCategory()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenCallsGetDefaultCategory2() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    Product product = mock(Product.class);
-    when(product.getDefaultCategory()).thenReturn(new CategoryImpl());
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(true);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.FEATURED);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
     relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
     relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.FEATURED);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
     verify(product).getDefaultCategory();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertTrue(actualFindRelatedProductsResult.isEmpty());
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Then calls {@link Product#getUpSaleProducts()}.
+   *   <li>Given {@link Product} {@link Product#getDefaultCategory()} return {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenCallsGetUpSaleProducts() {
+  public void testFindRelatedProducts_givenProductGetDefaultCategoryReturnNull_thenReturnNull() {
     // Arrange
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
     Product product = mock(Product.class);
-    when(product.getUpSaleProducts()).thenReturn(new ArrayList<>());
+    when(product.getDefaultCategory()).thenReturn(null);
     when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
-
-    // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product).getUpSaleProducts();
-    assertTrue(actualFindRelatedProductsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenReturnArrayList() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
-
-    Product product = mock(Product.class);
-    when(product.getId()).thenReturn(1L);
-    when(product.getUpSaleProducts()).thenReturn(relatedProductList);
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
-
-    // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product).getId();
-    verify(product).getUpSaleProducts();
-    assertSame(relatedProductList, actualFindRelatedProductsResult);
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenReturnArrayList2() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
-    relatedProductList.add(new CrossSaleProductImpl());
-
-    Product product = mock(Product.class);
-    when(product.getId()).thenReturn(1L);
-    when(product.getUpSaleProducts()).thenReturn(relatedProductList);
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
-
-    // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product, atLeast(1)).getId();
-    verify(product).getUpSaleProducts();
-    assertSame(relatedProductList, actualFindRelatedProductsResult);
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenReturnNull() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.FEATURED);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
     relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
     relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.FEATURED);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(product).getDefaultCategory();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).getType();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertNull(actualFindRelatedProductsResult);
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Then return size is one.
+   *   <li>Then calls {@link Product#getCrossSaleProducts()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_thenReturnSizeIsOne() {
+  public void testFindRelatedProducts_thenCallsGetCrossSaleProducts() {
     // Arrange
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getRelatedProduct()).thenReturn(new ProductBundleImpl());
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
-    relatedProductList.add(crossSaleProductImpl);
-    relatedProductList.add(relatedProduct);
-
     Product product = mock(Product.class);
-    when(product.getId()).thenReturn(1L);
-    when(product.getUpSaleProducts()).thenReturn(relatedProductList);
+    when(product.getCrossSaleProducts()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.CROSS_SALE);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(product).getCrossSaleProducts();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO, atLeast(1)).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertTrue(actualFindRelatedProductsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
+   * <ul>
+   *   <li>Then calls {@link Product#getCumulativeCrossSaleProducts()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
+  public void testFindRelatedProducts_thenCallsGetCumulativeCrossSaleProducts() {
+    // Arrange
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    Product product = mock(Product.class);
+    when(product.getCumulativeCrossSaleProducts()).thenThrow(new IllegalArgumentException("foo"));
     when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
 
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
+    relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
     relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(product).getCumulativeCrossSaleProducts();
+  }
+
+  /**
+   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
+   * <ul>
+   *   <li>Then calls {@link CategoryImpl#getCumulativeFeaturedProducts()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
+  public void testFindRelatedProducts_thenCallsGetCumulativeFeaturedProducts() {
+    // Arrange
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getCumulativeFeaturedProducts()).thenThrow(new IllegalArgumentException("foo"));
+    Product product = mock(Product.class);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(true);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.FEATURED);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(categoryImpl).getCumulativeFeaturedProducts();
+    verify(product).getDefaultCategory();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+  }
+
+  /**
+   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
+   * <ul>
+   *   <li>Then calls {@link Product#getCumulativeUpSaleProducts()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
+  public void testFindRelatedProducts_thenCallsGetCumulativeUpSaleProducts() {
+    // Arrange
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    Product product = mock(Product.class);
+    when(product.getCumulativeUpSaleProducts()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(true);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.UP_SALE);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualFindRelatedProductsResult =
-        relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
-    verify(productDao).readProductById(1L);
-    verify(product, atLeast(1)).getId();
-    verify(product).getUpSaleProducts();
-    verify(relatedProduct, atLeast(1)).getRelatedProduct();
-    assertEquals(1, actualFindRelatedProductsResult.size());
-    assertSame(crossSaleProductImpl, actualFindRelatedProductsResult.get(0));
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(product).getCumulativeUpSaleProducts();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO, atLeast(1)).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertTrue(actualFindRelatedProductsResult.isEmpty());
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) CategoryId is {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Then calls {@link CategoryImpl#getFeaturedProducts()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_whenRelatedProductDTOCategoryIdIsNull_thenReturnNull() {
+  public void testFindRelatedProducts_thenCallsGetFeaturedProducts() {
     // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setProductId(null);
-    relatedProductDTO.setCategoryId(null);
-    relatedProductDTO.setType(RelatedProductTypeEnum.FEATURED);
-    relatedProductDTO.setCumulativeResults(false);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getFeaturedProducts()).thenReturn(new ArrayList<>());
+    Product product = mock(Product.class);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.FEATURED);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
     relatedProductDTO.setQuantity(1);
-
-    // Act and Assert
-    assertNull(relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_whenRelatedProductDTOQuantityIsNull_thenReturnNull() {
-    // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setProductId(null);
-    relatedProductDTO.setCategoryId(null);
-    relatedProductDTO.setType(RelatedProductTypeEnum.FEATURED);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertNull(relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_whenRelatedProductDTOQuantityIsNull_thenReturnNull2() {
-    // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setProductId(null);
-    relatedProductDTO.setCategoryId(null);
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
 
-    // Act and Assert
-    assertNull(relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
+    // Act
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(categoryImpl).getFeaturedProducts();
+    verify(product).getDefaultCategory();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertTrue(actualFindRelatedProductsResult.isEmpty());
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Then calls {@link Product#getUpSaleProducts()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_whenRelatedProductDTOQuantityIsNull_thenReturnNull3() {
+  public void testFindRelatedProducts_thenCallsGetUpSaleProducts() {
     // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setProductId(null);
-    relatedProductDTO.setCategoryId(null);
-    relatedProductDTO.setType(RelatedProductTypeEnum.UP_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    Product product = mock(Product.class);
+    when(product.getUpSaleProducts()).thenReturn(new ArrayList<>());
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.UP_SALE);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
-    // Act and Assert
-    assertNull(relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
+    // Act
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(product).getUpSaleProducts();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO, atLeast(1)).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertTrue(actualFindRelatedProductsResult.isEmpty());
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) Type is {@code null}.
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.findRelatedProducts(RelatedProductDTO)"})
-  public void testFindRelatedProducts_whenRelatedProductDTOTypeIsNull() {
+  public void testFindRelatedProducts_thenReturnSizeIsOne() {
     // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setProductId(null);
-    relatedProductDTO.setCategoryId(null);
-    relatedProductDTO.setType(null);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    FeaturedProductImpl featuredProductImpl = mock(FeaturedProductImpl.class);
+    when(featuredProductImpl.getRelatedProduct()).thenReturn(new ProductBundleImpl());
 
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO));
+    ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
+    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
+    featuredProductList.add(featuredProductImpl2);
+    featuredProductList.add(featuredProductImpl);
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getFeaturedProducts()).thenReturn(featuredProductList);
+    Product product = mock(Product.class);
+    when(product.getId()).thenReturn(1L);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
+    when(productDao.readProductById(Mockito.<Long>any())).thenReturn(product);
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    when(relatedProductDTO.getCategoryId()).thenReturn(1L);
+    when(relatedProductDTO.getProductId()).thenReturn(1L);
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.FEATURED);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    List<? extends PromotableProduct> actualFindRelatedProductsResult = relatedProductsServiceImpl
+        .findRelatedProducts(relatedProductDTO);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    verify(productDao).readProductById(eq(1L));
+    verify(categoryImpl).getFeaturedProducts();
+    verify(featuredProductImpl, atLeast(1)).getRelatedProduct();
+    verify(product).getDefaultCategory();
+    verify(product, atLeast(1)).getId();
+    verify(relatedProductDTO, atLeast(1)).getCategoryId();
+    verify(relatedProductDTO, atLeast(1)).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).getType();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertEquals(1, actualFindRelatedProductsResult.size());
+    assertSame(featuredProductImpl2, actualFindRelatedProductsResult.get(0));
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).
+   *   <li>Given {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
+      "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
   public void testBuildFeaturedProductsList_givenCategoryImpl() {
     // Arrange
     ProductBundleImpl product = mock(ProductBundleImpl.class);
@@ -999,8 +798,8 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualBuildFeaturedProductsListResult =
-        relatedProductsServiceImpl.buildFeaturedProductsList(product, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildFeaturedProductsListResult = relatedProductsServiceImpl
+        .buildFeaturedProductsList(product, category, relatedProductDTO);
 
     // Assert
     verify(product).getDefaultCategory();
@@ -1008,484 +807,242 @@ public class RelatedProductsServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then return Empty.
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildFeaturedProductsList_givenNull_thenReturnEmpty() {
-    // Arrange
-    CategoryImpl category = new CategoryImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildFeaturedProductsList(null, category, relatedProductDTO)
-            .isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildFeaturedProductsList_givenNull_thenReturnNull() {
-    // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertNull(relatedProductsServiceImpl.buildFeaturedProductsList(null, null, relatedProductDTO));
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildFeaturedProductsList_givenTrue_thenReturnEmpty() {
-    // Arrange
-    CategoryImpl category = new CategoryImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-
-    // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildFeaturedProductsList(null, category, relatedProductDTO)
-            .isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildFeaturedProductsList_givenTrue_whenProductBundleImpl_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    CategoryImpl category = new CategoryImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-
-    // Act and Assert
-    assertNull(
-        relatedProductsServiceImpl.buildFeaturedProductsList(product, category, relatedProductDTO));
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given zero.
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildFeaturedProductsList_givenZero_whenRelatedProductDTOQuantityIsZero() {
-    // Arrange
-    ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
-    featuredProductList.add(new FeaturedProductImpl());
-
-    org.broadleafcommerce.core.catalog.domain.Category category =
-        mock(org.broadleafcommerce.core.catalog.domain.Category.class);
-    when(category.getFeaturedProducts()).thenReturn(featuredProductList);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(0);
-
-    // Act
-    List<? extends PromotableProduct> actualBuildFeaturedProductsListResult =
-        relatedProductsServiceImpl.buildFeaturedProductsList(null, category, relatedProductDTO);
-
-    // Assert
-    verify(category).getFeaturedProducts();
-    assertTrue(actualBuildFeaturedProductsListResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CategoryImpl#getCumulativeFeaturedProducts()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildFeaturedProductsList_thenCallsGetCumulativeFeaturedProducts() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getCumulativeFeaturedProducts()).thenThrow(new IllegalArgumentException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    CategoryImpl category = new CategoryImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            relatedProductsServiceImpl.buildFeaturedProductsList(
-                product, category, relatedProductDTO));
-    verify(categoryImpl).getCumulativeFeaturedProducts();
-    verify(product).getDefaultCategory();
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CategoryImpl#getFeaturedProducts()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildFeaturedProductsList_thenCallsGetFeaturedProducts() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getFeaturedProducts()).thenThrow(new IllegalArgumentException());
-
-    ProductBundleImpl product = mock(ProductBundleImpl.class);
-    when(product.getDefaultCategory()).thenReturn(categoryImpl);
-    CategoryImpl category = new CategoryImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setQuantity(1);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            relatedProductsServiceImpl.buildFeaturedProductsList(
-                product, category, relatedProductDTO));
-    verify(categoryImpl).getFeaturedProducts();
-    verify(product).getDefaultCategory();
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
+      "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
   public void testBuildFeaturedProductsList_thenReturnArrayList() {
     // Arrange
     ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
     featuredProductList.add(new FeaturedProductImpl());
-
-    org.broadleafcommerce.core.catalog.domain.Category category =
-        mock(org.broadleafcommerce.core.catalog.domain.Category.class);
-    when(category.getFeaturedProducts()).thenReturn(featuredProductList);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getFeaturedProducts()).thenReturn(featuredProductList);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getId()).thenReturn(1L);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
+    CategoryImpl category = new CategoryImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
 
     // Act
-    List<? extends PromotableProduct> actualBuildFeaturedProductsListResult =
-        relatedProductsServiceImpl.buildFeaturedProductsList(null, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildFeaturedProductsListResult = relatedProductsServiceImpl
+        .buildFeaturedProductsList(product, category, relatedProductDTO);
 
     // Assert
-    verify(category).getFeaturedProducts();
+    verify(categoryImpl).getFeaturedProducts();
+    verify(product).getDefaultCategory();
+    verify(product).getId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertSame(featuredProductList, actualBuildFeaturedProductsListResult);
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
+      "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
   public void testBuildFeaturedProductsList_thenReturnArrayList2() {
     // Arrange
     ArrayList<FeaturedProduct> featuredProductList = new ArrayList<>();
     featuredProductList.add(new FeaturedProductImpl());
     featuredProductList.add(new FeaturedProductImpl());
-
-    org.broadleafcommerce.core.catalog.domain.Category category =
-        mock(org.broadleafcommerce.core.catalog.domain.Category.class);
-    when(category.getFeaturedProducts()).thenReturn(featuredProductList);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getFeaturedProducts()).thenReturn(featuredProductList);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getId()).thenReturn(1L);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
+    CategoryImpl category = new CategoryImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
 
     // Act
-    List<? extends PromotableProduct> actualBuildFeaturedProductsListResult =
-        relatedProductsServiceImpl.buildFeaturedProductsList(null, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildFeaturedProductsListResult = relatedProductsServiceImpl
+        .buildFeaturedProductsList(product, category, relatedProductDTO);
 
     // Assert
-    verify(category).getFeaturedProducts();
+    verify(categoryImpl).getFeaturedProducts();
+    verify(product).getDefaultCategory();
+    verify(product, atLeast(1)).getId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertSame(featuredProductList, actualBuildFeaturedProductsListResult);
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is one.
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildFeaturedProductsList_whenRelatedProductDTOQuantityIsOne_thenReturnEmpty() {
+      "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildFeaturedProductsList_thenReturnEmpty() {
+    // Arrange
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getFeaturedProducts()).thenReturn(new ArrayList<>());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
+    CategoryImpl category = new CategoryImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    List<? extends PromotableProduct> actualBuildFeaturedProductsListResult = relatedProductsServiceImpl
+        .buildFeaturedProductsList(product, category, relatedProductDTO);
+
+    // Assert
+    verify(categoryImpl).getFeaturedProducts();
+    verify(product).getDefaultCategory();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertTrue(actualBuildFeaturedProductsListResult.isEmpty());
+  }
+
+  /**
+   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}.
+   * <ul>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildFeaturedProductsList_thenThrowIllegalArgumentException() {
+    // Arrange
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getCumulativeFeaturedProducts()).thenThrow(new IllegalArgumentException("foo"));
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getDefaultCategory()).thenReturn(categoryImpl);
+    CategoryImpl category = new CategoryImpl();
+
+    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> relatedProductsServiceImpl.buildFeaturedProductsList(product, category, relatedProductDTO));
+    verify(categoryImpl).getCumulativeFeaturedProducts();
+    verify(product).getDefaultCategory();
+  }
+
+  /**
+   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildFeaturedProductsList_whenNull_thenReturnEmpty() {
     // Arrange
     CategoryImpl category = new CategoryImpl();
 
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
     relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
     relatedProductDTO.setQuantity(1);
-
-    // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildFeaturedProductsList(null, category, relatedProductDTO)
-            .isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_givenFalse_thenReturnNull() {
-    // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
 
     // Act and Assert
-    assertNull(relatedProductsServiceImpl.buildUpSaleProductsList(null, null, relatedProductDTO));
+    assertTrue(relatedProductsServiceImpl.buildFeaturedProductsList(null, category, relatedProductDTO).isEmpty());
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Given {@code false}.
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_givenFalse_whenProductBundleImpl_thenReturnEmpty() {
+      "List RelatedProductsServiceImpl.buildFeaturedProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildFeaturedProductsList_whenProductBundleImpl_thenReturnNull() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildUpSaleProductsList(product, null, relatedProductDTO)
-            .isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_givenTrue_whenProductBundleImpl_thenReturnEmpty() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
     CategoryImpl category = new CategoryImpl();
 
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
@@ -1496,193 +1053,35 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildUpSaleProductsList(product, category, relatedProductDTO)
-            .isEmpty());
+    assertNull(relatedProductsServiceImpl.buildFeaturedProductsList(product, category, relatedProductDTO));
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Given zero.
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is zero.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_givenZero_whenRelatedProductDTOQuantityIsZero() {
+      "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildUpSaleProductsList_givenArrayList_thenReturnEmpty() {
     // Arrange
-    ArrayList<RelatedProduct> upSaleProducts = new ArrayList<>();
-    upSaleProducts.add(new CrossSaleProductImpl());
-
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getUpSaleProducts()).thenReturn(new ArrayList<>());
     CategoryImpl category = new CategoryImpl();
-    category.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    category.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    category.setCategoryAttributes(new ArrayList<>());
-    category.setCategoryAttributesMap(new HashMap<>());
-    category.setCategoryMediaXref(new HashMap<>());
-    category.setChildCategoryIds(new ArrayList<>());
-    category.setChildCategoryURLMap(new HashMap<>());
-    category.setDefaultParentCategory(new CategoryImpl());
-    category.setDescription("The characteristics of someone or something");
-    category.setDisplayTemplate("Display Template");
-    category.setExcludedSearchFacets(new ArrayList<>());
-    category.setExternalId("42");
-    category.setFulfillmentType(FulfillmentType.DIGITAL);
-    category.setId(1L);
-    category.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    category.setLongDescription("Long Description");
-    category.setMetaDescription("Meta Description");
-    category.setMetaTitle("Dr");
-    category.setName("Name");
-    category.setOverrideGeneratedUrl(true);
-    category.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    category.setProductTitlePatternOverride("Dr");
-    category.setRootDisplayOrder(new BigDecimal("2.3"));
-    category.setSearchFacets(new ArrayList<>());
-    category.setTaxCode("Tax Code");
-    category.setUrl("https://example.org/example");
-    category.setUrlKey("https://example.org/example");
-    category.setUpSaleProducts(upSaleProducts);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(0);
-
-    // Act
-    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult =
-        relatedProductsServiceImpl.buildUpSaleProductsList(null, category, relatedProductDTO);
-
-    // Assert
-    assertEquals(1, category.getCumulativeUpSaleProducts().size());
-    assertTrue(actualBuildUpSaleProductsListResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link RelatedProduct#getRelatedProduct()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_thenCallsGetRelatedProduct() {
-    // Arrange
-    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
-    productBundleImpl.setId(1L);
-
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getRelatedProduct()).thenReturn(productBundleImpl);
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-
-    Product product = mock(Product.class);
-    when(product.getId()).thenReturn(1L);
-    when(product.getCumulativeUpSaleProducts()).thenReturn(relatedProductList);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
-
-    // Act
-    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult =
-        relatedProductsServiceImpl.buildUpSaleProductsList(product, category, relatedProductDTO);
-
-    // Assert
-    verify(product).getCumulativeUpSaleProducts();
-    verify(product).getId();
-    verify(relatedProduct).getRelatedProduct();
-    assertTrue(actualBuildUpSaleProductsListResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) CumulativeUpSaleProducts Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_thenCategoryImplCumulativeUpSaleProductsEmpty() {
-    // Arrange
-    CategoryImpl category = new CategoryImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act
-    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult =
-        relatedProductsServiceImpl.buildUpSaleProductsList(null, category, relatedProductDTO);
-
-    // Assert
-    assertTrue(category.getCumulativeUpSaleProducts().isEmpty());
-    assertTrue(actualBuildUpSaleProductsListResult.isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryImpl} (default constructor) CumulativeUpSaleProducts Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_thenCategoryImplCumulativeUpSaleProductsEmpty2() {
-    // Arrange
-    CategoryImpl category = new CategoryImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
     relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
@@ -1690,526 +1089,166 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult =
-        relatedProductsServiceImpl.buildUpSaleProductsList(null, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult = relatedProductsServiceImpl
+        .buildUpSaleProductsList(product, category, relatedProductDTO);
 
     // Assert
-    assertTrue(category.getCumulativeUpSaleProducts().isEmpty());
+    verify(product).getUpSaleProducts();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertTrue(actualBuildUpSaleProductsListResult.isEmpty());
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
+      "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
   public void testBuildUpSaleProductsList_thenReturnArrayList() {
     // Arrange
-    ArrayList<RelatedProduct> upSaleProducts = new ArrayList<>();
-    upSaleProducts.add(new CrossSaleProductImpl());
-
-    CategoryImpl category = new CategoryImpl();
-    category.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    category.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    category.setCategoryAttributes(new ArrayList<>());
-    category.setCategoryAttributesMap(new HashMap<>());
-    category.setCategoryMediaXref(new HashMap<>());
-    category.setChildCategoryIds(new ArrayList<>());
-    category.setChildCategoryURLMap(new HashMap<>());
-    category.setDefaultParentCategory(new CategoryImpl());
-    category.setDescription("The characteristics of someone or something");
-    category.setDisplayTemplate("Display Template");
-    category.setExcludedSearchFacets(new ArrayList<>());
-    category.setExternalId("42");
-    category.setFulfillmentType(FulfillmentType.DIGITAL);
-    category.setId(1L);
-    category.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    category.setLongDescription("Long Description");
-    category.setMetaDescription("Meta Description");
-    category.setMetaTitle("Dr");
-    category.setName("Name");
-    category.setOverrideGeneratedUrl(true);
-    category.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    category.setProductTitlePatternOverride("Dr");
-    category.setRootDisplayOrder(new BigDecimal("2.3"));
-    category.setSearchFacets(new ArrayList<>());
-    category.setTaxCode("Tax Code");
-    category.setUrl("https://example.org/example");
-    category.setUrlKey("https://example.org/example");
-    category.setUpSaleProducts(upSaleProducts);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertSame(
-        upSaleProducts,
-        relatedProductsServiceImpl.buildUpSaleProductsList(null, category, relatedProductDTO));
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_thenReturnSizeIsOne() {
-    // Arrange
-    ArrayList<RelatedProduct> upSaleProducts = new ArrayList<>();
-    upSaleProducts.add(new CrossSaleProductImpl());
-    upSaleProducts.add(new CrossSaleProductImpl());
-
-    CategoryImpl category = new CategoryImpl();
-    category.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    category.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    category.setCategoryAttributes(new ArrayList<>());
-    category.setCategoryAttributesMap(new HashMap<>());
-    category.setCategoryMediaXref(new HashMap<>());
-    category.setChildCategoryIds(new ArrayList<>());
-    category.setChildCategoryURLMap(new HashMap<>());
-    category.setDefaultParentCategory(new CategoryImpl());
-    category.setDescription("The characteristics of someone or something");
-    category.setDisplayTemplate("Display Template");
-    category.setExcludedSearchFacets(new ArrayList<>());
-    category.setExternalId("42");
-    category.setFulfillmentType(FulfillmentType.DIGITAL);
-    category.setId(1L);
-    category.setInventoryType(InventoryType.ALWAYS_AVAILABLE);
-    category.setLongDescription("Long Description");
-    category.setMetaDescription("Meta Description");
-    category.setMetaTitle("Dr");
-    category.setName("Name");
-    category.setOverrideGeneratedUrl(true);
-    category.setProductDescriptionPatternOverride("Product Description Pattern Override");
-    category.setProductTitlePatternOverride("Dr");
-    category.setRootDisplayOrder(new BigDecimal("2.3"));
-    category.setSearchFacets(new ArrayList<>());
-    category.setTaxCode("Tax Code");
-    category.setUrl("https://example.org/example");
-    category.setUrlKey("https://example.org/example");
-    category.setUpSaleProducts(upSaleProducts);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act
-    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult =
-        relatedProductsServiceImpl.buildUpSaleProductsList(null, category, relatedProductDTO);
-
-    // Assert
-    assertEquals(1, actualBuildUpSaleProductsListResult.size());
-    PromotableProduct getResult = actualBuildUpSaleProductsListResult.get(0);
-    assertTrue(getResult instanceof CrossSaleProductImpl);
-    assertTrue(getResult.getRelatedProduct() instanceof ProductImpl);
-    assertEquals(1, category.getCumulativeUpSaleProducts().size());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_thenThrowIllegalArgumentException() {
-    // Arrange
     ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
     relatedProductList.add(new CrossSaleProductImpl());
-
-    Product product = mock(Product.class);
-    when(product.getId()).thenThrow(new IllegalArgumentException());
-    when(product.getCumulativeUpSaleProducts()).thenReturn(relatedProductList);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            relatedProductsServiceImpl.buildUpSaleProductsList(
-                product, category, relatedProductDTO));
-    verify(product).getCumulativeUpSaleProducts();
-    verify(product).getId();
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>When {@link Product} {@link Product#getCumulativeUpSaleProducts()} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_whenProductGetCumulativeUpSaleProductsReturnNull() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getCumulativeUpSaleProducts()).thenReturn(null);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
-
-    // Act
-    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult =
-        relatedProductsServiceImpl.buildUpSaleProductsList(product, category, relatedProductDTO);
-
-    // Assert
-    verify(product).getCumulativeUpSaleProducts();
-    assertNull(actualBuildUpSaleProductsListResult);
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>When {@link Product} {@link Product#getId()} return one.
-   *   <li>Then return {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_whenProductGetIdReturnOne_thenReturnArrayList() {
-    // Arrange
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
-
-    Product product = mock(Product.class);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getId()).thenReturn(1L);
-    when(product.getCumulativeUpSaleProducts()).thenReturn(relatedProductList);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    when(product.getUpSaleProducts()).thenReturn(relatedProductList);
+    CategoryImpl category = new CategoryImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
     relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult =
-        relatedProductsServiceImpl.buildUpSaleProductsList(product, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult = relatedProductsServiceImpl
+        .buildUpSaleProductsList(product, category, relatedProductDTO);
 
     // Assert
-    verify(product).getCumulativeUpSaleProducts();
     verify(product).getId();
+    verify(product).getUpSaleProducts();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertSame(relatedProductList, actualBuildUpSaleProductsListResult);
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is one.
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildUpSaleProductsList_whenRelatedProductDTOQuantityIsOne_thenReturnNull() {
+      "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildUpSaleProductsList_thenReturnArrayList2() {
     // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
+    relatedProductList.add(new CrossSaleProductImpl());
+    relatedProductList.add(new CrossSaleProductImpl());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getId()).thenReturn(1L);
+    when(product.getUpSaleProducts()).thenReturn(relatedProductList);
+    CategoryImpl category = new CategoryImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(1);
-
-    // Act and Assert
-    assertNull(relatedProductsServiceImpl.buildUpSaleProductsList(null, null, relatedProductDTO));
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getCumulativeCrossSaleProducts()).thenReturn(null);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
     relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualBuildCrossSaleProductsListResult =
-        relatedProductsServiceImpl.buildCrossSaleProductsList(product, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildUpSaleProductsListResult = relatedProductsServiceImpl
+        .buildUpSaleProductsList(product, category, relatedProductDTO);
 
     // Assert
-    verify(product).getCumulativeCrossSaleProducts();
-    assertNull(actualBuildCrossSaleProductsListResult);
+    verify(product, atLeast(1)).getId();
+    verify(product).getUpSaleProducts();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+    assertSame(relatedProductList, actualBuildUpSaleProductsListResult);
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Given {@code false}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_givenFalse_thenReturnNull() {
-    // Arrange
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertNull(
-        relatedProductsServiceImpl.buildCrossSaleProductsList(null, null, relatedProductDTO));
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_givenFalse_whenCategoryImpl_thenReturnEmpty() {
+      "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildUpSaleProductsList_whenNull_thenReturnEmpty() {
     // Arrange
     CategoryImpl category = new CategoryImpl();
 
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildCrossSaleProductsList(null, category, relatedProductDTO)
-            .isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_givenFalse_whenProductBundleImpl_thenReturnEmpty() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildCrossSaleProductsList(product, null, relatedProductDTO)
-            .isEmpty());
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor) Id is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_givenProductBundleImplIdIsOne() {
-    // Arrange
-    ProductBundleImpl productBundleImpl = new ProductBundleImpl();
-    productBundleImpl.setId(1L);
-
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getRelatedProduct()).thenReturn(productBundleImpl);
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-
-    Product product = mock(Product.class);
-    when(product.getId()).thenReturn(1L);
-    when(product.getCumulativeCrossSaleProducts()).thenReturn(relatedProductList);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
     relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
-    // Act
-    List<? extends PromotableProduct> actualBuildCrossSaleProductsListResult =
-        relatedProductsServiceImpl.buildCrossSaleProductsList(product, category, relatedProductDTO);
-
-    // Assert
-    verify(product).getCumulativeCrossSaleProducts();
-    verify(product).getId();
-    verify(relatedProduct).getRelatedProduct();
-    assertTrue(actualBuildCrossSaleProductsListResult.isEmpty());
+    // Act and Assert
+    assertTrue(relatedProductsServiceImpl.buildUpSaleProductsList(null, category, relatedProductDTO).isEmpty());
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_givenTrue_whenProductBundleImpl_thenReturnEmpty() {
+      "List RelatedProductsServiceImpl.buildUpSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildUpSaleProductsList_whenProductBundleImpl_thenReturnEmpty() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
     CategoryImpl category = new CategoryImpl();
@@ -2222,212 +1261,174 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildCrossSaleProductsList(product, category, relatedProductDTO)
-            .isEmpty());
+    assertTrue(relatedProductsServiceImpl.buildUpSaleProductsList(product, category, relatedProductDTO).isEmpty());
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Given zero.
-   *   <li>Then calls {@link RelatedProduct#getRelatedProduct()}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_givenZero_thenCallsGetRelatedProduct() {
+      "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildCrossSaleProductsList_givenArrayList_thenReturnEmpty() {
     // Arrange
-    RelatedProduct relatedProduct = mock(RelatedProduct.class);
-    when(relatedProduct.getRelatedProduct()).thenReturn(new ProductBundleImpl());
-
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(relatedProduct);
-
-    Product product = mock(Product.class);
-    when(product.getId()).thenReturn(1L);
-    when(product.getCumulativeCrossSaleProducts()).thenReturn(relatedProductList);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getCrossSaleProducts()).thenReturn(new ArrayList<>());
+    CategoryImpl category = new CategoryImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
     relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(0);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualBuildCrossSaleProductsListResult =
-        relatedProductsServiceImpl.buildCrossSaleProductsList(product, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildCrossSaleProductsListResult = relatedProductsServiceImpl
+        .buildCrossSaleProductsList(product, category, relatedProductDTO);
 
     // Assert
-    verify(product).getCumulativeCrossSaleProducts();
-    verify(product).getId();
-    verify(relatedProduct, atLeast(1)).getRelatedProduct();
+    verify(product).getCrossSaleProducts();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertTrue(actualBuildCrossSaleProductsListResult.isEmpty());
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
+      "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
   public void testBuildCrossSaleProductsList_thenReturnArrayList() {
     // Arrange
     ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
     relatedProductList.add(new CrossSaleProductImpl());
-
-    Product product = mock(Product.class);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getId()).thenReturn(1L);
-    when(product.getCumulativeCrossSaleProducts()).thenReturn(relatedProductList);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    when(product.getCrossSaleProducts()).thenReturn(relatedProductList);
+    CategoryImpl category = new CategoryImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
     relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualBuildCrossSaleProductsListResult =
-        relatedProductsServiceImpl.buildCrossSaleProductsList(product, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildCrossSaleProductsListResult = relatedProductsServiceImpl
+        .buildCrossSaleProductsList(product, category, relatedProductDTO);
 
     // Assert
-    verify(product).getCumulativeCrossSaleProducts();
+    verify(product).getCrossSaleProducts();
     verify(product).getId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertSame(relatedProductList, actualBuildCrossSaleProductsListResult);
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
+      "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
   public void testBuildCrossSaleProductsList_thenReturnArrayList2() {
     // Arrange
     ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
     relatedProductList.add(new CrossSaleProductImpl());
     relatedProductList.add(new CrossSaleProductImpl());
-
-    Product product = mock(Product.class);
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
     when(product.getId()).thenReturn(1L);
-    when(product.getCumulativeCrossSaleProducts()).thenReturn(relatedProductList);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    when(product.getCrossSaleProducts()).thenReturn(relatedProductList);
+    CategoryImpl category = new CategoryImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.isCumulativeResults()).thenReturn(false);
+    when(relatedProductDTO.getQuantity()).thenReturn(1);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
     relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
     relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    List<? extends PromotableProduct> actualBuildCrossSaleProductsListResult =
-        relatedProductsServiceImpl.buildCrossSaleProductsList(product, category, relatedProductDTO);
+    List<? extends PromotableProduct> actualBuildCrossSaleProductsListResult = relatedProductsServiceImpl
+        .buildCrossSaleProductsList(product, category, relatedProductDTO);
 
     // Assert
-    verify(product).getCumulativeCrossSaleProducts();
+    verify(product).getCrossSaleProducts();
     verify(product, atLeast(1)).getId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).isCumulativeResults();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertSame(relatedProductList, actualBuildCrossSaleProductsListResult);
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_thenThrowIllegalArgumentException() {
-    // Arrange
-    ArrayList<RelatedProduct> relatedProductList = new ArrayList<>();
-    relatedProductList.add(new CrossSaleProductImpl());
-
-    Product product = mock(Product.class);
-    when(product.getId()).thenThrow(new IllegalArgumentException());
-    when(product.getCumulativeCrossSaleProducts()).thenReturn(relatedProductList);
-    CategoryImpl category = mock(CategoryImpl.class);
-
-    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
-    relatedProductDTO.setCategoryId(1L);
-    relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(true);
-    relatedProductDTO.setQuantity(null);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            relatedProductsServiceImpl.buildCrossSaleProductsList(
-                product, category, relatedProductDTO));
-    verify(product).getCumulativeCrossSaleProducts();
-    verify(product).getId();
-  }
-
-  /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
-   * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_whenRelatedProductDTOQuantityIsOne() {
+      "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildCrossSaleProductsList_whenNull_thenReturnEmpty() {
     // Arrange
     CategoryImpl category = new CategoryImpl();
 
@@ -2439,84 +1440,70 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act and Assert
-    assertTrue(
-        relatedProductsServiceImpl
-            .buildCrossSaleProductsList(null, category, relatedProductDTO)
-            .isEmpty());
+    assertTrue(relatedProductsServiceImpl.buildCrossSaleProductsList(null, category, relatedProductDTO).isEmpty());
   }
 
   /**
-   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category,
-   * RelatedProductDTO)}.
-   *
+   * Test {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
-   *   <li>When {@link RelatedProductDTO} (default constructor) Quantity is one.
-   *   <li>Then return {@code null}.
+   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product,
-   * org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"
-  })
-  public void testBuildCrossSaleProductsList_whenRelatedProductDTOQuantityIsOne_thenReturnNull() {
+      "List RelatedProductsServiceImpl.buildCrossSaleProductsList(Product, org.broadleafcommerce.core.catalog.domain.Category, RelatedProductDTO)"})
+  public void testBuildCrossSaleProductsList_whenProductBundleImpl_thenReturnEmpty() {
     // Arrange
+    ProductBundleImpl product = new ProductBundleImpl();
+    CategoryImpl category = new CategoryImpl();
+
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
     relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
     relatedProductDTO.setProductId(1L);
-    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
-    relatedProductDTO.setCumulativeResults(false);
     relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act and Assert
-    assertNull(
-        relatedProductsServiceImpl.buildCrossSaleProductsList(null, null, relatedProductDTO));
+    assertTrue(relatedProductsServiceImpl.buildCrossSaleProductsList(product, category, relatedProductDTO).isEmpty());
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#resizeList(List, Integer)}.
-   *
    * <ul>
-   *   <li>Given {@link CrossSaleProductImpl} (default constructor).
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Given {@link CrossSaleProductImpl} (default constructor).</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.resizeList(List, Integer)"})
   public void testResizeList_givenCrossSaleProductImpl_thenReturnArrayList() {
     // Arrange
     ArrayList<PromotableProduct> originalList = new ArrayList<>();
     originalList.add(new CrossSaleProductImpl());
 
-    // Act
-    List<? extends PromotableProduct> actualResizeListResult =
-        relatedProductsServiceImpl.resizeList(originalList, 1);
-
-    // Assert
-    assertSame(originalList, actualResizeListResult);
+    // Act and Assert
+    assertSame(originalList, relatedProductsServiceImpl.resizeList(originalList, 1));
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#resizeList(List, Integer)}.
-   *
    * <ul>
-   *   <li>Given {@link CrossSaleProductImpl} (default constructor).
-   *   <li>Then return size is one.
+   *   <li>Given {@link CrossSaleProductImpl} (default constructor).</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.resizeList(List, Integer)"})
   public void testResizeList_givenCrossSaleProductImpl_thenReturnSizeIsOne() {
     // Arrange
@@ -2526,8 +1513,7 @@ public class RelatedProductsServiceImplDiffblueTest {
     originalList.add(new CrossSaleProductImpl());
 
     // Act
-    List<? extends PromotableProduct> actualResizeListResult =
-        relatedProductsServiceImpl.resizeList(originalList, 1);
+    List<? extends PromotableProduct> actualResizeListResult = relatedProductsServiceImpl.resizeList(originalList, 1);
 
     // Assert
     assertEquals(1, actualResizeListResult.size());
@@ -2536,17 +1522,15 @@ public class RelatedProductsServiceImplDiffblueTest {
 
   /**
    * Test {@link RelatedProductsServiceImpl#resizeList(List, Integer)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.resizeList(List, Integer)"})
   public void testResizeList_whenArrayList_thenReturnEmpty() {
     // Arrange, Act and Assert
@@ -2555,17 +1539,15 @@ public class RelatedProductsServiceImplDiffblueTest {
 
   /**
    * Test {@link RelatedProductsServiceImpl#resizeList(List, Integer)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.resizeList(List, Integer)"})
   public void testResizeList_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -2574,17 +1556,15 @@ public class RelatedProductsServiceImplDiffblueTest {
 
   /**
    * Test {@link RelatedProductsServiceImpl#resizeList(List, Integer)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List RelatedProductsServiceImpl.resizeList(List, Integer)"})
   public void testResizeList_whenNull_thenReturnNull2() {
     // Arrange, Act and Assert
@@ -2593,18 +1573,16 @@ public class RelatedProductsServiceImplDiffblueTest {
 
   /**
    * Test {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link RelatedProductDTO} (default constructor) ProductId is {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@code null}.</li>
+   *   <li>When {@link RelatedProductDTO} (default constructor) ProductId is {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product RelatedProductsServiceImpl.lookupProduct(RelatedProductDTO)"})
   public void testLookupProduct_givenNull_whenRelatedProductDTOProductIdIsNull_thenReturnNull() {
     // Arrange
@@ -2621,16 +1599,14 @@ public class RelatedProductsServiceImplDiffblueTest {
 
   /**
    * Test {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product RelatedProductsServiceImpl.lookupProduct(RelatedProductDTO)"})
   public void testLookupProduct_thenReturnProductBundleImpl() {
     // Arrange
@@ -2648,26 +1624,24 @@ public class RelatedProductsServiceImplDiffblueTest {
     Product actualLookupProductResult = relatedProductsServiceImpl.lookupProduct(relatedProductDTO);
 
     // Assert
-    verify(productDao).readProductById(1L);
+    verify(productDao).readProductById(eq(1L));
     assertSame(productBundleImpl, actualLookupProductResult);
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product RelatedProductsServiceImpl.lookupProduct(RelatedProductDTO)"})
   public void testLookupProduct_thenThrowIllegalArgumentException() {
     // Arrange
-    when(productDao.readProductById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
+    when(productDao.readProductById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("foo"));
 
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
     relatedProductDTO.setCategoryId(1L);
@@ -2677,28 +1651,23 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> relatedProductsServiceImpl.lookupProduct(relatedProductDTO));
-    verify(productDao).readProductById(1L);
+    assertThrows(IllegalArgumentException.class, () -> relatedProductsServiceImpl.lookupProduct(relatedProductDTO));
+    verify(productDao).readProductById(eq(1L));
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category RelatedProductsServiceImpl.lookupCategory(RelatedProductDTO)"
-  })
+      "org.broadleafcommerce.core.catalog.domain.Category RelatedProductsServiceImpl.lookupCategory(RelatedProductDTO)"})
   public void testLookupCategory_givenNull_thenReturnNull() {
     // Arrange
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
@@ -2714,19 +1683,16 @@ public class RelatedProductsServiceImplDiffblueTest {
 
   /**
    * Test {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Then return {@link CategoryImpl} (default constructor).
+   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category RelatedProductsServiceImpl.lookupCategory(RelatedProductDTO)"
-  })
+      "org.broadleafcommerce.core.catalog.domain.Category RelatedProductsServiceImpl.lookupCategory(RelatedProductDTO)"})
   public void testLookupCategory_thenReturnCategoryImpl() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
@@ -2740,33 +1706,29 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualLookupCategoryResult =
-        relatedProductsServiceImpl.lookupCategory(relatedProductDTO);
+    org.broadleafcommerce.core.catalog.domain.Category actualLookupCategoryResult = relatedProductsServiceImpl
+        .lookupCategory(relatedProductDTO);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
+    verify(categoryDao).readCategoryById(eq(1L));
     assertSame(categoryImpl, actualLookupCategoryResult);
   }
 
   /**
    * Test {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}
+   * <p>
+   * Method under test: {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category RelatedProductsServiceImpl.lookupCategory(RelatedProductDTO)"
-  })
+      "org.broadleafcommerce.core.catalog.domain.Category RelatedProductsServiceImpl.lookupCategory(RelatedProductDTO)"})
   public void testLookupCategory_thenThrowIllegalArgumentException() {
     // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("foo"));
 
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
     relatedProductDTO.setCategoryId(1L);
@@ -2776,9 +1738,7 @@ public class RelatedProductsServiceImplDiffblueTest {
     relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> relatedProductsServiceImpl.lookupCategory(relatedProductDTO));
-    verify(categoryDao).readCategoryById(1L);
+    assertThrows(IllegalArgumentException.class, () -> relatedProductsServiceImpl.lookupCategory(relatedProductDTO));
+    verify(categoryDao).readCategoryById(eq(1L));
   }
 }

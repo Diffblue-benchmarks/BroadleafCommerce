@@ -27,8 +27,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
@@ -41,23 +40,19 @@ import org.mockito.Mockito;
 public class MapMetadataDiffblueTest {
   /**
    * Test {@link MapMetadata#accept(MetadataVisitor)}.
-   *
    * <ul>
-   *   <li>When {@link MetadataVisitorAdapter} {@link MetadataVisitorAdapter#visit(MapMetadata)}
-   *       does nothing.
-   *   <li>Then calls {@link MetadataVisitorAdapter#visit(MapMetadata)}.
+   *   <li>When {@link MetadataVisitorAdapter} {@link MetadataVisitorAdapter#visit(MapMetadata)} does nothing.</li>
+   *   <li>Then calls {@link MetadataVisitorAdapter#visit(MapMetadata)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#accept(MetadataVisitor)}
+   * <p>
+   * Method under test: {@link MapMetadata#accept(MetadataVisitor)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MapMetadata.accept(MetadataVisitor)"})
   public void testAccept_whenMetadataVisitorAdapterVisitDoesNothing_thenCallsVisit() {
     // Arrange
     MapMetadata mapMetadata = new MapMetadata();
-
     MetadataVisitorAdapter visitor = mock(MetadataVisitorAdapter.class);
     doNothing().when(visitor).visit(Mockito.<MapMetadata>any());
 
@@ -69,69 +64,224 @@ public class MapMetadataDiffblueTest {
   }
 
   /**
-   * Test {@link MapMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link MapMetadata#cloneFieldMetadata()}
+   * Test {@link MapMetadata#populate(FieldMetadata)}.
+   * <p>
+   * Method under test: {@link MapMetadata#populate(FieldMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata MapMetadata.populate(FieldMetadata)"})
+  public void testPopulate() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(new String[]{"foo"});
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(new String[] {"foo"});
+    persistencePerspective.setIncludeFields(null);
 
     MapMetadata mapMetadata = new MapMetadata();
     mapMetadata.setPersistencePerspective(persistencePerspective);
 
     // Act
-    FieldMetadata actualCloneFieldMetadataResult = mapMetadata.cloneFieldMetadata();
+    FieldMetadata actualPopulateResult = mapMetadata.populate(new MapMetadata());
 
     // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((MapMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
+    assertTrue(actualPopulateResult instanceof MapMetadata);
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualPopulateResult).getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
+  }
+
+  /**
+   * Test {@link MapMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Given {@link PersistencePerspective#PersistencePerspective()} PersistencePerspectiveItems is {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapMetadata#populate(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata MapMetadata.populate(FieldMetadata)"})
+  public void testPopulate_givenPersistencePerspectivePersistencePerspectiveItemsIsHashMap() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(new HashMap<>());
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    MapMetadata mapMetadata = new MapMetadata();
+    mapMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualPopulateResult = mapMetadata.populate(new MapMetadata());
+
+    // Assert
+    assertTrue(actualPopulateResult instanceof MapMetadata);
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualPopulateResult).getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
     assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertArrayEquals(new String[] {"foo"}, persistencePerspective2.getIncludeFields());
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+  }
+
+  /**
+   * Test {@link MapMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return array length is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapMetadata#populate(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata MapMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnArrayLengthIsOne() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    ForeignKey foreignKey = new ForeignKey();
+    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[]{foreignKey});
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    MapMetadata mapMetadata = new MapMetadata();
+    mapMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualPopulateResult = mapMetadata.populate(new MapMetadata());
+
+    // Assert
+    assertTrue(actualPopulateResult instanceof MapMetadata);
+    ForeignKey[] additionalForeignKeys = ((MapMetadata) actualPopulateResult).getPersistencePerspective()
+        .getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys.length);
+    assertEquals(foreignKey, additionalForeignKeys[0]);
+  }
+
+  /**
+   * Test {@link MapMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return array length is zero.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapMetadata#populate(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata MapMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnArrayLengthIsZero() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    MapMetadata mapMetadata = new MapMetadata();
+    mapMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualPopulateResult = mapMetadata.populate(new MapMetadata());
+
+    // Assert
+    assertTrue(actualPopulateResult instanceof MapMetadata);
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualPopulateResult).getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+  }
+
+  /**
+   * Test {@link MapMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return PersistencePerspective ExcludeFields is array of {@link String} with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapMetadata#populate(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata MapMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnPersistencePerspectiveExcludeFieldsIsArrayOfStringWithFoo() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(new String[]{"foo"});
+    persistencePerspective.setIncludeFields(null);
+
+    MapMetadata mapMetadata = new MapMetadata();
+    mapMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualPopulateResult = mapMetadata.populate(new MapMetadata());
+
+    // Assert
+    assertTrue(actualPopulateResult instanceof MapMetadata);
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualPopulateResult).getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getExcludeFields());
+  }
+
+  /**
+   * Test {@link MapMetadata#populate(FieldMetadata)}.
+   * <ul>
+   *   <li>Then return PersistencePerspective IncludeFields is array of {@link String} with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MapMetadata#populate(FieldMetadata)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata MapMetadata.populate(FieldMetadata)"})
+  public void testPopulate_thenReturnPersistencePerspectiveIncludeFieldsIsArrayOfStringWithFoo() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(new String[]{"foo"});
+
+    MapMetadata mapMetadata = new MapMetadata();
+    mapMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualPopulateResult = mapMetadata.populate(new MapMetadata());
+
+    // Assert
+    assertTrue(actualPopulateResult instanceof MapMetadata);
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualPopulateResult).getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getIncludeFields());
   }
 
   /**
    * Test {@link MapMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link MapMetadata#cloneFieldMetadata()}
+   * <p>
+   * Method under test: {@link MapMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata2() {
+  public void testCloneFieldMetadata() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(new String[] {"foo"});
+    persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
     MapMetadata mapMetadata = new MapMetadata();
@@ -142,33 +292,90 @@ public class MapMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((MapMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
     assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(new String[] {"foo"}, persistencePerspective2.getExcludeFields());
+    assertTrue(persistencePerspective2.getPersistencePerspectiveItems().isEmpty());
   }
 
   /**
    * Test {@link MapMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link MapMetadata#cloneFieldMetadata()}
+   * <p>
+   * Method under test: {@link MapMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata2() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(new String[]{"foo"});
+
+    MapMetadata mapMetadata = new MapMetadata();
+    mapMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = mapMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getIncludeFields());
+  }
+
+  /**
+   * Test {@link MapMetadata#cloneFieldMetadata()}.
+   * <p>
+   * Method under test: {@link MapMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata3() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(new String[]{"foo"});
+    persistencePerspective.setIncludeFields(null);
 
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    MapMetadata mapMetadata = new MapMetadata();
+    mapMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = mapMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getExcludeFields());
+  }
+
+  /**
+   * Test {@link MapMetadata#cloneFieldMetadata()}.
+   * <p>
+   * Method under test: {@link MapMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata4() {
+    // Arrange
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(new HashMap<>());
@@ -183,83 +390,33 @@ public class MapMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((MapMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
     assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertTrue(persistencePerspective2.getPersistencePerspectiveItems().isEmpty());
   }
 
   /**
    * Test {@link MapMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link MapMetadata#cloneFieldMetadata()}
+   * <p>
+   * Method under test: {@link MapMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata4() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(new String[] {"foo"});
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    MapMetadata mapMetadata = new MapMetadata();
-    mapMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult = mapMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((MapMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(
-        new String[] {"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
-  }
-
-  /**
-   * Test {@link MapMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link MapMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata5() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(new String[]{"foo"});
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
 
     MapMetadata mapMetadata = new MapMetadata();
-    mapMetadata.setAvailableToTypes(new String[] {"Available To Types"});
     mapMetadata.setPersistencePerspective(persistencePerspective);
 
     // Act
@@ -267,38 +424,27 @@ public class MapMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
-    PersistencePerspective persistencePerspective2 =
-        ((MapMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    PersistencePerspective persistencePerspective2 = ((MapMetadata) actualCloneFieldMetadataResult)
+        .getPersistencePerspective();
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(
-        new String[] {"Available To Types"}, actualCloneFieldMetadataResult.getAvailableToTypes());
+    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
   }
 
   /**
    * Test {@link MapMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link MapMetadata#cloneFieldMetadata()}
+   * <p>
+   * Method under test: {@link MapMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata6() {
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(
-        PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = new HashMap<>();
+    persistencePerspectiveItems.put(PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
 
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
@@ -313,39 +459,27 @@ public class MapMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
-    assertEquals(
-        persistencePerspectiveItems,
-        ((MapMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective()
-            .getPersistencePerspectiveItems());
+    assertEquals(persistencePerspectiveItems,
+        ((MapMetadata) actualCloneFieldMetadataResult).getPersistencePerspective().getPersistencePerspectiveItems());
   }
 
   /**
    * Test {@link MapMetadata#cloneFieldMetadata()}.
-   *
    * <ul>
-   *   <li>Then return array length is one.
+   *   <li>Then return array length is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#cloneFieldMetadata()}
+   * <p>
+   * Method under test: {@link MapMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata_thenReturnArrayLengthIsOne() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
     ForeignKey foreignKey = new ForeignKey();
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {foreignKey};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[] {new ForeignKey()});
+    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[]{foreignKey});
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
@@ -358,77 +492,27 @@ public class MapMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
-    ForeignKey[] additionalForeignKeys2 =
-        ((MapMetadata) actualCloneFieldMetadataResult)
-            .getPersistencePerspective()
-            .getAdditionalForeignKeys();
-    assertEquals(1, additionalForeignKeys2.length);
-    assertEquals(foreignKey, additionalForeignKeys2[0]);
-  }
-
-  /**
-   * Test {@link MapMetadata#cloneFieldMetadata()}.
-   *
-   * <ul>
-   *   <li>Then return AvailableToTypes is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata MapMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata_thenReturnAvailableToTypesIsNull() {
-    // Arrange
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    MapMetadata mapMetadata = new MapMetadata();
-    mapMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult = mapMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof MapMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    PersistencePerspective persistencePerspective2 =
-        ((MapMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    ForeignKey[] additionalForeignKeys = ((MapMetadata) actualCloneFieldMetadataResult).getPersistencePerspective()
+        .getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys.length);
+    assertEquals(foreignKey, additionalForeignKeys[0]);
   }
 
   /**
    * Test {@link MapMetadata#equals(Object)}, and {@link MapMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MapMetadata#equals(Object)}
    *   <li>{@link MapMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -437,27 +521,25 @@ public class MapMetadataDiffblueTest {
 
     // Act and Assert
     assertEquals(mapMetadata, mapMetadata2);
-    assertEquals(mapMetadata.hashCode(), mapMetadata2.hashCode());
+    int expectedHashCodeResult = mapMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, mapMetadata2.hashCode());
   }
 
   /**
    * Test {@link MapMetadata#equals(Object)}, and {@link MapMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MapMetadata#equals(Object)}
    *   <li>{@link MapMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -469,27 +551,25 @@ public class MapMetadataDiffblueTest {
 
     // Act and Assert
     assertEquals(mapMetadata, mapMetadata2);
-    assertEquals(mapMetadata.hashCode(), mapMetadata2.hashCode());
+    int expectedHashCodeResult = mapMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, mapMetadata2.hashCode());
   }
 
   /**
    * Test {@link MapMetadata#equals(Object)}, and {@link MapMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MapMetadata#equals(Object)}
    *   <li>{@link MapMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -501,27 +581,25 @@ public class MapMetadataDiffblueTest {
 
     // Act and Assert
     assertEquals(mapMetadata, mapMetadata2);
-    assertEquals(mapMetadata.hashCode(), mapMetadata2.hashCode());
+    int expectedHashCodeResult = mapMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, mapMetadata2.hashCode());
   }
 
   /**
    * Test {@link MapMetadata#equals(Object)}, and {@link MapMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MapMetadata#equals(Object)}
    *   <li>{@link MapMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
@@ -533,27 +611,25 @@ public class MapMetadataDiffblueTest {
 
     // Act and Assert
     assertEquals(mapMetadata, mapMetadata2);
-    assertEquals(mapMetadata.hashCode(), mapMetadata2.hashCode());
+    int expectedHashCodeResult = mapMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, mapMetadata2.hashCode());
   }
 
   /**
    * Test {@link MapMetadata#equals(Object)}, and {@link MapMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MapMetadata#equals(Object)}
    *   <li>{@link MapMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
@@ -565,27 +641,25 @@ public class MapMetadataDiffblueTest {
 
     // Act and Assert
     assertEquals(mapMetadata, mapMetadata2);
-    assertEquals(mapMetadata.hashCode(), mapMetadata2.hashCode());
+    int expectedHashCodeResult = mapMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, mapMetadata2.hashCode());
   }
 
   /**
    * Test {@link MapMetadata#equals(Object)}, and {@link MapMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MapMetadata#equals(Object)}
    *   <li>{@link MapMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
@@ -597,27 +671,25 @@ public class MapMetadataDiffblueTest {
 
     // Act and Assert
     assertEquals(mapMetadata, mapMetadata2);
-    assertEquals(mapMetadata.hashCode(), mapMetadata2.hashCode());
+    int expectedHashCodeResult = mapMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, mapMetadata2.hashCode());
   }
 
   /**
    * Test {@link MapMetadata#equals(Object)}, and {@link MapMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MapMetadata#equals(Object)}
    *   <li>{@link MapMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
     // Arrange
@@ -629,27 +701,25 @@ public class MapMetadataDiffblueTest {
 
     // Act and Assert
     assertEquals(mapMetadata, mapMetadata2);
-    assertEquals(mapMetadata.hashCode(), mapMetadata2.hashCode());
+    int expectedHashCodeResult = mapMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, mapMetadata2.hashCode());
   }
 
   /**
    * Test {@link MapMetadata#equals(Object)}, and {@link MapMetadata#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MapMetadata#equals(Object)}
    *   <li>{@link MapMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -663,17 +733,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -682,17 +750,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -705,17 +771,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
@@ -728,17 +792,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
@@ -751,17 +813,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
@@ -774,17 +834,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
@@ -797,17 +855,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
@@ -820,17 +876,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
@@ -843,17 +897,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
@@ -866,17 +918,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
@@ -891,17 +941,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
@@ -916,17 +964,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
     // Arrange
@@ -941,17 +987,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
     // Arrange
@@ -966,17 +1010,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
     // Arrange
@@ -991,17 +1033,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual15() {
     // Arrange
@@ -1016,17 +1056,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -1035,17 +1073,15 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test {@link MapMetadata#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MapMetadata#equals(Object)}
+   * <p>
+   * Method under test: {@link MapMetadata#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MapMetadata.equals(Object)", "int MapMetadata.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -1054,9 +1090,8 @@ public class MapMetadataDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link MapMetadata}
    *   <li>{@link MapMetadata#setForceFreeFormKeys(Boolean)}
@@ -1084,38 +1119,25 @@ public class MapMetadataDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MapMetadata.<init>()",
-    "Boolean MapMetadata.getForceFreeFormKeys()",
-    "String[][] MapMetadata.getKeys()",
-    "String MapMetadata.getMapKeyOptionEntityClass()",
-    "String MapMetadata.getMapKeyOptionEntityDisplayField()",
-    "String MapMetadata.getMapKeyOptionEntityValueField()",
-    "String MapMetadata.getMapKeyValueProperty()",
-    "String MapMetadata.getMediaField()",
-    "String MapMetadata.getToOneParentProperty()",
-    "String MapMetadata.getToOneTargetProperty()",
-    "String MapMetadata.getValueClassName()",
-    "boolean MapMetadata.isSimpleValue()",
-    "void MapMetadata.setForceFreeFormKeys(Boolean)",
-    "void MapMetadata.setKeys(String[][])",
-    "void MapMetadata.setMapKeyOptionEntityClass(String)",
-    "void MapMetadata.setMapKeyOptionEntityDisplayField(String)",
-    "void MapMetadata.setMapKeyOptionEntityValueField(String)",
-    "void MapMetadata.setMapKeyValueProperty(String)",
-    "void MapMetadata.setMediaField(String)",
-    "void MapMetadata.setSimpleValue(boolean)",
-    "void MapMetadata.setToOneParentProperty(String)",
-    "void MapMetadata.setToOneTargetProperty(String)",
-    "void MapMetadata.setValueClassName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MapMetadata.<init>()", "Boolean MapMetadata.getForceFreeFormKeys()",
+      "String[][] MapMetadata.getKeys()", "String MapMetadata.getMapKeyOptionEntityClass()",
+      "String MapMetadata.getMapKeyOptionEntityDisplayField()", "String MapMetadata.getMapKeyOptionEntityValueField()",
+      "String MapMetadata.getMapKeyValueProperty()", "String MapMetadata.getMediaField()",
+      "String MapMetadata.getToOneParentProperty()", "String MapMetadata.getToOneTargetProperty()",
+      "String MapMetadata.getValueClassName()", "boolean MapMetadata.isSimpleValue()",
+      "void MapMetadata.setForceFreeFormKeys(Boolean)", "void MapMetadata.setKeys(String[][])",
+      "void MapMetadata.setMapKeyOptionEntityClass(String)",
+      "void MapMetadata.setMapKeyOptionEntityDisplayField(String)",
+      "void MapMetadata.setMapKeyOptionEntityValueField(String)", "void MapMetadata.setMapKeyValueProperty(String)",
+      "void MapMetadata.setMediaField(String)", "void MapMetadata.setSimpleValue(boolean)",
+      "void MapMetadata.setToOneParentProperty(String)", "void MapMetadata.setToOneTargetProperty(String)",
+      "void MapMetadata.setValueClassName(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MapMetadata actualMapMetadata = new MapMetadata();
     actualMapMetadata.setForceFreeFormKeys(true);
-    String[][] keys = new String[][] {new String[] {"Keys"}};
+    String[][] keys = new String[][]{new String[]{"Keys"}};
     actualMapMetadata.setKeys(keys);
     actualMapMetadata.setMapKeyOptionEntityClass("Map Key Option Entity Class");
     actualMapMetadata.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
@@ -1129,8 +1151,7 @@ public class MapMetadataDiffblueTest {
     Boolean actualForceFreeFormKeys = actualMapMetadata.getForceFreeFormKeys();
     String[][] actualKeys = actualMapMetadata.getKeys();
     String actualMapKeyOptionEntityClass = actualMapMetadata.getMapKeyOptionEntityClass();
-    String actualMapKeyOptionEntityDisplayField =
-        actualMapMetadata.getMapKeyOptionEntityDisplayField();
+    String actualMapKeyOptionEntityDisplayField = actualMapMetadata.getMapKeyOptionEntityDisplayField();
     String actualMapKeyOptionEntityValueField = actualMapMetadata.getMapKeyOptionEntityValueField();
     String actualMapKeyValueProperty = actualMapMetadata.getMapKeyValueProperty();
     String actualMediaField = actualMapMetadata.getMediaField();
@@ -1148,6 +1169,8 @@ public class MapMetadataDiffblueTest {
     assertEquals("Media Field", actualMediaField);
     assertEquals("To One Parent Property", actualToOneParentProperty);
     assertEquals("To One Target Property", actualToOneTargetProperty);
+    assertNull(actualMapMetadata.getCustomCriteria());
+    assertNull(actualMapMetadata.getAvailableToTypes());
     assertNull(actualMapMetadata.getChildrenExcluded());
     assertNull(actualMapMetadata.getExcluded());
     assertNull(actualMapMetadata.getLazyFetch());
@@ -1168,8 +1191,6 @@ public class MapMetadataDiffblueTest {
     assertNull(actualMapMetadata.getShowIfProperty());
     assertNull(actualMapMetadata.getTab());
     assertNull(actualMapMetadata.getTargetClass());
-    assertNull(actualMapMetadata.getCustomCriteria());
-    assertNull(actualMapMetadata.getAvailableToTypes());
     assertNull(actualMapMetadata.getShowIfFieldEquals());
     assertNull(actualMapMetadata.getPersistencePerspective());
     assertEquals(1, actualKeys.length);
@@ -1178,6 +1199,6 @@ public class MapMetadataDiffblueTest {
     assertTrue(actualForceFreeFormKeys);
     assertTrue(actualIsSimpleValueResult);
     assertSame(keys, actualKeys);
-    assertArrayEquals(new String[] {"Keys"}, actualKeys[0]);
+    assertArrayEquals(new String[]{"Keys"}, actualKeys[0]);
   }
 }

@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,45 +44,44 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class FulfillmentVariableExpressionDiffblueTest {
-  @Mock private FulfillmentGroupService fulfillmentGroupService;
+  @InjectMocks
+  private FulfillmentVariableExpression fulfillmentVariableExpression;
 
-  @Mock private FulfillmentOptionService fulfillmentOptionService;
+  @Mock
+  private FulfillmentOptionService fulfillmentOptionService;
 
-  @InjectMocks private FulfillmentVariableExpression fulfillmentVariableExpression;
+  @Mock
+  private FulfillmentGroupService fulfillmentGroupService;
 
   /**
    * Test {@link FulfillmentVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link FulfillmentVariableExpression#getName()}
+   * <p>
+   * Method under test: {@link FulfillmentVariableExpression#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"java.lang.String FulfillmentVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("fulfillment", new FulfillmentVariableExpression().getName());
+    assertEquals("fulfillment", (new FulfillmentVariableExpression()).getName());
   }
 
   /**
    * Test {@link FulfillmentVariableExpression#getNumShippableFulfillmentGroups()}.
-   *
-   * <p>Method under test: {@link FulfillmentVariableExpression#getNumShippableFulfillmentGroups()}
+   * <p>
+   * Method under test: {@link FulfillmentVariableExpression#getNumShippableFulfillmentGroups()}
    */
   @Test
   @DisplayName("Test getNumShippableFulfillmentGroups()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int FulfillmentVariableExpression.getNumShippableFulfillmentGroups()"})
   void testGetNumShippableFulfillmentGroups() {
     // Arrange
-    when(fulfillmentGroupService.calculateNumShippableFulfillmentGroups(Mockito.<Order>any()))
-        .thenReturn(10);
+    when(fulfillmentGroupService.calculateNumShippableFulfillmentGroups(Mockito.<Order>any())).thenReturn(10);
 
     // Act
-    int actualNumShippableFulfillmentGroups =
-        fulfillmentVariableExpression.getNumShippableFulfillmentGroups();
+    int actualNumShippableFulfillmentGroups = fulfillmentVariableExpression.getNumShippableFulfillmentGroups();
 
     // Assert
     verify(fulfillmentGroupService).calculateNumShippableFulfillmentGroups(isNull());
@@ -92,21 +90,19 @@ class FulfillmentVariableExpressionDiffblueTest {
 
   /**
    * Test {@link FulfillmentVariableExpression#getFulfillmentOptions()}.
-   *
-   * <p>Method under test: {@link FulfillmentVariableExpression#getFulfillmentOptions()}
+   * <p>
+   * Method under test: {@link FulfillmentVariableExpression#getFulfillmentOptions()}
    */
   @Test
   @DisplayName("Test getFulfillmentOptions()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"List FulfillmentVariableExpression.getFulfillmentOptions()"})
   void testGetFulfillmentOptions() {
     // Arrange
     when(fulfillmentOptionService.readAllFulfillmentOptions()).thenReturn(new ArrayList<>());
 
     // Act
-    List<FulfillmentOption> actualFulfillmentOptions =
-        fulfillmentVariableExpression.getFulfillmentOptions();
+    List<FulfillmentOption> actualFulfillmentOptions = fulfillmentVariableExpression.getFulfillmentOptions();
 
     // Assert
     verify(fulfillmentOptionService).readAllFulfillmentOptions();
@@ -115,13 +111,12 @@ class FulfillmentVariableExpressionDiffblueTest {
 
   /**
    * Test {@link FulfillmentVariableExpression#getMultiShipOptions()}.
-   *
-   * <p>Method under test: {@link FulfillmentVariableExpression#getMultiShipOptions()}
+   * <p>
+   * Method under test: {@link FulfillmentVariableExpression#getMultiShipOptions()}
    */
   @Test
   @DisplayName("Test getMultiShipOptions()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"List FulfillmentVariableExpression.getMultiShipOptions()"})
   void testGetMultiShipOptions() {
     // Arrange, Act and Assert
@@ -130,16 +125,14 @@ class FulfillmentVariableExpressionDiffblueTest {
 
   /**
    * Test {@link FulfillmentVariableExpression#getFulfillmentEstimateResponse()}.
-   *
-   * <p>Method under test: {@link FulfillmentVariableExpression#getFulfillmentEstimateResponse()}
+   * <p>
+   * Method under test: {@link FulfillmentVariableExpression#getFulfillmentEstimateResponse()}
    */
   @Test
   @DisplayName("Test getFulfillmentEstimateResponse()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FulfillmentVariableExpression.getFulfillmentEstimateResponse()"
-  })
+      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FulfillmentVariableExpression.getFulfillmentEstimateResponse()"})
   void testGetFulfillmentEstimateResponse() {
     // Arrange, Act and Assert
     assertNull(fulfillmentVariableExpression.getFulfillmentEstimateResponse());
@@ -147,19 +140,16 @@ class FulfillmentVariableExpressionDiffblueTest {
 
   /**
    * Test {@link FulfillmentVariableExpression#isNullOrder(Order)}.
-   *
    * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).
-   *   <li>Then return {@code true}.
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentVariableExpression#isNullOrder(Order)}
+   * <p>
+   * Method under test: {@link FulfillmentVariableExpression#isNullOrder(Order)}
    */
   @Test
-  @DisplayName(
-      "Test isNullOrder(Order); when NullOrderImpl (default constructor); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test isNullOrder(Order); when NullOrderImpl (default constructor); then return 'true'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean FulfillmentVariableExpression.isNullOrder(Order)"})
   void testIsNullOrder_whenNullOrderImpl_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -168,18 +158,16 @@ class FulfillmentVariableExpressionDiffblueTest {
 
   /**
    * Test {@link FulfillmentVariableExpression#isNullOrder(Order)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentVariableExpression#isNullOrder(Order)}
+   * <p>
+   * Method under test: {@link FulfillmentVariableExpression#isNullOrder(Order)}
    */
   @Test
   @DisplayName("Test isNullOrder(Order); when 'null'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean FulfillmentVariableExpression.isNullOrder(Order)"})
   void testIsNullOrder_whenNull_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -188,18 +176,16 @@ class FulfillmentVariableExpressionDiffblueTest {
 
   /**
    * Test {@link FulfillmentVariableExpression#isNullOrder(Order)}.
-   *
    * <ul>
-   *   <li>When {@link OrderImpl} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>When {@link OrderImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentVariableExpression#isNullOrder(Order)}
+   * <p>
+   * Method under test: {@link FulfillmentVariableExpression#isNullOrder(Order)}
    */
   @Test
   @DisplayName("Test isNullOrder(Order); when OrderImpl (default constructor); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean FulfillmentVariableExpression.isNullOrder(Order)"})
   void testIsNullOrder_whenOrderImpl_thenReturnFalse() {
     // Arrange, Act and Assert

@@ -22,8 +22,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,25 +43,49 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {FieldGroup.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FieldGroupDiffblueTest {
-  @Autowired private FieldGroup fieldGroup;
+  @Autowired
+  private FieldGroup fieldGroup;
+
+  /**
+   * Test {@link FieldGroup#removeListGrid(ListGrid)}.
+   * <ul>
+   *   <li>Then calls {@link Field#getAlternateOrdering()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroup#removeListGrid(ListGrid)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldGroup.removeListGrid(ListGrid)"})
+  public void testRemoveListGrid_thenCallsGetAlternateOrdering() {
+    // Arrange
+    Field field = mock(Field.class);
+    when(field.getAlternateOrdering()).thenReturn(true);
+
+    FieldGroup fieldGroup = new FieldGroup();
+    fieldGroup.addField(field);
+
+    // Act
+    fieldGroup.removeListGrid(new ListGrid());
+
+    // Assert
+    verify(field).getAlternateOrdering();
+  }
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldGroupAddFieldField_thenReturnTrue() {
     // Arrange
@@ -72,18 +98,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldGroupAddFieldField_thenReturnTrue2() {
     // Arrange
@@ -97,18 +120,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldGroupAddFieldField_thenReturnTrue3() {
     // Arrange
@@ -123,18 +143,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldGroupAddListGridListGrid_thenReturnTrue() {
     // Arrange
@@ -148,18 +165,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldGroupAddListGridListGrid_thenReturnTrue2() {
     // Arrange
@@ -172,17 +186,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldGroupAddListGridNull_thenReturnFalse() {
     // Arrange
@@ -195,22 +207,21 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) IsVisible is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) IsVisible is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldGroupIsVisibleIsTrue_thenReturnTrue() {
     // Arrange
     FieldGroup fieldGroup = new FieldGroup();
     fieldGroup.setIsVisible(true);
+    fieldGroup.addField(new Field());
 
     // Act and Assert
     assertTrue(fieldGroup.getIsVisible());
@@ -218,36 +229,32 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldGroup_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new FieldGroup().getIsVisible());
+    assertFalse((new FieldGroup()).getIsVisible());
   }
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is one.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldOrderIsOne_thenReturnTrue() {
     // Arrange
@@ -264,17 +271,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is one.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldOrderIsOne_thenReturnTrue2() {
     // Arrange
@@ -292,17 +297,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is zero.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Field} (default constructor) Order is zero.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsVisible()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsVisible()"})
   public void testGetIsVisible_givenFieldOrderIsZero_thenReturnTrue() {
     // Arrange
@@ -319,17 +322,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsUntitled()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) IsUntitled is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) IsUntitled is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsUntitled()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsUntitled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsUntitled()"})
   public void testGetIsUntitled_givenFieldGroupIsUntitledIsTrue_thenReturnTrue() {
     // Arrange
@@ -342,36 +343,32 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getIsUntitled()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getIsUntitled()}
+   * <p>
+   * Method under test: {@link FieldGroup#getIsUntitled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getIsUntitled()"})
   public void testGetIsUntitled_givenFieldGroup_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new FieldGroup().getIsUntitled());
+    assertFalse((new FieldGroup()).getIsUntitled());
   }
 
   /**
    * Test {@link FieldGroup#getCollapsed()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) Collapsed is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) Collapsed is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getCollapsed()}
+   * <p>
+   * Method under test: {@link FieldGroup#getCollapsed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getCollapsed()"})
   public void testGetCollapsed_givenFieldGroupCollapsedIsTrue_thenReturnTrue() {
     // Arrange
@@ -384,36 +381,32 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getCollapsed()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getCollapsed()}
+   * <p>
+   * Method under test: {@link FieldGroup#getCollapsed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean FieldGroup.getCollapsed()"})
   public void testGetCollapsed_givenFieldGroup_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new FieldGroup().getCollapsed());
+    assertFalse((new FieldGroup()).getCollapsed());
   }
 
   /**
    * Test {@link FieldGroup#getTitle()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) Title is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link FieldGroup} (default constructor) Title is {@code foo}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getTitle()}
+   * <p>
+   * Method under test: {@link FieldGroup#getTitle()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldGroup.getTitle()"})
   public void testGetTitle_givenFieldGroupTitleIsFoo_thenReturnFoo() {
     // Arrange
@@ -427,31 +420,28 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getTitle()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getTitle()}
+   * <p>
+   * Method under test: {@link FieldGroup#getTitle()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String FieldGroup.getTitle()"})
   public void testGetTitle_givenFieldGroup_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new FieldGroup().getTitle());
+    assertNull((new FieldGroup()).getTitle());
   }
 
   /**
    * Test {@link FieldGroup#withKey(String)}.
-   *
-   * <p>Method under test: {@link FieldGroup#withKey(String)}
+   * <p>
+   * Method under test: {@link FieldGroup#withKey(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroup FieldGroup.withKey(String)"})
   public void testWithKey() {
     // Arrange and Act
@@ -464,12 +454,11 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#withTitle(String)}.
-   *
-   * <p>Method under test: {@link FieldGroup#withTitle(String)}
+   * <p>
+   * Method under test: {@link FieldGroup#withTitle(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroup FieldGroup.withTitle(String)"})
   public void testWithTitle() {
     // Arrange and Act
@@ -483,12 +472,11 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#withOrder(Integer)}.
-   *
-   * <p>Method under test: {@link FieldGroup#withOrder(Integer)}
+   * <p>
+   * Method under test: {@link FieldGroup#withOrder(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroup FieldGroup.withOrder(Integer)"})
   public void testWithOrder() {
     // Arrange
@@ -504,12 +492,11 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#withCustomTemplate(String)}.
-   *
-   * <p>Method under test: {@link FieldGroup#withCustomTemplate(String)}
+   * <p>
+   * Method under test: {@link FieldGroup#withCustomTemplate(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroup FieldGroup.withCustomTemplate(String)"})
   public void testWithCustomTemplate() {
     // Arrange and Act
@@ -522,18 +509,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#addField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>Then {@link FieldGroup} (default constructor) {@link
-   *       FieldGroup#alternateOrderedGroupItems} size is one.
+   *   <li>Given {@code true}.</li>
+   *   <li>Then {@link FieldGroup} (default constructor) {@link FieldGroup#alternateOrderedGroupItems} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#addField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#addField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.addField(Field)"})
   public void testAddField_givenTrue_thenFieldGroupAlternateOrderedGroupItemsSizeIsOne() {
     // Arrange
@@ -554,17 +538,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#addField(Field)}.
-   *
    * <ul>
-   *   <li>When {@link Field} (default constructor).
-   *   <li>Then {@link FieldGroup} (default constructor) Fields size is one.
+   *   <li>When {@link Field} (default constructor).</li>
+   *   <li>Then {@link FieldGroup} (default constructor) Fields size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#addField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#addField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.addField(Field)"})
   public void testAddField_whenField_thenFieldGroupFieldsSizeIsOne() {
     // Arrange
@@ -583,18 +565,16 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#addFields(Set)}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor).
-   *   <li>When {@link HashSet#HashSet()} add {@link Field} (default constructor).
-   *   <li>Then {@link FieldGroup} (default constructor) {@link FieldGroup#groupItems} size is two.
+   *   <li>Given {@link Field} (default constructor).</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link Field} (default constructor).</li>
+   *   <li>Then {@link FieldGroup} (default constructor) {@link FieldGroup#groupItems} size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#addFields(Set)}
+   * <p>
+   * Method under test: {@link FieldGroup#addFields(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldGroup.addFields(Set)"})
   public void testAddFields_givenField_whenHashSetAddField_thenFieldGroupGroupItemsSizeIsTwo() {
     // Arrange
@@ -617,17 +597,14 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#addFields(Set)}.
-   *
    * <ul>
-   *   <li>Then {@link FieldGroup} (default constructor) {@link
-   *       FieldGroup#alternateOrderedGroupItems} size is one.
+   *   <li>Then {@link FieldGroup} (default constructor) {@link FieldGroup#alternateOrderedGroupItems} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#addFields(Set)}
+   * <p>
+   * Method under test: {@link FieldGroup#addFields(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldGroup.addFields(Set)"})
   public void testAddFields_thenFieldGroupAlternateOrderedGroupItemsSizeIsOne() {
     // Arrange
@@ -650,16 +627,14 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#addFields(Set)}.
-   *
    * <ul>
-   *   <li>Then {@link FieldGroup} (default constructor) GroupItems size is one.
+   *   <li>Then {@link FieldGroup} (default constructor) GroupItems size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#addFields(Set)}
+   * <p>
+   * Method under test: {@link FieldGroup#addFields(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldGroup.addFields(Set)"})
   public void testAddFields_thenFieldGroupGroupItemsSizeIsOne() {
     // Arrange
@@ -683,17 +658,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#addFields(Set)}.
-   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
-   *   <li>Then not {@link FieldGroup} (default constructor) IsVisible.
+   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>Then not {@link FieldGroup} (default constructor) IsVisible.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#addFields(Set)}
+   * <p>
+   * Method under test: {@link FieldGroup#addFields(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldGroup.addFields(Set)"})
   public void testAddFields_whenHashSet_thenNotFieldGroupIsVisible() {
     // Arrange
@@ -711,12 +684,11 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#addListGrid(ListGrid)}.
-   *
-   * <p>Method under test: {@link FieldGroup#addListGrid(ListGrid)}
+   * <p>
+   * Method under test: {@link FieldGroup#addListGrid(ListGrid)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldGroup.addListGrid(ListGrid)"})
   public void testAddListGrid() {
     // Arrange
@@ -735,19 +707,41 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#removeField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>When {@link Field} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.</li>
+   *   <li>When {@link Field} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#removeField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#removeField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldGroup.removeField(Field)"})
+  public void testRemoveField_givenFieldAlternateOrderingIsTrue_whenField_thenReturnFalse() {
+    // Arrange
+    Field field = new Field();
+    field.setAlternateOrdering(true);
+
+    FieldGroup fieldGroup = new FieldGroup();
+    fieldGroup.addField(field);
+
+    // Act and Assert
+    assertFalse(fieldGroup.removeField(new Field()));
+  }
+
+  /**
+   * Test {@link FieldGroup#removeField(Field)}.
+   * <ul>
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>When {@link Field} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroup#removeField(Field)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.removeField(Field)"})
   public void testRemoveField_givenFieldGroupAddFieldField_whenField_thenReturnFalse() {
     // Arrange
@@ -760,19 +754,16 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#removeField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>When {@link Field} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>When {@link Field} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#removeField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#removeField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.removeField(Field)"})
   public void testRemoveField_givenFieldGroupAddListGridListGrid_whenField_thenReturnFalse() {
     // Arrange
@@ -786,18 +777,16 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#removeField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>When {@link Field} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>When {@link Field} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#removeField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#removeField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.removeField(Field)"})
   public void testRemoveField_givenFieldGroup_whenField_thenReturnFalse() {
     // Arrange
@@ -809,18 +798,16 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#removeField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link Field} (default constructor) AlternateOrdering is {@code true}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@code true}.</li>
+   *   <li>When {@link Field} (default constructor) AlternateOrdering is {@code true}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#removeField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#removeField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.removeField(Field)"})
   public void testRemoveField_givenTrue_whenFieldAlternateOrderingIsTrue_thenReturnFalse() {
     // Arrange
@@ -835,18 +822,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getGroupItems()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@link FieldGroup} (default constructor) {@link FieldGroup#groupItems}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@link FieldGroup} (default constructor) {@link FieldGroup#groupItems}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getGroupItems()}
+   * <p>
+   * Method under test: {@link FieldGroup#getGroupItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getGroupItems()"})
   public void testGetGroupItems_givenFieldGroupAddFieldField_thenReturnFieldGroupGroupItems() {
     // Arrange
@@ -854,27 +838,21 @@ public class FieldGroupDiffblueTest {
     fieldGroup.addField(new Field());
     fieldGroup.addField(new Field());
 
-    // Act
-    Set<FieldGroupItem> actualGroupItems = fieldGroup.getGroupItems();
-
-    // Assert
-    assertEquals(fieldGroup.groupItems, actualGroupItems);
+    // Act and Assert
+    assertEquals(fieldGroup.groupItems, fieldGroup.getGroupItems());
   }
 
   /**
    * Test {@link FieldGroup#getGroupItems()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@link FieldGroup} (default constructor) {@link FieldGroup#groupItems}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@link FieldGroup} (default constructor) {@link FieldGroup#groupItems}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getGroupItems()}
+   * <p>
+   * Method under test: {@link FieldGroup#getGroupItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getGroupItems()"})
   public void testGetGroupItems_givenFieldGroupAddFieldField_thenReturnFieldGroupGroupItems2() {
     // Arrange
@@ -883,26 +861,20 @@ public class FieldGroupDiffblueTest {
     fieldGroup.addField(new Field());
     fieldGroup.addField(new Field());
 
-    // Act
-    Set<FieldGroupItem> actualGroupItems = fieldGroup.getGroupItems();
-
-    // Assert
-    assertEquals(fieldGroup.groupItems, actualGroupItems);
+    // Act and Assert
+    assertEquals(fieldGroup.groupItems, fieldGroup.getGroupItems());
   }
 
   /**
    * Test {@link FieldGroup#getGroupItems()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getGroupItems()}
+   * <p>
+   * Method under test: {@link FieldGroup#getGroupItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getGroupItems()"})
   public void testGetGroupItems_givenFieldGroupAddListGridListGrid() {
     // Arrange
@@ -911,45 +883,38 @@ public class FieldGroupDiffblueTest {
     fieldGroup.addField(new Field());
     fieldGroup.addField(new Field());
 
-    // Act
-    Set<FieldGroupItem> actualGroupItems = fieldGroup.getGroupItems();
-
-    // Assert
-    assertEquals(fieldGroup.groupItems, actualGroupItems);
+    // Act and Assert
+    assertEquals(fieldGroup.groupItems, fieldGroup.getGroupItems());
   }
 
   /**
    * Test {@link FieldGroup#getGroupItems()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getGroupItems()}
+   * <p>
+   * Method under test: {@link FieldGroup#getGroupItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getGroupItems()"})
   public void testGetGroupItems_givenFieldGroup_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(new FieldGroup().getGroupItems().isEmpty());
+    assertTrue((new FieldGroup()).getGroupItems().isEmpty());
   }
 
   /**
    * Test {@link FieldGroup#getGroupItems()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is one.
-   *   <li>Then return size is two.
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getGroupItems()}
+   * <p>
+   * Method under test: {@link FieldGroup#getGroupItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getGroupItems()"})
   public void testGetGroupItems_givenFieldOrderIsOne_thenReturnSizeIsTwo() {
     // Arrange
@@ -967,17 +932,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getGroupItems()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is six.
-   *   <li>Then return size is two.
+   *   <li>Given {@link Field} (default constructor) Order is six.</li>
+   *   <li>Then return size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getGroupItems()}
+   * <p>
+   * Method under test: {@link FieldGroup#getGroupItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getGroupItems()"})
   public void testGetGroupItems_givenFieldOrderIsSix_thenReturnSizeIsTwo() {
     // Arrange
@@ -995,17 +958,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getGroupItems()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is zero.
-   *   <li>Then return size is two.
+   *   <li>Given {@link Field} (default constructor) Order is zero.</li>
+   *   <li>Then return size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getGroupItems()}
+   * <p>
+   * Method under test: {@link FieldGroup#getGroupItems()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getGroupItems()"})
   public void testGetGroupItems_givenFieldOrderIsZero_thenReturnSizeIsTwo() {
     // Arrange
@@ -1023,17 +984,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.
-   *   <li>When {@link Field} (default constructor).
+   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.</li>
+   *   <li>When {@link Field} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByField(Field)"})
   public void testFindFieldGroupItemByField_givenFieldAlternateOrderingIsTrue_whenField() {
     // Arrange
@@ -1049,17 +1008,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.
-   *   <li>When {@code null}.
+   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.</li>
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByField(Field)"})
   public void testFindFieldGroupItemByField_givenFieldAlternateOrderingIsTrue_whenNull() {
     // Arrange
@@ -1075,18 +1032,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>When {@link Field} (default constructor).
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>When {@link Field} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByField(Field)"})
   public void testFindFieldGroupItemByField_givenFieldGroupAddFieldField_whenField() {
     // Arrange
@@ -1099,18 +1053,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>When {@code null}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByField(Field)"})
   public void testFindFieldGroupItemByField_givenFieldGroupAddFieldField_whenNull() {
     // Arrange
@@ -1123,18 +1074,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>When {@link Field} (default constructor).
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>When {@link Field} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByField(Field)"})
   public void testFindFieldGroupItemByField_givenFieldGroupAddListGridListGrid_whenField() {
     // Arrange
@@ -1148,17 +1096,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByField(Field)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>When {@link Field} (default constructor).
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>When {@link Field} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByField(Field)"})
   public void testFindFieldGroupItemByField_givenFieldGroup_whenField() {
     // Arrange
@@ -1170,17 +1116,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.
-   *   <li>When {@link ListGrid} (default constructor).
+   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.</li>
+   *   <li>When {@link ListGrid} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByListGrid(ListGrid)"})
   public void testFindFieldGroupItemByListGrid_givenFieldAlternateOrderingIsTrue_whenListGrid() {
     // Arrange
@@ -1196,18 +1140,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>When {@link ListGrid} (default constructor).
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>When {@link ListGrid} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByListGrid(ListGrid)"})
   public void testFindFieldGroupItemByListGrid_givenFieldGroupAddFieldField_whenListGrid() {
     // Arrange
@@ -1220,18 +1161,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>When {@link ListGrid} (default constructor).
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>When {@link ListGrid} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByListGrid(ListGrid)"})
   public void testFindFieldGroupItemByListGrid_givenFieldGroupAddListGridListGrid_whenListGrid() {
     // Arrange
@@ -1245,18 +1183,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>When {@code null}.
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByListGrid(ListGrid)"})
   public void testFindFieldGroupItemByListGrid_givenFieldGroupAddListGridListGrid_whenNull() {
     // Arrange
@@ -1270,17 +1205,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>When {@link ListGrid} (default constructor).
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>When {@link ListGrid} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
+   * <p>
+   * Method under test: {@link FieldGroup#findFieldGroupItemByListGrid(ListGrid)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroupItem FieldGroup.findFieldGroupItemByListGrid(ListGrid)"})
   public void testFindFieldGroupItemByListGrid_givenFieldGroup_whenListGrid() {
     // Arrange
@@ -1292,18 +1225,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#containsFieldData()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#containsFieldData()}
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
   public void testContainsFieldData_givenFieldGroupAddFieldField_thenReturnFalse() {
     // Arrange
@@ -1316,18 +1246,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#containsFieldData()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#containsFieldData()}
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
   public void testContainsFieldData_givenFieldGroupAddFieldField_thenReturnFalse2() {
     // Arrange
@@ -1341,18 +1268,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#containsFieldData()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#containsFieldData()}
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
   public void testContainsFieldData_givenFieldGroupAddFieldField_thenReturnFalse3() {
     // Arrange
@@ -1367,18 +1291,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#containsFieldData()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#containsFieldData()}
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
   public void testContainsFieldData_givenFieldGroupAddListGridListGrid_thenReturnFalse() {
     // Arrange
@@ -1392,36 +1313,108 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#containsFieldData()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#containsFieldData()}
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
   public void testContainsFieldData_givenFieldGroup_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new FieldGroup().containsFieldData());
+    assertFalse((new FieldGroup()).containsFieldData());
   }
 
   /**
    * Test {@link FieldGroup#containsFieldData()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Value is {@code 42}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#containsFieldData()}
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
+  public void testContainsFieldData_givenFieldOrderIsOne_thenReturnFalse() {
+    // Arrange
+    Field field = new Field();
+    field.setOrder(1);
+    field.setAlternateOrdering(true);
+
+    FieldGroup fieldGroup = new FieldGroup();
+    fieldGroup.addField(field);
+
+    // Act and Assert
+    assertFalse(fieldGroup.containsFieldData());
+  }
+
+  /**
+   * Test {@link FieldGroup#containsFieldData()}.
+   * <ul>
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
+  public void testContainsFieldData_givenFieldOrderIsOne_thenReturnFalse2() {
+    // Arrange
+    Field field = new Field();
+    field.setOrder(1);
+    field.setAlternateOrdering(true);
+
+    FieldGroup fieldGroup = new FieldGroup();
+    fieldGroup.addField(new Field());
+    fieldGroup.addField(field);
+
+    // Act and Assert
+    assertFalse(fieldGroup.containsFieldData());
+  }
+
+  /**
+   * Test {@link FieldGroup#containsFieldData()}.
+   * <ul>
+   *   <li>Given {@link Field} (default constructor) Order is zero.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
+  public void testContainsFieldData_givenFieldOrderIsZero_thenReturnFalse() {
+    // Arrange
+    Field field = new Field();
+    field.setOrder(0);
+    field.setAlternateOrdering(true);
+
+    FieldGroup fieldGroup = new FieldGroup();
+    fieldGroup.addField(field);
+
+    // Act and Assert
+    assertFalse(fieldGroup.containsFieldData());
+  }
+
+  /**
+   * Test {@link FieldGroup#containsFieldData()}.
+   * <ul>
+   *   <li>Given {@link Field} (default constructor) Value is {@code 42}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroup#containsFieldData()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.containsFieldData()"})
   public void testContainsFieldData_givenFieldValueIs42_thenReturnTrue() {
     // Arrange
@@ -1437,17 +1430,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#hasFieldOrListGrid()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Field} (default constructor) AlternateOrdering is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#hasFieldOrListGrid()}
+   * <p>
+   * Method under test: {@link FieldGroup#hasFieldOrListGrid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.hasFieldOrListGrid()"})
   public void testHasFieldOrListGrid_givenFieldAlternateOrderingIsTrue_thenReturnTrue() {
     // Arrange
@@ -1463,18 +1454,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#hasFieldOrListGrid()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#hasFieldOrListGrid()}
+   * <p>
+   * Method under test: {@link FieldGroup#hasFieldOrListGrid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.hasFieldOrListGrid()"})
   public void testHasFieldOrListGrid_givenFieldGroupAddFieldField_thenReturnTrue() {
     // Arrange
@@ -1487,37 +1475,32 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#hasFieldOrListGrid()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#hasFieldOrListGrid()}
+   * <p>
+   * Method under test: {@link FieldGroup#hasFieldOrListGrid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldGroup.hasFieldOrListGrid()"})
   public void testHasFieldOrListGrid_givenFieldGroup_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new FieldGroup().hasFieldOrListGrid());
+    assertFalse((new FieldGroup()).hasFieldOrListGrid());
   }
 
   /**
    * Test {@link FieldGroup#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return size is one.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getFields()}
+   * <p>
+   * Method under test: {@link FieldGroup#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getFields()"})
   public void testGetFields_givenFieldGroupAddFieldField_thenReturnSizeIsOne() {
     // Arrange
@@ -1530,18 +1513,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return size is three.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return size is three.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getFields()}
+   * <p>
+   * Method under test: {@link FieldGroup#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getFields()"})
   public void testGetFields_givenFieldGroupAddFieldField_thenReturnSizeIsThree() {
     // Arrange
@@ -1556,18 +1536,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return size is two.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getFields()}
+   * <p>
+   * Method under test: {@link FieldGroup#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getFields()"})
   public void testGetFields_givenFieldGroupAddFieldField_thenReturnSizeIsTwo() {
     // Arrange
@@ -1581,18 +1558,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>Then return size is one.
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getFields()}
+   * <p>
+   * Method under test: {@link FieldGroup#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getFields()"})
   public void testGetFields_givenFieldGroupAddListGridListGrid_thenReturnSizeIsOne() {
     // Arrange
@@ -1606,37 +1580,108 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getFields()}
+   * <p>
+   * Method under test: {@link FieldGroup#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getFields()"})
   public void testGetFields_givenFieldGroup_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(new FieldGroup().getFields().isEmpty());
+    assertTrue((new FieldGroup()).getFields().isEmpty());
+  }
+
+  /**
+   * Test {@link FieldGroup#getFields()}.
+   * <ul>
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroup#getFields()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set FieldGroup.getFields()"})
+  public void testGetFields_givenFieldOrderIsOne_thenReturnSizeIsOne() {
+    // Arrange
+    Field field = new Field();
+    field.setOrder(1);
+    field.setAlternateOrdering(true);
+
+    FieldGroup fieldGroup = new FieldGroup();
+    fieldGroup.addField(field);
+
+    // Act and Assert
+    assertEquals(1, fieldGroup.getFields().size());
+  }
+
+  /**
+   * Test {@link FieldGroup#getFields()}.
+   * <ul>
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroup#getFields()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set FieldGroup.getFields()"})
+  public void testGetFields_givenFieldOrderIsOne_thenReturnSizeIsTwo() {
+    // Arrange
+    Field field = new Field();
+    field.setOrder(1);
+    field.setAlternateOrdering(true);
+
+    FieldGroup fieldGroup = new FieldGroup();
+    fieldGroup.addField(new Field());
+    fieldGroup.addField(field);
+
+    // Act and Assert
+    assertEquals(2, fieldGroup.getFields().size());
+  }
+
+  /**
+   * Test {@link FieldGroup#getFields()}.
+   * <ul>
+   *   <li>Given {@link Field} (default constructor) Order is zero.</li>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldGroup#getFields()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Set FieldGroup.getFields()"})
+  public void testGetFields_givenFieldOrderIsZero_thenReturnSizeIsOne() {
+    // Arrange
+    Field field = new Field();
+    field.setOrder(0);
+    field.setAlternateOrdering(true);
+
+    FieldGroup fieldGroup = new FieldGroup();
+    fieldGroup.addField(field);
+
+    // Act and Assert
+    assertEquals(1, fieldGroup.getFields().size());
   }
 
   /**
    * Test {@link FieldGroup#getListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getListGrids()}
+   * <p>
+   * Method under test: {@link FieldGroup#getListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getListGrids()"})
   public void testGetListGrids_givenFieldGroupAddFieldField_thenReturnEmpty() {
     // Arrange
@@ -1649,18 +1694,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getListGrids()}
+   * <p>
+   * Method under test: {@link FieldGroup#getListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getListGrids()"})
   public void testGetListGrids_givenFieldGroupAddFieldField_thenReturnEmpty2() {
     // Arrange
@@ -1674,18 +1716,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default
-   *       constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link FieldGroup} (default constructor) addField {@link Field} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getListGrids()}
+   * <p>
+   * Method under test: {@link FieldGroup#getListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getListGrids()"})
   public void testGetListGrids_givenFieldGroupAddFieldField_thenReturnEmpty3() {
     // Arrange
@@ -1700,18 +1739,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default
-   *       constructor).
-   *   <li>Then return size is one.
+   *   <li>Given {@link FieldGroup} (default constructor) addListGrid {@link ListGrid} (default constructor).</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getListGrids()}
+   * <p>
+   * Method under test: {@link FieldGroup#getListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getListGrids()"})
   public void testGetListGrids_givenFieldGroupAddListGridListGrid_thenReturnSizeIsOne() {
     // Arrange
@@ -1725,36 +1761,32 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getListGrids()}
+   * <p>
+   * Method under test: {@link FieldGroup#getListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getListGrids()"})
   public void testGetListGrids_givenFieldGroup_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(new FieldGroup().getListGrids().isEmpty());
+    assertTrue((new FieldGroup()).getListGrids().isEmpty());
   }
 
   /**
    * Test {@link FieldGroup#getListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is one.
-   *   <li>Then return Empty.
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getListGrids()}
+   * <p>
+   * Method under test: {@link FieldGroup#getListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getListGrids()"})
   public void testGetListGrids_givenFieldOrderIsOne_thenReturnEmpty() {
     // Arrange
@@ -1764,7 +1796,6 @@ public class FieldGroupDiffblueTest {
 
     FieldGroup fieldGroup = new FieldGroup();
     fieldGroup.addField(field);
-    fieldGroup.addField(new Field());
 
     // Act and Assert
     assertTrue(fieldGroup.getListGrids().isEmpty());
@@ -1772,27 +1803,25 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is six.
-   *   <li>Then return Empty.
+   *   <li>Given {@link Field} (default constructor) Order is one.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getListGrids()}
+   * <p>
+   * Method under test: {@link FieldGroup#getListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getListGrids()"})
-  public void testGetListGrids_givenFieldOrderIsSix_thenReturnEmpty() {
+  public void testGetListGrids_givenFieldOrderIsOne_thenReturnEmpty2() {
     // Arrange
     Field field = new Field();
-    field.setOrder(6);
+    field.setOrder(1);
     field.setAlternateOrdering(true);
 
     FieldGroup fieldGroup = new FieldGroup();
-    fieldGroup.addField(field);
     fieldGroup.addField(new Field());
+    fieldGroup.addField(field);
 
     // Act and Assert
     assertTrue(fieldGroup.getListGrids().isEmpty());
@@ -1800,17 +1829,15 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test {@link FieldGroup#getListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link Field} (default constructor) Order is zero.
-   *   <li>Then return Empty.
+   *   <li>Given {@link Field} (default constructor) Order is zero.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldGroup#getListGrids()}
+   * <p>
+   * Method under test: {@link FieldGroup#getListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set FieldGroup.getListGrids()"})
   public void testGetListGrids_givenFieldOrderIsZero_thenReturnEmpty() {
     // Arrange
@@ -1820,7 +1847,6 @@ public class FieldGroupDiffblueTest {
 
     FieldGroup fieldGroup = new FieldGroup();
     fieldGroup.addField(field);
-    fieldGroup.addField(new Field());
 
     // Act and Assert
     assertTrue(fieldGroup.getListGrids().isEmpty());
@@ -1828,9 +1854,8 @@ public class FieldGroupDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldGroup}
    *   <li>{@link FieldGroup#setCollapsed(Boolean)}
@@ -1853,28 +1878,15 @@ public class FieldGroupDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FieldGroup.<init>()",
-    "Integer FieldGroup.getColumn()",
-    "String FieldGroup.getCustomTemplate()",
-    "Map FieldGroup.getGroupAttributes()",
-    "String FieldGroup.getKey()",
-    "Integer FieldGroup.getOrder()",
-    "String FieldGroup.getToolTip()",
-    "void FieldGroup.setCollapsed(Boolean)",
-    "void FieldGroup.setColumn(Integer)",
-    "void FieldGroup.setCustomTemplate(String)",
-    "void FieldGroup.setGroupAttributes(Map)",
-    "void FieldGroup.setGroupItems(Set)",
-    "void FieldGroup.setIsUntitled(Boolean)",
-    "void FieldGroup.setIsVisible(Boolean)",
-    "void FieldGroup.setKey(String)",
-    "void FieldGroup.setOrder(Integer)",
-    "void FieldGroup.setTitle(String)",
-    "void FieldGroup.setToolTip(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldGroup.<init>()", "Integer FieldGroup.getColumn()",
+      "String FieldGroup.getCustomTemplate()", "Map FieldGroup.getGroupAttributes()", "String FieldGroup.getKey()",
+      "Integer FieldGroup.getOrder()", "String FieldGroup.getToolTip()", "void FieldGroup.setCollapsed(Boolean)",
+      "void FieldGroup.setColumn(Integer)", "void FieldGroup.setCustomTemplate(String)",
+      "void FieldGroup.setGroupAttributes(Map)", "void FieldGroup.setGroupItems(Set)",
+      "void FieldGroup.setIsUntitled(Boolean)", "void FieldGroup.setIsVisible(Boolean)",
+      "void FieldGroup.setKey(String)", "void FieldGroup.setOrder(Integer)", "void FieldGroup.setTitle(String)",
+      "void FieldGroup.setToolTip(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldGroup actualFieldGroup = new FieldGroup();

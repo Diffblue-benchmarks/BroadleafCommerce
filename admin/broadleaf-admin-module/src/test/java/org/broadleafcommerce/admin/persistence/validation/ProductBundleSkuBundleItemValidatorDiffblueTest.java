@@ -20,14 +20,14 @@ package org.broadleafcommerce.admin.persistence.validation;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -53,81 +53,40 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductBundleSkuBundleItemValidatorDiffblueTest {
-  @Mock private CatalogService catalogService;
+  @InjectMocks
+  private ProductBundleSkuBundleItemValidator productBundleSkuBundleItemValidator;
 
-  @InjectMocks private ProductBundleSkuBundleItemValidator productBundleSkuBundleItemValidator;
+  @Mock
+  private CatalogService catalogService;
 
-  @Mock private SandBoxHelper sandBoxHelper;
-
-  /**
-   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@code null}.
-   *   <li>Then calls {@link Entity#findProperty(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable,
-   * Map, Map, BasicFieldMetadata, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_givenNull_whenEntityFindPropertyReturnNull_thenCallsFindProperty() {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(null);
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
-    HashMap<String, String> validationConfiguration = new HashMap<>();
-
-    // Act
-    PropertyValidationResult actualValidateResult =
-        productBundleSkuBundleItemValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    assertNull(actualValidateResult.getErrorMessage());
-    assertFalse(actualValidateResult.isNotValid());
-    assertTrue(actualValidateResult.getErrorMessages().isEmpty());
-    assertTrue(actualValidateResult.isValid());
-  }
+  @Mock
+  private SandBoxHelper sandBoxHelper;
 
   /**
-   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
+   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable,
-   * Map, Map, BasicFieldMetadata, String, String)}
+   * <p>
+   * Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_givenPropertyGetValueReturnNull_thenCallsGetValue() {
+      "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+  public void testValidate_givenPropertyGetValueReturn42_thenCallsGetValue() {
     // Arrange
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
+
+    OriginalIdResponse originalIdResponse = new OriginalIdResponse();
+    originalIdResponse.setOriginalId(1L);
+    originalIdResponse.setRecordFound(true);
+    when(sandBoxHelper.getOriginalId(Mockito.<Class<Object>>any(), Mockito.<Long>any())).thenReturn(originalIdResponse);
     Property property = mock(Property.class);
-    when(property.getValue()).thenReturn(null);
-
+    when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
@@ -135,17 +94,13 @@ public class ProductBundleSkuBundleItemValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        productBundleSkuBundleItemValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
+    PropertyValidationResult actualValidateResult = productBundleSkuBundleItemValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
+    verify(sandBoxHelper).getOriginalId(isA(Class.class), isNull());
+    verify(productBundleImpl).getDefaultSku();
+    verify(catalogService).findProductById(eq(42L));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
     assertNull(actualValidateResult.getErrorMessage());
@@ -155,42 +110,29 @@ public class ProductBundleSkuBundleItemValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
+   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
    * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       null}.
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable,
-   * Map, Map, BasicFieldMetadata, String, String)}
+   * <p>
+   * Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_givenPropertyWithNameAndValueIsNull() {
+      "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+  public void testValidate_givenProperty_whenEntityFindPropertyReturnProperty() {
     // Arrange
     Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        productBundleSkuBundleItemValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
+    PropertyValidationResult actualValidateResult = productBundleSkuBundleItemValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
@@ -201,22 +143,17 @@ public class ProductBundleSkuBundleItemValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
+   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
    * <ul>
-   *   <li>Then calls {@link SandBoxHelper#getOriginalId(Class, Long)}.
+   *   <li>Then calls {@link SandBoxHelper#getOriginalId(Class, Long)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable,
-   * Map, Map, BasicFieldMetadata, String, String)}
+   * <p>
+   * Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
+      "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
   public void testValidate_thenCallsGetOriginalId() {
     // Arrange
     ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
@@ -226,30 +163,21 @@ public class ProductBundleSkuBundleItemValidatorDiffblueTest {
     OriginalIdResponse originalIdResponse = new OriginalIdResponse();
     originalIdResponse.setOriginalId(1L);
     originalIdResponse.setRecordFound(true);
-    when(sandBoxHelper.getOriginalId(Mockito.<Class<?>>any(), Mockito.<Long>any()))
-        .thenReturn(originalIdResponse);
-
+    when(sandBoxHelper.getOriginalId(Mockito.<Class<Object>>any(), Mockito.<Long>any())).thenReturn(originalIdResponse);
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "42"));
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("sku", "42"));
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        productBundleSkuBundleItemValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
+    PropertyValidationResult actualValidateResult = productBundleSkuBundleItemValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     verify(sandBoxHelper).getOriginalId(isA(Class.class), isNull());
     verify(productBundleImpl).getDefaultSku();
-    verify(catalogService).findProductById(42L);
+    verify(catalogService).findProductById(eq(42L));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     assertNull(actualValidateResult.getErrorMessage());
     assertFalse(actualValidateResult.isNotValid());
@@ -258,23 +186,18 @@ public class ProductBundleSkuBundleItemValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
+   * Test {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
    * <ul>
-   *   <li>When {@link Entity} (default constructor).
-   *   <li>Then return ErrorMessage is {@code null}.
+   *   <li>When {@link Entity} (default constructor).</li>
+   *   <li>Then return ErrorMessage is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable,
-   * Map, Map, BasicFieldMetadata, String, String)}
+   * <p>
+   * Method under test: {@link ProductBundleSkuBundleItemValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
+      "PropertyValidationResult ProductBundleSkuBundleItemValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
   public void testValidate_whenEntity_thenReturnErrorMessageIsNull() {
     // Arrange
     Entity entity = new Entity();
@@ -283,15 +206,8 @@ public class ProductBundleSkuBundleItemValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        productBundleSkuBundleItemValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
+    PropertyValidationResult actualValidateResult = productBundleSkuBundleItemValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     assertNull(actualValidateResult.getErrorMessage());

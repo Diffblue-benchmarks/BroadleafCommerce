@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -35,21 +34,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {FieldType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FieldTypeDiffblueTest {
-  @Autowired private FieldType fieldType;
+  @Autowired
+  private FieldType fieldType;
 
   /**
    * Test {@link FieldType#isMultiValued(FieldType)}.
-   *
    * <ul>
-   *   <li>When {@link FieldType#BOOLEAN}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link FieldType#BOOLEAN}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#isMultiValued(FieldType)}
+   * <p>
+   * Method under test: {@link FieldType#isMultiValued(FieldType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.isMultiValued(FieldType)"})
   public void testIsMultiValued_whenBoolean_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -58,17 +56,15 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#isMultiValued(FieldType)}.
-   *
    * <ul>
-   *   <li>When {@link FieldType#BOOLEANS}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@link FieldType#BOOLEANS}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#isMultiValued(FieldType)}
+   * <p>
+   * Method under test: {@link FieldType#isMultiValued(FieldType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.isMultiValued(FieldType)"})
   public void testIsMultiValued_whenBooleans_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -77,18 +73,15 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#isMultiValued(FieldType)}.
-   *
    * <ul>
-   *   <li>When {@link FieldType#FieldType(String, String)} with type is {@code bs} and friendlyType
-   *       is {@code b}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@link FieldType#FieldType(String, String)} with type is {@code bs} and friendlyType is {@code b}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#isMultiValued(FieldType)}
+   * <p>
+   * Method under test: {@link FieldType#isMultiValued(FieldType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.isMultiValued(FieldType)"})
   public void testIsMultiValued_whenFieldTypeWithTypeIsBsAndFriendlyTypeIsB_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -97,17 +90,15 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#isMultiValued(FieldType)}.
-   *
    * <ul>
-   *   <li>When {@link FieldType#FieldType()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link FieldType#FieldType()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#isMultiValued(FieldType)}
+   * <p>
+   * Method under test: {@link FieldType#isMultiValued(FieldType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.isMultiValued(FieldType)"})
   public void testIsMultiValued_whenFieldType_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -116,17 +107,15 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#isMultiValued(FieldType)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#isMultiValued(FieldType)}
+   * <p>
+   * Method under test: {@link FieldType#isMultiValued(FieldType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.isMultiValued(FieldType)"})
   public void testIsMultiValued_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -135,12 +124,11 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link FieldType#getInstance(String)}
+   * <p>
+   * Method under test: {@link FieldType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldType FieldType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -153,9 +141,8 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FieldType#FieldType()}
    *   <li>{@link FieldType#getFriendlyType()}
@@ -163,13 +150,8 @@ public class FieldTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FieldType.<init>()",
-    "String FieldType.getFriendlyType()",
-    "String FieldType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FieldType.<init>()", "String FieldType.getFriendlyType()", "String FieldType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldType actualFieldType = new FieldType();
@@ -182,12 +164,11 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#FieldType(String, String)}.
-   *
-   * <p>Method under test: {@link FieldType#FieldType(String, String)}
+   * <p>
+   * Method under test: {@link FieldType#FieldType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void FieldType.<init>(String, String)"})
   public void testNewFieldType() {
     // Arrange and Act
@@ -200,22 +181,19 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#equals(Object)}, and {@link FieldType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FieldType#equals(Object)}
    *   <li>{@link FieldType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.equals(Object)", "int FieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -224,27 +202,25 @@ public class FieldTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(fieldType, fieldType2);
-    assertEquals(fieldType.hashCode(), fieldType2.hashCode());
+    int expectedHashCodeResult = fieldType.hashCode();
+    assertEquals(expectedHashCodeResult, fieldType2.hashCode());
   }
 
   /**
    * Test {@link FieldType#equals(Object)}, and {@link FieldType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FieldType#equals(Object)}
    *   <li>{@link FieldType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.equals(Object)", "int FieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -253,27 +229,25 @@ public class FieldTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(fieldType, fieldType2);
-    assertEquals(fieldType.hashCode(), fieldType2.hashCode());
+    int expectedHashCodeResult = fieldType.hashCode();
+    assertEquals(expectedHashCodeResult, fieldType2.hashCode());
   }
 
   /**
    * Test {@link FieldType#equals(Object)}, and {@link FieldType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FieldType#equals(Object)}
    *   <li>{@link FieldType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.equals(Object)", "int FieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -282,27 +256,25 @@ public class FieldTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(fieldType, fieldType2);
-    assertEquals(fieldType.hashCode(), fieldType2.hashCode());
+    int expectedHashCodeResult = fieldType.hashCode();
+    assertEquals(expectedHashCodeResult, fieldType2.hashCode());
   }
 
   /**
    * Test {@link FieldType#equals(Object)}, and {@link FieldType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FieldType#equals(Object)}
    *   <li>{@link FieldType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.equals(Object)", "int FieldType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -316,17 +288,15 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.equals(Object)", "int FieldType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -335,17 +305,15 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.equals(Object)", "int FieldType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -354,17 +322,15 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.equals(Object)", "int FieldType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -373,17 +339,15 @@ public class FieldTypeDiffblueTest {
 
   /**
    * Test {@link FieldType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FieldType#equals(Object)}
+   * <p>
+   * Method under test: {@link FieldType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FieldType.equals(Object)", "int FieldType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

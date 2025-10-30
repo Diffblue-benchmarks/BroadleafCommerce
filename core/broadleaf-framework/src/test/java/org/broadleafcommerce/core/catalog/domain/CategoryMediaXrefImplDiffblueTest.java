@@ -24,13 +24,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
@@ -38,7 +38,7 @@ import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.media.domain.MediaDto;
 import org.broadleafcommerce.common.media.domain.MediaImpl;
-import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
+import org.broadleafcommerce.common.service.GenericEntityService;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.util.UnknownUnwrapTypeException;
@@ -52,16 +52,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CategoryMediaXrefImpl.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CategoryMediaXrefImplDiffblueTest {
-  @Autowired private CategoryMediaXrefImpl categoryMediaXrefImpl;
+  @Autowired
+  private CategoryMediaXrefImpl categoryMediaXrefImpl;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}
    *   <li>{@link CategoryMediaXrefImpl#setCategory(Category)}
@@ -75,20 +75,13 @@ public class CategoryMediaXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategoryMediaXrefImpl.<init>()",
-    "void CategoryMediaXrefImpl.<init>(Category, Media, String)",
-    "Category CategoryMediaXrefImpl.getCategory()",
-    "Long CategoryMediaXrefImpl.getId()",
-    "String CategoryMediaXrefImpl.getKey()",
-    "Media CategoryMediaXrefImpl.getMedia()",
-    "void CategoryMediaXrefImpl.setCategory(Category)",
-    "void CategoryMediaXrefImpl.setId(Long)",
-    "void CategoryMediaXrefImpl.setKey(String)",
-    "void CategoryMediaXrefImpl.setMedia(Media)"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.<init>()",
+      "void CategoryMediaXrefImpl.<init>(Category, Media, String)", "Category CategoryMediaXrefImpl.getCategory()",
+      "Long CategoryMediaXrefImpl.getId()", "String CategoryMediaXrefImpl.getKey()",
+      "Media CategoryMediaXrefImpl.getMedia()", "void CategoryMediaXrefImpl.setCategory(Category)",
+      "void CategoryMediaXrefImpl.setId(Long)", "void CategoryMediaXrefImpl.setKey(String)",
+      "void CategoryMediaXrefImpl.setMedia(Media)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CategoryMediaXrefImpl actualCategoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -112,13 +105,11 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
+   *   <li>When {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CategoryMediaXrefImpl#CategoryMediaXrefImpl(Category, Media, String)}
    *   <li>{@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}
@@ -133,27 +124,20 @@ public class CategoryMediaXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategoryMediaXrefImpl.<init>()",
-    "void CategoryMediaXrefImpl.<init>(Category, Media, String)",
-    "Category CategoryMediaXrefImpl.getCategory()",
-    "Long CategoryMediaXrefImpl.getId()",
-    "String CategoryMediaXrefImpl.getKey()",
-    "Media CategoryMediaXrefImpl.getMedia()",
-    "void CategoryMediaXrefImpl.setCategory(Category)",
-    "void CategoryMediaXrefImpl.setId(Long)",
-    "void CategoryMediaXrefImpl.setKey(String)",
-    "void CategoryMediaXrefImpl.setMedia(Media)"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.<init>()",
+      "void CategoryMediaXrefImpl.<init>(Category, Media, String)", "Category CategoryMediaXrefImpl.getCategory()",
+      "Long CategoryMediaXrefImpl.getId()", "String CategoryMediaXrefImpl.getKey()",
+      "Media CategoryMediaXrefImpl.getMedia()", "void CategoryMediaXrefImpl.setCategory(Category)",
+      "void CategoryMediaXrefImpl.setId(Long)", "void CategoryMediaXrefImpl.setKey(String)",
+      "void CategoryMediaXrefImpl.setMedia(Media)"})
   public void testGettersAndSetters_whenCategoryImpl() {
     // Arrange
     CategoryImpl category = new CategoryImpl();
 
     // Act
-    CategoryMediaXrefImpl actualCategoryMediaXrefImpl =
-        new CategoryMediaXrefImpl(category, new CategoryMediaXrefImpl(), "Key");
+    CategoryMediaXrefImpl actualCategoryMediaXrefImpl = new CategoryMediaXrefImpl(category, new CategoryMediaXrefImpl(),
+        "Key");
     CategoryImpl category2 = new CategoryImpl();
     actualCategoryMediaXrefImpl.setCategory(category2);
     actualCategoryMediaXrefImpl.setId(1L);
@@ -174,18 +158,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getUrl()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link
-   *       CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getUrl()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getUrl()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getUrl()"})
   public void testGetUrl_givenCategoryMediaXrefImplMediaIsCategoryMediaXrefImpl_thenReturnNull() {
     // Arrange
@@ -201,18 +182,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getUrl()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link MediaDto}
-   *       (default constructor).
-   *   <li>Then return empty string.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link MediaDto} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getUrl()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getUrl()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getUrl()"})
   public void testGetUrl_givenCategoryMediaXrefImplMediaIsMediaDto_thenReturnEmptyString() {
     // Arrange
@@ -228,18 +206,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getUrl()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link
-   *       SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getUrl()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getUrl()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getUrl()"})
   public void testGetUrl_givenCategoryMediaXrefImplMediaIsSkuMediaXrefImpl_thenReturnNull() {
     // Arrange
@@ -255,148 +230,173 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getUrl()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getUrl()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getUrl()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getUrl()"})
   public void testGetUrl_givenCategoryMediaXrefImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new CategoryMediaXrefImpl().getUrl());
+    assertNull((new CategoryMediaXrefImpl()).getUrl());
   }
 
   /**
    * Test {@link CategoryMediaXrefImpl#setUrl(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl}.
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link MediaImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CategoryMediaXrefImpl.setUrl(String)"})
-  public void testSetUrl_givenCategoryMediaXrefImpl_thenCategoryMediaXrefImplMediaMediaImpl() {
-    // Arrange and Act
-    categoryMediaXrefImpl.setUrl("https://example.org/example");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    assertTrue(media instanceof MediaImpl);
-    assertEquals("https://example.org/example", media.getUrl());
-    assertEquals("https://example.org/example", categoryMediaXrefImpl.getUrl());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setUrl(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link CategoryMediaXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setUrl(String)"})
-  public void testSetUrl_thenCategoryMediaXrefImplMediaCategoryMediaXrefImpl() {
+  public void testSetUrl() {
     // Arrange
-    categoryMediaXrefImpl.setMedia(new CategoryMediaXrefImpl());
+    CategoryImpl category = new CategoryImpl();
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl(category, new SkuMediaXrefImpl(), "Key");
 
     // Act
-    categoryMediaXrefImpl.setUrl("https://example.org/example");
+    categoryMediaXrefImpl2.setUrl("https://example.org/example");
 
     // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    Media media2 = ((CategoryMediaXrefImpl) media).getMedia();
-    assertTrue(media2 instanceof MediaImpl);
-    assertTrue(media instanceof CategoryMediaXrefImpl);
-    assertEquals("https://example.org/example", media.getUrl());
-    assertEquals("https://example.org/example", media2.getUrl());
-    assertEquals("https://example.org/example", categoryMediaXrefImpl.getUrl());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setUrl(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link MediaDto}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setUrl(String)"})
-  public void testSetUrl_thenCategoryMediaXrefImplMediaMediaDto() {
-    // Arrange
-    categoryMediaXrefImpl.setMedia(new MediaDto());
-
-    // Act
-    categoryMediaXrefImpl.setUrl("https://example.org/example");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    assertTrue(media instanceof MediaDto);
-    assertEquals("https://example.org/example", media.getUrl());
-    assertEquals("https://example.org/example", categoryMediaXrefImpl.getUrl());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setUrl(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link SkuMediaXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setUrl(String)"})
-  public void testSetUrl_thenCategoryMediaXrefImplMediaSkuMediaXrefImpl() {
-    // Arrange
-    categoryMediaXrefImpl.setMedia(new SkuMediaXrefImpl());
-
-    // Act
-    categoryMediaXrefImpl.setUrl("https://example.org/example");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
+    Media media = categoryMediaXrefImpl2.getMedia();
     Media media2 = ((SkuMediaXrefImpl) media).getMedia();
     assertTrue(media2 instanceof MediaImpl);
     assertTrue(media instanceof SkuMediaXrefImpl);
     assertEquals("https://example.org/example", media.getUrl());
     assertEquals("https://example.org/example", media2.getUrl());
-    assertEquals("https://example.org/example", categoryMediaXrefImpl.getUrl());
+    assertEquals("https://example.org/example", categoryMediaXrefImpl2.getUrl());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setUrl(String)}.
+   * <ul>
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media {@link MediaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setUrl(String)"})
+  public void testSetUrl_givenCategoryMediaXrefImpl_thenCategoryMediaXrefImplMediaMediaImpl() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+
+    // Act
+    categoryMediaXrefImpl2.setUrl("https://example.org/example");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    assertTrue(media instanceof MediaImpl);
+    assertEquals("https://example.org/example", media.getUrl());
+    assertEquals("https://example.org/example", categoryMediaXrefImpl2.getUrl());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setUrl(String)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then throw {@link UnknownUnwrapTypeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setUrl(String)"})
+  public void testSetUrl_givenJavaLangObject_thenThrowUnknownUnwrapTypeException() {
+    // Arrange
+    MediaImpl media = mock(MediaImpl.class);
+    Class<Object> unwrapType = Object.class;
+    doThrow(new UnknownUnwrapTypeException(unwrapType)).when(media).setUrl(Mockito.<String>any());
+
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(media);
+
+    // Act and Assert
+    assertThrows(UnknownUnwrapTypeException.class, () -> categoryMediaXrefImpl2.setUrl("https://example.org/example"));
+    verify(media).setUrl(eq("https://example.org/example"));
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setUrl(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media {@link MediaDto}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setUrl(String)"})
+  public void testSetUrl_thenCategoryMediaXrefImplMediaMediaDto() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new MediaDto());
+
+    // Act
+    categoryMediaXrefImpl2.setUrl("https://example.org/example");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    assertTrue(media instanceof MediaDto);
+    assertEquals("https://example.org/example", media.getUrl());
+    assertEquals("https://example.org/example", categoryMediaXrefImpl2.getUrl());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setUrl(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media Media {@link MediaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setUrl(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setUrl(String)"})
+  public void testSetUrl_thenCategoryMediaXrefImplMediaMediaMediaImpl() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new CategoryMediaXrefImpl());
+
+    // Act
+    categoryMediaXrefImpl2.setUrl("https://example.org/example");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    Media media2 = ((CategoryMediaXrefImpl) media).getMedia();
+    assertTrue(media2 instanceof MediaImpl);
+    assertTrue(media instanceof CategoryMediaXrefImpl);
+    assertEquals("https://example.org/example", media.getUrl());
+    assertEquals("https://example.org/example", media2.getUrl());
+    assertEquals("https://example.org/example", categoryMediaXrefImpl2.getUrl());
   }
 
   /**
    * Test {@link CategoryMediaXrefImpl#getTitle()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link
-   *       CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getTitle()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getTitle()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getTitle()"})
   public void testGetTitle_givenCategoryMediaXrefImplMediaIsCategoryMediaXrefImpl() {
     // Arrange
@@ -412,18 +412,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getTitle()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link MediaDto}
-   *       (default constructor).
-   *   <li>Then return empty string.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link MediaDto} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getTitle()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getTitle()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getTitle()"})
   public void testGetTitle_givenCategoryMediaXrefImplMediaIsMediaDto_thenReturnEmptyString() {
     // Arrange
@@ -439,18 +436,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getTitle()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link
-   *       SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getTitle()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getTitle()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getTitle()"})
   public void testGetTitle_givenCategoryMediaXrefImplMediaIsSkuMediaXrefImpl_thenReturnNull() {
     // Arrange
@@ -466,148 +460,173 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getTitle()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getTitle()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getTitle()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getTitle()"})
   public void testGetTitle_givenCategoryMediaXrefImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new CategoryMediaXrefImpl().getTitle());
+    assertNull((new CategoryMediaXrefImpl()).getTitle());
   }
 
   /**
    * Test {@link CategoryMediaXrefImpl#setTitle(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl}.
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link MediaImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CategoryMediaXrefImpl.setTitle(String)"})
-  public void testSetTitle_givenCategoryMediaXrefImpl_thenCategoryMediaXrefImplMediaMediaImpl() {
-    // Arrange and Act
-    categoryMediaXrefImpl.setTitle("Dr");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    assertTrue(media instanceof MediaImpl);
-    assertEquals("Dr", media.getTitle());
-    assertEquals("Dr", categoryMediaXrefImpl.getTitle());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setTitle(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link CategoryMediaXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTitle(String)"})
-  public void testSetTitle_thenCategoryMediaXrefImplMediaCategoryMediaXrefImpl() {
+  public void testSetTitle() {
     // Arrange
-    categoryMediaXrefImpl.setMedia(new CategoryMediaXrefImpl());
+    CategoryImpl category = new CategoryImpl();
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl(category, new SkuMediaXrefImpl(), "Key");
 
     // Act
-    categoryMediaXrefImpl.setTitle("Dr");
+    categoryMediaXrefImpl2.setTitle("Dr");
 
     // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    Media media2 = ((CategoryMediaXrefImpl) media).getMedia();
-    assertTrue(media2 instanceof MediaImpl);
-    assertTrue(media instanceof CategoryMediaXrefImpl);
-    assertEquals("Dr", media.getTitle());
-    assertEquals("Dr", media2.getTitle());
-    assertEquals("Dr", categoryMediaXrefImpl.getTitle());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setTitle(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link MediaDto}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTitle(String)"})
-  public void testSetTitle_thenCategoryMediaXrefImplMediaMediaDto() {
-    // Arrange
-    categoryMediaXrefImpl.setMedia(new MediaDto());
-
-    // Act
-    categoryMediaXrefImpl.setTitle("Dr");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    assertTrue(media instanceof MediaDto);
-    assertEquals("Dr", media.getTitle());
-    assertEquals("Dr", categoryMediaXrefImpl.getTitle());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setTitle(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link SkuMediaXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTitle(String)"})
-  public void testSetTitle_thenCategoryMediaXrefImplMediaSkuMediaXrefImpl() {
-    // Arrange
-    categoryMediaXrefImpl.setMedia(new SkuMediaXrefImpl());
-
-    // Act
-    categoryMediaXrefImpl.setTitle("Dr");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
+    Media media = categoryMediaXrefImpl2.getMedia();
     Media media2 = ((SkuMediaXrefImpl) media).getMedia();
     assertTrue(media2 instanceof MediaImpl);
     assertTrue(media instanceof SkuMediaXrefImpl);
     assertEquals("Dr", media.getTitle());
     assertEquals("Dr", media2.getTitle());
-    assertEquals("Dr", categoryMediaXrefImpl.getTitle());
+    assertEquals("Dr", categoryMediaXrefImpl2.getTitle());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setTitle(String)}.
+   * <ul>
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media {@link MediaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTitle(String)"})
+  public void testSetTitle_givenCategoryMediaXrefImpl_thenCategoryMediaXrefImplMediaMediaImpl() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+
+    // Act
+    categoryMediaXrefImpl2.setTitle("Dr");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    assertTrue(media instanceof MediaImpl);
+    assertEquals("Dr", media.getTitle());
+    assertEquals("Dr", categoryMediaXrefImpl2.getTitle());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setTitle(String)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then throw {@link UnknownUnwrapTypeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTitle(String)"})
+  public void testSetTitle_givenJavaLangObject_thenThrowUnknownUnwrapTypeException() {
+    // Arrange
+    MediaImpl media = mock(MediaImpl.class);
+    Class<Object> unwrapType = Object.class;
+    doThrow(new UnknownUnwrapTypeException(unwrapType)).when(media).setTitle(Mockito.<String>any());
+
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(media);
+
+    // Act and Assert
+    assertThrows(UnknownUnwrapTypeException.class, () -> categoryMediaXrefImpl2.setTitle("Dr"));
+    verify(media).setTitle(eq("Dr"));
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setTitle(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media {@link MediaDto}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTitle(String)"})
+  public void testSetTitle_thenCategoryMediaXrefImplMediaMediaDto() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new MediaDto());
+
+    // Act
+    categoryMediaXrefImpl2.setTitle("Dr");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    assertTrue(media instanceof MediaDto);
+    assertEquals("Dr", media.getTitle());
+    assertEquals("Dr", categoryMediaXrefImpl2.getTitle());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setTitle(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media Media {@link MediaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTitle(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTitle(String)"})
+  public void testSetTitle_thenCategoryMediaXrefImplMediaMediaMediaImpl() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new CategoryMediaXrefImpl());
+
+    // Act
+    categoryMediaXrefImpl2.setTitle("Dr");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    Media media2 = ((CategoryMediaXrefImpl) media).getMedia();
+    assertTrue(media2 instanceof MediaImpl);
+    assertTrue(media instanceof CategoryMediaXrefImpl);
+    assertEquals("Dr", media.getTitle());
+    assertEquals("Dr", media2.getTitle());
+    assertEquals("Dr", categoryMediaXrefImpl2.getTitle());
   }
 
   /**
    * Test {@link CategoryMediaXrefImpl#getAltText()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link
-   *       CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getAltText()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getAltText()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getAltText()"})
   public void testGetAltText_givenCategoryMediaXrefImplMediaIsCategoryMediaXrefImpl() {
     // Arrange
@@ -623,18 +642,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getAltText()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link MediaDto}
-   *       (default constructor).
-   *   <li>Then return empty string.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link MediaDto} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getAltText()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getAltText()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getAltText()"})
   public void testGetAltText_givenCategoryMediaXrefImplMediaIsMediaDto_thenReturnEmptyString() {
     // Arrange
@@ -650,18 +666,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getAltText()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link
-   *       SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getAltText()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getAltText()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getAltText()"})
   public void testGetAltText_givenCategoryMediaXrefImplMediaIsSkuMediaXrefImpl_thenReturnNull() {
     // Arrange
@@ -677,147 +690,172 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getAltText()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getAltText()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getAltText()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getAltText()"})
   public void testGetAltText_givenCategoryMediaXrefImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new CategoryMediaXrefImpl().getAltText());
+    assertNull((new CategoryMediaXrefImpl()).getAltText());
   }
 
   /**
    * Test {@link CategoryMediaXrefImpl#setAltText(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link CategoryMediaXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CategoryMediaXrefImpl.setAltText(String)"})
-  public void testSetAltText_thenCategoryMediaXrefImplMediaCategoryMediaXrefImpl() {
+  public void testSetAltText() {
     // Arrange
-    categoryMediaXrefImpl.setMedia(new CategoryMediaXrefImpl());
+    CategoryImpl category = new CategoryImpl();
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl(category, new SkuMediaXrefImpl(), "Key");
 
     // Act
-    categoryMediaXrefImpl.setAltText("Alt Text");
+    categoryMediaXrefImpl2.setAltText("Alt Text");
 
     // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    Media media2 = ((CategoryMediaXrefImpl) media).getMedia();
-    assertTrue(media2 instanceof MediaImpl);
-    assertTrue(media instanceof CategoryMediaXrefImpl);
-    assertEquals("Alt Text", media.getAltText());
-    assertEquals("Alt Text", media2.getAltText());
-    assertEquals("Alt Text", categoryMediaXrefImpl.getAltText());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setAltText(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link MediaDto}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setAltText(String)"})
-  public void testSetAltText_thenCategoryMediaXrefImplMediaMediaDto() {
-    // Arrange
-    categoryMediaXrefImpl.setMedia(new MediaDto());
-
-    // Act
-    categoryMediaXrefImpl.setAltText("Alt Text");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    assertTrue(media instanceof MediaDto);
-    assertEquals("Alt Text", media.getAltText());
-    assertEquals("Alt Text", categoryMediaXrefImpl.getAltText());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setAltText(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link MediaImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setAltText(String)"})
-  public void testSetAltText_thenCategoryMediaXrefImplMediaMediaImpl() {
-    // Arrange and Act
-    categoryMediaXrefImpl.setAltText("Alt Text");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    assertTrue(media instanceof MediaImpl);
-    assertEquals("Alt Text", media.getAltText());
-    assertEquals("Alt Text", categoryMediaXrefImpl.getAltText());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setAltText(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link SkuMediaXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setAltText(String)"})
-  public void testSetAltText_thenCategoryMediaXrefImplMediaSkuMediaXrefImpl() {
-    // Arrange
-    categoryMediaXrefImpl.setMedia(new SkuMediaXrefImpl());
-
-    // Act
-    categoryMediaXrefImpl.setAltText("Alt Text");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
+    Media media = categoryMediaXrefImpl2.getMedia();
     Media media2 = ((SkuMediaXrefImpl) media).getMedia();
     assertTrue(media2 instanceof MediaImpl);
     assertTrue(media instanceof SkuMediaXrefImpl);
     assertEquals("Alt Text", media.getAltText());
     assertEquals("Alt Text", media2.getAltText());
-    assertEquals("Alt Text", categoryMediaXrefImpl.getAltText());
+    assertEquals("Alt Text", categoryMediaXrefImpl2.getAltText());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setAltText(String)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then throw {@link UnknownUnwrapTypeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setAltText(String)"})
+  public void testSetAltText_givenJavaLangObject_thenThrowUnknownUnwrapTypeException() {
+    // Arrange
+    MediaImpl media = mock(MediaImpl.class);
+    Class<Object> unwrapType = Object.class;
+    doThrow(new UnknownUnwrapTypeException(unwrapType)).when(media).setAltText(Mockito.<String>any());
+
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(media);
+
+    // Act and Assert
+    assertThrows(UnknownUnwrapTypeException.class, () -> categoryMediaXrefImpl2.setAltText("Alt Text"));
+    verify(media).setAltText(eq("Alt Text"));
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setAltText(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media {@link MediaDto}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setAltText(String)"})
+  public void testSetAltText_thenCategoryMediaXrefImplMediaMediaDto() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new MediaDto());
+
+    // Act
+    categoryMediaXrefImpl2.setAltText("Alt Text");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    assertTrue(media instanceof MediaDto);
+    assertEquals("Alt Text", media.getAltText());
+    assertEquals("Alt Text", categoryMediaXrefImpl2.getAltText());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setAltText(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media {@link MediaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setAltText(String)"})
+  public void testSetAltText_thenCategoryMediaXrefImplMediaMediaImpl() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+
+    // Act
+    categoryMediaXrefImpl2.setAltText("Alt Text");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    assertTrue(media instanceof MediaImpl);
+    assertEquals("Alt Text", media.getAltText());
+    assertEquals("Alt Text", categoryMediaXrefImpl2.getAltText());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setAltText(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media Media {@link MediaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setAltText(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setAltText(String)"})
+  public void testSetAltText_thenCategoryMediaXrefImplMediaMediaMediaImpl() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new CategoryMediaXrefImpl());
+
+    // Act
+    categoryMediaXrefImpl2.setAltText("Alt Text");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    Media media2 = ((CategoryMediaXrefImpl) media).getMedia();
+    assertTrue(media2 instanceof MediaImpl);
+    assertTrue(media instanceof CategoryMediaXrefImpl);
+    assertEquals("Alt Text", media.getAltText());
+    assertEquals("Alt Text", media2.getAltText());
+    assertEquals("Alt Text", categoryMediaXrefImpl2.getAltText());
   }
 
   /**
    * Test {@link CategoryMediaXrefImpl#getTags()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link
-   *       CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getTags()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getTags()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getTags()"})
   public void testGetTags_givenCategoryMediaXrefImplMediaIsCategoryMediaXrefImpl() {
     // Arrange
@@ -833,18 +871,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getTags()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link MediaDto}
-   *       (default constructor).
-   *   <li>Then return empty string.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link MediaDto} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getTags()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getTags()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getTags()"})
   public void testGetTags_givenCategoryMediaXrefImplMediaIsMediaDto_thenReturnEmptyString() {
     // Arrange
@@ -860,18 +895,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getTags()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link
-   *       SkuMediaXrefImpl#SkuMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media is {@link SkuMediaXrefImpl#SkuMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getTags()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getTags()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getTags()"})
   public void testGetTags_givenCategoryMediaXrefImplMediaIsSkuMediaXrefImpl_thenReturnNull() {
     // Arrange
@@ -887,147 +919,173 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#getTags()}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#getTags()}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#getTags()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String CategoryMediaXrefImpl.getTags()"})
   public void testGetTags_givenCategoryMediaXrefImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new CategoryMediaXrefImpl().getTags());
+    assertNull((new CategoryMediaXrefImpl()).getTags());
   }
 
   /**
    * Test {@link CategoryMediaXrefImpl#setTags(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl}.
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link MediaImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CategoryMediaXrefImpl.setTags(String)"})
-  public void testSetTags_givenCategoryMediaXrefImpl_thenCategoryMediaXrefImplMediaMediaImpl() {
-    // Arrange and Act
-    categoryMediaXrefImpl.setTags("Tags");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    assertTrue(media instanceof MediaImpl);
-    assertEquals("Tags", media.getTags());
-    assertEquals("Tags", categoryMediaXrefImpl.getTags());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setTags(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link CategoryMediaXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTags(String)"})
-  public void testSetTags_thenCategoryMediaXrefImplMediaCategoryMediaXrefImpl() {
+  public void testSetTags() {
     // Arrange
-    categoryMediaXrefImpl.setMedia(new CategoryMediaXrefImpl());
+    CategoryImpl category = new CategoryImpl();
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl(category, new SkuMediaXrefImpl(), "Key");
 
     // Act
-    categoryMediaXrefImpl.setTags("Tags");
+    categoryMediaXrefImpl2.setTags("Tags");
 
     // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    Media media2 = ((CategoryMediaXrefImpl) media).getMedia();
-    assertTrue(media2 instanceof MediaImpl);
-    assertTrue(media instanceof CategoryMediaXrefImpl);
-    assertEquals("Tags", media.getTags());
-    assertEquals("Tags", media2.getTags());
-    assertEquals("Tags", categoryMediaXrefImpl.getTags());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setTags(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link MediaDto}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTags(String)"})
-  public void testSetTags_thenCategoryMediaXrefImplMediaMediaDto() {
-    // Arrange
-    categoryMediaXrefImpl.setMedia(new MediaDto());
-
-    // Act
-    categoryMediaXrefImpl.setTags("Tags");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
-    assertTrue(media instanceof MediaDto);
-    assertEquals("Tags", media.getTags());
-    assertEquals("Tags", categoryMediaXrefImpl.getTags());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#setTags(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link CategoryMediaXrefImpl} Media {@link SkuMediaXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTags(String)"})
-  public void testSetTags_thenCategoryMediaXrefImplMediaSkuMediaXrefImpl() {
-    // Arrange
-    categoryMediaXrefImpl.setMedia(new SkuMediaXrefImpl());
-
-    // Act
-    categoryMediaXrefImpl.setTags("Tags");
-
-    // Assert
-    Media media = categoryMediaXrefImpl.getMedia();
+    Media media = categoryMediaXrefImpl2.getMedia();
     Media media2 = ((SkuMediaXrefImpl) media).getMedia();
     assertTrue(media2 instanceof MediaImpl);
     assertTrue(media instanceof SkuMediaXrefImpl);
     assertEquals("Tags", media.getTags());
     assertEquals("Tags", media2.getTags());
-    assertEquals("Tags", categoryMediaXrefImpl.getTags());
+    assertEquals("Tags", categoryMediaXrefImpl2.getTags());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setTags(String)}.
+   * <ul>
+   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()}.</li>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media {@link MediaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTags(String)"})
+  public void testSetTags_givenCategoryMediaXrefImpl_thenCategoryMediaXrefImplMediaMediaImpl() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+
+    // Act
+    categoryMediaXrefImpl2.setTags("Tags");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    assertTrue(media instanceof MediaImpl);
+    assertEquals("Tags", media.getTags());
+    assertEquals("Tags", categoryMediaXrefImpl2.getTags());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setTags(String)}.
+   * <ul>
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then throw {@link UnknownUnwrapTypeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTags(String)"})
+  public void testSetTags_givenJavaLangObject_thenThrowUnknownUnwrapTypeException() {
+    // Arrange
+    MediaImpl media = mock(MediaImpl.class);
+    Class<Object> unwrapType = Object.class;
+    doThrow(new UnknownUnwrapTypeException(unwrapType)).when(media).setTags(Mockito.<String>any());
+
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(media);
+
+    // Act and Assert
+    assertThrows(UnknownUnwrapTypeException.class, () -> categoryMediaXrefImpl2.setTags("Tags"));
+    verify(media).setTags(eq("Tags"));
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setTags(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media {@link MediaDto}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTags(String)"})
+  public void testSetTags_thenCategoryMediaXrefImplMediaMediaDto() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new MediaDto());
+
+    // Act
+    categoryMediaXrefImpl2.setTags("Tags");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    assertTrue(media instanceof MediaDto);
+    assertEquals("Tags", media.getTags());
+    assertEquals("Tags", categoryMediaXrefImpl2.getTags());
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#setTags(String)}.
+   * <ul>
+   *   <li>Then {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Media Media {@link MediaImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#setTags(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CategoryMediaXrefImpl.setTags(String)"})
+  public void testSetTags_thenCategoryMediaXrefImplMediaMediaMediaImpl() {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new CategoryMediaXrefImpl());
+
+    // Act
+    categoryMediaXrefImpl2.setTags("Tags");
+
+    // Assert
+    Media media = categoryMediaXrefImpl2.getMedia();
+    Media media2 = ((CategoryMediaXrefImpl) media).getMedia();
+    assertTrue(media2 instanceof MediaImpl);
+    assertTrue(media instanceof CategoryMediaXrefImpl);
+    assertEquals("Tags", media.getTags());
+    assertEquals("Tags", media2.getTags());
+    assertEquals("Tags", categoryMediaXrefImpl2.getTags());
   }
 
   /**
    * Test {@link CategoryMediaXrefImpl#isUnwrappableAs(Class)}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#isUnwrappableAs(Class)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#isUnwrappableAs(Class)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CategoryMediaXrefImpl.isUnwrappableAs(Class)"})
   public void testIsUnwrappableAs_thenReturnTrue() {
     // Arrange
@@ -1040,17 +1098,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#isUnwrappableAs(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#isUnwrappableAs(Class)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#isUnwrappableAs(Class)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean CategoryMediaXrefImpl.isUnwrappableAs(Class)"})
   public void testIsUnwrappableAs_whenJavaLangObject_thenReturnFalse() {
     // Arrange
@@ -1063,17 +1119,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#unwrap(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then throw {@link UnknownUnwrapTypeException}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then throw {@link UnknownUnwrapTypeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#unwrap(Class)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#unwrap(Class)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object CategoryMediaXrefImpl.unwrap(Class)"})
   public void testUnwrap_whenJavaLangObject_thenThrowUnknownUnwrapTypeException() {
     // Arrange
@@ -1086,17 +1140,15 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#unwrap(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Media}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code Media}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#unwrap(Class)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#unwrap(Class)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object CategoryMediaXrefImpl.unwrap(Class)"})
   public void testUnwrap_whenOrgBroadleafcommerceCommonMediaDomainMedia_thenReturnNull() {
     // Arrange
@@ -1108,28 +1160,21 @@ public class CategoryMediaXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryMediaXrefImpl#equals(Object)}, and {@link
-   * CategoryMediaXrefImpl#hashCode()}.
-   *
+   * Test {@link CategoryMediaXrefImpl#equals(Object)}, and {@link CategoryMediaXrefImpl#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CategoryMediaXrefImpl#equals(Object)}
    *   <li>{@link CategoryMediaXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1146,32 +1191,26 @@ public class CategoryMediaXrefImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryMediaXrefImpl, categoryMediaXrefImpl2);
-    assertEquals(categoryMediaXrefImpl.hashCode(), categoryMediaXrefImpl2.hashCode());
+    int expectedHashCodeResult = categoryMediaXrefImpl.hashCode();
+    assertEquals(expectedHashCodeResult, categoryMediaXrefImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryMediaXrefImpl#equals(Object)}, and {@link
-   * CategoryMediaXrefImpl#hashCode()}.
-   *
+   * Test {@link CategoryMediaXrefImpl#equals(Object)}, and {@link CategoryMediaXrefImpl#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CategoryMediaXrefImpl#equals(Object)}
    *   <li>{@link CategoryMediaXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1188,21 +1227,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1223,21 +1257,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1258,21 +1287,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1293,21 +1317,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1328,21 +1347,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1363,21 +1377,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1385,9 +1394,7 @@ public class CategoryMediaXrefImplDiffblueTest {
     categoryMediaXrefImpl.setId(1L);
     categoryMediaXrefImpl.setKey("Key");
     CategoryImpl category = new CategoryImpl();
-    CategoryMediaXrefImpl media =
-        new CategoryMediaXrefImpl(category, new CategoryMediaXrefImpl(), "Key");
-    categoryMediaXrefImpl.setMedia(media);
+    categoryMediaXrefImpl.setMedia(new CategoryMediaXrefImpl(category, new CategoryMediaXrefImpl(), "Key"));
 
     CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
     categoryMediaXrefImpl2.setCategory(new CategoryImpl());
@@ -1401,21 +1408,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1436,21 +1438,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1465,21 +1462,16 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategoryMediaXrefImpl.equals(Object)",
-    "int CategoryMediaXrefImpl.hashCode()"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CategoryMediaXrefImpl.equals(Object)", "int CategoryMediaXrefImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
@@ -1494,33 +1486,23 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse CategoryMediaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategoryMediaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
-
-    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
-    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
-    categoryMediaXrefImpl2.setId(1L);
-    categoryMediaXrefImpl2.setKey("Key");
-    categoryMediaXrefImpl2.setMedia(new CategoryMediaXrefImpl());
-    CreateResponse<Object> createResponse = new CreateResponse<>(categoryMediaXrefImpl2, true);
-
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CategoryMediaXrefImpl> actualCreateOrRetrieveCopyInstanceResult =
-        categoryMediaXrefImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<CategoryMediaXrefImpl> actualCreateOrRetrieveCopyInstanceResult = categoryMediaXrefImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -1529,139 +1511,72 @@ public class CategoryMediaXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse CategoryMediaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
-
-    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
-    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
-    categoryMediaXrefImpl2.setId(1L);
-    categoryMediaXrefImpl2.setKey("Key");
-    categoryMediaXrefImpl2.setMedia(new CategoryMediaXrefImpl());
-    CreateResponse<Object> createResponse = new CreateResponse<>(categoryMediaXrefImpl2, false);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<CategoryMediaXrefImpl> actualCreateOrRetrieveCopyInstanceResult =
-        categoryMediaXrefImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse CategoryMediaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // Arrange
-    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
-    categoryMediaXrefImpl.setId(1L);
-    categoryMediaXrefImpl.setKey("Key");
-    categoryMediaXrefImpl.setMedia(null);
-    categoryMediaXrefImpl.setCategory(new CategoryImpl());
-
-    GenericEntityServiceImpl genericEntityService = mock(GenericEntityServiceImpl.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any()))
-        .thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            null,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    // Act
-    CreateResponse<CategoryMediaXrefImpl> actualCreateOrRetrieveCopyInstanceResult =
-        categoryMediaXrefImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(genericEntityService, atLeast(1)).getCeilingImplClass(Mockito.<String>any());
-    verify(genericEntityService, atLeast(1)).getIdentifier(Mockito.<Object>any());
-    assertEquals(categoryMediaXrefImpl, actualCreateOrRetrieveCopyInstanceResult.getClone());
-  }
-
-  /**
-   * Test {@link CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Category is {@code null}.
+   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse CategoryMediaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_givenCategoryMediaXrefImplCategoryIsNull()
-      throws CloneNotSupportedException {
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategoryMediaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone() throws CloneNotSupportedException {
     // Arrange
     CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
-    categoryMediaXrefImpl.setId(1L);
-    categoryMediaXrefImpl.setKey("Key");
-    categoryMediaXrefImpl.setMedia(null);
-    categoryMediaXrefImpl.setCategory(null);
 
-    GenericEntityServiceImpl genericEntityService = mock(GenericEntityServiceImpl.class);
+    CategoryMediaXrefImpl categoryMediaXrefImpl2 = new CategoryMediaXrefImpl();
+    categoryMediaXrefImpl2.setCategory(new CategoryImpl());
+    categoryMediaXrefImpl2.setId(1L);
+    categoryMediaXrefImpl2.setKey("Key");
+    categoryMediaXrefImpl2.setMedia(new CategoryMediaXrefImpl());
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(categoryMediaXrefImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    categoryMediaXrefImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Test {@link CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <ul>
+   *   <li>Then return not AlreadyPopulated.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse CategoryMediaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  public void testCreateOrRetrieveCopyInstance_thenReturnNotAlreadyPopulated() throws CloneNotSupportedException {
+    // Arrange
+    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
     when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any()))
-        .thenReturn(forNameResult);
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
     // Act
-    CreateResponse<CategoryMediaXrefImpl> actualCreateOrRetrieveCopyInstanceResult =
-        categoryMediaXrefImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<CategoryMediaXrefImpl> actualCreateOrRetrieveCopyInstanceResult = categoryMediaXrefImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
     verify(genericEntityService)
-        .getCeilingImplClass("org.broadleafcommerce.core.catalog.domain.CategoryMediaXrefImpl");
+        .getCeilingImplClass(eq("org.broadleafcommerce.core.catalog.domain.CategoryMediaXrefImpl"));
     verify(genericEntityService).getIdentifier(isA(Object.class));
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
     assertEquals(categoryMediaXrefImpl, actualCreateOrRetrieveCopyInstanceResult.getClone());
   }
 }

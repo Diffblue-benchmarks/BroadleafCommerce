@@ -18,8 +18,7 @@
 package org.broadleafcommerce.common.web.controller;
 
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -30,24 +29,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @ContextConfiguration(classes = {FrameworkControllerHandlerMapping.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FrameworkControllerHandlerMappingDiffblueTest {
-  @Autowired private FrameworkControllerHandlerMapping frameworkControllerHandlerMapping;
+  @Autowired
+  private FrameworkControllerHandlerMapping frameworkControllerHandlerMapping;
 
   /**
    * Test {@link FrameworkControllerHandlerMapping#isHandler(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FrameworkControllerHandlerMapping#isHandler(Class)}
+   * <p>
+   * Method under test: {@link FrameworkControllerHandlerMapping#isHandler(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean FrameworkControllerHandlerMapping.isHandler(Class)"})
   public void testIsHandler_whenJavaLangObject_thenReturnFalse() {
     // Arrange

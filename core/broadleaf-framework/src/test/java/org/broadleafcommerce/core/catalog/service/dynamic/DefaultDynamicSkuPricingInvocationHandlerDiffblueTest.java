@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.money.Money;
@@ -33,25 +32,23 @@ import org.junit.experimental.categories.Category;
 
 public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}.
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(BigDecimal)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler() {
     // Arrange and Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(new BigDecimal("2.3"));
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        new BigDecimal("2.3"));
 
     // Assert
     assertTrue(actualDefaultDynamicSkuPricingInvocationHandler.delegate instanceof SkuImpl);
+    BigDecimal expectedAmount = new BigDecimal("2.30");
     Money money = actualDefaultDynamicSkuPricingInvocationHandler.salePrice;
-    assertEquals(new BigDecimal("2.30"), money.getAmount());
+    assertEquals(expectedAmount, money.getAmount());
     Money expectedAbsResult = actualDefaultDynamicSkuPricingInvocationHandler.salePrice;
     assertEquals(expectedAbsResult, money.abs());
     Sku expectedUnwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.delegate;
@@ -59,46 +56,17 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}.
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(BigDecimal)"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler2() {
     // Arrange and Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(new BigDecimal("4.5"));
-
-    // Assert
-    assertTrue(actualDefaultDynamicSkuPricingInvocationHandler.delegate instanceof SkuImpl);
-    Money money = actualDefaultDynamicSkuPricingInvocationHandler.salePrice;
-    assertEquals(new BigDecimal("4.50"), money.getAmount());
-    Money expectedAbsResult = actualDefaultDynamicSkuPricingInvocationHandler.salePrice;
-    assertEquals(expectedAbsResult, money.abs());
-    Sku expectedUnwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.delegate;
-    assertSame(expectedUnwrapResult, actualDefaultDynamicSkuPricingInvocationHandler.unwrap());
-  }
-
-  /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku)"})
-  public void testNewDefaultDynamicSkuPricingInvocationHandler3() {
-    // Arrange and Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(new SkuImpl());
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        new SkuImpl());
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -107,34 +75,28 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     assertTrue(sku instanceof SkuImpl);
     assertNull(unwrapResult.getPriceData().getPrice());
     assertNull(sku.getPriceData().getPrice());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
     Money margin = unwrapResult.getMargin();
-    assertEquals(new BigDecimal("0.00"), margin.getAmount());
-    Money actualAbsResult = margin.abs();
-    assertEquals(margin, actualAbsResult);
-    Money actualZeroResult = margin.zero();
-    assertEquals(margin, actualZeroResult);
+    assertEquals(expectedAmount, margin.getAmount());
+    assertEquals(margin, margin.abs());
+    assertEquals(margin, margin.zero());
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * BigDecimal)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * BigDecimal)}
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, BigDecimal)}.
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku, BigDecimal)"})
-  public void testNewDefaultDynamicSkuPricingInvocationHandler4() {
+  public void testNewDefaultDynamicSkuPricingInvocationHandler3() {
     // Arrange
     SkuImpl sku = new SkuImpl();
 
     // Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(sku, new BigDecimal("2.3"));
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        sku, new BigDecimal("2.3"));
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -145,30 +107,24 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     assertEquals(zeroResult2, money.abs().zero());
     assertEquals(zeroResult2, zeroResult2);
     assertEquals(zeroResult2, unwrapResult.getMargin());
-    Money actualAbsResult = zeroResult.abs();
-    assertEquals(zeroResult, actualAbsResult);
+    assertEquals(zeroResult, zeroResult.abs());
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * Money)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * Money)}
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, Money)}.
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku, Money)"})
-  public void testNewDefaultDynamicSkuPricingInvocationHandler5() {
+  public void testNewDefaultDynamicSkuPricingInvocationHandler4() {
     // Arrange
     SkuImpl sku = new SkuImpl();
 
     // Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(sku, new Money());
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        sku, new Money());
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -184,27 +140,20 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * Money)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, Money)}.
    * <ul>
-   *   <li>Then return {@link DefaultDynamicSkuPricingInvocationHandler#retailPrice} is {@code
-   *       null}.
+   *   <li>Then return {@link DefaultDynamicSkuPricingInvocationHandler#retailPrice} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * Money)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku, Money)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenReturnRetailPriceIsNull() {
     // Arrange and Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(new SkuImpl(), (Money) null);
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        new SkuImpl(), (Money) null);
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -216,26 +165,20 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * BigDecimal)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, BigDecimal)}.
    * <ul>
-   *   <li>Then return {@link DefaultDynamicSkuPricingInvocationHandler#salePrice} is {@code null}.
+   *   <li>Then return {@link DefaultDynamicSkuPricingInvocationHandler#salePrice} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * BigDecimal)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku, BigDecimal)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenReturnSalePriceIsNull() {
     // Arrange and Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(new SkuImpl(), (BigDecimal) null);
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        new SkuImpl(), (BigDecimal) null);
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -246,19 +189,15 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}.
    * <ul>
-   *   <li>Then return unwrap hasRetailPrice.
+   *   <li>Then return unwrap hasRetailPrice.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenReturnUnwrapHasRetailPrice() {
     // Arrange
@@ -267,8 +206,8 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     sku.setRetailPrice(retailPrice);
 
     // Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(sku);
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        sku);
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -289,21 +228,15 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * BigDecimal)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, BigDecimal)}.
    * <ul>
-   *   <li>Then return unwrap hasRetailPrice.
+   *   <li>Then return unwrap hasRetailPrice.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * BigDecimal)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku, BigDecimal)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenReturnUnwrapHasRetailPrice2() {
     // Arrange
@@ -312,8 +245,8 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     sku.setRetailPrice(retailPrice);
 
     // Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(sku, new BigDecimal("2.3"));
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        sku, new BigDecimal("2.3"));
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -334,21 +267,15 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * Money)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, Money)}.
    * <ul>
-   *   <li>Then return unwrap hasRetailPrice.
+   *   <li>Then return unwrap hasRetailPrice.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * Money)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku, Money)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenReturnUnwrapHasRetailPrice3() {
     // Arrange
@@ -357,8 +284,8 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     sku.setRetailPrice(retailPrice);
 
     // Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(sku, new Money());
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        sku, new Money());
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -378,19 +305,15 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}.
    * <ul>
-   *   <li>Then return unwrap hasSalePrice.
+   *   <li>Then return unwrap hasSalePrice.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenReturnUnwrapHasSalePrice() {
     // Arrange
@@ -399,8 +322,8 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     sku.setSalePrice(salePrice);
 
     // Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(sku);
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        sku);
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -417,21 +340,15 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * BigDecimal)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, BigDecimal)}.
    * <ul>
-   *   <li>Then return unwrap hasSalePrice.
+   *   <li>Then return unwrap hasSalePrice.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * BigDecimal)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku, BigDecimal)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenReturnUnwrapHasSalePrice2() {
     // Arrange
@@ -440,8 +357,8 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     sku.setSalePrice(salePrice);
 
     // Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(sku, new BigDecimal("2.3"));
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        sku, new BigDecimal("2.3"));
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -457,21 +374,15 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * Money)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, Money)}.
    * <ul>
-   *   <li>Then return unwrap hasSalePrice.
+   *   <li>Then return unwrap hasSalePrice.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku,
-   * Money)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(Sku, Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(Sku, Money)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenReturnUnwrapHasSalePrice3() {
     // Arrange
@@ -480,8 +391,8 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     sku.setSalePrice(salePrice);
 
     // Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(sku, new Money());
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        sku, new Money());
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -497,24 +408,20 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}.
-   *
+   * Test {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}.
    * <ul>
-   *   <li>Then unwrap return {@link SkuImpl}.
+   *   <li>Then unwrap return {@link SkuImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.<init>(BigDecimal)"})
   public void testNewDefaultDynamicSkuPricingInvocationHandler_thenUnwrapReturnSkuImpl() {
     // Arrange and Act
-    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler((BigDecimal) null);
+    DefaultDynamicSkuPricingInvocationHandler actualDefaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        (BigDecimal) null);
 
     // Assert
     Sku unwrapResult = actualDefaultDynamicSkuPricingInvocationHandler.unwrap();
@@ -526,38 +433,33 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
 
   /**
    * Test {@link DefaultDynamicSkuPricingInvocationHandler#unwrap()}.
-   *
-   * <p>Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#unwrap()}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#unwrap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku DefaultDynamicSkuPricingInvocationHandler.unwrap()"})
   public void testUnwrap() {
     // Arrange
-    DefaultDynamicSkuPricingInvocationHandler defaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(new BigDecimal("2.3"));
+    DefaultDynamicSkuPricingInvocationHandler defaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        new BigDecimal("2.3"));
 
-    // Act
-    Sku actualUnwrapResult = defaultDynamicSkuPricingInvocationHandler.unwrap();
-
-    // Assert
-    assertSame(defaultDynamicSkuPricingInvocationHandler.delegate, actualUnwrapResult);
+    // Act and Assert
+    assertSame(defaultDynamicSkuPricingInvocationHandler.delegate, defaultDynamicSkuPricingInvocationHandler.unwrap());
   }
 
   /**
    * Test {@link DefaultDynamicSkuPricingInvocationHandler#reset()}.
-   *
-   * <p>Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#reset()}
+   * <p>
+   * Method under test: {@link DefaultDynamicSkuPricingInvocationHandler#reset()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DefaultDynamicSkuPricingInvocationHandler.reset()"})
   public void testReset() {
     // Arrange
-    DefaultDynamicSkuPricingInvocationHandler defaultDynamicSkuPricingInvocationHandler =
-        new DefaultDynamicSkuPricingInvocationHandler(new BigDecimal("2.3"));
+    DefaultDynamicSkuPricingInvocationHandler defaultDynamicSkuPricingInvocationHandler = new DefaultDynamicSkuPricingInvocationHandler(
+        new BigDecimal("2.3"));
 
     // Act
     defaultDynamicSkuPricingInvocationHandler.reset();

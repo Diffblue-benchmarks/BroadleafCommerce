@@ -19,8 +19,7 @@ package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,12 +27,11 @@ import org.junit.experimental.categories.Category;
 public class AddToCartItemDiffblueTest {
   /**
    * Test new {@link AddToCartItem} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link AddToCartItem}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link AddToCartItem}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AddToCartItem.<init>()"})
   public void testNewAddToCartItem() {
     // Arrange and Act

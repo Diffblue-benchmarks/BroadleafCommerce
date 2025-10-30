@@ -22,8 +22,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.presentation.client.ForeignKeyRestrictionType;
 import org.junit.Test;
@@ -36,19 +35,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ForeignKey.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ForeignKeyDiffblueTest {
-  @Autowired private ForeignKey foreignKey;
+  @Autowired
+  private ForeignKey foreignKey;
 
   /**
    * Test {@link ForeignKey#ForeignKey()}.
-   *
-   * <p>Method under test: {@link ForeignKey#ForeignKey()}
+   * <p>
+   * Method under test: {@link ForeignKey#ForeignKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ForeignKey.<init>()"})
   public void testNewForeignKey() {
     // Arrange and Act
@@ -69,12 +68,11 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#ForeignKey(String, String)}.
-   *
-   * <p>Method under test: {@link ForeignKey#ForeignKey(String, String)}
+   * <p>
+   * Method under test: {@link ForeignKey#ForeignKey(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ForeignKey.<init>(String, String)"})
   public void testNewForeignKey2() {
     // Arrange and Act
@@ -95,17 +93,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#ForeignKey(String, String, String)}.
-   *
-   * <p>Method under test: {@link ForeignKey#ForeignKey(String, String, String)}
+   * <p>
+   * Method under test: {@link ForeignKey#ForeignKey(String, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ForeignKey.<init>(String, String, String)"})
   public void testNewForeignKey3() {
     // Arrange and Act
-    ForeignKey actualForeignKey =
-        new ForeignKey("Many To Field", "Foreign Key Class", "Data Source Name");
+    ForeignKey actualForeignKey = new ForeignKey("Many To Field", "Foreign Key Class", "Data Source Name");
 
     // Assert
     assertEquals("Data Source Name", actualForeignKey.getDataSourceName());
@@ -122,22 +118,16 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#ForeignKey(String, String, String, ForeignKeyRestrictionType)}.
-   *
-   * <p>Method under test: {@link ForeignKey#ForeignKey(String, String, String,
-   * ForeignKeyRestrictionType)}
+   * <p>
+   * Method under test: {@link ForeignKey#ForeignKey(String, String, String, ForeignKeyRestrictionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ForeignKey.<init>(String, String, String, ForeignKeyRestrictionType)"})
   public void testNewForeignKey4() {
     // Arrange and Act
-    ForeignKey actualForeignKey =
-        new ForeignKey(
-            "Many To Field",
-            "Foreign Key Class",
-            "Data Source Name",
-            ForeignKeyRestrictionType.ID_EQ);
+    ForeignKey actualForeignKey = new ForeignKey("Many To Field", "Foreign Key Class", "Data Source Name",
+        ForeignKeyRestrictionType.ID_EQ);
 
     // Assert
     assertEquals("Data Source Name", actualForeignKey.getDataSourceName());
@@ -154,25 +144,16 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#ForeignKey(String, String, String, ForeignKeyRestrictionType, String)}.
-   *
-   * <p>Method under test: {@link ForeignKey#ForeignKey(String, String, String,
-   * ForeignKeyRestrictionType, String)}
+   * <p>
+   * Method under test: {@link ForeignKey#ForeignKey(String, String, String, ForeignKeyRestrictionType, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ForeignKey.<init>(String, String, String, ForeignKeyRestrictionType, String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ForeignKey.<init>(String, String, String, ForeignKeyRestrictionType, String)"})
   public void testNewForeignKey5() {
     // Arrange and Act
-    ForeignKey actualForeignKey =
-        new ForeignKey(
-            "Many To Field",
-            "Foreign Key Class",
-            "Data Source Name",
-            ForeignKeyRestrictionType.ID_EQ,
-            "42");
+    ForeignKey actualForeignKey = new ForeignKey("Many To Field", "Foreign Key Class", "Data Source Name",
+        ForeignKeyRestrictionType.ID_EQ, "42");
 
     // Assert
     assertEquals("42", actualForeignKey.getDisplayValueProperty());
@@ -189,12 +170,11 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#withManyToField(String)}.
-   *
-   * <p>Method under test: {@link ForeignKey#withManyToField(String)}
+   * <p>
+   * Method under test: {@link ForeignKey#withManyToField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ForeignKey ForeignKey.withManyToField(String)"})
   public void testWithManyToField() {
     // Arrange and Act
@@ -207,17 +187,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#withOriginatingField(String)}.
-   *
-   * <p>Method under test: {@link ForeignKey#withOriginatingField(String)}
+   * <p>
+   * Method under test: {@link ForeignKey#withOriginatingField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ForeignKey ForeignKey.withOriginatingField(String)"})
   public void testWithOriginatingField() {
     // Arrange and Act
-    ForeignKey actualWithOriginatingFieldResult =
-        foreignKey.withOriginatingField("Originating Field");
+    ForeignKey actualWithOriginatingFieldResult = foreignKey.withOriginatingField("Originating Field");
 
     // Assert
     assertEquals("Originating Field", foreignKey.getOriginatingField());
@@ -226,17 +204,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#withForeignKeyClass(String)}.
-   *
-   * <p>Method under test: {@link ForeignKey#withForeignKeyClass(String)}
+   * <p>
+   * Method under test: {@link ForeignKey#withForeignKeyClass(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ForeignKey ForeignKey.withForeignKeyClass(String)"})
   public void testWithForeignKeyClass() {
     // Arrange and Act
-    ForeignKey actualWithForeignKeyClassResult =
-        foreignKey.withForeignKeyClass("Foreign Key Class");
+    ForeignKey actualWithForeignKeyClassResult = foreignKey.withForeignKeyClass("Foreign Key Class");
 
     // Assert
     assertEquals("Foreign Key Class", foreignKey.getForeignKeyClass());
@@ -245,12 +221,11 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#withSortField(String)}.
-   *
-   * <p>Method under test: {@link ForeignKey#withSortField(String)}
+   * <p>
+   * Method under test: {@link ForeignKey#withSortField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ForeignKey ForeignKey.withSortField(String)"})
   public void testWithSortField() {
     // Arrange and Act
@@ -263,9 +238,8 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#setCurrentValue(String)}
    *   <li>{@link ForeignKey#setDataSourceName(String)}
@@ -291,31 +265,18 @@ public class ForeignKeyDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String ForeignKey.getCurrentValue()",
-    "String ForeignKey.getDataSourceName()",
-    "String ForeignKey.getDisplayValueProperty()",
-    "String ForeignKey.getForeignKeyClass()",
-    "String ForeignKey.getManyToField()",
-    "Boolean ForeignKey.getMutable()",
-    "String ForeignKey.getOriginatingField()",
-    "ForeignKeyRestrictionType ForeignKey.getRestrictionType()",
-    "Boolean ForeignKey.getSortAscending()",
-    "String ForeignKey.getSortField()",
-    "void ForeignKey.setCurrentValue(String)",
-    "void ForeignKey.setDataSourceName(String)",
-    "void ForeignKey.setDisplayValueProperty(String)",
-    "void ForeignKey.setForeignKeyClass(String)",
-    "void ForeignKey.setManyToField(String)",
-    "void ForeignKey.setMutable(Boolean)",
-    "void ForeignKey.setOriginatingField(String)",
-    "void ForeignKey.setRestrictionType(ForeignKeyRestrictionType)",
-    "void ForeignKey.setSortAscending(Boolean)",
-    "void ForeignKey.setSortField(String)",
-    "String ForeignKey.toString()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String ForeignKey.getCurrentValue()", "String ForeignKey.getDataSourceName()",
+      "String ForeignKey.getDisplayValueProperty()", "String ForeignKey.getForeignKeyClass()",
+      "String ForeignKey.getManyToField()", "Boolean ForeignKey.getMutable()",
+      "String ForeignKey.getOriginatingField()", "ForeignKeyRestrictionType ForeignKey.getRestrictionType()",
+      "Boolean ForeignKey.getSortAscending()", "String ForeignKey.getSortField()",
+      "void ForeignKey.setCurrentValue(String)", "void ForeignKey.setDataSourceName(String)",
+      "void ForeignKey.setDisplayValueProperty(String)", "void ForeignKey.setForeignKeyClass(String)",
+      "void ForeignKey.setManyToField(String)", "void ForeignKey.setMutable(Boolean)",
+      "void ForeignKey.setOriginatingField(String)", "void ForeignKey.setRestrictionType(ForeignKeyRestrictionType)",
+      "void ForeignKey.setSortAscending(Boolean)", "void ForeignKey.setSortField(String)",
+      "String ForeignKey.toString()"})
   public void testGettersAndSetters() {
     // Arrange
     ForeignKey foreignKey = new ForeignKey();
@@ -362,40 +323,35 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#cloneForeignKey()}.
-   *
-   * <p>Method under test: {@link ForeignKey#cloneForeignKey()}
+   * <p>
+   * Method under test: {@link ForeignKey#cloneForeignKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ForeignKey ForeignKey.cloneForeignKey()"})
   public void testCloneForeignKey() {
     // Arrange
     ForeignKey foreignKey = new ForeignKey();
 
-    // Act
-    ForeignKey actualCloneForeignKeyResult = foreignKey.cloneForeignKey();
-
-    // Assert
-    assertEquals(foreignKey, actualCloneForeignKeyResult);
+    // Act and Assert
+    assertEquals(foreignKey, foreignKey.cloneForeignKey());
   }
 
   /**
    * Test {@link ForeignKey#clonePersistencePerspectiveItem()}.
-   *
-   * <p>Method under test: {@link ForeignKey#clonePersistencePerspectiveItem()}
+   * <p>
+   * Method under test: {@link ForeignKey#clonePersistencePerspectiveItem()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PersistencePerspectiveItem ForeignKey.clonePersistencePerspectiveItem()"})
   public void testClonePersistencePerspectiveItem() {
     // Arrange
     ForeignKey foreignKey = new ForeignKey();
 
     // Act
-    PersistencePerspectiveItem actualClonePersistencePerspectiveItemResult =
-        foreignKey.clonePersistencePerspectiveItem();
+    PersistencePerspectiveItem actualClonePersistencePerspectiveItemResult = foreignKey
+        .clonePersistencePerspectiveItem();
 
     // Assert
     assertTrue(actualClonePersistencePerspectiveItemResult instanceof ForeignKey);
@@ -404,22 +360,19 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}, and {@link ForeignKey#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#equals(Object)}
    *   <li>{@link ForeignKey#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -428,27 +381,25 @@ public class ForeignKeyDiffblueTest {
 
     // Act and Assert
     assertEquals(foreignKey, foreignKey2);
-    assertEquals(foreignKey.hashCode(), foreignKey2.hashCode());
+    int expectedHashCodeResult = foreignKey.hashCode();
+    assertEquals(expectedHashCodeResult, foreignKey2.hashCode());
   }
 
   /**
    * Test {@link ForeignKey#equals(Object)}, and {@link ForeignKey#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#equals(Object)}
    *   <li>{@link ForeignKey#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -457,27 +408,25 @@ public class ForeignKeyDiffblueTest {
 
     // Act and Assert
     assertEquals(foreignKey, foreignKey2);
-    assertEquals(foreignKey.hashCode(), foreignKey2.hashCode());
+    int expectedHashCodeResult = foreignKey.hashCode();
+    assertEquals(expectedHashCodeResult, foreignKey2.hashCode());
   }
 
   /**
    * Test {@link ForeignKey#equals(Object)}, and {@link ForeignKey#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#equals(Object)}
    *   <li>{@link ForeignKey#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -486,27 +435,25 @@ public class ForeignKeyDiffblueTest {
 
     // Act and Assert
     assertEquals(foreignKey, foreignKey2);
-    assertEquals(foreignKey.hashCode(), foreignKey2.hashCode());
+    int expectedHashCodeResult = foreignKey.hashCode();
+    assertEquals(expectedHashCodeResult, foreignKey2.hashCode());
   }
 
   /**
    * Test {@link ForeignKey#equals(Object)}, and {@link ForeignKey#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#equals(Object)}
    *   <li>{@link ForeignKey#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
@@ -518,27 +465,25 @@ public class ForeignKeyDiffblueTest {
 
     // Act and Assert
     assertEquals(foreignKey, foreignKey2);
-    assertEquals(foreignKey.hashCode(), foreignKey2.hashCode());
+    int expectedHashCodeResult = foreignKey.hashCode();
+    assertEquals(expectedHashCodeResult, foreignKey2.hashCode());
   }
 
   /**
    * Test {@link ForeignKey#equals(Object)}, and {@link ForeignKey#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#equals(Object)}
    *   <li>{@link ForeignKey#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
@@ -550,27 +495,25 @@ public class ForeignKeyDiffblueTest {
 
     // Act and Assert
     assertEquals(foreignKey, foreignKey2);
-    assertEquals(foreignKey.hashCode(), foreignKey2.hashCode());
+    int expectedHashCodeResult = foreignKey.hashCode();
+    assertEquals(expectedHashCodeResult, foreignKey2.hashCode());
   }
 
   /**
    * Test {@link ForeignKey#equals(Object)}, and {@link ForeignKey#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#equals(Object)}
    *   <li>{@link ForeignKey#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
@@ -582,27 +525,25 @@ public class ForeignKeyDiffblueTest {
 
     // Act and Assert
     assertEquals(foreignKey, foreignKey2);
-    assertEquals(foreignKey.hashCode(), foreignKey2.hashCode());
+    int expectedHashCodeResult = foreignKey.hashCode();
+    assertEquals(expectedHashCodeResult, foreignKey2.hashCode());
   }
 
   /**
    * Test {@link ForeignKey#equals(Object)}, and {@link ForeignKey#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#equals(Object)}
    *   <li>{@link ForeignKey#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
     // Arrange
@@ -614,27 +555,25 @@ public class ForeignKeyDiffblueTest {
 
     // Act and Assert
     assertEquals(foreignKey, foreignKey2);
-    assertEquals(foreignKey.hashCode(), foreignKey2.hashCode());
+    int expectedHashCodeResult = foreignKey.hashCode();
+    assertEquals(expectedHashCodeResult, foreignKey2.hashCode());
   }
 
   /**
    * Test {@link ForeignKey#equals(Object)}, and {@link ForeignKey#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ForeignKey#equals(Object)}
    *   <li>{@link ForeignKey#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -648,17 +587,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -670,17 +607,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -692,17 +627,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
@@ -714,17 +647,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
@@ -736,17 +667,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
@@ -759,17 +688,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
@@ -782,17 +709,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
@@ -805,17 +730,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
@@ -828,17 +751,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
@@ -851,17 +772,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
@@ -874,17 +793,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
@@ -899,17 +816,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
     // Arrange
@@ -924,17 +839,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
     // Arrange
@@ -949,17 +862,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
     // Arrange
@@ -974,17 +885,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual15() {
     // Arrange
@@ -999,17 +908,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual16() {
     // Arrange
@@ -1024,17 +931,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual17() {
     // Arrange
@@ -1047,17 +952,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -1066,17 +969,15 @@ public class ForeignKeyDiffblueTest {
 
   /**
    * Test {@link ForeignKey#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ForeignKey#equals(Object)}
+   * <p>
+   * Method under test: {@link ForeignKey#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ForeignKey.equals(Object)", "int ForeignKey.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

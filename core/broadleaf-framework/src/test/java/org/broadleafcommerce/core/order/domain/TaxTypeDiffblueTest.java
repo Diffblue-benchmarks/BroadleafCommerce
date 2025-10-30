@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.order.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {TaxType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TaxTypeDiffblueTest {
-  @Autowired private TaxType taxType;
+  @Autowired
+  private TaxType taxType;
 
   /**
    * Test {@link TaxType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link TaxType#getInstance(String)}
+   * <p>
+   * Method under test: {@link TaxType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TaxType TaxType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,9 +54,8 @@ public class TaxTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TaxType#TaxType()}
    *   <li>{@link TaxType#getFriendlyType()}
@@ -65,13 +63,8 @@ public class TaxTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxType.<init>()",
-    "String TaxType.getFriendlyType()",
-    "String TaxType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxType.<init>()", "String TaxType.getFriendlyType()", "String TaxType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     TaxType actualTaxType = new TaxType();
@@ -84,14 +77,38 @@ public class TaxTypeDiffblueTest {
 
   /**
    * Test {@link TaxType#TaxType(String, String)}.
-   *
-   * <p>Method under test: {@link TaxType#TaxType(String, String)}
+   * <ul>
+   *   <li>When {@code City}.</li>
+   *   <li>Then return Type is {@code City}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxType#TaxType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TaxType.<init>(String, String)"})
-  public void testNewTaxType() {
+  public void testNewTaxType_whenCity_thenReturnTypeIsCity() {
+    // Arrange and Act
+    TaxType actualTaxType = new TaxType("City", "Friendly Type");
+
+    // Assert
+    assertEquals("City", actualTaxType.getType());
+    assertEquals("Friendly Type", actualTaxType.getFriendlyType());
+  }
+
+  /**
+   * Test {@link TaxType#TaxType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   *   <li>Then return {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TaxType#TaxType(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxType.<init>(String, String)"})
+  public void testNewTaxType_whenType_thenReturnType() {
     // Arrange and Act
     TaxType actualTaxType = new TaxType("Type", "Friendly Type");
 
@@ -102,22 +119,19 @@ public class TaxTypeDiffblueTest {
 
   /**
    * Test {@link TaxType#equals(Object)}, and {@link TaxType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TaxType#equals(Object)}
    *   <li>{@link TaxType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -126,85 +140,79 @@ public class TaxTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(taxType, taxType2);
-    assertEquals(taxType.hashCode(), taxType2.hashCode());
+    int expectedHashCodeResult = taxType.hashCode();
+    assertEquals(expectedHashCodeResult, taxType2.hashCode());
   }
 
   /**
    * Test {@link TaxType#equals(Object)}, and {@link TaxType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TaxType#equals(Object)}
    *   <li>{@link TaxType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    TaxType taxType = TaxType.COMBINED;
-    TaxType taxType2 = new TaxType("COMBINED", "COMBINED");
-
-    // Act and Assert
-    assertEquals(taxType, taxType2);
-    assertEquals(taxType.hashCode(), taxType2.hashCode());
-  }
-
-  /**
-   * Test {@link TaxType#equals(Object)}, and {@link TaxType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link TaxType#equals(Object)}
-   *   <li>{@link TaxType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     TaxType taxType = new TaxType();
     TaxType taxType2 = new TaxType();
 
     // Act and Assert
     assertEquals(taxType, taxType2);
-    assertEquals(taxType.hashCode(), taxType2.hashCode());
+    int expectedHashCodeResult = taxType.hashCode();
+    assertEquals(expectedHashCodeResult, taxType2.hashCode());
   }
 
   /**
    * Test {@link TaxType#equals(Object)}, and {@link TaxType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TaxType#equals(Object)}
    *   <li>{@link TaxType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    TaxType taxType = new TaxType("CITY", "Friendly Type");
+    TaxType taxType2 = TaxType.CITY;
+
+    // Act and Assert
+    assertEquals(taxType, taxType2);
+    int expectedHashCodeResult = taxType.hashCode();
+    assertEquals(expectedHashCodeResult, taxType2.hashCode());
+  }
+
+  /**
+   * Test {@link TaxType#equals(Object)}, and {@link TaxType#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link TaxType#equals(Object)}
+   *   <li>{@link TaxType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -218,17 +226,15 @@ public class TaxTypeDiffblueTest {
 
   /**
    * Test {@link TaxType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TaxType#equals(Object)}
+   * <p>
+   * Method under test: {@link TaxType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -237,17 +243,15 @@ public class TaxTypeDiffblueTest {
 
   /**
    * Test {@link TaxType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TaxType#equals(Object)}
+   * <p>
+   * Method under test: {@link TaxType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -256,17 +260,15 @@ public class TaxTypeDiffblueTest {
 
   /**
    * Test {@link TaxType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TaxType#equals(Object)}
+   * <p>
+   * Method under test: {@link TaxType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -275,17 +277,15 @@ public class TaxTypeDiffblueTest {
 
   /**
    * Test {@link TaxType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TaxType#equals(Object)}
+   * <p>
+   * Method under test: {@link TaxType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean TaxType.equals(Object)", "int TaxType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

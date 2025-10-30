@@ -26,8 +26,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,28 +43,25 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class GiftWrapOrderItemImplDiffblueTest {
-  @Autowired private GiftWrapOrderItemImpl giftWrapOrderItemImpl;
+  @Autowired
+  private GiftWrapOrderItemImpl giftWrapOrderItemImpl;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftWrapOrderItemImpl#setWrappedItems(List)}
    *   <li>{@link GiftWrapOrderItemImpl#getWrappedItems()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List GiftWrapOrderItemImpl.getWrappedItems()",
-    "void GiftWrapOrderItemImpl.setWrappedItems(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List GiftWrapOrderItemImpl.getWrappedItems()",
+      "void GiftWrapOrderItemImpl.setWrappedItems(List)"})
   public void testGettersAndSetters() {
     // Arrange
     GiftWrapOrderItemImpl giftWrapOrderItemImpl = new GiftWrapOrderItemImpl();
@@ -82,25 +78,23 @@ public class GiftWrapOrderItemImplDiffblueTest {
 
   /**
    * Test {@link GiftWrapOrderItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * GiftWrapOrderItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link GiftWrapOrderItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse GiftWrapOrderItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse GiftWrapOrderItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
+    GiftWrapOrderItemImpl giftWrapOrderItemImpl2 = new GiftWrapOrderItemImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new GiftWrapOrderItemImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<DiscreteOrderItem> actualCreateOrRetrieveCopyInstanceResult =
-        giftWrapOrderItemImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<DiscreteOrderItem> actualCreateOrRetrieveCopyInstanceResult = giftWrapOrderItemImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -109,12 +103,11 @@ public class GiftWrapOrderItemImplDiffblueTest {
 
   /**
    * Test new {@link GiftWrapOrderItemImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link GiftWrapOrderItemImpl}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link GiftWrapOrderItemImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void GiftWrapOrderItemImpl.<init>()"})
   public void testNewGiftWrapOrderItemImpl() {
     // Arrange and Act

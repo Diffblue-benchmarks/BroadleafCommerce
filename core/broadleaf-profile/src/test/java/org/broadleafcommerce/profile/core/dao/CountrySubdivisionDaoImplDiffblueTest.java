@@ -20,10 +20,10 @@ package org.broadleafcommerce.profile.core.dao;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.persistence.NoResultException;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
@@ -41,26 +41,24 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CountrySubdivisionDaoImplDiffblueTest {
-  @InjectMocks private CountrySubdivisionDaoImpl countrySubdivisionDaoImpl;
+  @InjectMocks
+  private CountrySubdivisionDaoImpl countrySubdivisionDaoImpl;
 
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link CountrySubdivisionDaoImpl#findSubdivisionByAbbreviation(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CountrySubdivisionDaoImpl#findSubdivisionByAbbreviation(String)}
+   * <p>
+   * Method under test: {@link CountrySubdivisionDaoImpl#findSubdivisionByAbbreviation(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CountrySubdivision CountrySubdivisionDaoImpl.findSubdivisionByAbbreviation(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CountrySubdivision CountrySubdivisionDaoImpl.findSubdivisionByAbbreviation(String)"})
   public void testFindSubdivisionByAbbreviation_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(countrySubdivisionDaoImpl.findSubdivisionByAbbreviation(null));
@@ -68,16 +66,14 @@ public class CountrySubdivisionDaoImplDiffblueTest {
 
   /**
    * Test {@link CountrySubdivisionDaoImpl#create()}.
-   *
    * <ul>
-   *   <li>Then return {@link CountrySubdivisionImpl} (default constructor).
+   *   <li>Then return {@link CountrySubdivisionImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CountrySubdivisionDaoImpl#create()}
+   * <p>
+   * Method under test: {@link CountrySubdivisionDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CountrySubdivision CountrySubdivisionDaoImpl.create()"})
   public void testCreate_thenReturnCountrySubdivisionImpl() {
     // Arrange
@@ -87,30 +83,27 @@ public class CountrySubdivisionDaoImplDiffblueTest {
     countrySubdivisionImpl.setCategory(new CountrySubdivisionCategoryImpl());
     countrySubdivisionImpl.setCountry(new CountryImpl());
     countrySubdivisionImpl.setName("Name");
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
-        .thenReturn(countrySubdivisionImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(countrySubdivisionImpl);
 
     // Act
     CountrySubdivision actualCreateResult = countrySubdivisionDaoImpl.create();
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.profile.core.domain.CountrySubdivision");
+        .createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.CountrySubdivision"));
     assertSame(countrySubdivisionImpl, actualCreateResult);
   }
 
   /**
    * Test {@link CountrySubdivisionDaoImpl#create()}.
-   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.
+   *   <li>Then throw {@link NoResultException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CountrySubdivisionDaoImpl#create()}
+   * <p>
+   * Method under test: {@link CountrySubdivisionDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CountrySubdivision CountrySubdivisionDaoImpl.create()"})
   public void testCreate_thenThrowNoResultException() {
     // Arrange
@@ -120,6 +113,6 @@ public class CountrySubdivisionDaoImplDiffblueTest {
     // Act and Assert
     assertThrows(NoResultException.class, () -> countrySubdivisionDaoImpl.create());
     verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.profile.core.domain.CountrySubdivision");
+        .createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.CountrySubdivision"));
   }
 }

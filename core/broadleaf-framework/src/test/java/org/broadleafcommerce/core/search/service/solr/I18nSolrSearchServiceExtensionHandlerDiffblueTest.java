@@ -22,8 +22,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,18 +41,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class I18nSolrSearchServiceExtensionHandlerDiffblueTest {
-  @InjectMocks private I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler;
+  @InjectMocks
+  private I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler;
 
-  @Mock private SolrSearchServiceExtensionManager solrSearchServiceExtensionManager;
+  @Mock
+  private SolrSearchServiceExtensionManager solrSearchServiceExtensionManager;
 
   /**
    * Test {@link I18nSolrSearchServiceExtensionHandler#init()}.
-   *
-   * <p>Method under test: {@link I18nSolrSearchServiceExtensionHandler#init()}
+   * <p>
+   * Method under test: {@link I18nSolrSearchServiceExtensionHandler#init()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void I18nSolrSearchServiceExtensionHandler.init()"})
   public void testInit() {
     // Arrange
@@ -68,25 +68,20 @@ public class I18nSolrSearchServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link I18nSolrSearchServiceExtensionHandler#init()}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link I18nSolrSearchServiceExtensionHandler}
-   *       (default constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link I18nSolrSearchServiceExtensionHandler} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link I18nSolrSearchServiceExtensionHandler#init()}
+   * <p>
+   * Method under test: {@link I18nSolrSearchServiceExtensionHandler#init()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void I18nSolrSearchServiceExtensionHandler.init()"})
   public void testInit_givenArrayListAddI18nSolrSearchServiceExtensionHandler() {
     // Arrange
-    ArrayList<SolrSearchServiceExtensionHandler> solrSearchServiceExtensionHandlerList =
-        new ArrayList<>();
+    ArrayList<SolrSearchServiceExtensionHandler> solrSearchServiceExtensionHandlerList = new ArrayList<>();
     solrSearchServiceExtensionHandlerList.add(new I18nSolrSearchServiceExtensionHandler());
-    when(solrSearchServiceExtensionManager.getHandlers())
-        .thenReturn(solrSearchServiceExtensionHandlerList);
+    when(solrSearchServiceExtensionManager.getHandlers()).thenReturn(solrSearchServiceExtensionHandlerList);
 
     // Act
     i18nSolrSearchServiceExtensionHandler.init();
@@ -97,24 +92,20 @@ public class I18nSolrSearchServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link I18nSolrSearchServiceExtensionHandler#init()}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code null}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link I18nSolrSearchServiceExtensionHandler#init()}
+   * <p>
+   * Method under test: {@link I18nSolrSearchServiceExtensionHandler#init()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void I18nSolrSearchServiceExtensionHandler.init()"})
   public void testInit_givenArrayListAddNull() {
     // Arrange
-    ArrayList<SolrSearchServiceExtensionHandler> solrSearchServiceExtensionHandlerList =
-        new ArrayList<>();
+    ArrayList<SolrSearchServiceExtensionHandler> solrSearchServiceExtensionHandlerList = new ArrayList<>();
     solrSearchServiceExtensionHandlerList.add(null);
-    when(solrSearchServiceExtensionManager.getHandlers())
-        .thenReturn(solrSearchServiceExtensionHandlerList);
+    when(solrSearchServiceExtensionManager.getHandlers()).thenReturn(solrSearchServiceExtensionHandlerList);
 
     // Act
     i18nSolrSearchServiceExtensionHandler.init();
@@ -124,33 +115,26 @@ public class I18nSolrSearchServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link I18nSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField,
-   * FieldType, List)}.
-   *
+   * Test {@link I18nSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType, List)}.
    * <ul>
-   *   <li>Given {@link FieldImpl} (default constructor).
-   *   <li>Then return {@code NOT_HANDLED}.
+   *   <li>Given {@link FieldImpl} (default constructor).</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * I18nSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType,
-   * List)}
+   * <p>
+   * Method under test: {@link I18nSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType I18nSolrSearchServiceExtensionHandler.buildPrefixListForIndexField(IndexField, FieldType, List)"
-  })
+      "ExtensionResultStatusType I18nSolrSearchServiceExtensionHandler.buildPrefixListForIndexField(IndexField, FieldType, List)"})
   public void testBuildPrefixListForIndexField_givenFieldImpl_thenReturnNotHandled() {
     // Arrange
     IndexFieldImpl field = mock(IndexFieldImpl.class);
     when(field.getField()).thenReturn(new FieldImpl());
 
     // Act
-    ExtensionResultStatusType actualBuildPrefixListForIndexFieldResult =
-        i18nSolrSearchServiceExtensionHandler.buildPrefixListForIndexField(
-            field, FieldType.BOOLEAN, new ArrayList<>());
+    ExtensionResultStatusType actualBuildPrefixListForIndexFieldResult = i18nSolrSearchServiceExtensionHandler
+        .buildPrefixListForIndexField(field, FieldType.BOOLEAN, new ArrayList<>());
 
     // Assert
     verify(field).getField();
@@ -159,39 +143,32 @@ public class I18nSolrSearchServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link I18nSolrSearchServiceExtensionHandler#getLocalePrefix(Field, List)}.
-   *
    * <ul>
-   *   <li>When {@link FieldImpl} (default constructor).
-   *   <li>Then return {@code NOT_HANDLED}.
+   *   <li>When {@link FieldImpl} (default constructor).</li>
+   *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link I18nSolrSearchServiceExtensionHandler#getLocalePrefix(Field,
-   * List)}
+   * <p>
+   * Method under test: {@link I18nSolrSearchServiceExtensionHandler#getLocalePrefix(Field, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType I18nSolrSearchServiceExtensionHandler.getLocalePrefix(Field, List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ExtensionResultStatusType I18nSolrSearchServiceExtensionHandler.getLocalePrefix(Field, List)"})
   public void testGetLocalePrefix_whenFieldImpl_thenReturnNotHandled() {
     // Arrange
     FieldImpl field = new FieldImpl();
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         i18nSolrSearchServiceExtensionHandler.getLocalePrefix(field, new ArrayList<>()));
   }
 
   /**
    * Test {@link I18nSolrSearchServiceExtensionHandler#getPriority()}.
-   *
-   * <p>Method under test: {@link I18nSolrSearchServiceExtensionHandler#getPriority()}
+   * <p>
+   * Method under test: {@link I18nSolrSearchServiceExtensionHandler#getPriority()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int I18nSolrSearchServiceExtensionHandler.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert

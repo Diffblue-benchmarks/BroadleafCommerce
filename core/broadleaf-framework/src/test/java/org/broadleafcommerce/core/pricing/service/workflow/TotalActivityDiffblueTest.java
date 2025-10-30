@@ -24,12 +24,10 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupFee;
@@ -39,10 +37,6 @@ import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.domain.OrderImpl;
-import org.broadleafcommerce.core.order.domain.TaxDetail;
-import org.broadleafcommerce.core.order.domain.TaxDetailImpl;
-import org.broadleafcommerce.core.order.domain.TaxType;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -55,25 +49,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {TotalActivity.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TotalActivityDiffblueTest {
-  @Autowired private TotalActivity totalActivity;
+  @Autowired
+  private TotalActivity totalActivity;
 
   /**
    * Test {@link TotalActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getTotalTax()} return {@link
-   *       Money#Money()}.
-   *   <li>Then return {@link ProcessContext}.
+   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getTotalTax()} return {@link Money#Money()}.</li>
+   *   <li>Then return {@link ProcessContext}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link TotalActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext TotalActivity.execute(ProcessContext)"})
-  public void testExecute_givenNullOrderImplGetTotalTaxReturnMoney_thenReturnProcessContext()
-      throws Exception {
+  public void testExecute_givenNullOrderImplGetTotalTaxReturnMoney_thenReturnProcessContext() throws Exception {
     // Arrange
     NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
     when(nullOrderImpl.getTotalTax()).thenReturn(new Money());
@@ -85,7 +76,6 @@ public class TotalActivityDiffblueTest {
     when(nullOrderImpl.getCurrency()).thenReturn(null);
     when(nullOrderImpl.getSubTotal()).thenReturn(new Money());
     doNothing().when(nullOrderImpl).setTotalTax(Mockito.<Money>any());
-
     ProcessContext<Order> context = mock(ProcessContext.class);
     doNothing().when(context).setSeedData(Mockito.<Order>any());
     when(context.getSeedData()).thenReturn(nullOrderImpl);
@@ -110,20 +100,17 @@ public class TotalActivityDiffblueTest {
 
   /**
    * Test {@link TotalActivity#execute(ProcessContext)}.
-   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getTotalTax()} return {@code null}.
-   *   <li>Then return {@link ProcessContext}.
+   *   <li>Given {@link NullOrderImpl} {@link NullOrderImpl#getTotalTax()} return {@code null}.</li>
+   *   <li>Then return {@link ProcessContext}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#execute(ProcessContext)}
+   * <p>
+   * Method under test: {@link TotalActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext TotalActivity.execute(ProcessContext)"})
-  public void testExecute_givenNullOrderImplGetTotalTaxReturnNull_thenReturnProcessContext()
-      throws Exception {
+  public void testExecute_givenNullOrderImplGetTotalTaxReturnNull_thenReturnProcessContext() throws Exception {
     // Arrange
     NullOrderImpl nullOrderImpl = mock(NullOrderImpl.class);
     when(nullOrderImpl.getTotalTax()).thenReturn(null);
@@ -135,7 +122,6 @@ public class TotalActivityDiffblueTest {
     when(nullOrderImpl.getCurrency()).thenReturn(null);
     when(nullOrderImpl.getSubTotal()).thenReturn(new Money());
     doNothing().when(nullOrderImpl).setTotalTax(Mockito.<Money>any());
-
     ProcessContext<Order> context = mock(ProcessContext.class);
     doNothing().when(context).setSeedData(Mockito.<Order>any());
     when(context.getSeedData()).thenReturn(nullOrderImpl);
@@ -160,23 +146,19 @@ public class TotalActivityDiffblueTest {
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupFeeImpl} (default
-   *       constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupFeeImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayListAddFulfillmentGroupFeeImpl() {
     // Arrange
     ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
     fulfillmentGroupFeeList.add(new FulfillmentGroupFeeImpl());
-
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(fulfillmentGroupFeeList);
     when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
@@ -188,19 +170,19 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(true);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
     verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
     verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
@@ -211,35 +193,24 @@ public class TotalActivityDiffblueTest {
     verify(order).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupFeeImpl} (default
-   *       constructor).
-   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupFeeImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_givenArrayListAddFulfillmentGroupFeeImpl_thenCallsGetTaxes() {
+  public void testSetTaxSums_givenArrayListAddFulfillmentGroupFeeImpl2() {
     // Arrange
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
-    when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(new ArrayList<>());
-    doNothing().when(fulfillmentGroupFeeImpl).setTotalTax(Mockito.<Money>any());
-
     ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
     fulfillmentGroupFeeList.add(new FulfillmentGroupFeeImpl());
-    fulfillmentGroupFeeList.add(fulfillmentGroupFeeImpl);
-
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(fulfillmentGroupFeeList);
     when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
@@ -251,21 +222,19 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(false);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
-    verify(fulfillmentGroupFeeImpl, atLeast(1)).getTaxes();
-    verify(fulfillmentGroupFeeImpl).setTotalTax(isA(Money.class));
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
     verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
     verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
     verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
@@ -276,132 +245,93 @@ public class TotalActivityDiffblueTest {
     verify(order, atLeast(1)).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default
-   *       constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayListAddFulfillmentGroupImpl() {
     // Arrange
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(new FulfillmentGroupImpl());
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(true);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default
-   *       constructor).
-   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
+   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_givenArrayListAddFulfillmentGroupImpl_thenCallsGetTaxes() {
+  public void testSetTaxSums_givenArrayListAddFulfillmentGroupImpl_thenCallsGetCurrencyCode() {
     // Arrange
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
-    when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(new ArrayList<>());
-    doNothing().when(fulfillmentGroupFeeImpl).setTotalTax(Mockito.<Money>any());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
-    fulfillmentGroupFeeList.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
-    when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(fulfillmentGroupFeeList);
-    when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupImpl.getTaxes()).thenReturn(new ArrayList<>());
-    doNothing().when(fulfillmentGroupImpl).setTotalFeeTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalFulfillmentGroupTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalItemTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalTax(Mockito.<Money>any());
-
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(new FulfillmentGroupImpl());
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(false);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
-    verify(fulfillmentGroupFeeImpl, atLeast(1)).getTaxes();
-    verify(fulfillmentGroupFeeImpl).setTotalTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
-    verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
-    verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
-    verify(fulfillmentGroupImpl).setTotalFeeTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalFulfillmentGroupTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalItemTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalTax(isA(Money.class));
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
     verify(order, atLeast(1)).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupItemImpl} (default
-   *       constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupItemImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenArrayListAddFulfillmentGroupItemImpl() {
     // Arrange
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
-
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(fulfillmentGroupItemList);
@@ -413,19 +343,19 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(true);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
     verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
     verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
@@ -436,39 +366,26 @@ public class TotalActivityDiffblueTest {
     verify(order).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupItemImpl} (default
-   *       constructor).
-   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupItemImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_givenArrayListAddFulfillmentGroupItemImpl_thenCallsGetTaxes() {
+  public void testSetTaxSums_givenArrayListAddFulfillmentGroupItemImpl2() {
     // Arrange
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
-    when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(new ArrayList<>());
-    doNothing().when(fulfillmentGroupFeeImpl).setTotalTax(Mockito.<Money>any());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
-    fulfillmentGroupFeeList.add(fulfillmentGroupFeeImpl);
-
     ArrayList<FulfillmentGroupItem> fulfillmentGroupItemList = new ArrayList<>();
     fulfillmentGroupItemList.add(new FulfillmentGroupItemImpl());
-
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
-    when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(fulfillmentGroupFeeList);
+    when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(new ArrayList<>());
     when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(fulfillmentGroupItemList);
     when(fulfillmentGroupImpl.getTaxes()).thenReturn(new ArrayList<>());
     doNothing().when(fulfillmentGroupImpl).setTotalFeeTax(Mockito.<Money>any());
@@ -478,21 +395,19 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(false);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
-    verify(fulfillmentGroupFeeImpl, atLeast(1)).getTaxes();
-    verify(fulfillmentGroupFeeImpl).setTotalTax(isA(Money.class));
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
     verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
     verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
     verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
@@ -503,126 +418,86 @@ public class TotalActivityDiffblueTest {
     verify(order, atLeast(1)).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>When {@link OrderImpl} {@link OrderImpl#getTaxOverride()} return {@code true}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_givenArrayList_whenOrderImplGetTaxOverrideReturnTrue() {
+  public void testSetTaxSums_givenArrayList_thenCallsGetCurrencyCode() {
     // Arrange
-    OrderImpl order = mock(OrderImpl.class);
-    when(order.getTaxOverride()).thenReturn(true);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getTaxOverride()).thenReturn(false);
     when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
-   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link Order} {@link Order#getTaxOverride()} return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_givenBigDecimalWith23_thenCallsGetTaxes() {
+  public void testSetTaxSums_givenArrayList_whenOrderGetTaxOverrideReturnTrue() {
     // Arrange
-    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
-    Money amount = new Money();
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl(TaxType.CITY, amount, new BigDecimal("2.3"));
-    taxDetailList.add(taxDetailImpl);
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
-    when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(taxDetailList);
-    doNothing().when(fulfillmentGroupFeeImpl).setTotalTax(Mockito.<Money>any());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
-    fulfillmentGroupFeeList.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
-    when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(fulfillmentGroupFeeList);
-    when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupImpl.getTaxes()).thenReturn(new ArrayList<>());
-    doNothing().when(fulfillmentGroupImpl).setTotalFeeTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalFulfillmentGroupTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalItemTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalTax(Mockito.<Money>any());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
-    when(order.getTaxOverride()).thenReturn(false);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getTaxOverride()).thenReturn(true);
+    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
-    verify(fulfillmentGroupFeeImpl, atLeast(1)).getTaxes();
-    verify(fulfillmentGroupFeeImpl).setTotalTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
-    verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
-    verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
-    verify(fulfillmentGroupImpl).setTotalFeeTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalFulfillmentGroupTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalItemTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalTax(isA(Money.class));
-    verify(order, atLeast(1)).getCurrency();
+    verify(broadleafCurrencyImpl).getCurrencyCode();
+    verify(order).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@code false}.
-   *   <li>Then calls {@link FulfillmentGroupImpl#getFulfillmentGroupFees()}.
+   *   <li>Given {@code false}.</li>
+   *   <li>Then calls {@link FulfillmentGroupImpl#getFulfillmentGroupFees()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
   public void testSetTaxSums_givenFalse_thenCallsGetFulfillmentGroupFees() {
     // Arrange
@@ -637,19 +512,19 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(false);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
     verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
     verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
     verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
@@ -660,96 +535,53 @@ public class TotalActivityDiffblueTest {
     verify(order, atLeast(1)).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link TaxDetailImpl} {@link TaxDetailImpl#getAmount()} return {@link
-   *       Money#Money()}.
-   *   <li>Then calls {@link TaxDetailImpl#getAmount()}.
+   *   <li>Given {@code null}.</li>
+   *   <li>When {@link Order} {@link Order#getCurrency()} return {@code null}.</li>
+   *   <li>Then calls {@link Order#getCurrency()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_givenTaxDetailImplGetAmountReturnMoney_thenCallsGetAmount() {
+  public void testSetTaxSums_givenNull_whenOrderGetCurrencyReturnNull_thenCallsGetCurrency() {
     // Arrange
-    TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
-    when(taxDetailImpl.getAmount()).thenReturn(new Money());
-
-    ArrayList<TaxDetail> taxDetailList = new ArrayList<>();
-    taxDetailList.add(taxDetailImpl);
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
-    when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(taxDetailList);
-    doNothing().when(fulfillmentGroupFeeImpl).setTotalTax(Mockito.<Money>any());
-
-    ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
-    fulfillmentGroupFeeList.add(fulfillmentGroupFeeImpl);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
-    when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(fulfillmentGroupFeeList);
-    when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
-    when(fulfillmentGroupImpl.getTaxes()).thenReturn(new ArrayList<>());
-    doNothing().when(fulfillmentGroupImpl).setTotalFeeTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalFulfillmentGroupTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalItemTax(Mockito.<Money>any());
-    doNothing().when(fulfillmentGroupImpl).setTotalTax(Mockito.<Money>any());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
-    fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
-    when(order.getTaxOverride()).thenReturn(false);
-    when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
+    Order order = mock(Order.class);
+    when(order.getTaxOverride()).thenReturn(true);
+    when(order.getFulfillmentGroups()).thenReturn(new ArrayList<>());
     when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
-    verify(fulfillmentGroupFeeImpl, atLeast(1)).getTaxes();
-    verify(fulfillmentGroupFeeImpl).setTotalTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
-    verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
-    verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
-    verify(fulfillmentGroupImpl).setTotalFeeTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalFulfillmentGroupTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalItemTax(isA(Money.class));
-    verify(fulfillmentGroupImpl).setTotalTax(isA(Money.class));
-    verify(order, atLeast(1)).getCurrency();
+    verify(order).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
-    verify(taxDetailImpl).getAmount();
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link OrderImpl} {@link OrderImpl#getTaxOverride()} return {@code true}.
+   *   <li>Given {@code true}.</li>
+   *   <li>Then calls {@link FulfillmentGroupImpl#getFulfillmentGroupFees()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_givenTrue_whenOrderImplGetTaxOverrideReturnTrue() {
+  public void testSetTaxSums_givenTrue_thenCallsGetFulfillmentGroupFees() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(new ArrayList<>());
@@ -762,19 +594,19 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(true);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
     verify(fulfillmentGroupImpl).getFulfillmentGroupItems();
     verify(fulfillmentGroupImpl, atLeast(1)).getTaxes();
@@ -785,26 +617,21 @@ public class TotalActivityDiffblueTest {
     verify(order).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link OrderImpl} {@link OrderImpl#getTaxOverride()} return {@code true}.
-   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.
+   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_givenTrue_whenOrderImplGetTaxOverrideReturnTrue_thenCallsGetTaxes() {
+  public void testSetTaxSums_thenCallsGetTaxes() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
     when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(new ArrayList<>());
@@ -812,7 +639,6 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
     fulfillmentGroupFeeList.add(fulfillmentGroupFeeImpl);
-
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(fulfillmentGroupFeeList);
     when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
@@ -824,19 +650,19 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(true);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(fulfillmentGroupFeeImpl, atLeast(1)).getTaxes();
     verify(fulfillmentGroupFeeImpl).setTotalTax(isA(Money.class));
     verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
@@ -849,24 +675,21 @@ public class TotalActivityDiffblueTest {
     verify(order).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
   }
 
   /**
    * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
    * <ul>
-   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.
+   *   <li>Then calls {@link FulfillmentGroupFeeImpl#getTaxes()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
+   * <p>
+   * Method under test: {@link TotalActivity#setTaxSums(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_thenCallsGetTaxes() {
+  public void testSetTaxSums_thenCallsGetTaxes2() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = mock(FulfillmentGroupFeeImpl.class);
     when(fulfillmentGroupFeeImpl.getTaxes()).thenReturn(new ArrayList<>());
@@ -874,7 +697,6 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroupFee> fulfillmentGroupFeeList = new ArrayList<>();
     fulfillmentGroupFeeList.add(fulfillmentGroupFeeImpl);
-
     FulfillmentGroupImpl fulfillmentGroupImpl = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroupImpl.getFulfillmentGroupFees()).thenReturn(fulfillmentGroupFeeList);
     when(fulfillmentGroupImpl.getFulfillmentGroupItems()).thenReturn(new ArrayList<>());
@@ -886,19 +708,19 @@ public class TotalActivityDiffblueTest {
 
     ArrayList<FulfillmentGroup> fulfillmentGroupList = new ArrayList<>();
     fulfillmentGroupList.add(fulfillmentGroupImpl);
-
-    OrderImpl order = mock(OrderImpl.class);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
     when(order.getTaxOverride()).thenReturn(false);
     when(order.getFulfillmentGroups()).thenReturn(fulfillmentGroupList);
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setCurrency(Mockito.<BroadleafCurrency>any());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
     doNothing().when(order).setTotalTax(Mockito.<Money>any());
-    order.setCurrency(mock(BroadleafCurrency.class));
 
     // Act
     totalActivity.setTaxSums(order);
 
     // Assert
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
     verify(fulfillmentGroupFeeImpl, atLeast(1)).getTaxes();
     verify(fulfillmentGroupFeeImpl).setTotalTax(isA(Money.class));
     verify(fulfillmentGroupImpl).getFulfillmentGroupFees();
@@ -911,36 +733,6 @@ public class TotalActivityDiffblueTest {
     verify(order, atLeast(1)).getCurrency();
     verify(order).getFulfillmentGroups();
     verify(order).getTaxOverride();
-    verify(order).setCurrency(isA(BroadleafCurrency.class));
     verify(order).setTotalTax(isA(Money.class));
-  }
-
-  /**
-   * Test {@link TotalActivity#setTaxSums(Order)}.
-   *
-   * <ul>
-   *   <li>When {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrency}.
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TotalActivity#setTaxSums(Order)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void TotalActivity.setTaxSums(Order)"})
-  public void testSetTaxSums_whenOrderImplCurrencyIsBroadleafCurrency_thenCallsGetCurrencyCode() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setCurrency(currency);
-
-    // Act
-    totalActivity.setTaxSums(order);
-
-    // Assert
-    verify(currency).getCurrencyCode();
   }
 }

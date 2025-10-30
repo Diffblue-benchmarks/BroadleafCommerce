@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.offer.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,19 +32,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CustomerMaxUsesStrategyType.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CustomerMaxUsesStrategyTypeDiffblueTest {
-  @Autowired private CustomerMaxUsesStrategyType customerMaxUsesStrategyType;
+  @Autowired
+  private CustomerMaxUsesStrategyType customerMaxUsesStrategyType;
 
   /**
    * Test {@link CustomerMaxUsesStrategyType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link CustomerMaxUsesStrategyType#getInstance(String)}
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CustomerMaxUsesStrategyType CustomerMaxUsesStrategyType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -58,9 +57,8 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerMaxUsesStrategyType#CustomerMaxUsesStrategyType()}
    *   <li>{@link CustomerMaxUsesStrategyType#getFriendlyType()}
@@ -68,17 +66,12 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CustomerMaxUsesStrategyType.<init>()",
-    "String CustomerMaxUsesStrategyType.getFriendlyType()",
-    "String CustomerMaxUsesStrategyType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerMaxUsesStrategyType.<init>()",
+      "String CustomerMaxUsesStrategyType.getFriendlyType()", "String CustomerMaxUsesStrategyType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    CustomerMaxUsesStrategyType actualCustomerMaxUsesStrategyType =
-        new CustomerMaxUsesStrategyType();
+    CustomerMaxUsesStrategyType actualCustomerMaxUsesStrategyType = new CustomerMaxUsesStrategyType();
     String actualFriendlyType = actualCustomerMaxUsesStrategyType.getFriendlyType();
 
     // Assert
@@ -88,18 +81,42 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
 
   /**
    * Test {@link CustomerMaxUsesStrategyType#CustomerMaxUsesStrategyType(String, String)}.
-   *
-   * <p>Method under test: {@link CustomerMaxUsesStrategyType#CustomerMaxUsesStrategyType(String,
-   * String)}
+   * <ul>
+   *   <li>When {@code Customer}.</li>
+   *   <li>Then return Type is {@code Customer}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#CustomerMaxUsesStrategyType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CustomerMaxUsesStrategyType.<init>(String, String)"})
-  public void testNewCustomerMaxUsesStrategyType() {
+  public void testNewCustomerMaxUsesStrategyType_whenCustomer_thenReturnTypeIsCustomer() {
     // Arrange and Act
-    CustomerMaxUsesStrategyType actualCustomerMaxUsesStrategyType =
-        new CustomerMaxUsesStrategyType("Type", "Friendly Type");
+    CustomerMaxUsesStrategyType actualCustomerMaxUsesStrategyType = new CustomerMaxUsesStrategyType("Customer",
+        "Friendly Type");
+
+    // Assert
+    assertEquals("Customer", actualCustomerMaxUsesStrategyType.getType());
+    assertEquals("Friendly Type", actualCustomerMaxUsesStrategyType.getFriendlyType());
+  }
+
+  /**
+   * Test {@link CustomerMaxUsesStrategyType#CustomerMaxUsesStrategyType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   *   <li>Then return {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#CustomerMaxUsesStrategyType(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerMaxUsesStrategyType.<init>(String, String)"})
+  public void testNewCustomerMaxUsesStrategyType_whenType_thenReturnType() {
+    // Arrange and Act
+    CustomerMaxUsesStrategyType actualCustomerMaxUsesStrategyType = new CustomerMaxUsesStrategyType("Type",
+        "Friendly Type");
 
     // Assert
     assertEquals("Friendly Type", actualCustomerMaxUsesStrategyType.getFriendlyType());
@@ -108,71 +125,67 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
 
   /**
    * Test {@link CustomerMaxUsesStrategyType#setType(String)}.
-   *
    * <ul>
-   *   <li>When {@code TypeAccount}.
-   *   <li>Then {@link CustomerMaxUsesStrategyType} Type is {@code TypeAccount}.
+   *   <li>When {@code TypeType}.</li>
+   *   <li>Then {@link CustomerMaxUsesStrategyType#ACCOUNT} Type is {@code TypeType}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerMaxUsesStrategyType#setType(String)}
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#setType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CustomerMaxUsesStrategyType.setType(String)"})
-  public void testSetType_whenTypeAccount_thenCustomerMaxUsesStrategyTypeTypeIsTypeAccount() {
-    // Arrange and Act
-    customerMaxUsesStrategyType.setType("TypeAccount");
+  public void testSetType_whenTypeType_thenAccountTypeIsTypeType() {
+    // Arrange
+    CustomerMaxUsesStrategyType customerMaxUsesStrategyType2 = CustomerMaxUsesStrategyType.ACCOUNT;
+
+    // Act
+    customerMaxUsesStrategyType2.setType("TypeType");
 
     // Assert
-    assertEquals("TypeAccount", customerMaxUsesStrategyType.getType());
+    assertEquals("TypeType", customerMaxUsesStrategyType2.getType());
   }
 
   /**
    * Test {@link CustomerMaxUsesStrategyType#setType(String)}.
-   *
    * <ul>
-   *   <li>When {@code Type}.
-   *   <li>Then {@link CustomerMaxUsesStrategyType} Type is {@code Type}.
+   *   <li>When {@code Type}.</li>
+   *   <li>Then {@link CustomerMaxUsesStrategyType#ACCOUNT} Type is {@code Type}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerMaxUsesStrategyType#setType(String)}
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#setType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CustomerMaxUsesStrategyType.setType(String)"})
-  public void testSetType_whenType_thenCustomerMaxUsesStrategyTypeTypeIsType() {
-    // Arrange and Act
-    customerMaxUsesStrategyType.setType("Type");
+  public void testSetType_whenType_thenAccountTypeIsType() {
+    // Arrange
+    CustomerMaxUsesStrategyType customerMaxUsesStrategyType2 = CustomerMaxUsesStrategyType.ACCOUNT;
+
+    // Act
+    customerMaxUsesStrategyType2.setType("Type");
 
     // Assert
-    assertEquals("Type", customerMaxUsesStrategyType.getType());
+    assertEquals("Type", customerMaxUsesStrategyType2.getType());
   }
 
   /**
-   * Test {@link CustomerMaxUsesStrategyType#equals(Object)}, and {@link
-   * CustomerMaxUsesStrategyType#hashCode()}.
-   *
+   * Test {@link CustomerMaxUsesStrategyType#equals(Object)}, and {@link CustomerMaxUsesStrategyType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerMaxUsesStrategyType#equals(Object)}
    *   <li>{@link CustomerMaxUsesStrategyType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerMaxUsesStrategyType.equals(Object)",
-    "int CustomerMaxUsesStrategyType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerMaxUsesStrategyType.equals(Object)",
+      "int CustomerMaxUsesStrategyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CustomerMaxUsesStrategyType customerMaxUsesStrategyType = CustomerMaxUsesStrategyType.ACCOUNT;
@@ -180,99 +193,55 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(customerMaxUsesStrategyType, customerMaxUsesStrategyType2);
-    assertEquals(customerMaxUsesStrategyType.hashCode(), customerMaxUsesStrategyType2.hashCode());
+    int expectedHashCodeResult = customerMaxUsesStrategyType.hashCode();
+    assertEquals(expectedHashCodeResult, customerMaxUsesStrategyType2.hashCode());
   }
 
   /**
-   * Test {@link CustomerMaxUsesStrategyType#equals(Object)}, and {@link
-   * CustomerMaxUsesStrategyType#hashCode()}.
-   *
+   * Test {@link CustomerMaxUsesStrategyType#equals(Object)}, and {@link CustomerMaxUsesStrategyType#hashCode()}.
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerMaxUsesStrategyType#equals(Object)}
    *   <li>{@link CustomerMaxUsesStrategyType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerMaxUsesStrategyType.equals(Object)",
-    "int CustomerMaxUsesStrategyType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerMaxUsesStrategyType.equals(Object)",
+      "int CustomerMaxUsesStrategyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    CustomerMaxUsesStrategyType customerMaxUsesStrategyType = CustomerMaxUsesStrategyType.CUSTOMER;
-    CustomerMaxUsesStrategyType customerMaxUsesStrategyType2 =
-        new CustomerMaxUsesStrategyType("CUSTOMER", "CUSTOMER");
-
-    // Act and Assert
-    assertEquals(customerMaxUsesStrategyType, customerMaxUsesStrategyType2);
-    assertEquals(customerMaxUsesStrategyType.hashCode(), customerMaxUsesStrategyType2.hashCode());
-  }
-
-  /**
-   * Test {@link CustomerMaxUsesStrategyType#equals(Object)}, and {@link
-   * CustomerMaxUsesStrategyType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link CustomerMaxUsesStrategyType#equals(Object)}
-   *   <li>{@link CustomerMaxUsesStrategyType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerMaxUsesStrategyType.equals(Object)",
-    "int CustomerMaxUsesStrategyType.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CustomerMaxUsesStrategyType customerMaxUsesStrategyType = new CustomerMaxUsesStrategyType();
     CustomerMaxUsesStrategyType customerMaxUsesStrategyType2 = new CustomerMaxUsesStrategyType();
 
     // Act and Assert
     assertEquals(customerMaxUsesStrategyType, customerMaxUsesStrategyType2);
-    assertEquals(customerMaxUsesStrategyType.hashCode(), customerMaxUsesStrategyType2.hashCode());
+    int expectedHashCodeResult = customerMaxUsesStrategyType.hashCode();
+    assertEquals(expectedHashCodeResult, customerMaxUsesStrategyType2.hashCode());
   }
 
   /**
-   * Test {@link CustomerMaxUsesStrategyType#equals(Object)}, and {@link
-   * CustomerMaxUsesStrategyType#hashCode()}.
-   *
+   * Test {@link CustomerMaxUsesStrategyType#equals(Object)}, and {@link CustomerMaxUsesStrategyType#hashCode()}.
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerMaxUsesStrategyType#equals(Object)}
    *   <li>{@link CustomerMaxUsesStrategyType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerMaxUsesStrategyType.equals(Object)",
-    "int CustomerMaxUsesStrategyType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerMaxUsesStrategyType.equals(Object)",
+      "int CustomerMaxUsesStrategyType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CustomerMaxUsesStrategyType customerMaxUsesStrategyType = CustomerMaxUsesStrategyType.ACCOUNT;
@@ -285,21 +254,17 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
 
   /**
    * Test {@link CustomerMaxUsesStrategyType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerMaxUsesStrategyType#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerMaxUsesStrategyType.equals(Object)",
-    "int CustomerMaxUsesStrategyType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerMaxUsesStrategyType.equals(Object)",
+      "int CustomerMaxUsesStrategyType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CustomerMaxUsesStrategyType.CUSTOMER, CustomerMaxUsesStrategyType.ACCOUNT);
@@ -307,21 +272,17 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
 
   /**
    * Test {@link CustomerMaxUsesStrategyType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerMaxUsesStrategyType#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerMaxUsesStrategyType.equals(Object)",
-    "int CustomerMaxUsesStrategyType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerMaxUsesStrategyType.equals(Object)",
+      "int CustomerMaxUsesStrategyType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new CustomerMaxUsesStrategyType(), CustomerMaxUsesStrategyType.ACCOUNT);
@@ -329,21 +290,17 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
 
   /**
    * Test {@link CustomerMaxUsesStrategyType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerMaxUsesStrategyType#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerMaxUsesStrategyType.equals(Object)",
-    "int CustomerMaxUsesStrategyType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerMaxUsesStrategyType.equals(Object)",
+      "int CustomerMaxUsesStrategyType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(CustomerMaxUsesStrategyType.ACCOUNT, null);
@@ -351,24 +308,19 @@ public class CustomerMaxUsesStrategyTypeDiffblueTest {
 
   /**
    * Test {@link CustomerMaxUsesStrategyType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerMaxUsesStrategyType#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerMaxUsesStrategyType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerMaxUsesStrategyType.equals(Object)",
-    "int CustomerMaxUsesStrategyType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerMaxUsesStrategyType.equals(Object)",
+      "int CustomerMaxUsesStrategyType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        CustomerMaxUsesStrategyType.ACCOUNT, "Different type to CustomerMaxUsesStrategyType");
+    assertNotEquals(CustomerMaxUsesStrategyType.ACCOUNT, "Different type to CustomerMaxUsesStrategyType");
   }
 }

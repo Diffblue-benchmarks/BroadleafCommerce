@@ -31,8 +31,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,39 +62,39 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminUserCustomPersistenceHandlerDiffblueTest {
-  @Mock private AdminSecurityService adminSecurityService;
+  @InjectMocks
+  private AdminUserCustomPersistenceHandler adminUserCustomPersistenceHandler;
 
-  @InjectMocks private AdminUserCustomPersistenceHandler adminUserCustomPersistenceHandler;
+  @Mock
+  private SecurityVerifier securityVerifier;
 
-  @Mock private Environment environment;
+  @Mock
+  private Environment environment;
 
-  @Mock private SecurityVerifier securityVerifier;
+  @Mock
+  private AdminSecurityService adminSecurityService;
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return {@code
-   *       false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean AdminUserCustomPersistenceHandler.getRequireUniqueEmailAddress()"})
   public void testGetRequireUniqueEmailAddress_givenEnvironmentGetPropertyReturnFalse() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(false);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
 
     // Act
-    boolean actualRequireUniqueEmailAddress =
-        adminUserCustomPersistenceHandler.getRequireUniqueEmailAddress();
+    boolean actualRequireUniqueEmailAddress = adminUserCustomPersistenceHandler.getRequireUniqueEmailAddress();
 
     // Assert
     verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
@@ -104,26 +103,21 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return {@code
-   *       null}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean AdminUserCustomPersistenceHandler.getRequireUniqueEmailAddress()"})
   public void testGetRequireUniqueEmailAddress_givenEnvironmentGetPropertyReturnNull() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(null);
 
     // Act
-    boolean actualRequireUniqueEmailAddress =
-        adminUserCustomPersistenceHandler.getRequireUniqueEmailAddress();
+    boolean actualRequireUniqueEmailAddress = adminUserCustomPersistenceHandler.getRequireUniqueEmailAddress();
 
     // Assert
     verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
@@ -132,25 +126,21 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean AdminUserCustomPersistenceHandler.getRequireUniqueEmailAddress()"})
   public void testGetRequireUniqueEmailAddress_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
 
     // Act
-    boolean actualRequireUniqueEmailAddress =
-        adminUserCustomPersistenceHandler.getRequireUniqueEmailAddress();
+    boolean actualRequireUniqueEmailAddress = adminUserCustomPersistenceHandler.getRequireUniqueEmailAddress();
 
     // Assert
     verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
@@ -159,41 +149,33 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#getRequireUniqueEmailAddress()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean AdminUserCustomPersistenceHandler.getRequireUniqueEmailAddress()"})
   public void testGetRequireUniqueEmailAddress_thenThrowRuntimeException() {
     // Arrange
     when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenThrow(new RuntimeException());
+        .thenThrow(new RuntimeException("admin.user.requireUniqueEmailAddress"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> adminUserCustomPersistenceHandler.getRequireUniqueEmailAddress());
+    assertThrows(RuntimeException.class, () -> adminUserCustomPersistenceHandler.getRequireUniqueEmailAddress());
     verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
   }
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#willHandleSecurity(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#willHandleSecurity(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#willHandleSecurity(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminUserCustomPersistenceHandler.willHandleSecurity(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.willHandleSecurity(PersistencePackage)"})
   public void testWillHandleSecurity() {
     // Arrange, Act and Assert
     assertTrue(adminUserCustomPersistenceHandler.willHandleSecurity(new PersistencePackage()));
@@ -201,19 +183,42 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <ul>
+   *   <li>Given {@code java.text}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
-  public void testCanHandleAdd() {
+  public void testCanHandleAdd_givenJavaText_thenThrowRuntimeException() {
     // Arrange
-    String[] customCriteria = new String[] {"Custom Criteria"};
-    PersistencePackage persistencePackage =
-        new PersistencePackage("java.util.List", new Entity(), null, customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setCeilingEntityFullyQualifiedClassname("java.text");
+    persistencePackage.setPersistencePerspective(null);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> adminUserCustomPersistenceHandler.canHandleAdd(persistencePackage));
+  }
+
+  /**
+   * Test {@link AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * <ul>
+   *   <li>Given {@code java.util.List}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
+  public void testCanHandleAdd_givenJavaUtilList() {
+    // Arrange
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setCeilingEntityFullyQualifiedClassname("java.util.List");
+    persistencePackage.setPersistencePerspective(null);
 
     // Act and Assert
     assertFalse(adminUserCustomPersistenceHandler.canHandleAdd(persistencePackage));
@@ -221,44 +226,15 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
-  public void testCanHandleAdd_thenThrowRuntimeException() {
-    // Arrange
-    String[] customCriteria = new String[] {"Custom Criteria"};
-    PersistencePackage persistencePackage =
-        new PersistencePackage("Dr Jane Doe", new Entity(), null, customCriteria, "ABC123");
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> adminUserCustomPersistenceHandler.canHandleAdd(persistencePackage));
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -267,21 +243,42 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <ul>
+   *   <li>Given {@code java.text}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminUserCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
-  public void testCanHandleUpdate() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
+  public void testCanHandleUpdate_givenJavaText_thenThrowRuntimeException() {
     // Arrange
-    String[] customCriteria = new String[] {"Custom Criteria"};
-    PersistencePackage persistencePackage =
-        new PersistencePackage("java.util.List", new Entity(), null, customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(null);
+    persistencePackage.setCeilingEntityFullyQualifiedClassname("java.text");
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> adminUserCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+  }
+
+  /**
+   * Test {@link AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * <ul>
+   *   <li>Given {@code java.util.List}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
+  public void testCanHandleUpdate_givenJavaUtilList() {
+    // Arrange
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(null);
+    persistencePackage.setCeilingEntityFullyQualifiedClassname("java.util.List");
 
     // Act and Assert
     assertFalse(adminUserCustomPersistenceHandler.canHandleUpdate(persistencePackage));
@@ -289,49 +286,16 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminUserCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
-  public void testCanHandleUpdate_thenThrowRuntimeException() {
-    // Arrange
-    String[] customCriteria = new String[] {"Custom Criteria"};
-    PersistencePackage persistencePackage =
-        new PersistencePackage("Dr Jane Doe", new Entity(), null, customCriteria, "ABC123");
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> adminUserCustomPersistenceHandler.canHandleUpdate(persistencePackage));
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminUserCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(adminUserCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
@@ -339,21 +303,42 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * <ul>
+   *   <li>Given {@code java.text}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminUserCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
-  public void testCanHandleRemove() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
+  public void testCanHandleRemove_givenJavaText_thenThrowRuntimeException() {
     // Arrange
-    String[] customCriteria = new String[] {"Custom Criteria"};
-    PersistencePackage persistencePackage =
-        new PersistencePackage("java.util.List", new Entity(), null, customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(null);
+    persistencePackage.setCeilingEntityFullyQualifiedClassname("java.text");
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> adminUserCustomPersistenceHandler.canHandleRemove(persistencePackage));
+  }
+
+  /**
+   * Test {@link AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
+   * <ul>
+   *   <li>Given {@code java.util.List}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
+  public void testCanHandleRemove_givenJavaUtilList() {
+    // Arrange
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(null);
+    persistencePackage.setCeilingEntityFullyQualifiedClassname("java.util.List");
 
     // Act and Assert
     assertFalse(adminUserCustomPersistenceHandler.canHandleRemove(persistencePackage));
@@ -361,366 +346,146 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminUserCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
-  public void testCanHandleRemove_thenThrowRuntimeException() {
-    // Arrange
-    String[] customCriteria = new String[] {"Custom Criteria"};
-    PersistencePackage persistencePackage =
-        new PersistencePackage("Dr Jane Doe", new Entity(), null, customCriteria, "ABC123");
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> adminUserCustomPersistenceHandler.canHandleRemove(persistencePackage));
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean AdminUserCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean AdminUserCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(adminUserCustomPersistenceHandler.canHandleRemove(new PersistencePackage()));
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
-   *       java.util.List}.
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code java.util.List}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenEntityGetTypeReturnArrayOfStringWithJavaUtilList()
-      throws ServiceException {
+      "Entity AdminUserCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenEntityGetTypeReturnArrayOfStringWithJavaUtilList() throws ServiceException {
     // Arrange
-    doNothing()
-        .when(securityVerifier)
+    doNothing().when(securityVerifier)
         .securityCheck(Mockito.<PersistencePackage>any(), Mockito.<EntityOperationType>any());
-
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"java.util.List"});
+    when(entity.getType()).thenReturn(new String[]{"java.util.List"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminUserCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    assertThrows(ServiceException.class, () -> adminUserCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity, atLeast(1)).getType();
-    verify(securityVerifier)
-        .securityCheck(isA(PersistencePackage.class), eq(EntityOperationType.ADD));
+    verify(securityVerifier).securityCheck(isA(PersistencePackage.class), eq(EntityOperationType.ADD));
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
-   *       Type}.
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code Type}.</li>
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
+      "Entity AdminUserCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testAdd_givenEntityGetTypeReturnArrayOfStringWithType_thenThrowServiceException()
       throws ServiceException {
     // Arrange
-    doNothing()
-        .when(securityVerifier)
+    doNothing().when(securityVerifier)
         .securityCheck(Mockito.<PersistencePackage>any(), Mockito.<EntityOperationType>any());
-
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
+    when(entity.getType()).thenReturn(new String[]{"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminUserCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    assertThrows(ServiceException.class, () -> adminUserCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity, atLeast(1)).getType();
-    verify(securityVerifier)
-        .securityCheck(isA(PersistencePackage.class), eq(EntityOperationType.ADD));
+    verify(securityVerifier).securityCheck(isA(PersistencePackage.class), eq(EntityOperationType.ADD));
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_thenThrowRuntimeException() throws ServiceException {
-    // Arrange
-    doThrow(new RuntimeException())
-        .when(securityVerifier)
-        .securityCheck(Mockito.<PersistencePackage>any(), Mockito.<EntityOperationType>any());
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminUserCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(securityVerifier)
-        .securityCheck(isA(PersistencePackage.class), eq(EntityOperationType.ADD));
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
-   *       Type}.
-   *   <li>Then calls {@link Entity#getType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenEntityGetTypeReturnArrayOfStringWithType_thenCallsGetType()
-      throws ServiceException {
+      "Entity AdminUserCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testUpdate_thenThrowServiceException() throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
+    when(entity.getType()).thenReturn(new String[]{"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminUserCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
+    assertThrows(ServiceException.class,
+        () -> adminUserCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
     verify(entity, atLeast(1)).getType();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.openadmin.server.security.domain.AdminUser"), isNull());
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.openadmin.server.security.domain.AdminUser"),
+        isNull());
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} (default constructor) Type is array of {@link String} with {@code
-   *       Unable to update entity for}.
+   *   <li>Given {@link AdminUser} {@link AdminUser#getLogin()} return {@code 42}.</li>
+   *   <li>Then throw {@link ValidationException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_givenEntityTypeIsArrayOfStringWithUnableToUpdateEntityFor()
-      throws ServiceException {
-    // Arrange
-    Entity entity = new Entity();
-    entity.setType(new String[] {"Unable to update entity for "});
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            adminUserCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
-    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.openadmin.server.security.domain.AdminUser"), isNull());
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link AdminSecurityService} {@link AdminSecurityService#readAdminUserById(Long)}
-   *       throw {@link RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_givenAdminSecurityServiceReadAdminUserByIdThrowRuntimeException()
-      throws ServiceException {
-    // Arrange
-    AdminUser adminUser = mock(AdminUser.class);
-    when(adminUser.getLogin()).thenReturn("Login");
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUser);
-    when(adminSecurityService.readAdminUserById(Mockito.<Long>any()))
-        .thenThrow(new RuntimeException());
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminUserCustomPersistenceHandler.remove(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminUser, atLeast(1)).getLogin();
-    verify(securityVerifier).getPersistentAdminUser();
-    verify(adminSecurityService).readAdminUserById(42L);
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link AdminUser} {@link AdminUser#getLogin()} return {@code 42}.
-   *   <li>Then throw {@link ValidationException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_givenAdminUserGetLoginReturn42_thenThrowValidationException()
-      throws ServiceException {
+      "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testRemove_givenAdminUserGetLoginReturn42_thenThrowValidationException() throws ServiceException {
     // Arrange
     AdminUser adminUser = mock(AdminUser.class);
     when(adminUser.getLogin()).thenReturn("42");
     when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUser);
-
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, mock(PersistencePerspective.class), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity,
+        mock(PersistencePerspective.class), new String[]{"id"}, "ABC123");
 
     // Act and Assert
-    assertThrows(
-        ValidationException.class,
-        () ->
-            adminUserCustomPersistenceHandler.remove(
-                persistencePackage,
-                new DynamicEntityDaoImpl(),
-                mock(AdornedTargetListPersistenceModule.class)));
+    assertThrows(ValidationException.class, () -> adminUserCustomPersistenceHandler.remove(persistencePackage,
+        new DynamicEntityDaoImpl(), mock(AdornedTargetListPersistenceModule.class)));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
     verify(adminUser, atLeast(1)).getLogin();
@@ -728,267 +493,38 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link AdminUser} {@link AdminUser#getLogin()} return {@code null}.
-   *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.
+   *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_givenAdminUserGetLoginReturnNull_thenCallsGetOperationTypes()
-      throws ServiceException {
-    // Arrange
-    AdminUser adminUser = mock(AdminUser.class);
-    when(adminUser.getLogin()).thenReturn(null);
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUser);
-    when(adminSecurityService.readAdminUserById(Mockito.<Long>any()))
-        .thenReturn(new AdminUserImpl());
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, persistencePerspective, customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    doNothing().when(adornedTargetListPersistenceModule).remove(Mockito.<PersistencePackage>any());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    adminUserCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper);
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(persistencePerspective).getOperationTypes();
-    verify(property, atLeast(1)).getValue();
-    verify(adminUser).getLogin();
-    verify(securityVerifier).getPersistentAdminUser();
-    verify(adminSecurityService).readAdminUserById(42L);
-    verify(adornedTargetListPersistenceModule).remove(isA(PersistencePackage.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link AdminUser} {@link AdminUser#getLogin()} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_givenAdminUserGetLoginThrowRuntimeException_thenThrowRuntimeException()
-      throws ServiceException {
-    // Arrange
-    AdminUser adminUser = mock(AdminUser.class);
-    when(adminUser.getLogin()).thenThrow(new RuntimeException());
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUser);
-
-    Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminUserCustomPersistenceHandler.remove(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(adminUser).getLogin();
-    verify(securityVerifier).getPersistentAdminUser();
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.
-   *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_givenPropertyGetValueReturnNull_thenCallsGetOperationTypes()
-      throws ServiceException {
-    // Arrange
-    AdminUser adminUser = mock(AdminUser.class);
-    when(adminUser.getLogin()).thenReturn("Login");
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUser);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn(null);
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, persistencePerspective, customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    doNothing().when(adornedTargetListPersistenceModule).remove(Mockito.<PersistencePackage>any());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    adminUserCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper);
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(persistencePerspective).getOperationTypes();
-    verify(property, atLeast(1)).getValue();
-    verify(adminUser).getLogin();
-    verify(securityVerifier).getPersistentAdminUser();
-    verify(adornedTargetListPersistenceModule).remove(isA(PersistencePackage.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link SecurityVerifier} {@link SecurityVerifier#getPersistentAdminUser()} throw
-   *       {@link RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_givenSecurityVerifierGetPersistentAdminUserThrowRuntimeException()
-      throws ServiceException {
-    // Arrange
-    when(securityVerifier.getPersistentAdminUser()).thenThrow(new RuntimeException());
-
-    Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    String[] customCriteria = new String[] {"id"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminUserCustomPersistenceHandler.remove(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(securityVerifier).getPersistentAdminUser();
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
+      "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"})
   public void testRemove_thenCallsGetOperationTypes() throws ServiceException {
     // Arrange
     AdminUser adminUser = mock(AdminUser.class);
     when(adminUser.getLogin()).thenReturn("Login");
     when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUser);
-    when(adminSecurityService.readAdminUserById(Mockito.<Long>any()))
-        .thenReturn(new AdminUserImpl());
-
+    when(adminSecurityService.readAdminUserById(Mockito.<Long>any())).thenReturn(new AdminUserImpl());
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-    String[] customCriteria = new String[] {"id"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, persistencePerspective,
+        new String[]{"id"}, "ABC123");
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, persistencePerspective, customCriteria, "ABC123");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
     doNothing().when(adornedTargetListPersistenceModule).remove(Mockito.<PersistencePackage>any());
-
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
     adminUserCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper);
@@ -999,725 +535,574 @@ public class AdminUserCustomPersistenceHandlerDiffblueTest {
     verify(property, atLeast(1)).getValue();
     verify(adminUser, atLeast(1)).getLogin();
     verify(securityVerifier).getPersistentAdminUser();
-    verify(adminSecurityService).readAdminUserById(42L);
+    verify(adminSecurityService).readAdminUserById(eq(42L));
     verify(adornedTargetListPersistenceModule).remove(isA(PersistencePackage.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * Test {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail() {
+      "void AdminUserCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testRemove_thenThrowRuntimeException() throws ServiceException {
     // Arrange
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
+    when(securityVerifier.getPersistentAdminUser()).thenThrow(new RuntimeException("id"));
     Entity entity = mock(Entity.class);
-    doNothing().when(entity).addValidationError(Mockito.<String>any(), Mockito.<String>any());
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"id"}, "ABC123");
 
-    // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, new AdminUserImpl(), true);
-
-    // Assert
-    verify(entity).addValidationError("login", "admin.nonUniqueUsernameError");
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(adminSecurityService).readAdminUserByUserName(null);
-    verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
-    assertSame(entity, actualValidateLegalUsernameAndEmailResult);
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail2() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenThrow(new RuntimeException());
-
-    Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-                entity, new AdminUserImpl(), true));
+    assertThrows(RuntimeException.class, () -> adminUserCustomPersistenceHandler.remove(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    verify(securityVerifier).getPersistentAdminUser();
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * Test {@link AdminUserCustomPersistenceHandler#validateUserUpdateSecurity(PersistencePackage, AdminUser)}.
+   * <ul>
+   *   <li>Given one.</li>
+   *   <li>When {@link AdminUser} {@link AdminUser#getId()} return one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateUserUpdateSecurity(PersistencePackage, AdminUser)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail3() {
+      "void AdminUserCustomPersistenceHandler.validateUserUpdateSecurity(PersistencePackage, AdminUser)"})
+  public void testValidateUserUpdateSecurity_givenOne_whenAdminUserGetIdReturnOne() throws ServiceException {
     // Arrange
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any()))
-        .thenReturn(new AdminUserImpl());
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    doNothing().when(entity).addValidationError(Mockito.<String>any(), Mockito.<String>any());
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUserImpl);
+    PersistencePackage persistencePackage = new PersistencePackage();
+    AdminUser changingUser = mock(AdminUser.class);
+    when(changingUser.getId()).thenReturn(1L);
 
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, new AdminUserImpl(), true);
+    adminUserCustomPersistenceHandler.validateUserUpdateSecurity(persistencePackage, changingUser);
 
     // Assert
-    verify(entity).addValidationError("login", "admin.nonUniqueUsernameError");
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminSecurityService).readAdminUserByUserName("42");
-    verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
-    assertSame(entity, actualValidateLegalUsernameAndEmailResult);
+    verify(changingUser).getId();
+    verify(adminUserImpl).getId();
+    verify(securityVerifier).getPersistentAdminUser();
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * Test {@link AdminUserCustomPersistenceHandler#validateUserUpdateSecurity(PersistencePackage, AdminUser)}.
+   * <ul>
+   *   <li>Then calls {@link SecurityVerifier#securityCheck(PersistencePackage, EntityOperationType)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateUserUpdateSecurity(PersistencePackage, AdminUser)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail4() {
+      "void AdminUserCustomPersistenceHandler.validateUserUpdateSecurity(PersistencePackage, AdminUser)"})
+  public void testValidateUserUpdateSecurity_thenCallsSecurityCheck() throws ServiceException {
     // Arrange
-    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    doNothing().when(securityVerifier)
+        .securityCheck(Mockito.<PersistencePackage>any(), Mockito.<EntityOperationType>any());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUserImpl);
+    PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, new AdminUserImpl(), true);
+    adminUserCustomPersistenceHandler.validateUserUpdateSecurity(persistencePackage, new AdminUserImpl());
 
     // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminSecurityService).readAdminUserByUserName("42");
-    verify(adminSecurityService).readAdminUsersByEmail("42");
-    verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
-    assertNull(actualValidateLegalUsernameAndEmailResult);
+    verify(adminUserImpl).getId();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck(isA(PersistencePackage.class), eq(EntityOperationType.UPDATE));
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * Test {@link AdminUserCustomPersistenceHandler#validateUserUpdateSecurity(PersistencePackage, AdminUser)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateUserUpdateSecurity(PersistencePackage, AdminUser)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail5() {
+      "void AdminUserCustomPersistenceHandler.validateUserUpdateSecurity(PersistencePackage, AdminUser)"})
+  public void testValidateUserUpdateSecurity_thenThrowRuntimeException() throws ServiceException {
     // Arrange
-    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    AdminUserImpl adminUserImpl = mock(AdminUserImpl.class);
+    when(adminUserImpl.getId()).thenReturn(1L);
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(adminUserImpl);
+    PersistencePackage persistencePackage = new PersistencePackage();
+    AdminUser changingUser = mock(AdminUser.class);
+    when(changingUser.getId()).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-                entity, new AdminUserImpl(), true));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminSecurityService).readAdminUserByUserName("42");
-    verify(adminSecurityService).readAdminUsersByEmail("42");
-    verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    assertThrows(RuntimeException.class,
+        () -> adminUserCustomPersistenceHandler.validateUserUpdateSecurity(persistencePackage, changingUser));
+    verify(changingUser).getId();
+    verify(adminUserImpl).getId();
+    verify(securityVerifier).getPersistentAdminUser();
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail6() {
-    // Arrange
-    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, new AdminUserImpl(), false);
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminSecurityService).readAdminUserByUserName("42");
-    verify(adminSecurityService).readAdminUsersByEmail("42");
-    verify(environment, atLeast(1))
-        .getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
-    assertNull(actualValidateLegalUsernameAndEmailResult);
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link AdminUser} {@link AdminUser#getEmail()} return {@code 42}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminUserImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail_given42_whenAdminUserGetEmailReturn42() {
-    // Arrange
-    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    AdminUser adminInstance = mock(AdminUser.class);
-    when(adminInstance.getEmail()).thenReturn("42");
-    when(adminInstance.getLogin()).thenReturn("Login");
-
-    // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, adminInstance, false);
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminInstance).getEmail();
-    verify(adminInstance).getLogin();
-    verify(adminSecurityService).readAdminUserByUserName("42");
-    verify(environment, atLeast(1))
-        .getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
-    assertNull(actualValidateLegalUsernameAndEmailResult);
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link AdminUser} {@link AdminUser#getLogin()} return {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail_given42_whenAdminUserGetLoginReturn42() {
-    // Arrange
-    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    AdminUser adminInstance = mock(AdminUser.class);
-    when(adminInstance.getEmail()).thenReturn("jane.doe@example.org");
-    when(adminInstance.getLogin()).thenReturn("42");
-
-    // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, adminInstance, false);
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminInstance).getEmail();
-    verify(adminInstance).getLogin();
-    verify(adminSecurityService).readAdminUsersByEmail("42");
-    verify(environment, atLeast(1))
-        .getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
-    assertNull(actualValidateLegalUsernameAndEmailResult);
-  }
-
-  /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminUserImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
   public void testValidateLegalUsernameAndEmail_givenArrayListAddAdminUserImpl() {
     // Arrange
     ArrayList<AdminUser> adminUserList = new ArrayList<>();
     adminUserList.add(new AdminUserImpl());
-    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any()))
-        .thenReturn(adminUserList);
+    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any())).thenReturn(adminUserList);
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addValidationError(Mockito.<String>any(), Mockito.<String>any());
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, new AdminUserImpl(), true);
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), true);
 
     // Assert
-    verify(entity).addValidationError("email", "admin.nonUniqueEmailError");
+    verify(entity).addValidationError(eq("email"), eq("admin.nonUniqueEmailError"));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminSecurityService).readAdminUserByUserName("42");
-    verify(adminSecurityService).readAdminUsersByEmail("42");
+    verify(adminSecurityService).readAdminUserByUserName(isNull());
+    verify(adminSecurityService).readAdminUsersByEmail(isNull());
     verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
     assertSame(entity, actualValidateLegalUsernameAndEmailResult);
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return {@code
-   *       false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
   public void testValidateLegalUsernameAndEmail_givenEnvironmentGetPropertyReturnFalse() {
     // Arrange
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(false);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, new AdminUserImpl(), true);
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), true);
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminSecurityService).readAdminUserByUserName("42");
+    verify(adminSecurityService).readAdminUserByUserName(isNull());
     verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
     assertNull(actualValidateLegalUsernameAndEmailResult);
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return {@code
-   *       false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
   public void testValidateLegalUsernameAndEmail_givenEnvironmentGetPropertyReturnFalse2() {
     // Arrange
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(false);
-
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
-    AdminUser adminInstance = mock(AdminUser.class);
-    when(adminInstance.getLogin()).thenReturn("Login");
-
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, adminInstance, false);
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), false);
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
-    verify(adminInstance).getLogin();
-    verify(adminSecurityService).readAdminUserByUserName("42");
-    verify(environment, atLeast(1))
-        .getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("42"));
+    verify(environment, atLeast(1)).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
     assertNull(actualValidateLegalUsernameAndEmailResult);
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return {@code
-   *       null}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
   public void testValidateLegalUsernameAndEmail_givenEnvironmentGetPropertyReturnNull() {
     // Arrange
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(null);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(null);
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, new AdminUserImpl(), true);
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), true);
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getValue();
-    verify(adminSecurityService).readAdminUserByUserName("42");
+    verify(adminSecurityService).readAdminUserByUserName(isNull());
     verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
     assertNull(actualValidateLegalUsernameAndEmailResult);
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
    * <ul>
-   *   <li>Given {@code jane.doe@example.org}.
+   *   <li>Given {@code jane.doe@example.org}.</li>
+   *   <li>Then calls {@link AdminUser#getEmail()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail_givenJaneDoeExampleOrg() {
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
+  public void testValidateLegalUsernameAndEmail_givenJaneDoeExampleOrg_thenCallsGetEmail() {
     // Arrange
-    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
     AdminUser adminInstance = mock(AdminUser.class);
     when(adminInstance.getEmail()).thenReturn("jane.doe@example.org");
     when(adminInstance.getLogin()).thenReturn("Login");
 
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, adminInstance, false);
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, adminInstance, false);
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
     verify(adminInstance).getEmail();
     verify(adminInstance).getLogin();
-    verify(adminSecurityService).readAdminUserByUserName("42");
-    verify(adminSecurityService).readAdminUsersByEmail("42");
-    verify(environment, atLeast(1))
-        .getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("42"));
+    verify(adminSecurityService).readAdminUsersByEmail(eq("42"));
+    verify(environment, atLeast(1)).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
     assertNull(actualValidateLegalUsernameAndEmailResult);
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code login}.
+   *   <li>Given {@link Property#Property()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
+  public void testValidateLegalUsernameAndEmail_givenProperty() {
+    // Arrange
+    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+
+    // Act
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), true);
+
+    // Assert
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(adminSecurityService).readAdminUserByUserName(isNull());
+    verify(adminSecurityService).readAdminUsersByEmail(isNull());
+    verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    assertNull(actualValidateLegalUsernameAndEmailResult);
+  }
+
+  /**
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
+  public void testValidateLegalUsernameAndEmail_givenPropertyGetValueReturn42() {
+    // Arrange
+    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    // Act
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), true);
+
+    // Assert
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+    verify(adminSecurityService).readAdminUserByUserName(eq("42"));
+    verify(adminSecurityService).readAdminUsersByEmail(eq("42"));
+    verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    assertNull(actualValidateLegalUsernameAndEmailResult);
+  }
+
+  /**
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>When {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
+  public void testValidateLegalUsernameAndEmail_givenPropertyGetValueReturn42_whenFalse() {
+    // Arrange
+    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    // Act
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), false);
+
+    // Assert
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+    verify(adminSecurityService).readAdminUserByUserName(eq("42"));
+    verify(adminSecurityService).readAdminUsersByEmail(eq("42"));
+    verify(environment, atLeast(1)).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    assertNull(actualValidateLegalUsernameAndEmailResult);
+  }
+
+  /**
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code login}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
   public void testValidateLegalUsernameAndEmail_givenPropertyGetValueReturnLogin() {
     // Arrange
-    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("login");
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
     AdminUser adminInstance = mock(AdminUser.class);
     when(adminInstance.getEmail()).thenReturn("jane.doe@example.org");
     when(adminInstance.getLogin()).thenReturn("Login");
 
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, adminInstance, false);
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, adminInstance, false);
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
     verify(adminInstance).getEmail();
     verify(adminInstance).getLogin();
-    verify(adminSecurityService).readAdminUserByUserName("login");
-    verify(adminSecurityService).readAdminUsersByEmail("login");
-    verify(environment, atLeast(1))
-        .getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    verify(adminSecurityService).readAdminUserByUserName(eq("login"));
+    verify(adminSecurityService).readAdminUsersByEmail(eq("login"));
+    verify(environment, atLeast(1)).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
     assertNull(actualValidateLegalUsernameAndEmailResult);
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
   public void testValidateLegalUsernameAndEmail_givenPropertyGetValueReturnNull() {
     // Arrange
-    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+    when(adminSecurityService.readAdminUsersByEmail(Mockito.<String>any())).thenReturn(new ArrayList<>());
     when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(null);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn(null);
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
     AdminUser adminInstance = mock(AdminUser.class);
     when(adminInstance.getEmail()).thenReturn("jane.doe@example.org");
     when(adminInstance.getLogin()).thenReturn("Login");
 
     // Act
-    Entity actualValidateLegalUsernameAndEmailResult =
-        adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-            entity, adminInstance, false);
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, adminInstance, false);
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
     verify(adminInstance).getEmail();
     verify(adminInstance).getLogin();
-    verify(adminSecurityService).readAdminUserByUserName(null);
-    verify(adminSecurityService).readAdminUsersByEmail(null);
-    verify(environment, atLeast(1))
-        .getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    verify(adminSecurityService).readAdminUserByUserName(isNull());
+    verify(adminSecurityService).readAdminUsersByEmail(isNull());
+    verify(environment, atLeast(1)).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
     assertNull(actualValidateLegalUsernameAndEmailResult);
   }
 
   /**
-   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser,
-   * boolean)}.
-   *
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.</li>
+   *   <li>When {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"
-  })
-  public void testValidateLegalUsernameAndEmail_givenRuntimeException() {
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
+  public void testValidateLegalUsernameAndEmail_givenPropertyGetValueReturnNull_whenFalse() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
-        .thenReturn(true);
-
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
     Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
+    when(property.getValue()).thenReturn(null);
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
-    AdminUser adminInstance = mock(AdminUser.class);
-    when(adminInstance.getLogin()).thenThrow(new RuntimeException());
+    // Act
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), false);
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(
-                entity, adminInstance, false));
+    // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
-    verify(adminInstance).getLogin();
+    verify(environment, atLeast(1)).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    assertNull(actualValidateLegalUsernameAndEmailResult);
+  }
+
+  /**
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
+   * <ul>
+   *   <li>Then return {@link Entity}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
+  public void testValidateLegalUsernameAndEmail_thenReturnEntity() {
+    // Arrange
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Entity entity = mock(Entity.class);
+    doNothing().when(entity).addValidationError(Mockito.<String>any(), Mockito.<String>any());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+
+    // Act
+    Entity actualValidateLegalUsernameAndEmailResult = adminUserCustomPersistenceHandler
+        .validateLegalUsernameAndEmail(entity, new AdminUserImpl(), true);
+
+    // Assert
+    verify(entity).addValidationError(eq("login"), eq("admin.nonUniqueUsernameError"));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(adminSecurityService).readAdminUserByUserName(isNull());
+    verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
+    assertSame(entity, actualValidateLegalUsernameAndEmailResult);
+  }
+
+  /**
+   * Test {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminUserCustomPersistenceHandler#validateLegalUsernameAndEmail(Entity, AdminUser, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity AdminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(Entity, AdminUser, boolean)"})
+  public void testValidateLegalUsernameAndEmail_thenThrowRuntimeException() {
+    // Arrange
+    when(adminSecurityService.readAdminUserByUserName(Mockito.<String>any())).thenReturn(new AdminUserImpl());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    Entity entity = mock(Entity.class);
+    doThrow(new RuntimeException("login")).when(entity)
+        .addValidationError(Mockito.<String>any(), Mockito.<String>any());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> adminUserCustomPersistenceHandler.validateLegalUsernameAndEmail(entity, new AdminUserImpl(), true));
+    verify(entity).addValidationError(eq("login"), eq("admin.nonUniqueUsernameError"));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(adminSecurityService).readAdminUserByUserName(isNull());
     verify(environment).getProperty(eq("admin.user.requireUniqueEmailAddress"), isA(Class.class));
   }
 }

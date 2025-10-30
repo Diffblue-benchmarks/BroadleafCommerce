@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
@@ -39,49 +38,47 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CheckoutFormVariableExpressionDiffblueTest {
-  @Mock private CartStateService cartStateService;
+  @Mock
+  private CartStateService cartStateService;
 
-  @InjectMocks private CheckoutFormVariableExpression checkoutFormVariableExpression;
+  @InjectMocks
+  private CheckoutFormVariableExpression checkoutFormVariableExpression;
 
-  @Mock private FulfillmentGroupService fulfillmentGroupService;
+  @Mock
+  private FulfillmentGroupService fulfillmentGroupService;
 
   /**
    * Test {@link CheckoutFormVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link CheckoutFormVariableExpression#getName()}
+   * <p>
+   * Method under test: {@link CheckoutFormVariableExpression#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"java.lang.String CheckoutFormVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("checkoutForm", new CheckoutFormVariableExpression().getName());
+    assertEquals("checkoutForm", (new CheckoutFormVariableExpression()).getName());
   }
 
   /**
    * Test {@link CheckoutFormVariableExpression#shouldShowShippingInfoStage()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutFormVariableExpression#shouldShowShippingInfoStage()}
+   * <p>
+   * Method under test: {@link CheckoutFormVariableExpression#shouldShowShippingInfoStage()}
    */
   @Test
   @DisplayName("Test shouldShowShippingInfoStage(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CheckoutFormVariableExpression.shouldShowShippingInfoStage()"})
   void testShouldShowShippingInfoStage_thenReturnFalse() {
     // Arrange
-    when(fulfillmentGroupService.calculateNumShippableFulfillmentGroups(Mockito.<Order>any()))
-        .thenReturn(0);
+    when(fulfillmentGroupService.calculateNumShippableFulfillmentGroups(Mockito.<Order>any())).thenReturn(0);
 
     // Act
-    boolean actualShouldShowShippingInfoStageResult =
-        checkoutFormVariableExpression.shouldShowShippingInfoStage();
+    boolean actualShouldShowShippingInfoStageResult = checkoutFormVariableExpression.shouldShowShippingInfoStage();
 
     // Assert
     verify(fulfillmentGroupService).calculateNumShippableFulfillmentGroups(isNull());
@@ -90,26 +87,22 @@ class CheckoutFormVariableExpressionDiffblueTest {
 
   /**
    * Test {@link CheckoutFormVariableExpression#shouldShowShippingInfoStage()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutFormVariableExpression#shouldShowShippingInfoStage()}
+   * <p>
+   * Method under test: {@link CheckoutFormVariableExpression#shouldShowShippingInfoStage()}
    */
   @Test
   @DisplayName("Test shouldShowShippingInfoStage(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CheckoutFormVariableExpression.shouldShowShippingInfoStage()"})
   void testShouldShowShippingInfoStage_thenReturnTrue() {
     // Arrange
-    when(fulfillmentGroupService.calculateNumShippableFulfillmentGroups(Mockito.<Order>any()))
-        .thenReturn(10);
+    when(fulfillmentGroupService.calculateNumShippableFulfillmentGroups(Mockito.<Order>any())).thenReturn(10);
 
     // Act
-    boolean actualShouldShowShippingInfoStageResult =
-        checkoutFormVariableExpression.shouldShowShippingInfoStage();
+    boolean actualShouldShowShippingInfoStageResult = checkoutFormVariableExpression.shouldShowShippingInfoStage();
 
     // Assert
     verify(fulfillmentGroupService).calculateNumShippableFulfillmentGroups(isNull());
@@ -118,21 +111,19 @@ class CheckoutFormVariableExpressionDiffblueTest {
 
   /**
    * Test {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}.
-   *
-   * <p>Method under test: {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}
+   * <p>
+   * Method under test: {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}
    */
   @Test
   @DisplayName("Test shouldShowBillingInfoStage()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CheckoutFormVariableExpression.shouldShowBillingInfoStage()"})
   void testShouldShowBillingInfoStage() {
     // Arrange
     when(cartStateService.cartHasThirdPartyPayment()).thenReturn(true);
 
     // Act
-    boolean actualShouldShowBillingInfoStageResult =
-        checkoutFormVariableExpression.shouldShowBillingInfoStage();
+    boolean actualShouldShowBillingInfoStageResult = checkoutFormVariableExpression.shouldShowBillingInfoStage();
 
     // Assert
     verify(cartStateService).cartHasThirdPartyPayment();
@@ -141,13 +132,12 @@ class CheckoutFormVariableExpressionDiffblueTest {
 
   /**
    * Test {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}.
-   *
-   * <p>Method under test: {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}
+   * <p>
+   * Method under test: {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}
    */
   @Test
   @DisplayName("Test shouldShowBillingInfoStage()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CheckoutFormVariableExpression.shouldShowBillingInfoStage()"})
   void testShouldShowBillingInfoStage2() {
     // Arrange
@@ -155,8 +145,7 @@ class CheckoutFormVariableExpressionDiffblueTest {
     when(cartStateService.cartHasUnconfirmedCreditCard()).thenReturn(true);
 
     // Act
-    boolean actualShouldShowBillingInfoStageResult =
-        checkoutFormVariableExpression.shouldShowBillingInfoStage();
+    boolean actualShouldShowBillingInfoStageResult = checkoutFormVariableExpression.shouldShowBillingInfoStage();
 
     // Assert
     verify(cartStateService).cartHasThirdPartyPayment();
@@ -166,17 +155,15 @@ class CheckoutFormVariableExpressionDiffblueTest {
 
   /**
    * Test {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}
+   * <p>
+   * Method under test: {@link CheckoutFormVariableExpression#shouldShowBillingInfoStage()}
    */
   @Test
   @DisplayName("Test shouldShowBillingInfoStage(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CheckoutFormVariableExpression.shouldShowBillingInfoStage()"})
   void testShouldShowBillingInfoStage_thenReturnTrue() {
     // Arrange
@@ -184,8 +171,7 @@ class CheckoutFormVariableExpressionDiffblueTest {
     when(cartStateService.cartHasUnconfirmedCreditCard()).thenReturn(false);
 
     // Act
-    boolean actualShouldShowBillingInfoStageResult =
-        checkoutFormVariableExpression.shouldShowBillingInfoStage();
+    boolean actualShouldShowBillingInfoStageResult = checkoutFormVariableExpression.shouldShowBillingInfoStage();
 
     // Assert
     verify(cartStateService).cartHasThirdPartyPayment();

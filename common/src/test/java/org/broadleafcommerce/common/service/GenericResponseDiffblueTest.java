@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,25 +34,23 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {GenericResponse.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class GenericResponseDiffblueTest {
-  @Autowired private GenericResponse genericResponse;
+  @Autowired
+  private GenericResponse genericResponse;
 
   /**
    * Test {@link GenericResponse#getHasErrors()}.
-   *
    * <ul>
-   *   <li>Given {@link GenericResponse} (default constructor) addErrorCode {@code An error
-   *       occurred}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link GenericResponse} (default constructor) addErrorCode {@code An error occurred}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GenericResponse#getHasErrors()}
+   * <p>
+   * Method under test: {@link GenericResponse#getHasErrors()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean GenericResponse.getHasErrors()"})
   public void testGetHasErrors_givenGenericResponseAddErrorCodeAnErrorOccurred_thenReturnTrue() {
     // Arrange
@@ -66,31 +63,28 @@ public class GenericResponseDiffblueTest {
 
   /**
    * Test {@link GenericResponse#getHasErrors()}.
-   *
    * <ul>
-   *   <li>Given {@link GenericResponse} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link GenericResponse} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GenericResponse#getHasErrors()}
+   * <p>
+   * Method under test: {@link GenericResponse#getHasErrors()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean GenericResponse.getHasErrors()"})
   public void testGetHasErrors_givenGenericResponse_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new GenericResponse().getHasErrors());
+    assertFalse((new GenericResponse()).getHasErrors());
   }
 
   /**
    * Test {@link GenericResponse#addErrorCode(String)} with {@code errorCode}.
-   *
-   * <p>Method under test: {@link GenericResponse#addErrorCode(String)}
+   * <p>
+   * Method under test: {@link GenericResponse#addErrorCode(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void GenericResponse.addErrorCode(String)"})
   public void testAddErrorCodeWithErrorCode() {
     // Arrange and Act
@@ -104,19 +98,16 @@ public class GenericResponseDiffblueTest {
   }
 
   /**
-   * Test {@link GenericResponse#addErrorCode(String, List)} with {@code errorCode}, {@code
-   * arguments}.
-   *
+   * Test {@link GenericResponse#addErrorCode(String, List)} with {@code errorCode}, {@code arguments}.
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GenericResponse#addErrorCode(String, List)}
+   * <p>
+   * Method under test: {@link GenericResponse#addErrorCode(String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void GenericResponse.addErrorCode(String, List)"})
   public void testAddErrorCodeWithErrorCodeArguments_given42_whenArrayListAdd42() {
     // Arrange
@@ -135,19 +126,16 @@ public class GenericResponseDiffblueTest {
   }
 
   /**
-   * Test {@link GenericResponse#addErrorCode(String, List)} with {@code errorCode}, {@code
-   * arguments}.
-   *
+   * Test {@link GenericResponse#addErrorCode(String, List)} with {@code errorCode}, {@code arguments}.
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
+   *   <li>Given {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GenericResponse#addErrorCode(String, List)}
+   * <p>
+   * Method under test: {@link GenericResponse#addErrorCode(String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void GenericResponse.addErrorCode(String, List)"})
   public void testAddErrorCodeWithErrorCodeArguments_givenFoo_whenArrayListAddFoo() {
     // Arrange
@@ -165,18 +153,15 @@ public class GenericResponseDiffblueTest {
   }
 
   /**
-   * Test {@link GenericResponse#addErrorCode(String, List)} with {@code errorCode}, {@code
-   * arguments}.
-   *
+   * Test {@link GenericResponse#addErrorCode(String, List)} with {@code errorCode}, {@code arguments}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GenericResponse#addErrorCode(String, List)}
+   * <p>
+   * Method under test: {@link GenericResponse#addErrorCode(String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void GenericResponse.addErrorCode(String, List)"})
   public void testAddErrorCodeWithErrorCodeArguments_whenArrayList() {
     // Arrange and Act
@@ -191,84 +176,50 @@ public class GenericResponseDiffblueTest {
 
   /**
    * Test {@link GenericResponse#getErrorCodeArguments(String)}.
-   *
    * <ul>
-   *   <li>Given {@link GenericResponse}.
-   *   <li>When {@code An error occurred}.
+   *   <li>When {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GenericResponse#getErrorCodeArguments(String)}
+   * <p>
+   * Method under test: {@link GenericResponse#getErrorCodeArguments(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object[] GenericResponse.getErrorCodeArguments(String)"})
-  public void testGetErrorCodeArguments_givenGenericResponse_whenAnErrorOccurred() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Object[] GenericResponse.getErrorCodeArguments(String)"})
+  public void testGetErrorCodeArguments_whenAnErrorOccurred() {
     // Arrange, Act and Assert
     assertEquals(0, genericResponse.getErrorCodeArguments("An error occurred").length);
   }
 
   /**
    * Test {@link GenericResponse#getErrorCodeArguments(String)}.
-   *
    * <ul>
-   *   <li>Given {@link GenericResponse}.
-   *   <li>When {@code Error Code}.
+   *   <li>When {@code Error Code}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GenericResponse#getErrorCodeArguments(String)}
+   * <p>
+   * Method under test: {@link GenericResponse#getErrorCodeArguments(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object[] GenericResponse.getErrorCodeArguments(String)"})
-  public void testGetErrorCodeArguments_givenGenericResponse_whenErrorCode() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Object[] GenericResponse.getErrorCodeArguments(String)"})
+  public void testGetErrorCodeArguments_whenErrorCode() {
     // Arrange, Act and Assert
     assertEquals(0, genericResponse.getErrorCodeArguments("Error Code").length);
   }
 
   /**
-   * Test {@link GenericResponse#getErrorCodeArguments(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code String[]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link GenericResponse#getErrorCodeArguments(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object[] GenericResponse.getErrorCodeArguments(String)"})
-  public void testGetErrorCodeArguments_thenReturnString() {
-    // Arrange
-    GenericResponse genericResponse = new GenericResponse();
-    genericResponse.addErrorCode("An error occurred");
-
-    // Act
-    Object[] actualErrorCodeArguments = genericResponse.getErrorCodeArguments("An error occurred");
-
-    // Assert
-    assertTrue(actualErrorCodeArguments instanceof String[]);
-    assertEquals(0, actualErrorCodeArguments.length);
-  }
-
-  /**
-   * Test new {@link GenericResponse} (default constructor).
-   *
-   * <p>Methods under test:
-   *
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link GenericResponse}
    *   <li>{@link GenericResponse#getErrorCodesList()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void GenericResponse.<init>()", "List GenericResponse.getErrorCodesList()"})
-  public void testNewGenericResponse() {
+  public void testGettersAndSetters() {
     // Arrange, Act and Assert
-    assertTrue(new GenericResponse().getErrorCodesList().isEmpty());
+    assertTrue((new GenericResponse()).getErrorCodesList().isEmpty());
   }
 }

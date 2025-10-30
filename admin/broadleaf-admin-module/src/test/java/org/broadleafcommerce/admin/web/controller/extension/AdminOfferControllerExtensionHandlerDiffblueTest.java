@@ -18,8 +18,7 @@
 package org.broadleafcommerce.admin.web.controller.extension;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager;
@@ -39,53 +38,42 @@ public class AdminOfferControllerExtensionHandlerDiffblueTest {
   @MockBean(name = "blAdminAbstractControllerExtensionManager")
   private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
 
-  @Autowired private AdminOfferControllerExtensionHandler adminOfferControllerExtensionHandler;
+  @Autowired
+  private AdminOfferControllerExtensionHandler adminOfferControllerExtensionHandler;
 
   /**
    * Test {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}.
-   *
    * <ul>
-   *   <li>When {@code offer}.
+   *   <li>When {@code offer}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
+   * <p>
+   * Method under test: {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AdminOfferControllerExtensionHandler.setAdditionalModelAttributes(Model, String)"
-  })
+      "ExtensionResultStatusType AdminOfferControllerExtensionHandler.setAdditionalModelAttributes(Model, String)"})
   public void testSetAdditionalModelAttributes_whenOffer() {
     // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.HANDLED_CONTINUE,
-        adminOfferControllerExtensionHandler.setAdditionalModelAttributes(
-            new ConcurrentModel(), "offer"));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        adminOfferControllerExtensionHandler.setAdditionalModelAttributes(new ConcurrentModel(), "offer"));
   }
 
   /**
    * Test {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}.
-   *
    * <ul>
-   *   <li>When {@code Section Key}.
+   *   <li>When {@code Section Key}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
+   * <p>
+   * Method under test: {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AdminOfferControllerExtensionHandler.setAdditionalModelAttributes(Model, String)"
-  })
+      "ExtensionResultStatusType AdminOfferControllerExtensionHandler.setAdditionalModelAttributes(Model, String)"})
   public void testSetAdditionalModelAttributes_whenSectionKey() {
     // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.HANDLED_CONTINUE,
-        adminOfferControllerExtensionHandler.setAdditionalModelAttributes(
-            new ConcurrentModel(), "Section Key"));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        adminOfferControllerExtensionHandler.setAdditionalModelAttributes(new ConcurrentModel(), "Section Key"));
   }
 }

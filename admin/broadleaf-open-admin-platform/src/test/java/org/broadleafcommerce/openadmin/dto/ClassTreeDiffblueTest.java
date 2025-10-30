@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.junit.Test;
@@ -31,12 +30,11 @@ import org.junit.experimental.categories.Category;
 public class ClassTreeDiffblueTest {
   /**
    * Test {@link ClassTree#ClassTree()}.
-   *
-   * <p>Method under test: {@link ClassTree#ClassTree()}
+   * <p>
+   * Method under test: {@link ClassTree#ClassTree()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ClassTree.<init>()"})
   public void testNewClassTree() {
     // Arrange and Act
@@ -59,12 +57,11 @@ public class ClassTreeDiffblueTest {
 
   /**
    * Test {@link ClassTree#ClassTree()}.
-   *
-   * <p>Method under test: {@link ClassTree#ClassTree()}
+   * <p>
+   * Method under test: {@link ClassTree#ClassTree()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ClassTree.<init>()"})
   public void testNewClassTree2() {
     // Arrange and Act
@@ -87,9 +84,8 @@ public class ClassTreeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ClassTree#setChildren(ClassTree[])}
    *   <li>{@link ClassTree#setFriendlyName(String)}
@@ -105,25 +101,16 @@ public class ClassTreeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ClassTree[] ClassTree.getChildren()",
-    "String ClassTree.getFullyQualifiedClassname()",
-    "int ClassTree.getLeft()",
-    "String ClassTree.getName()",
-    "int ClassTree.getRight()",
-    "boolean ClassTree.isExcludeFromPolymorphism()",
-    "void ClassTree.setChildren(ClassTree[])",
-    "void ClassTree.setFriendlyName(String)",
-    "void ClassTree.setLeft(int)",
-    "void ClassTree.setName(String)",
-    "void ClassTree.setRight(int)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree[] ClassTree.getChildren()", "String ClassTree.getFullyQualifiedClassname()",
+      "int ClassTree.getLeft()", "String ClassTree.getName()", "int ClassTree.getRight()",
+      "boolean ClassTree.isExcludeFromPolymorphism()", "void ClassTree.setChildren(ClassTree[])",
+      "void ClassTree.setFriendlyName(String)", "void ClassTree.setLeft(int)", "void ClassTree.setName(String)",
+      "void ClassTree.setRight(int)"})
   public void testGettersAndSetters() {
     // Arrange
     ClassTree classTree = new ClassTree();
-    ClassTree[] children = new ClassTree[] {new ClassTree()};
+    ClassTree[] children = new ClassTree[]{new ClassTree()};
 
     // Act
     classTree.setChildren(children);
@@ -148,9 +135,8 @@ public class ClassTreeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ClassTree#setChildren(ClassTree[])}
    *   <li>{@link ClassTree#setFriendlyName(String)}
@@ -166,25 +152,16 @@ public class ClassTreeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ClassTree[] ClassTree.getChildren()",
-    "String ClassTree.getFullyQualifiedClassname()",
-    "int ClassTree.getLeft()",
-    "String ClassTree.getName()",
-    "int ClassTree.getRight()",
-    "boolean ClassTree.isExcludeFromPolymorphism()",
-    "void ClassTree.setChildren(ClassTree[])",
-    "void ClassTree.setFriendlyName(String)",
-    "void ClassTree.setLeft(int)",
-    "void ClassTree.setName(String)",
-    "void ClassTree.setRight(int)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ClassTree[] ClassTree.getChildren()", "String ClassTree.getFullyQualifiedClassname()",
+      "int ClassTree.getLeft()", "String ClassTree.getName()", "int ClassTree.getRight()",
+      "boolean ClassTree.isExcludeFromPolymorphism()", "void ClassTree.setChildren(ClassTree[])",
+      "void ClassTree.setFriendlyName(String)", "void ClassTree.setLeft(int)", "void ClassTree.setName(String)",
+      "void ClassTree.setRight(int)"})
   public void testGettersAndSetters2() {
     // Arrange
     ClassTree classTree = new ClassTree();
-    ClassTree[] children = new ClassTree[] {new ClassTree()};
+    ClassTree[] children = new ClassTree[]{new ClassTree()};
 
     // Act
     classTree.setChildren(children);

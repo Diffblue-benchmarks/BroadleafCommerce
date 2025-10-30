@@ -19,8 +19,7 @@ package org.broadleafcommerce.admin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,175 +41,62 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {ForeignSkuFieldPersistenceProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ForeignSkuFieldPersistenceProviderDiffblueTest {
-  @Autowired private ForeignSkuFieldPersistenceProvider foreignSkuFieldPersistenceProvider;
+  @Autowired
+  private ForeignSkuFieldPersistenceProvider foreignSkuFieldPersistenceProvider;
 
   /**
    * Test {@link ForeignSkuFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <p>Method under test: {@link
-   * ForeignSkuFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse ForeignSkuFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue() {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            null,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertEquals(
-        MetadataProviderResponse.NOT_HANDLED,
-        foreignSkuFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
-  }
-
-  /**
-   * Test {@link ForeignSkuFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
    * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
+   *   <li>Then return {@code NOT_HANDLED}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ForeignSkuFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   * <p>
+   * Method under test: {@link ForeignSkuFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse ForeignSkuFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
+      "MetadataProviderResponse ForeignSkuFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
   public void testExtractValue_thenReturnNotHandled() {
     // Arrange
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
     // Act and Assert
-    assertEquals(
-        MetadataProviderResponse.NOT_HANDLED,
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
         foreignSkuFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
   }
 
   /**
-   * Test {@link ForeignSkuFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest,
-   * Property)}.
-   *
+   * Test {@link ForeignSkuFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ForeignSkuFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   * <p>
+   * Method under test: {@link ForeignSkuFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ForeignSkuFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean ForeignSkuFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"})
   public void testCanHandleExtraction_thenReturnFalse() {
     // Arrange
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
     // Act and Assert
-    assertFalse(
-        foreignSkuFieldPersistenceProvider.canHandleExtraction(
-            extractValueRequest, new Property()));
-  }
-
-  /**
-   * Test {@link ForeignSkuFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest,
-   * Property)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ForeignSkuFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ForeignSkuFieldPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
-  public void testCanHandleExtraction_thenReturnFalse2() {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            null,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertFalse(
-        foreignSkuFieldPersistenceProvider.canHandleExtraction(
-            extractValueRequest, new Property()));
+    assertFalse(foreignSkuFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property()));
   }
 }

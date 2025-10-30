@@ -27,8 +27,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -49,217 +48,264 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class OfferCodeImplDiffblueTest {
-  @Autowired private OfferCodeImpl offerCodeImpl;
+  @Autowired
+  private OfferCodeImpl offerCodeImpl;
 
   /**
    * Test {@link OfferCodeImpl#getOffer()}.
-   *
-   * <p>Method under test: {@link OfferCodeImpl#getOffer()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#getOffer()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"org.broadleafcommerce.core.offer.domain.Offer OfferCodeImpl.getOffer()"})
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Offer OfferCodeImpl.getOffer()"})
   public void testGetOffer() {
     // Arrange, Act and Assert
-    assertNull(offerCodeImpl.getOffer());
+    assertNull((new OfferCodeImpl()).getOffer());
+  }
+
+  /**
+   * Test {@link OfferCodeImpl#setOffer(Offer)}.
+   * <p>
+   * Method under test: {@link OfferCodeImpl#setOffer(Offer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OfferCodeImpl.setOffer(Offer)"})
+  public void testSetOffer() {
+    // Arrange
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+    OfferImpl offer = new OfferImpl();
+
+    // Act
+    offerCodeImpl2.setOffer(offer);
+
+    // Assert
+    assertTrue(offerCodeImpl2.offer instanceof OfferImpl);
+    assertSame(offer, offerCodeImpl2.getOffer());
+    assertSame(offer, offerCodeImpl2.deproxiedOffer);
   }
 
   /**
    * Test {@link OfferCodeImpl#getMaxUses()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} MaxUses is one.
-   *   <li>Then return one.
+   *   <li>Given {@link OfferCodeImpl} (default constructor) EmailAddress is {@code 42 Main St}.</li>
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#getMaxUses()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#getMaxUses()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int OfferCodeImpl.getMaxUses()"})
-  public void testGetMaxUses_givenOfferCodeImplMaxUsesIsOne_thenReturnOne() {
+  public void testGetMaxUses_givenOfferCodeImplEmailAddressIs42MainSt_thenReturnOne() {
     // Arrange
-    offerCodeImpl.setMaxUses(1);
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+    offerCodeImpl2.setEmailAddress("42 Main St");
+    offerCodeImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setId(OfferCodeImpl.serialVersionUID);
+    offerCodeImpl2.setOfferCode("Offer Code");
+    offerCodeImpl2.setOrders(new ArrayList<>());
+    offerCodeImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setUses(1);
+    offerCodeImpl2.setMaxUses(1);
 
     // Act and Assert
-    assertEquals(1, offerCodeImpl.getMaxUses());
+    assertEquals(1, offerCodeImpl2.getMaxUses());
   }
 
   /**
    * Test {@link OfferCodeImpl#getMaxUses()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl}.
-   *   <li>Then return zero.
+   *   <li>Given {@link OfferCodeImpl} (default constructor).</li>
+   *   <li>Then return zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#getMaxUses()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#getMaxUses()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int OfferCodeImpl.getMaxUses()"})
   public void testGetMaxUses_givenOfferCodeImpl_thenReturnZero() {
     // Arrange, Act and Assert
-    assertEquals(0, offerCodeImpl.getMaxUses());
+    assertEquals(0, (new OfferCodeImpl()).getMaxUses());
   }
 
   /**
    * Test {@link OfferCodeImpl#setMaxUses(int)}.
-   *
-   * <p>Method under test: {@link OfferCodeImpl#setMaxUses(int)}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#setMaxUses(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OfferCodeImpl.setMaxUses(int)"})
   public void testSetMaxUses() {
-    // Arrange and Act
-    offerCodeImpl.setMaxUses(3);
+    // Arrange
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+
+    // Act
+    offerCodeImpl2.setMaxUses(3);
 
     // Assert
-    assertEquals(3, offerCodeImpl.maxUses.intValue());
-    assertEquals(3, offerCodeImpl.getMaxUses());
-    assertFalse(offerCodeImpl.isUnlimitedUse());
-    assertTrue(offerCodeImpl.isLimitedUse());
+    assertEquals(3, offerCodeImpl2.maxUses.intValue());
+    assertEquals(3, offerCodeImpl2.getMaxUses());
+    assertFalse(offerCodeImpl2.isUnlimitedUse());
+    assertTrue(offerCodeImpl2.isLimitedUse());
   }
 
   /**
    * Test {@link OfferCodeImpl#isUnlimitedUse()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} MaxUses is one.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link OfferCodeImpl} (default constructor) MaxUses is one.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isUnlimitedUse()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#isUnlimitedUse()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.isUnlimitedUse()"})
   public void testIsUnlimitedUse_givenOfferCodeImplMaxUsesIsOne_thenReturnFalse() {
     // Arrange
-    offerCodeImpl.setMaxUses(1);
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+    offerCodeImpl2.setEmailAddress("42 Main St");
+    offerCodeImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setId(OfferCodeImpl.serialVersionUID);
+    offerCodeImpl2.setOfferCode("Offer Code");
+    offerCodeImpl2.setOrders(new ArrayList<>());
+    offerCodeImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setUses(1);
+    offerCodeImpl2.setMaxUses(1);
 
     // Act and Assert
-    assertFalse(offerCodeImpl.isUnlimitedUse());
+    assertFalse(offerCodeImpl2.isUnlimitedUse());
   }
 
   /**
    * Test {@link OfferCodeImpl#isUnlimitedUse()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} MaxUses is zero.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link OfferCodeImpl} (default constructor) MaxUses is zero.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isUnlimitedUse()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#isUnlimitedUse()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.isUnlimitedUse()"})
   public void testIsUnlimitedUse_givenOfferCodeImplMaxUsesIsZero_thenReturnTrue() {
     // Arrange
-    offerCodeImpl.setMaxUses(0);
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+    offerCodeImpl2.setEmailAddress("42 Main St");
+    offerCodeImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setId(OfferCodeImpl.serialVersionUID);
+    offerCodeImpl2.setOfferCode("Offer Code");
+    offerCodeImpl2.setOrders(new ArrayList<>());
+    offerCodeImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setUses(1);
+    offerCodeImpl2.setMaxUses(0);
 
     // Act and Assert
-    assertTrue(offerCodeImpl.isUnlimitedUse());
+    assertTrue(offerCodeImpl2.isUnlimitedUse());
   }
 
   /**
    * Test {@link OfferCodeImpl#isUnlimitedUse()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link OfferCodeImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isUnlimitedUse()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#isUnlimitedUse()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.isUnlimitedUse()"})
   public void testIsUnlimitedUse_givenOfferCodeImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(offerCodeImpl.isUnlimitedUse());
+    assertTrue((new OfferCodeImpl()).isUnlimitedUse());
   }
 
   /**
    * Test {@link OfferCodeImpl#isLimitedUse()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} MaxUses is one.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link OfferCodeImpl} (default constructor) MaxUses is one.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isLimitedUse()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#isLimitedUse()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.isLimitedUse()"})
   public void testIsLimitedUse_givenOfferCodeImplMaxUsesIsOne_thenReturnTrue() {
     // Arrange
-    offerCodeImpl.setMaxUses(1);
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+    offerCodeImpl2.setEmailAddress("42 Main St");
+    offerCodeImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setId(OfferCodeImpl.serialVersionUID);
+    offerCodeImpl2.setOfferCode("Offer Code");
+    offerCodeImpl2.setOrders(new ArrayList<>());
+    offerCodeImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setUses(1);
+    offerCodeImpl2.setMaxUses(1);
 
     // Act and Assert
-    assertTrue(offerCodeImpl.isLimitedUse());
+    assertTrue(offerCodeImpl2.isLimitedUse());
   }
 
   /**
    * Test {@link OfferCodeImpl#isLimitedUse()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} MaxUses is zero.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link OfferCodeImpl} (default constructor) MaxUses is zero.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isLimitedUse()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#isLimitedUse()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.isLimitedUse()"})
   public void testIsLimitedUse_givenOfferCodeImplMaxUsesIsZero_thenReturnFalse() {
     // Arrange
-    offerCodeImpl.setMaxUses(0);
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+    offerCodeImpl2.setEmailAddress("42 Main St");
+    offerCodeImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setId(OfferCodeImpl.serialVersionUID);
+    offerCodeImpl2.setOfferCode("Offer Code");
+    offerCodeImpl2.setOrders(new ArrayList<>());
+    offerCodeImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setUses(1);
+    offerCodeImpl2.setMaxUses(0);
 
     // Act and Assert
-    assertFalse(offerCodeImpl.isLimitedUse());
+    assertFalse(offerCodeImpl2.isLimitedUse());
   }
 
   /**
    * Test {@link OfferCodeImpl#isLimitedUse()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link OfferCodeImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isLimitedUse()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#isLimitedUse()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.isLimitedUse()"})
   public void testIsLimitedUse_givenOfferCodeImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(offerCodeImpl.isLimitedUse());
+    assertFalse((new OfferCodeImpl()).isLimitedUse());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferCodeImpl#setEmailAddress(String)}
    *   <li>{@link OfferCodeImpl#setEndDate(Date)}
@@ -278,39 +324,26 @@ public class OfferCodeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String OfferCodeImpl.getEmailAddress()",
-    "Date OfferCodeImpl.getEndDate()",
-    "Long OfferCodeImpl.getId()",
-    "String OfferCodeImpl.getOfferCode()",
-    "List OfferCodeImpl.getOrders()",
-    "Date OfferCodeImpl.getStartDate()",
-    "int OfferCodeImpl.getUses()",
-    "void OfferCodeImpl.setEmailAddress(String)",
-    "void OfferCodeImpl.setEndDate(Date)",
-    "void OfferCodeImpl.setId(Long)",
-    "void OfferCodeImpl.setOfferCode(String)",
-    "void OfferCodeImpl.setOrders(List)",
-    "void OfferCodeImpl.setStartDate(Date)",
-    "void OfferCodeImpl.setUses(int)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String OfferCodeImpl.getEmailAddress()", "Date OfferCodeImpl.getEndDate()",
+      "Long OfferCodeImpl.getId()", "String OfferCodeImpl.getOfferCode()", "List OfferCodeImpl.getOrders()",
+      "Date OfferCodeImpl.getStartDate()", "int OfferCodeImpl.getUses()", "void OfferCodeImpl.setEmailAddress(String)",
+      "void OfferCodeImpl.setEndDate(Date)", "void OfferCodeImpl.setId(Long)",
+      "void OfferCodeImpl.setOfferCode(String)", "void OfferCodeImpl.setOrders(List)",
+      "void OfferCodeImpl.setStartDate(Date)", "void OfferCodeImpl.setUses(int)"})
   public void testGettersAndSetters() {
     // Arrange
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
 
     // Act
     offerCodeImpl.setEmailAddress("42 Main St");
-    Date endDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     offerCodeImpl.setEndDate(endDate);
     offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl.setOfferCode("Offer Code");
     ArrayList<Order> orders = new ArrayList<>();
     offerCodeImpl.setOrders(orders);
-    Date startDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date startDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     offerCodeImpl.setStartDate(startDate);
     offerCodeImpl.setUses(1);
     String actualEmailAddress = offerCodeImpl.getEmailAddress();
@@ -333,201 +366,128 @@ public class OfferCodeImplDiffblueTest {
 
   /**
    * Test {@link OfferCodeImpl#getArchived()}.
-   *
-   * <p>Method under test: {@link OfferCodeImpl#getArchived()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#getArchived()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Character OfferCodeImpl.getArchived()"})
   public void testGetArchived() {
     // Arrange, Act and Assert
-    assertEquals('N', offerCodeImpl.getArchived().charValue());
+    assertEquals('N', (new OfferCodeImpl()).getArchived().charValue());
   }
 
   /**
    * Test {@link OfferCodeImpl#setArchived(Character)}.
-   *
-   * <p>Method under test: {@link OfferCodeImpl#setArchived(Character)}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#setArchived(Character)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OfferCodeImpl.setArchived(Character)"})
   public void testSetArchived() {
-    // Arrange and Act
-    offerCodeImpl.setArchived('A');
+    // Arrange
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+
+    // Act
+    offerCodeImpl2.setArchived('A');
 
     // Assert
-    assertEquals('A', offerCodeImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', offerCodeImpl.getArchived().charValue());
+    assertEquals('A', offerCodeImpl2.archiveStatus.getArchived().charValue());
+    assertEquals('A', offerCodeImpl2.getArchived().charValue());
   }
 
   /**
    * Test {@link OfferCodeImpl#isActive()}.
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferCodeImpl.isActive()"})
-  public void testIsActive() {
-    // Arrange
-    OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
-    offerCodeImpl.setEmailAddress("42 Main St");
-    offerCodeImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
-    offerCodeImpl.setMaxUses(3);
-    offerCodeImpl.setOfferCode("Offer Code");
-    offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerCodeImpl.setUses(1);
-
-    // Act and Assert
-    assertFalse(offerCodeImpl.isActive());
-  }
-
-  /**
-   * Test {@link OfferCodeImpl#isActive()}.
-   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} (default constructor) Archived is {@code Y}.
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isActive()}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#isActive()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.isActive()"})
-  public void testIsActive_givenOfferCodeImplArchivedIsY_thenReturnFalse() {
+  public void testIsActive_thenReturnFalse() {
     // Arrange
-    OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
-    offerCodeImpl.setArchived('Y');
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
+    offerCodeImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act and Assert
-    assertFalse(offerCodeImpl.isActive());
-  }
-
-  /**
-   * Test {@link OfferCodeImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferCodeImpl} (default constructor) Archived is {@code Y}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferCodeImpl.isActive()"})
-  public void testIsActive_givenOfferCodeImplArchivedIsY_thenReturnFalse2() {
-    // Arrange
-    OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
-    offerCodeImpl.setArchived('Y');
-    offerCodeImpl.setEmailAddress("42 Main St");
-    offerCodeImpl.setEndDate(new Date());
-    offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
-    offerCodeImpl.setMaxUses(3);
-    offerCodeImpl.setOfferCode("Offer Code");
-    offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerCodeImpl.setUses(1);
-
-    // Act and Assert
-    assertFalse(offerCodeImpl.isActive());
+    assertFalse(offerCodeImpl2.isActive());
   }
 
   /**
    * Test {@link OfferCodeImpl#equals(Object)}, and {@link OfferCodeImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferCodeImpl#equals(Object)}
    *   <li>{@link OfferCodeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.equals(Object)", "int OfferCodeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     offerCodeImpl.setEmailAddress("42 Main St");
-    offerCodeImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl.setMaxUses(3);
     offerCodeImpl.setOfferCode("Offer Code");
     offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setUses(1);
 
     OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
     offerCodeImpl2.setEmailAddress("42 Main St");
-    offerCodeImpl2.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl2.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl2.setMaxUses(3);
     offerCodeImpl2.setOfferCode("Offer Code");
     offerCodeImpl2.setOrders(new ArrayList<>());
-    offerCodeImpl2.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl2.setUses(1);
 
     // Act and Assert
     assertEquals(offerCodeImpl, offerCodeImpl2);
-    assertEquals(offerCodeImpl.hashCode(), offerCodeImpl2.hashCode());
+    int expectedHashCodeResult = offerCodeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, offerCodeImpl2.hashCode());
   }
 
   /**
    * Test {@link OfferCodeImpl#equals(Object)}, and {@link OfferCodeImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferCodeImpl#equals(Object)}
    *   <li>{@link OfferCodeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.equals(Object)", "int OfferCodeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     offerCodeImpl.setEmailAddress("42 Main St");
-    offerCodeImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl.setMaxUses(3);
     offerCodeImpl.setOfferCode("Offer Code");
     offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setUses(1);
 
     // Act and Assert
@@ -538,42 +498,36 @@ public class OfferCodeImplDiffblueTest {
 
   /**
    * Test {@link OfferCodeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.equals(Object)", "int OfferCodeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     offerCodeImpl.setEmailAddress("17 High St");
-    offerCodeImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl.setMaxUses(3);
     offerCodeImpl.setOfferCode("Offer Code");
     offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setUses(1);
 
     OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
     offerCodeImpl2.setEmailAddress("42 Main St");
-    offerCodeImpl2.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl2.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl2.setMaxUses(3);
     offerCodeImpl2.setOfferCode("Offer Code");
     offerCodeImpl2.setOrders(new ArrayList<>());
-    offerCodeImpl2.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl2.setUses(1);
 
     // Act and Assert
@@ -582,30 +536,26 @@ public class OfferCodeImplDiffblueTest {
 
   /**
    * Test {@link OfferCodeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.equals(Object)", "int OfferCodeImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     offerCodeImpl.setEmailAddress("42 Main St");
-    offerCodeImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl.setMaxUses(3);
     offerCodeImpl.setOfferCode("Offer Code");
     offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setUses(1);
 
     // Act and Assert
@@ -614,30 +564,26 @@ public class OfferCodeImplDiffblueTest {
 
   /**
    * Test {@link OfferCodeImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OfferCodeImpl.equals(Object)", "int OfferCodeImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     offerCodeImpl.setEmailAddress("42 Main St");
-    offerCodeImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl.setMaxUses(3);
     offerCodeImpl.setOfferCode("Offer Code");
     offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setUses(1);
 
     // Act and Assert
@@ -646,67 +592,23 @@ public class OfferCodeImplDiffblueTest {
 
   /**
    * Test {@link OfferCodeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferCodeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * <p>
+   * Method under test: {@link OfferCodeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferCodeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"CreateResponse OfferCodeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new OfferCodeImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<OfferCode> actualCreateOrRetrieveCopyInstanceResult =
-        offerCodeImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link OfferCodeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferCodeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferCodeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
-    offerCodeImpl.setMaxUses(3);
-
     OfferCodeImpl offerCodeImpl2 = new OfferCodeImpl();
-    offerCodeImpl2.setEmailAddress("42 Main St");
-    offerCodeImpl2.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerCodeImpl2.setId(OfferCodeImpl.serialVersionUID);
-    offerCodeImpl2.setMaxUses(3);
-    offerCodeImpl2.setOfferCode("Offer Code");
-    offerCodeImpl2.setOrders(new ArrayList<>());
-    offerCodeImpl2.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerCodeImpl2.setUses(1);
-    CreateResponse<Object> createResponse = new CreateResponse<>(offerCodeImpl2, false);
-
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OfferCode> actualCreateOrRetrieveCopyInstanceResult =
-        offerCodeImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<OfferCode> actualCreateOrRetrieveCopyInstanceResult = offerCodeImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -715,12 +617,11 @@ public class OfferCodeImplDiffblueTest {
 
   /**
    * Test new {@link OfferCodeImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link OfferCodeImpl}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link OfferCodeImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OfferCodeImpl.<init>()"})
   public void testNewOfferCodeImpl() {
     // Arrange and Act

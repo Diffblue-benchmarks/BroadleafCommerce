@@ -18,8 +18,7 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service.options;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.BroadleafEnumerationType;
@@ -38,21 +37,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {TimeEnumOptionsExtensionListener.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TimeEnumOptionsExtensionListenerDiffblueTest {
-  @Autowired private TimeEnumOptionsExtensionListener timeEnumOptionsExtensionListener;
+  @Autowired
+  private TimeEnumOptionsExtensionListener timeEnumOptionsExtensionListener;
 
   /**
    * Test {@link TimeEnumOptionsExtensionListener#getValuesToGenerate()}.
-   *
-   * <p>Method under test: {@link TimeEnumOptionsExtensionListener#getValuesToGenerate()}
+   * <p>
+   * Method under test: {@link TimeEnumOptionsExtensionListener#getValuesToGenerate()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map TimeEnumOptionsExtensionListener.getValuesToGenerate()"})
   public void testGetValuesToGenerate() {
     // Arrange and Act
-    Map<String, Class<? extends BroadleafEnumerationType>> actualValuesToGenerate =
-        timeEnumOptionsExtensionListener.getValuesToGenerate();
+    Map<String, Class<? extends BroadleafEnumerationType>> actualValuesToGenerate = timeEnumOptionsExtensionListener
+        .getValuesToGenerate();
 
     // Assert
     assertEquals(5, actualValuesToGenerate.size());

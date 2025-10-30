@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -32,26 +31,20 @@ import org.junit.experimental.categories.Category;
 public class CustomerOfferImplDiffblueTest {
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}, and {@link CustomerOfferImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerOfferImpl#equals(Object)}
    *   <li>{@link CustomerOfferImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -66,31 +59,26 @@ public class CustomerOfferImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerOfferImpl, customerOfferImpl2);
-    assertEquals(customerOfferImpl.hashCode(), customerOfferImpl2.hashCode());
+    int expectedHashCodeResult = customerOfferImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerOfferImpl2.hashCode());
   }
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}, and {@link CustomerOfferImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerOfferImpl#equals(Object)}
    *   <li>{@link CustomerOfferImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -105,31 +93,26 @@ public class CustomerOfferImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerOfferImpl, customerOfferImpl2);
-    assertEquals(customerOfferImpl.hashCode(), customerOfferImpl2.hashCode());
+    int expectedHashCodeResult = customerOfferImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerOfferImpl2.hashCode());
   }
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}, and {@link CustomerOfferImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerOfferImpl#equals(Object)}
    *   <li>{@link CustomerOfferImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -144,31 +127,26 @@ public class CustomerOfferImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerOfferImpl, customerOfferImpl2);
-    assertEquals(customerOfferImpl.hashCode(), customerOfferImpl2.hashCode());
+    int expectedHashCodeResult = customerOfferImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerOfferImpl2.hashCode());
   }
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}, and {@link CustomerOfferImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerOfferImpl#equals(Object)}
    *   <li>{@link CustomerOfferImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -183,31 +161,26 @@ public class CustomerOfferImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerOfferImpl, customerOfferImpl2);
-    assertEquals(customerOfferImpl.hashCode(), customerOfferImpl2.hashCode());
+    int expectedHashCodeResult = customerOfferImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerOfferImpl2.hashCode());
   }
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}, and {@link CustomerOfferImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerOfferImpl#equals(Object)}
    *   <li>{@link CustomerOfferImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -222,31 +195,26 @@ public class CustomerOfferImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerOfferImpl, customerOfferImpl2);
-    assertEquals(customerOfferImpl.hashCode(), customerOfferImpl2.hashCode());
+    int expectedHashCodeResult = customerOfferImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerOfferImpl2.hashCode());
   }
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}, and {@link CustomerOfferImpl#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerOfferImpl#equals(Object)}
    *   <li>{@link CustomerOfferImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -262,21 +230,16 @@ public class CustomerOfferImplDiffblueTest {
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerOfferImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerOfferImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -295,21 +258,16 @@ public class CustomerOfferImplDiffblueTest {
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerOfferImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerOfferImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -328,21 +286,16 @@ public class CustomerOfferImplDiffblueTest {
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerOfferImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerOfferImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -361,21 +314,16 @@ public class CustomerOfferImplDiffblueTest {
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerOfferImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerOfferImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     OfferImpl offer = new OfferImpl();
@@ -397,21 +345,16 @@ public class CustomerOfferImplDiffblueTest {
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerOfferImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerOfferImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -430,21 +373,16 @@ public class CustomerOfferImplDiffblueTest {
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerOfferImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerOfferImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -458,21 +396,16 @@ public class CustomerOfferImplDiffblueTest {
 
   /**
    * Test {@link CustomerOfferImpl#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerOfferImpl#equals(Object)}
+   * <p>
+   * Method under test: {@link CustomerOfferImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerOfferImpl.equals(Object)",
-    "int CustomerOfferImpl.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean CustomerOfferImpl.equals(Object)", "int CustomerOfferImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CustomerOfferImpl customerOfferImpl = new CustomerOfferImpl();
@@ -486,9 +419,8 @@ public class CustomerOfferImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CustomerOfferImpl}
    *   <li>{@link CustomerOfferImpl#setCustomer(Customer)}
@@ -500,17 +432,11 @@ public class CustomerOfferImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CustomerOfferImpl.<init>()",
-    "Customer CustomerOfferImpl.getCustomer()",
-    "Long CustomerOfferImpl.getId()",
-    "Offer CustomerOfferImpl.getOffer()",
-    "void CustomerOfferImpl.setCustomer(Customer)",
-    "void CustomerOfferImpl.setId(Long)",
-    "void CustomerOfferImpl.setOffer(Offer)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CustomerOfferImpl.<init>()", "Customer CustomerOfferImpl.getCustomer()",
+      "Long CustomerOfferImpl.getId()", "Offer CustomerOfferImpl.getOffer()",
+      "void CustomerOfferImpl.setCustomer(Customer)", "void CustomerOfferImpl.setId(Long)",
+      "void CustomerOfferImpl.setOffer(Offer)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CustomerOfferImpl actualCustomerOfferImpl = new CustomerOfferImpl();

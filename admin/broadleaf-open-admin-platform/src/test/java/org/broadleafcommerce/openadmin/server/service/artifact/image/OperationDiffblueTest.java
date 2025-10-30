@@ -19,8 +19,7 @@ package org.broadleafcommerce.openadmin.server.service.artifact.image;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.UnmarshalledParameter;
 import org.junit.Test;
@@ -29,9 +28,8 @@ import org.junit.experimental.categories.Category;
 public class OperationDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link Operation}
    *   <li>{@link Operation#setFactor(Double)}
@@ -43,17 +41,10 @@ public class OperationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void Operation.<init>()",
-    "Double Operation.getFactor()",
-    "String Operation.getName()",
-    "UnmarshalledParameter[] Operation.getParameters()",
-    "void Operation.setFactor(Double)",
-    "void Operation.setName(String)",
-    "void Operation.setParameters(UnmarshalledParameter[])"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Operation.<init>()", "Double Operation.getFactor()", "String Operation.getName()",
+      "UnmarshalledParameter[] Operation.getParameters()", "void Operation.setFactor(Double)",
+      "void Operation.setName(String)", "void Operation.setParameters(UnmarshalledParameter[])"})
   public void testGettersAndSetters() {
     // Arrange and Act
     Operation actualOperation = new Operation();
@@ -64,7 +55,7 @@ public class OperationDiffblueTest {
     unmarshalledParameter.setName("Name");
     unmarshalledParameter.setType("Type");
     unmarshalledParameter.setValue("42");
-    UnmarshalledParameter[] parameters = new UnmarshalledParameter[] {unmarshalledParameter};
+    UnmarshalledParameter[] parameters = new UnmarshalledParameter[]{unmarshalledParameter};
     actualOperation.setParameters(parameters);
     Double actualFactor = actualOperation.getFactor();
     String actualName = actualOperation.getName();

@@ -20,7 +20,6 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.provid
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -28,13 +27,11 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import org.broadleafcommerce.common.breadcrumbs.dto.BreadcrumbDTOType;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
@@ -58,56 +55,36 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DefaultFieldPersistenceProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DefaultFieldPersistenceProviderDiffblueTest {
-  @Autowired private DefaultFieldPersistenceProvider defaultFieldPersistenceProvider;
+  @Autowired
+  private DefaultFieldPersistenceProvider defaultFieldPersistenceProvider;
 
   /**
    * Test {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   * <p>
+   * Method under test: {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"
-  })
+      "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
   public void testPopulateValue()
-      throws IllegalAccessException,
-          InstantiationException,
-          PersistenceException,
-          FieldNotAvailableException {
+      throws IllegalAccessException, InstantiationException, PersistenceException, FieldNotAvailableException {
     // Arrange
     FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any()))
-        .thenReturn("Field Value");
-    when(fieldManager.setFieldValue(
-            Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn("Field Value");
+    when(fieldManager.setFieldValue(Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
         .thenReturn("Field Value");
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
     // Act
-    MetadataProviderResponse actualPopulateValueResult =
-        defaultFieldPersistenceProvider.populateValue(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    MetadataProviderResponse actualPopulateValueResult = defaultFieldPersistenceProvider
+        .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
 
     // Assert
     verify(fieldManager, atLeast(1)).getFieldValue(isA(Object.class), isNull());
@@ -121,171 +98,69 @@ public class DefaultFieldPersistenceProviderDiffblueTest {
 
   /**
    * Test {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   * <p>
+   * Method under test: {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"
-  })
+      "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
   public void testPopulateValue2()
-      throws IllegalAccessException,
-          InstantiationException,
-          PersistenceException,
-          FieldNotAvailableException {
+      throws IllegalAccessException, InstantiationException, PersistenceException, FieldNotAvailableException {
     // Arrange
     FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any()))
-        .thenReturn("Field Value");
-    when(fieldManager.setFieldValue(
-            Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn(" /");
+    when(fieldManager.setFieldValue(Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
         .thenReturn("Field Value");
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            " /",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
     // Act
-    MetadataProviderResponse actualPopulateValueResult =
-        defaultFieldPersistenceProvider.populateValue(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    MetadataProviderResponse actualPopulateValueResult = defaultFieldPersistenceProvider
+        .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
 
     // Assert
     verify(fieldManager, atLeast(1)).getFieldValue(isA(Object.class), isNull());
     verify(fieldManager).setFieldValue(isA(Object.class), isNull(), isA(Object.class));
     Property property2 = populateValueRequest.getProperty();
-    assertEquals("Field Value", property2.getOriginalDisplayValue());
-    assertEquals("Field Value", property2.getOriginalValue());
+    assertEquals(" /", property2.getOriginalDisplayValue());
+    assertEquals(" /", property2.getOriginalValue());
     assertEquals(MetadataProviderResponse.HANDLED, actualPopulateValueResult);
     assertFalse(property2.getIsDirty());
   }
 
   /**
    * Test {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   * <p>
+   * Method under test: {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"
-  })
+      "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
   public void testPopulateValue3()
-      throws IllegalAccessException,
-          InstantiationException,
-          PersistenceException,
-          FieldNotAvailableException {
-    // Arrange
-    FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any()))
-        .thenReturn("Field Value");
-    when(fieldManager.setFieldValue(
-            Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
-        .thenReturn("Field Value");
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    metadata.setDefaultValue("42");
-    Property property = new Property();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    MetadataProviderResponse actualPopulateValueResult =
-        defaultFieldPersistenceProvider.populateValue(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
-
-    // Assert
-    verify(fieldManager, atLeast(1)).getFieldValue(isA(Object.class), isNull());
-    verify(fieldManager).setFieldValue(isA(Object.class), isNull(), isA(Object.class));
-    Property property2 = populateValueRequest.getProperty();
-    assertEquals("Field Value", property2.getOriginalDisplayValue());
-    assertEquals("Field Value", property2.getOriginalValue());
-    assertEquals(MetadataProviderResponse.HANDLED, actualPopulateValueResult);
-    assertTrue(property2.getIsDirty());
-  }
-
-  /**
-   * Test {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateValue4()
-      throws IllegalAccessException,
-          InstantiationException,
-          PersistenceException,
-          FieldNotAvailableException {
+      throws IllegalAccessException, InstantiationException, PersistenceException, FieldNotAvailableException {
     // Arrange
     FieldManager fieldManager = mock(FieldManager.class);
     when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn(null);
-    when(fieldManager.setFieldValue(
-            Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
+    when(fieldManager.setFieldValue(Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
         .thenReturn("Field Value");
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
     // Act
-    MetadataProviderResponse actualPopulateValueResult =
-        defaultFieldPersistenceProvider.populateValue(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    MetadataProviderResponse actualPopulateValueResult = defaultFieldPersistenceProvider
+        .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
 
     // Assert
     verify(fieldManager, atLeast(1)).getFieldValue(isA(Object.class), isNull());
@@ -299,63 +174,75 @@ public class DefaultFieldPersistenceProviderDiffblueTest {
 
   /**
    * Test {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
-   *
-   * <ul>
-   *   <li>Given {@link DefaultFieldPersistenceProvider} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   * <p>
+   * Method under test: {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"
-  })
-  public void testPopulateValue_givenDefaultFieldPersistenceProvider()
-      throws IllegalAccessException,
-          InstantiationException,
-          PersistenceException,
-          FieldNotAvailableException {
+      "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
+  public void testPopulateValue4()
+      throws IllegalAccessException, InstantiationException, PersistenceException, FieldNotAvailableException {
     // Arrange
-    DefaultFieldPersistenceProvider defaultFieldPersistenceProvider =
-        new DefaultFieldPersistenceProvider();
-
     FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any()))
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn("Field Value");
+    when(fieldManager.setFieldValue(Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
         .thenReturn("Field Value");
-    when(fieldManager.setFieldValue(
-            Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
-        .thenReturn("Field Value");
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    metadata.setDefaultValue("");
+    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
+    when(metadata.getDefaultValue()).thenReturn("42");
     Property property = new Property();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
     // Act
-    MetadataProviderResponse actualPopulateValueResult =
-        defaultFieldPersistenceProvider.populateValue(
-            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    MetadataProviderResponse actualPopulateValueResult = defaultFieldPersistenceProvider
+        .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
 
     // Assert
+    verify(metadata).getDefaultValue();
+    verify(fieldManager, atLeast(1)).getFieldValue(isA(Object.class), isNull());
+    verify(fieldManager).setFieldValue(isA(Object.class), isNull(), isA(Object.class));
+    Property property2 = populateValueRequest.getProperty();
+    assertEquals("Field Value", property2.getOriginalDisplayValue());
+    assertEquals("Field Value", property2.getOriginalValue());
+    assertEquals(MetadataProviderResponse.HANDLED, actualPopulateValueResult);
+    assertTrue(property2.getIsDirty());
+  }
+
+  /**
+   * Test {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test: {@link DefaultFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "MetadataProviderResponse DefaultFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
+  public void testPopulateValue5()
+      throws IllegalAccessException, InstantiationException, PersistenceException, FieldNotAvailableException {
+    // Arrange
+    FieldManager fieldManager = mock(FieldManager.class);
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn("Field Value");
+    when(fieldManager.setFieldValue(Mockito.<Object>any(), Mockito.<String>any(), Mockito.<Object>any()))
+        .thenReturn("Field Value");
+    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
+    when(metadata.getDefaultValue()).thenReturn("");
+    Property property = new Property();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    MetadataProviderResponse actualPopulateValueResult = defaultFieldPersistenceProvider
+        .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    verify(metadata).getDefaultValue();
     verify(fieldManager, atLeast(1)).getFieldValue(isA(Object.class), isNull());
     verify(fieldManager).setFieldValue(isA(Object.class), isNull(), isA(Object.class));
     Property property2 = populateValueRequest.getProperty();
@@ -367,185 +254,60 @@ public class DefaultFieldPersistenceProviderDiffblueTest {
 
   /**
    * Test {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <p>Method under test: {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
+   * <ul>
+   *   <li>Given {@code null}.</li>
+   *   <li>Then {@link Property#Property()} DisplayValue is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue() throws PersistenceException {
+      "MetadataProviderResponse DefaultFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+  public void testExtractValue_givenNull_thenPropertyDisplayValueIsNull() throws PersistenceException {
     // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    BreadcrumbDTOType breadcrumbDTOType = new BreadcrumbDTOType("Type", "Friendly Type");
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            breadcrumbDTOType,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
+    when(extractValueRequest.getRequestedValue()).thenReturn(null);
     Property property = new Property();
 
     // Act
-    defaultFieldPersistenceProvider.extractValue(extractValueRequest, property);
+    MetadataProviderResponse actualExtractValueResult = defaultFieldPersistenceProvider
+        .extractValue(extractValueRequest, property);
 
     // Assert
-    assertEquals("Display Val", property.getDisplayValue());
-    assertEquals("Type", property.getRawValue());
-    assertEquals("Type", property.getUnHtmlEncodedValue());
-    assertEquals("Type", property.getValue());
-  }
-
-  /**
-   * Test {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then {@link Property#Property()} DisplayValue is {@code Friendly Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_thenPropertyDisplayValueIsFriendlyType()
-      throws PersistenceException {
-    // Arrange
-    DefaultFieldPersistenceProvider defaultFieldPersistenceProvider =
-        new DefaultFieldPersistenceProvider();
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    BreadcrumbDTOType breadcrumbDTOType = new BreadcrumbDTOType("Type", "Friendly Type");
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            breadcrumbDTOType,
-            null,
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-    Property property = new Property();
-
-    // Act
-    defaultFieldPersistenceProvider.extractValue(extractValueRequest, property);
-
-    // Assert
-    assertEquals("Friendly Type", property.getDisplayValue());
-    assertEquals("Type", property.getRawValue());
-    assertEquals("Type", property.getUnHtmlEncodedValue());
-    assertEquals("Type", property.getValue());
-  }
-
-  /**
-   * Test {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then {@link Property#Property()} DisplayValue is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_thenPropertyDisplayValueIsNull() throws PersistenceException {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            null,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-    Property property = new Property();
-
-    // Act
-    defaultFieldPersistenceProvider.extractValue(extractValueRequest, property);
-
-    // Assert that nothing has changed
+    verify(extractValueRequest).getRequestedValue();
     assertNull(property.getDisplayValue());
     assertNull(property.getRawValue());
     assertNull(property.getUnHtmlEncodedValue());
     assertNull(property.getValue());
+    assertEquals(MetadataProviderResponse.HANDLED, actualExtractValueResult);
   }
 
   /**
    * Test {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
    * <ul>
-   *   <li>Then {@link Property#Property()} RawValue is {@code Requested Value}.
+   *   <li>Then {@link Property#Property()} DisplayValue is {@code Display Val}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
+   * <p>
+   * Method under test: {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_thenPropertyRawValueIsRequestedValue() throws PersistenceException {
+      "MetadataProviderResponse DefaultFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+  public void testExtractValue_thenPropertyDisplayValueIsDisplayVal() throws PersistenceException {
     // Arrange
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
     Property property = new Property();
 
     // Act
@@ -556,51 +318,5 @@ public class DefaultFieldPersistenceProviderDiffblueTest {
     assertEquals("Requested Value", property.getRawValue());
     assertEquals("Requested Value", property.getUnHtmlEncodedValue());
     assertEquals("Requested Value", property.getValue());
-  }
-
-  /**
-   * Test {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link PersistenceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DefaultFieldPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse DefaultFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_thenThrowPersistenceException() throws PersistenceException {
-    // Arrange
-    BreadcrumbDTOType breadcrumbDTOType = mock(BreadcrumbDTOType.class);
-    when(breadcrumbDTOType.getType()).thenThrow(new PersistenceException("An error occurred"));
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            breadcrumbDTOType,
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () -> defaultFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
-    verify(breadcrumbDTOType).getType();
   }
 }

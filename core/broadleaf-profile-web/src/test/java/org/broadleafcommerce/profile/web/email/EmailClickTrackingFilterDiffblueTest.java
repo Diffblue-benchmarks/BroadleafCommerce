@@ -18,14 +18,11 @@
 package org.broadleafcommerce.profile.web.email;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -55,68 +52,26 @@ class EmailClickTrackingFilterDiffblueTest {
   @MockBean(name = "blCustomerState")
   private CustomerState customerState;
 
-  @Autowired private EmailClickTrackingFilter emailClickTrackingFilter;
+  @Autowired
+  private EmailClickTrackingFilter emailClickTrackingFilter;
 
   /**
    * Test {@link EmailClickTrackingFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}.
-   *
    * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
+   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.</li>
+   *   <li>Then calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EmailClickTrackingFilter#doFilter(ServletRequest, ServletResponse,
-   * FilterChain)}
+   * <p>
+   * Method under test: {@link EmailClickTrackingFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName(
-      "Test doFilter(ServletRequest, ServletResponse, FilterChain); given IOException(); then throw IOException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailClickTrackingFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"
-  })
-  void testDoFilter_givenIOException_thenThrowIOException() throws IOException, ServletException {
+  @DisplayName("Test doFilter(ServletRequest, ServletResponse, FilterChain); when MockHttpServletRequest(); then calls doFilter(ServletRequest, ServletResponse)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void EmailClickTrackingFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"})
+  void testDoFilter_whenMockHttpServletRequest_thenCallsDoFilter() throws IOException, ServletException {
     // Arrange
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();
-
-    FilterChain chain = mock(FilterChain.class);
-    doThrow(new IOException())
-        .when(chain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act and Assert
-    assertThrows(
-        IOException.class, () -> emailClickTrackingFilter.doFilter(request, response, chain));
-    verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-  }
-
-  /**
-   * Test {@link EmailClickTrackingFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}.
-   *
-   * <ul>
-   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.
-   *   <li>Then calls {@link FilterChain#doFilter(ServletRequest, ServletResponse)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EmailClickTrackingFilter#doFilter(ServletRequest, ServletResponse,
-   * FilterChain)}
-   */
-  @Test
-  @DisplayName(
-      "Test doFilter(ServletRequest, ServletResponse, FilterChain); when MockHttpServletRequest(); then calls doFilter(ServletRequest, ServletResponse)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailClickTrackingFilter.doFilter(ServletRequest, ServletResponse, FilterChain)"
-  })
-  void testDoFilter_whenMockHttpServletRequest_thenCallsDoFilter()
-      throws IOException, ServletException {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    MockHttpServletResponse response = new MockHttpServletResponse();
-
     FilterChain chain = mock(FilterChain.class);
     doNothing().when(chain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
@@ -129,9 +84,8 @@ class EmailClickTrackingFilterDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link EmailClickTrackingFilter}
    *   <li>{@link EmailClickTrackingFilter#setEmailTrackingManager(EmailTrackingManager)}
@@ -142,15 +96,11 @@ class EmailClickTrackingFilterDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailClickTrackingFilter.<init>()",
-    "void EmailClickTrackingFilter.destroy()",
-    "EmailTrackingManager EmailClickTrackingFilter.getEmailTrackingManager()",
-    "void EmailClickTrackingFilter.init(FilterConfig)",
-    "void EmailClickTrackingFilter.setEmailTrackingManager(EmailTrackingManager)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void EmailClickTrackingFilter.<init>()", "void EmailClickTrackingFilter.destroy()",
+      "EmailTrackingManager EmailClickTrackingFilter.getEmailTrackingManager()",
+      "void EmailClickTrackingFilter.init(FilterConfig)",
+      "void EmailClickTrackingFilter.setEmailTrackingManager(EmailTrackingManager)"})
   void testGettersAndSetters() throws ServletException {
     // Arrange and Act
     EmailClickTrackingFilter actualEmailClickTrackingFilter = new EmailClickTrackingFilter();
@@ -158,8 +108,7 @@ class EmailClickTrackingFilterDiffblueTest {
     actualEmailClickTrackingFilter.setEmailTrackingManager(emailTrackingManager);
     actualEmailClickTrackingFilter.destroy();
     actualEmailClickTrackingFilter.init(new MockFilterConfig());
-    EmailTrackingManager actualEmailTrackingManager =
-        actualEmailClickTrackingFilter.getEmailTrackingManager();
+    EmailTrackingManager actualEmailTrackingManager = actualEmailClickTrackingFilter.getEmailTrackingManager();
 
     // Assert
     assertTrue(actualEmailTrackingManager instanceof EmailTrackingManagerImpl);

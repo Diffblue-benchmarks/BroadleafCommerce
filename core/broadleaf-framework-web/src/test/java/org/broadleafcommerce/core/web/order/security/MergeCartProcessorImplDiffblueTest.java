@@ -21,26 +21,31 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.MergeCartService;
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.order.service.call.MergeCartResponse;
 import org.broadleafcommerce.core.order.service.exception.RemoveFromCartException;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.service.CustomerService;
@@ -53,621 +58,340 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
 class MergeCartProcessorImplDiffblueTest {
-  @Mock private CustomerService customerService;
+  @Mock
+  private CustomerService customerService;
 
-  @Mock private CustomerStateRequestProcessor customerStateRequestProcessor;
+  @Mock
+  private CustomerStateRequestProcessor customerStateRequestProcessor;
 
-  @InjectMocks private MergeCartProcessorImpl mergeCartProcessorImpl;
+  @InjectMocks
+  private MergeCartProcessorImpl mergeCartProcessorImpl;
 
-  @Mock private MergeCartService mergeCartService;
+  @Mock
+  private MergeCartService mergeCartService;
 
-  @Mock private OrderService orderService;
+  @Mock
+  private OrderService orderService;
 
   /**
-   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request},
-   * {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
+   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request}, {@code authResult}.
+   * <p>
+   * Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
    */
   @Test
   @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
-  void testExecuteWithRequestAuthResult() {
+  void testExecuteWithRequestAuthResult() throws RemoveFromCartException, PricingException {
     // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any())).thenReturn(new CustomerImpl());
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request2, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(customerService).readCustomerByUsername("Principal");
+    MergeCartResponse mergeCartResponse = new MergeCartResponse();
+    mergeCartResponse.setAddedItems(new ArrayList<>());
+    mergeCartResponse.setMerged(true);
+    mergeCartResponse.setOrder(new NullOrderImpl());
+    mergeCartResponse.setRemovedItems(new ArrayList<>());
+    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any())).thenReturn(mergeCartResponse);
+    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
+
+    // Act
+    mergeCartProcessorImpl.execute(request, new TestingAuthenticationToken("Principal", "Credentials"));
+
+    // Assert
+    verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
+    verify(orderService).findCartForCustomer(isA(Customer.class));
+    verify(customerService).readCustomerByUsername(eq("Principal"));
+    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
+    Object sessionMutex = request.getSessionMutex();
+    assertTrue(sessionMutex instanceof MockHttpSession);
+    assertArrayEquals(new String[]{"bl_merge_cart_response"}, ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
-   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request},
-   * {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
+   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request}, {@code authResult}.
+   * <p>
+   * Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
    */
   @Test
   @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
   void testExecuteWithRequestAuthResult2() throws RemoveFromCartException, PricingException {
     // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any())).thenReturn(null);
 
     MergeCartResponse mergeCartResponse = new MergeCartResponse();
     mergeCartResponse.setAddedItems(new ArrayList<>());
     mergeCartResponse.setMerged(true);
     mergeCartResponse.setOrder(new NullOrderImpl());
     mergeCartResponse.setRemovedItems(new ArrayList<>());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenReturn(mergeCartResponse);
-    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any())).thenReturn(mergeCartResponse);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
 
     // Act
-    mergeCartProcessorImpl.execute(
-        request2, new TestingAuthenticationToken("Principal", "Credentials"));
-
-    // Assert
-    verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
-    verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
-    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-    Object sessionMutex = request2.getSessionMutex();
-    assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(
-        new String[] {"bl_merge_cart_response"}, ((MockHttpSession) sessionMutex).getValueNames());
-  }
-
-  /**
-   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request},
-   * {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
-   */
-  @Test
-  @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
-  void testExecuteWithRequestAuthResult3() {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-    when(orderService.findCartForCustomer(Mockito.<Customer>any()))
-        .thenThrow(new RuntimeException());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request2, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
-    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-  }
-
-  /**
-   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request},
-   * {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
-   */
-  @Test
-  @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
-  void testExecuteWithRequestAuthResult4() throws RemoveFromCartException, PricingException {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenThrow(new PricingException("An error occurred"));
-    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request2, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
-    verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
-    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-  }
-
-  /**
-   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request},
-   * {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
-   */
-  @Test
-  @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
-  void testExecuteWithRequestAuthResult5() throws RemoveFromCartException, PricingException {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenThrow(new RuntimeException());
-    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request2, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
-    verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
-    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-  }
-
-  /**
-   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request},
-   * {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
-   */
-  @Test
-  @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
-  void testExecuteWithRequestAuthResult6() throws RemoveFromCartException, PricingException {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenThrow(new RemoveFromCartException("An error occurred"));
-    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request2, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
-    verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
-    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-  }
-
-  /**
-   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request},
-   * {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
-   */
-  @Test
-  @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
-  void testExecuteWithRequestAuthResult7() throws RemoveFromCartException, PricingException {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(null);
-
-    MergeCartResponse mergeCartResponse = new MergeCartResponse();
-    mergeCartResponse.setAddedItems(new ArrayList<>());
-    mergeCartResponse.setMerged(true);
-    mergeCartResponse.setOrder(new NullOrderImpl());
-    mergeCartResponse.setRemovedItems(new ArrayList<>());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenReturn(mergeCartResponse);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
-
-    // Act
-    mergeCartProcessorImpl.execute(
-        request2, new TestingAuthenticationToken("Principal", "Credentials"));
+    mergeCartProcessorImpl.execute(request, new TestingAuthenticationToken("Principal", "Credentials"));
 
     // Assert
     verify(mergeCartService).mergeCart(isA(Customer.class), isNull());
-    verify(customerService).readCustomerByUsername("Principal");
+    verify(customerService).readCustomerByUsername(eq("Principal"));
     verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-    Object sessionMutex = request2.getSessionMutex();
+    Object sessionMutex = request.getSessionMutex();
     assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(
-        new String[] {"bl_merge_cart_response"}, ((MockHttpSession) sessionMutex).getValueNames());
+    assertArrayEquals(new String[]{"bl_merge_cart_response"}, ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
-   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse,
-   * Authentication)} with {@code request}, {@code response}, {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
+   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request}, {@code authResult}.
+   * <ul>
+   *   <li>Given {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
    */
   @Test
-  @DisplayName(
-      "Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testExecuteWithRequestResponseAuthResult() {
+  @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'; given 'false'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
+  void testExecuteWithRequestAuthResult_givenFalse() throws RemoveFromCartException, PricingException {
     // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request, response, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(customerService).readCustomerByUsername("Principal");
-  }
-
-  /**
-   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse,
-   * Authentication)} with {@code request}, {@code response}, {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
-   */
-  @Test
-  @DisplayName(
-      "Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testExecuteWithRequestResponseAuthResult2()
-      throws RemoveFromCartException, PricingException {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-
-    MergeCartResponse mergeCartResponse = new MergeCartResponse();
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any())).thenReturn(new CustomerImpl());
+    MergeCartResponse mergeCartResponse = mock(MergeCartResponse.class);
+    doNothing().when(mergeCartResponse).setAddedItems(Mockito.<List<OrderItem>>any());
+    doNothing().when(mergeCartResponse).setMerged(anyBoolean());
+    doNothing().when(mergeCartResponse).setOrder(Mockito.<Order>any());
+    doNothing().when(mergeCartResponse).setRemovedItems(Mockito.<List<OrderItem>>any());
     mergeCartResponse.setAddedItems(new ArrayList<>());
     mergeCartResponse.setMerged(true);
     mergeCartResponse.setOrder(new NullOrderImpl());
     mergeCartResponse.setRemovedItems(new ArrayList<>());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenReturn(mergeCartResponse);
+    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any())).thenReturn(mergeCartResponse);
     when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
+    WebRequest request = mock(WebRequest.class);
+    when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(false);
 
     // Act
-    mergeCartProcessorImpl.execute(
-        request, response, new TestingAuthenticationToken("Principal", "Credentials"));
+    mergeCartProcessorImpl.execute(request, new TestingAuthenticationToken("Principal", "Credentials"));
 
     // Assert
     verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
     verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
+    verify(mergeCartResponse).setAddedItems(isA(List.class));
+    verify(mergeCartResponse).setMerged(eq(true));
+    verify(mergeCartResponse).setOrder(isA(Order.class));
+    verify(mergeCartResponse).setRemovedItems(isA(List.class));
+    verify(customerService).readCustomerByUsername(eq("Principal"));
     verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-    HttpSession session = request.getSession();
-    assertTrue(session instanceof MockHttpSession);
-    assertArrayEquals(new String[] {"bl_merge_cart_response"}, session.getValueNames());
+    verify(request).getAttribute(eq("blOkToUseSession"), eq(0));
   }
 
   /**
-   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse,
-   * Authentication)} with {@code request}, {@code response}, {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
+   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request}, {@code authResult}.
+   * <ul>
+   *   <li>Given {@code true}.</li>
+   *   <li>Then calls {@link RequestAttributes#setAttribute(String, Object, int)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
    */
   @Test
-  @DisplayName(
-      "Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testExecuteWithRequestResponseAuthResult3() {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-    when(orderService.findCartForCustomer(Mockito.<Customer>any()))
-        .thenThrow(new RuntimeException());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request, response, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
-    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-  }
-
-  /**
-   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse,
-   * Authentication)} with {@code request}, {@code response}, {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
-   */
-  @Test
-  @DisplayName(
-      "Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testExecuteWithRequestResponseAuthResult4()
+  @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'; given 'true'; then calls setAttribute(String, Object, int)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
+  void testExecuteWithRequestAuthResult_givenTrue_thenCallsSetAttribute()
       throws RemoveFromCartException, PricingException {
     // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenThrow(new PricingException("An error occurred"));
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any())).thenReturn(new CustomerImpl());
+    MergeCartResponse mergeCartResponse = mock(MergeCartResponse.class);
+    doNothing().when(mergeCartResponse).setAddedItems(Mockito.<List<OrderItem>>any());
+    doNothing().when(mergeCartResponse).setMerged(anyBoolean());
+    doNothing().when(mergeCartResponse).setOrder(Mockito.<Order>any());
+    doNothing().when(mergeCartResponse).setRemovedItems(Mockito.<List<OrderItem>>any());
+    mergeCartResponse.setAddedItems(new ArrayList<>());
+    mergeCartResponse.setMerged(true);
+    mergeCartResponse.setOrder(new NullOrderImpl());
+    mergeCartResponse.setRemovedItems(new ArrayList<>());
+    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any())).thenReturn(mergeCartResponse);
     when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
+    WebRequest request = mock(WebRequest.class);
+    when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(true);
+    doNothing().when(request).setAttribute(Mockito.<String>any(), Mockito.<Object>any(), anyInt());
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request, response, new TestingAuthenticationToken("Principal", "Credentials")));
+    // Act
+    mergeCartProcessorImpl.execute(request, new TestingAuthenticationToken("Principal", "Credentials"));
+
+    // Assert
     verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
     verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
+    verify(mergeCartResponse).setAddedItems(isA(List.class));
+    verify(mergeCartResponse).setMerged(eq(true));
+    verify(mergeCartResponse).setOrder(isA(Order.class));
+    verify(mergeCartResponse).setRemovedItems(isA(List.class));
+    verify(customerService).readCustomerByUsername(eq("Principal"));
     verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
+    verify(request).getAttribute(eq("blOkToUseSession"), eq(0));
+    verify(request).setAttribute(eq("bl_merge_cart_response"), isA(Object.class), eq(1));
   }
 
   /**
-   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse,
-   * Authentication)} with {@code request}, {@code response}, {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
+   * Test {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)} with {@code request}, {@code authResult}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MergeCartProcessorImpl#execute(WebRequest, Authentication)}
    */
   @Test
-  @DisplayName(
-      "Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testExecuteWithRequestResponseAuthResult5()
-      throws RemoveFromCartException, PricingException {
+  @DisplayName("Test execute(WebRequest, Authentication) with 'request', 'authResult'; then throw RuntimeException")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(WebRequest, Authentication)"})
+  void testExecuteWithRequestAuthResult_thenThrowRuntimeException() {
     // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenThrow(new RuntimeException());
-    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any())).thenReturn(new CustomerImpl());
+    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenThrow(new RuntimeException("foo"));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request, response, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
+    assertThrows(RuntimeException.class,
+        () -> mergeCartProcessorImpl.execute(request, new TestingAuthenticationToken("Principal", "Credentials")));
     verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
+    verify(customerService).readCustomerByUsername(eq("Principal"));
     verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
   }
 
   /**
-   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse,
-   * Authentication)} with {@code request}, {@code response}, {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
+   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse, Authentication)} with {@code request}, {@code response}, {@code authResult}.
+   * <p>
+   * Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse, Authentication)}
    */
   @Test
-  @DisplayName(
-      "Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testExecuteWithRequestResponseAuthResult6()
-      throws RemoveFromCartException, PricingException {
+  @DisplayName("Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"})
+  void testExecuteWithRequestResponseAuthResult() throws RemoveFromCartException, PricingException {
     // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(new CustomerImpl());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenThrow(new RemoveFromCartException("An error occurred"));
-    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse response = new MockHttpServletResponse();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request, response, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
-    verify(orderService).findCartForCustomer(isA(Customer.class));
-    verify(customerService).readCustomerByUsername("Principal");
-    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
-  }
-
-  /**
-   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse,
-   * Authentication)} with {@code request}, {@code response}, {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
-   */
-  @Test
-  @DisplayName(
-      "Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testExecuteWithRequestResponseAuthResult7()
-      throws RemoveFromCartException, PricingException {
-    // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenReturn(null);
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any())).thenReturn(new CustomerImpl());
 
     MergeCartResponse mergeCartResponse = new MergeCartResponse();
     mergeCartResponse.setAddedItems(new ArrayList<>());
     mergeCartResponse.setMerged(true);
     mergeCartResponse.setOrder(new NullOrderImpl());
     mergeCartResponse.setRemovedItems(new ArrayList<>());
-    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any()))
-        .thenReturn(mergeCartResponse);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any())).thenReturn(mergeCartResponse);
+    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenReturn(new NullOrderImpl());
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    mergeCartProcessorImpl.execute(
-        request, response, new TestingAuthenticationToken("Principal", "Credentials"));
+    mergeCartProcessorImpl.execute(request, response, new TestingAuthenticationToken("Principal", "Credentials"));
+
+    // Assert
+    verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class));
+    verify(orderService).findCartForCustomer(isA(Customer.class));
+    verify(customerService).readCustomerByUsername(eq("Principal"));
+    verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
+    HttpSession session = request.getSession();
+    assertTrue(session instanceof MockHttpSession);
+    assertArrayEquals(new String[]{"bl_merge_cart_response"}, session.getValueNames());
+  }
+
+  /**
+   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse, Authentication)} with {@code request}, {@code response}, {@code authResult}.
+   * <p>
+   * Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse, Authentication)}
+   */
+  @Test
+  @DisplayName("Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"})
+  void testExecuteWithRequestResponseAuthResult2() throws RemoveFromCartException, PricingException {
+    // Arrange
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any())).thenReturn(null);
+
+    MergeCartResponse mergeCartResponse = new MergeCartResponse();
+    mergeCartResponse.setAddedItems(new ArrayList<>());
+    mergeCartResponse.setMerged(true);
+    mergeCartResponse.setOrder(new NullOrderImpl());
+    mergeCartResponse.setRemovedItems(new ArrayList<>());
+    when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any())).thenReturn(mergeCartResponse);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act
+    mergeCartProcessorImpl.execute(request, response, new TestingAuthenticationToken("Principal", "Credentials"));
 
     // Assert
     verify(mergeCartService).mergeCart(isA(Customer.class), isNull());
-    verify(customerService).readCustomerByUsername("Principal");
+    verify(customerService).readCustomerByUsername(eq("Principal"));
     verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
     HttpSession session = request.getSession();
     assertTrue(session instanceof MockHttpSession);
-    assertArrayEquals(new String[] {"bl_merge_cart_response"}, session.getValueNames());
+    assertArrayEquals(new String[]{"bl_merge_cart_response"}, session.getValueNames());
   }
 
   /**
-   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse,
-   * Authentication)} with {@code request}, {@code response}, {@code authResult}.
-   *
-   * <p>Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest,
-   * HttpServletResponse, Authentication)}
+   * Test {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse, Authentication)} with {@code request}, {@code response}, {@code authResult}.
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MergeCartProcessorImpl#execute(HttpServletRequest, HttpServletResponse, Authentication)}
    */
   @Test
-  @DisplayName(
-      "Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"
-  })
-  void testExecuteWithRequestResponseAuthResult8() {
+  @DisplayName("Test execute(HttpServletRequest, HttpServletResponse, Authentication) with 'request', 'response', 'authResult'; then throw RuntimeException")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void MergeCartProcessorImpl.execute(HttpServletRequest, HttpServletResponse, Authentication)"})
+  void testExecuteWithRequestResponseAuthResult_thenThrowRuntimeException() {
     // Arrange
-    when(customerService.readCustomerByUsername(Mockito.<String>any()))
-        .thenReturn(new CustomerImpl());
-    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any()))
-        .thenThrow(new RuntimeException());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    LinkedMultiValueMap<String, MultipartFile> mpFiles = new LinkedMultiValueMap<>();
-    HashMap<String, String[]> mpParams = new HashMap<>();
-
-    DefaultMultipartHttpServletRequest request2 =
-        new DefaultMultipartHttpServletRequest(request, mpFiles, mpParams, new HashMap<>());
+    when(customerService.readCustomerByUsername(Mockito.<String>any())).thenReturn(new CustomerImpl());
+    when(customerStateRequestProcessor.getAnonymousCustomer(Mockito.<WebRequest>any())).thenReturn(new CustomerImpl());
+    when(orderService.findCartForCustomer(Mockito.<Customer>any())).thenThrow(new RuntimeException("foo"));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            mergeCartProcessorImpl.execute(
-                request2, response, new TestingAuthenticationToken("Principal", "Credentials")));
-    verify(customerService).readCustomerByUsername("Principal");
+    assertThrows(RuntimeException.class, () -> mergeCartProcessorImpl.execute(request, response,
+        new TestingAuthenticationToken("Principal", "Credentials")));
+    verify(orderService).findCartForCustomer(isA(Customer.class));
+    verify(customerService).readCustomerByUsername(eq("Principal"));
     verify(customerStateRequestProcessor).getAnonymousCustomer(isA(WebRequest.class));
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MergeCartProcessorImpl#setMergeCartResponseKey(String)}
    *   <li>{@link MergeCartProcessorImpl#getMergeCartResponseKey()}
@@ -675,12 +399,9 @@ class MergeCartProcessorImplDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String MergeCartProcessorImpl.getMergeCartResponseKey()",
-    "void MergeCartProcessorImpl.setMergeCartResponseKey(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String MergeCartProcessorImpl.getMergeCartResponseKey()",
+      "void MergeCartProcessorImpl.setMergeCartResponseKey(String)"})
   void testGettersAndSetters() {
     // Arrange
     MergeCartProcessorImpl mergeCartProcessorImpl = new MergeCartProcessorImpl();

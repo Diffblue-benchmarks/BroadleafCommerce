@@ -17,21 +17,26 @@
  */
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -43,60 +48,65 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BandedWeightFulfillmentOptionImplDiffblueTest {
-  @Autowired private BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl;
+  @Autowired
+  private BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl;
 
   /**
-   * Test {@link
-   * BandedWeightFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * BandedWeightFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link BandedWeightFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test: {@link BandedWeightFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CreateResponse BandedWeightFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+      "CreateResponse BandedWeightFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(new BandedWeightFulfillmentOptionImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl2 = new BandedWeightFulfillmentOptionImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<BandedWeightFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult =
-        bandedWeightFulfillmentOptionImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<BandedWeightFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult = bandedWeightFulfillmentOptionImpl2
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService).getCeilingImplClass(
+        eq("org.broadleafcommerce.core.order.fulfillment.domain.BandedWeightFulfillmentOptionImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    BandedWeightFulfillmentOption clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof BandedWeightFulfillmentOptionImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(bandedWeightFulfillmentOptionImpl2, clone);
   }
 
   /**
-   * Test {@link
-   * BandedWeightFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * BandedWeightFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link BandedWeightFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test: {@link BandedWeightFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CreateResponse BandedWeightFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+      "CreateResponse BandedWeightFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
+    BandedWeightFulfillmentOptionImpl bandedWeightFulfillmentOptionImpl2 = new BandedWeightFulfillmentOptionImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(bandedWeightFulfillmentOptionImpl, false);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<BandedWeightFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult =
-        bandedWeightFulfillmentOptionImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<BandedWeightFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult = bandedWeightFulfillmentOptionImpl2
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -105,9 +115,8 @@ public class BandedWeightFulfillmentOptionImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BandedWeightFulfillmentOptionImpl}
    *   <li>{@link BandedWeightFulfillmentOptionImpl#setBands(List)}
@@ -115,17 +124,12 @@ public class BandedWeightFulfillmentOptionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BandedWeightFulfillmentOptionImpl.<init>()",
-    "List BandedWeightFulfillmentOptionImpl.getBands()",
-    "void BandedWeightFulfillmentOptionImpl.setBands(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BandedWeightFulfillmentOptionImpl.<init>()",
+      "List BandedWeightFulfillmentOptionImpl.getBands()", "void BandedWeightFulfillmentOptionImpl.setBands(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    BandedWeightFulfillmentOptionImpl actualBandedWeightFulfillmentOptionImpl =
-        new BandedWeightFulfillmentOptionImpl();
+    BandedWeightFulfillmentOptionImpl actualBandedWeightFulfillmentOptionImpl = new BandedWeightFulfillmentOptionImpl();
     ArrayList<FulfillmentWeightBand> bands = new ArrayList<>();
     actualBandedWeightFulfillmentOptionImpl.setBands(bands);
     List<FulfillmentWeightBand> actualBands = actualBandedWeightFulfillmentOptionImpl.getBands();

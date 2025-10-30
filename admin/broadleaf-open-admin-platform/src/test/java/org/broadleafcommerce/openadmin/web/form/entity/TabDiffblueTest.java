@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,19 +37,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {Tab.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class TabDiffblueTest {
-  @Autowired private Tab tab;
+  @Autowired
+  private Tab tab;
 
   /**
    * Test {@link Tab#withTitle(String)}.
-   *
-   * <p>Method under test: {@link Tab#withTitle(String)}
+   * <p>
+   * Method under test: {@link Tab#withTitle(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Tab Tab.withTitle(String)"})
   public void testWithTitle() {
     // Arrange and Act
@@ -64,12 +63,11 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#withKey(String)}.
-   *
-   * <p>Method under test: {@link Tab#withKey(String)}
+   * <p>
+   * Method under test: {@link Tab#withKey(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Tab Tab.withKey(String)"})
   public void testWithKey() {
     // Arrange and Act
@@ -82,12 +80,11 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#withOrder(Integer)}.
-   *
-   * <p>Method under test: {@link Tab#withOrder(Integer)}
+   * <p>
+   * Method under test: {@link Tab#withOrder(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Tab Tab.withOrder(Integer)"})
   public void testWithOrder() {
     // Arrange
@@ -103,12 +100,11 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#withTabClass(String)}.
-   *
-   * <p>Method under test: {@link Tab#withTabClass(String)}
+   * <p>
+   * Method under test: {@link Tab#withTabClass(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Tab Tab.withTabClass(String)"})
   public void testWithTabClass() {
     // Arrange and Act
@@ -122,12 +118,11 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#withIsMultiColumn(Boolean)}.
-   *
-   * <p>Method under test: {@link Tab#withIsMultiColumn(Boolean)}
+   * <p>
+   * Method under test: {@link Tab#withIsMultiColumn(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Tab Tab.withIsMultiColumn(Boolean)"})
   public void testWithIsMultiColumn() {
     // Arrange
@@ -144,12 +139,11 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#withCustomTemplate(String)}.
-   *
-   * <p>Method under test: {@link Tab#withCustomTemplate(String)}
+   * <p>
+   * Method under test: {@link Tab#withCustomTemplate(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Tab Tab.withCustomTemplate(String)"})
   public void testWithCustomTemplate() {
     // Arrange and Act
@@ -163,17 +157,15 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link HashSet#HashSet()} add {@link ListGrid} (default constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link HashSet#HashSet()} add {@link ListGrid} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getIsVisible()}
+   * <p>
+   * Method under test: {@link Tab#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean Tab.getIsVisible()"})
   public void testGetIsVisible_givenHashSetAddListGrid_thenReturnTrue() {
     // Arrange
@@ -189,17 +181,15 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor) TabsPresent is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Tab} (default constructor) TabsPresent is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getIsVisible()}
+   * <p>
+   * Method under test: {@link Tab#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean Tab.getIsVisible()"})
   public void testGetIsVisible_givenTabTabsPresentIsTrue_thenReturnTrue() {
     // Arrange
@@ -212,36 +202,32 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getIsVisible()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Tab} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getIsVisible()}
+   * <p>
+   * Method under test: {@link Tab#getIsVisible()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean Tab.getIsVisible()"})
   public void testGetIsVisible_givenTab_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new Tab().getIsVisible());
+    assertFalse((new Tab()).getIsVisible());
   }
 
   /**
    * Test {@link Tab#hasFieldOrListGrid()}.
-   *
    * <ul>
-   *   <li>Given {@link HashSet#HashSet()} add {@link ListGrid} (default constructor).
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link HashSet#HashSet()} add {@link ListGrid} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#hasFieldOrListGrid()}
+   * <p>
+   * Method under test: {@link Tab#hasFieldOrListGrid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Tab.hasFieldOrListGrid()"})
   public void testHasFieldOrListGrid_givenHashSetAddListGrid_thenReturnTrue() {
     // Arrange
@@ -257,17 +243,15 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#hasFieldOrListGrid()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor) CustomTemplate is {@code Custom Template}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Tab} (default constructor) CustomTemplate is {@code Custom Template}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#hasFieldOrListGrid()}
+   * <p>
+   * Method under test: {@link Tab#hasFieldOrListGrid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Tab.hasFieldOrListGrid()"})
   public void testHasFieldOrListGrid_givenTabCustomTemplateIsCustomTemplate_thenReturnTrue() {
     // Arrange
@@ -280,31 +264,28 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#hasFieldOrListGrid()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Tab} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#hasFieldOrListGrid()}
+   * <p>
+   * Method under test: {@link Tab#hasFieldOrListGrid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Tab.hasFieldOrListGrid()"})
   public void testHasFieldOrListGrid_givenTab_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new Tab().hasFieldOrListGrid());
+    assertFalse((new Tab()).hasFieldOrListGrid());
   }
 
   /**
    * Test {@link Tab#findGroupByKey(String)}.
-   *
-   * <p>Method under test: {@link Tab#findGroupByKey(String)}
+   * <p>
+   * Method under test: {@link Tab#findGroupByKey(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroup Tab.findGroupByKey(String)"})
   public void testFindGroupByKey() {
     // Arrange, Act and Assert
@@ -313,12 +294,11 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#findGroupByTitle(String)}.
-   *
-   * <p>Method under test: {@link Tab#findGroupByTitle(String)}
+   * <p>
+   * Method under test: {@link Tab#findGroupByTitle(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroup Tab.findGroupByTitle(String)"})
   public void testFindGroupByTitle() {
     // Arrange, Act and Assert
@@ -327,31 +307,28 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getFields()}.
-   *
-   * <p>Method under test: {@link Tab#getFields()}
+   * <p>
+   * Method under test: {@link Tab#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List Tab.getFields()"})
   public void testGetFields() {
     // Arrange, Act and Assert
-    assertTrue(new Tab().getFields().isEmpty());
+    assertTrue((new Tab()).getFields().isEmpty());
   }
 
   /**
    * Test {@link Tab#getTabClass()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor) TabClass is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link Tab} (default constructor) TabClass is {@code foo}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getTabClass()}
+   * <p>
+   * Method under test: {@link Tab#getTabClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Tab.getTabClass()"})
   public void testGetTabClass_givenTabTabClassIsFoo_thenReturnFoo() {
     // Arrange
@@ -364,17 +341,15 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getTabClass()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor) TabClass is space.
-   *   <li>Then return empty string.
+   *   <li>Given {@link Tab} (default constructor) TabClass is space.</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getTabClass()}
+   * <p>
+   * Method under test: {@link Tab#getTabClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Tab.getTabClass()"})
   public void testGetTabClass_givenTabTabClassIsSpace_thenReturnEmptyString() {
     // Arrange
@@ -387,36 +362,32 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getTabClass()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor).
-   *   <li>Then return empty string.
+   *   <li>Given {@link Tab} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getTabClass()}
+   * <p>
+   * Method under test: {@link Tab#getTabClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Tab.getTabClass()"})
   public void testGetTabClass_givenTab_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals("", new Tab().getTabClass());
+    assertEquals("", (new Tab()).getTabClass());
   }
 
   /**
    * Test {@link Tab#getTitle()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor) Title is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link Tab} (default constructor) Title is {@code foo}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getTitle()}
+   * <p>
+   * Method under test: {@link Tab#getTitle()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Tab.getTitle()"})
   public void testGetTitle_givenTabTitleIsFoo_thenReturnFoo() {
     // Arrange
@@ -430,36 +401,32 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getTitle()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Tab} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getTitle()}
+   * <p>
+   * Method under test: {@link Tab#getTitle()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String Tab.getTitle()"})
   public void testGetTitle_givenTab_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new Tab().getTitle());
+    assertNull((new Tab()).getTitle());
   }
 
   /**
    * Test {@link Tab#setFieldGroups(Set)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then {@link Tab} (default constructor) FieldGroups is {@link HashSet#HashSet()}.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then {@link Tab} (default constructor) FieldGroups is {@link HashSet#HashSet()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#setFieldGroups(Set)}
+   * <p>
+   * Method under test: {@link Tab#setFieldGroups(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Tab.setFieldGroups(Set)"})
   public void testSetFieldGroups_givenFieldGroup_thenTabFieldGroupsIsHashSet() {
     // Arrange
@@ -477,17 +444,15 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#setFieldGroups(Set)}.
-   *
    * <ul>
-   *   <li>Given {@link FieldGroup} (default constructor).
-   *   <li>Then {@link Tab} (default constructor) FieldGroups size is one.
+   *   <li>Given {@link FieldGroup} (default constructor).</li>
+   *   <li>Then {@link Tab} (default constructor) FieldGroups size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#setFieldGroups(Set)}
+   * <p>
+   * Method under test: {@link Tab#setFieldGroups(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Tab.setFieldGroups(Set)"})
   public void testSetFieldGroups_givenFieldGroup_thenTabFieldGroupsSizeIsOne() {
     // Arrange
@@ -506,17 +471,15 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#setFieldGroups(Set)}.
-   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
-   *   <li>Then {@link Tab} (default constructor) FieldGroups Empty.
+   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>Then {@link Tab} (default constructor) FieldGroups Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#setFieldGroups(Set)}
+   * <p>
+   * Method under test: {@link Tab#setFieldGroups(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Tab.setFieldGroups(Set)"})
   public void testSetFieldGroups_whenHashSet_thenTabFieldGroupsEmpty() {
     // Arrange
@@ -531,17 +494,15 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getIsMultiColumn()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor) IsMultiColumn is {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Tab} (default constructor) IsMultiColumn is {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getIsMultiColumn()}
+   * <p>
+   * Method under test: {@link Tab#getIsMultiColumn()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean Tab.getIsMultiColumn()"})
   public void testGetIsMultiColumn_givenTabIsMultiColumnIsTrue_thenReturnTrue() {
     // Arrange
@@ -554,28 +515,25 @@ public class TabDiffblueTest {
 
   /**
    * Test {@link Tab#getIsMultiColumn()}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Tab} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Tab#getIsMultiColumn()}
+   * <p>
+   * Method under test: {@link Tab#getIsMultiColumn()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Boolean Tab.getIsMultiColumn()"})
   public void testGetIsMultiColumn_givenTab_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new Tab().getIsMultiColumn());
+    assertFalse((new Tab()).getIsMultiColumn());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Tab#setCustomTemplate(String)}
    *   <li>{@link Tab#setIsMultiColumn(Boolean)}
@@ -596,26 +554,13 @@ public class TabDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String Tab.getCustomTemplate()",
-    "Set Tab.getFieldGroups()",
-    "String Tab.getKey()",
-    "Set Tab.getListGrids()",
-    "Integer Tab.getOrder()",
-    "Boolean Tab.getWantsFullScreen()",
-    "boolean Tab.isTabsPresent()",
-    "void Tab.setCustomTemplate(String)",
-    "void Tab.setIsMultiColumn(Boolean)",
-    "void Tab.setKey(String)",
-    "void Tab.setListGrids(Set)",
-    "void Tab.setOrder(Integer)",
-    "void Tab.setTabClass(String)",
-    "void Tab.setTabsPresent(boolean)",
-    "void Tab.setTitle(String)",
-    "void Tab.setWantsFullScreen(Boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String Tab.getCustomTemplate()", "Set Tab.getFieldGroups()", "String Tab.getKey()",
+      "Set Tab.getListGrids()", "Integer Tab.getOrder()", "Boolean Tab.getWantsFullScreen()",
+      "boolean Tab.isTabsPresent()", "void Tab.setCustomTemplate(String)", "void Tab.setIsMultiColumn(Boolean)",
+      "void Tab.setKey(String)", "void Tab.setListGrids(Set)", "void Tab.setOrder(Integer)",
+      "void Tab.setTabClass(String)", "void Tab.setTabsPresent(boolean)", "void Tab.setTitle(String)",
+      "void Tab.setWantsFullScreen(Boolean)"})
   public void testGettersAndSetters() {
     // Arrange
     Tab tab = new Tab();
@@ -652,12 +597,11 @@ public class TabDiffblueTest {
 
   /**
    * Test new {@link Tab} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link Tab}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link Tab}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Tab.<init>()"})
   public void testNewTab() {
     // Arrange and Act

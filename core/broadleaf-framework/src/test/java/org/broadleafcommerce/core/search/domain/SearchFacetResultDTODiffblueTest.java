@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.search.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.junit.Test;
@@ -30,17 +29,15 @@ import org.junit.experimental.categories.Category;
 public class SearchFacetResultDTODiffblueTest {
   /**
    * Test {@link SearchFacetResultDTO#getValueKey()}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is {@code true}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is {@code true}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetResultDTO#getValueKey()}
+   * <p>
+   * Method under test: {@link SearchFacetResultDTO#getValueKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetResultDTO.getValueKey()"})
   public void testGetValueKey_givenSearchFacetResultDTOActiveIsTrue_thenReturnFoo() {
     // Arrange
@@ -58,36 +55,32 @@ public class SearchFacetResultDTODiffblueTest {
 
   /**
    * Test {@link SearchFacetResultDTO#getValueKey()}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacetResultDTO} (default constructor).
-   *   <li>Then return {@code range%5Bnull%3Anull%5D}.
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor).</li>
+   *   <li>Then return {@code range%5Bnull%3Anull%5D}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetResultDTO#getValueKey()}
+   * <p>
+   * Method under test: {@link SearchFacetResultDTO#getValueKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetResultDTO.getValueKey()"})
   public void testGetValueKey_givenSearchFacetResultDTO_thenReturnRange5Bnull3Anull5d() {
     // Arrange, Act and Assert
-    assertEquals("range%5Bnull%3Anull%5D", new SearchFacetResultDTO().getValueKey());
+    assertEquals("range%5Bnull%3Anull%5D", (new SearchFacetResultDTO()).getValueKey());
   }
 
   /**
    * Test {@link SearchFacetResultDTO#getUnencodedValueKey()}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is {@code true}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is {@code true}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetResultDTO#getUnencodedValueKey()}
+   * <p>
+   * Method under test: {@link SearchFacetResultDTO#getUnencodedValueKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetResultDTO.getUnencodedValueKey()"})
   public void testGetUnencodedValueKey_givenSearchFacetResultDTOActiveIsTrue_thenReturnFoo() {
     // Arrange
@@ -105,28 +98,25 @@ public class SearchFacetResultDTODiffblueTest {
 
   /**
    * Test {@link SearchFacetResultDTO#getUnencodedValueKey()}.
-   *
    * <ul>
-   *   <li>Given {@link SearchFacetResultDTO} (default constructor).
-   *   <li>Then return {@code range[null:null]}.
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor).</li>
+   *   <li>Then return {@code range[null:null]}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetResultDTO#getUnencodedValueKey()}
+   * <p>
+   * Method under test: {@link SearchFacetResultDTO#getUnencodedValueKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String SearchFacetResultDTO.getUnencodedValueKey()"})
   public void testGetUnencodedValueKey_givenSearchFacetResultDTO_thenReturnRangeNullNull() {
     // Arrange, Act and Assert
-    assertEquals("range[null:null]", new SearchFacetResultDTO().getUnencodedValueKey());
+    assertEquals("range[null:null]", (new SearchFacetResultDTO()).getUnencodedValueKey());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SearchFacetResultDTO}
    *   <li>{@link SearchFacetResultDTO#setActive(boolean)}
@@ -144,23 +134,14 @@ public class SearchFacetResultDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetResultDTO.<init>()",
-    "SearchFacet SearchFacetResultDTO.getFacet()",
-    "BigDecimal SearchFacetResultDTO.getMaxValue()",
-    "BigDecimal SearchFacetResultDTO.getMinValue()",
-    "Integer SearchFacetResultDTO.getQuantity()",
-    "String SearchFacetResultDTO.getValue()",
-    "boolean SearchFacetResultDTO.isActive()",
-    "void SearchFacetResultDTO.setActive(boolean)",
-    "void SearchFacetResultDTO.setFacet(SearchFacet)",
-    "void SearchFacetResultDTO.setMaxValue(BigDecimal)",
-    "void SearchFacetResultDTO.setMinValue(BigDecimal)",
-    "void SearchFacetResultDTO.setQuantity(Integer)",
-    "void SearchFacetResultDTO.setValue(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchFacetResultDTO.<init>()", "SearchFacet SearchFacetResultDTO.getFacet()",
+      "BigDecimal SearchFacetResultDTO.getMaxValue()", "BigDecimal SearchFacetResultDTO.getMinValue()",
+      "Integer SearchFacetResultDTO.getQuantity()", "String SearchFacetResultDTO.getValue()",
+      "boolean SearchFacetResultDTO.isActive()", "void SearchFacetResultDTO.setActive(boolean)",
+      "void SearchFacetResultDTO.setFacet(SearchFacet)", "void SearchFacetResultDTO.setMaxValue(BigDecimal)",
+      "void SearchFacetResultDTO.setMinValue(BigDecimal)", "void SearchFacetResultDTO.setQuantity(Integer)",
+      "void SearchFacetResultDTO.setValue(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchFacetResultDTO actualSearchFacetResultDTO = new SearchFacetResultDTO();

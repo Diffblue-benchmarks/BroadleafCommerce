@@ -18,12 +18,19 @@
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
+import org.broadleafcommerce.openadmin.dto.Entity;
+import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -34,21 +41,116 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {RequiredIfPropertyValidator.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RequiredIfPropertyValidatorDiffblueTest {
-  @Autowired private RequiredIfPropertyValidator requiredIfPropertyValidator;
+  @Autowired
+  private RequiredIfPropertyValidator requiredIfPropertyValidator;
+
+  /**
+   * Test {@link RequiredIfPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * <ul>
+   *   <li>When {@code .}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RequiredIfPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PropertyValidationResult RequiredIfPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+  public void testValidate_whenDot() {
+    // Arrange
+    Entity entity = new Entity();
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
+    HashMap<String, String> validationConfiguration = new HashMap<>();
+
+    // Act
+    PropertyValidationResult actualValidateResult = requiredIfPropertyValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), ".", "42");
+
+    // Assert
+    List<String> errorMessages = actualValidateResult.getErrorMessages();
+    assertEquals(1, errorMessages.size());
+    assertNull(errorMessages.get(0));
+    assertNull(actualValidateResult.getErrorMessage());
+    assertFalse(actualValidateResult.isNotValid());
+    assertTrue(actualValidateResult.isValid());
+  }
+
+  /**
+   * Test {@link RequiredIfPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * <ul>
+   *   <li>When empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RequiredIfPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PropertyValidationResult RequiredIfPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+  public void testValidate_whenEmptyString() {
+    // Arrange
+    Entity entity = new Entity();
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
+    HashMap<String, String> validationConfiguration = new HashMap<>();
+
+    // Act
+    PropertyValidationResult actualValidateResult = requiredIfPropertyValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "");
+
+    // Assert
+    List<String> errorMessages = actualValidateResult.getErrorMessages();
+    assertEquals(1, errorMessages.size());
+    assertNull(errorMessages.get(0));
+    assertNull(actualValidateResult.getErrorMessage());
+    assertFalse(actualValidateResult.isNotValid());
+    assertTrue(actualValidateResult.isValid());
+  }
+
+  /**
+   * Test {@link RequiredIfPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * <ul>
+   *   <li>When {@code Property Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RequiredIfPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "PropertyValidationResult RequiredIfPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+  public void testValidate_whenPropertyName() {
+    // Arrange
+    Entity entity = new Entity();
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
+    HashMap<String, String> validationConfiguration = new HashMap<>();
+
+    // Act
+    PropertyValidationResult actualValidateResult = requiredIfPropertyValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+
+    // Assert
+    List<String> errorMessages = actualValidateResult.getErrorMessages();
+    assertEquals(1, errorMessages.size());
+    assertNull(errorMessages.get(0));
+    assertNull(actualValidateResult.getErrorMessage());
+    assertFalse(actualValidateResult.isNotValid());
+    assertTrue(actualValidateResult.isValid());
+  }
 
   /**
    * Test {@link RequiredIfPropertyValidator#lookupCompareFieldName(String, Map)}.
-   *
    * <ul>
-   *   <li>Given {@code compareField}.
-   *   <li>Then return {@code .Validation Configuration}.
+   *   <li>Given {@code compareField}.</li>
+   *   <li>Then return {@code .Validation Configuration}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RequiredIfPropertyValidator#lookupCompareFieldName(String, Map)}
+   * <p>
+   * Method under test: {@link RequiredIfPropertyValidator#lookupCompareFieldName(String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String RequiredIfPropertyValidator.lookupCompareFieldName(String, Map)"})
   public void testLookupCompareFieldName_givenCompareField_thenReturnValidationConfiguration() {
     // Arrange
@@ -56,28 +158,24 @@ public class RequiredIfPropertyValidatorDiffblueTest {
     validationConfiguration.put("compareField", "Validation Configuration");
 
     // Act and Assert
-    assertEquals(
-        ".Validation Configuration",
+    assertEquals(".Validation Configuration",
         requiredIfPropertyValidator.lookupCompareFieldName(".", validationConfiguration));
   }
 
   /**
    * Test {@link RequiredIfPropertyValidator#lookupCompareFieldName(String, Map)}.
-   *
    * <ul>
-   *   <li>When {@code Current Field Name}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code Current Field Name}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RequiredIfPropertyValidator#lookupCompareFieldName(String, Map)}
+   * <p>
+   * Method under test: {@link RequiredIfPropertyValidator#lookupCompareFieldName(String, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String RequiredIfPropertyValidator.lookupCompareFieldName(String, Map)"})
   public void testLookupCompareFieldName_whenCurrentFieldName_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(
-        requiredIfPropertyValidator.lookupCompareFieldName("Current Field Name", new HashMap<>()));
+    assertNull(requiredIfPropertyValidator.lookupCompareFieldName("Current Field Name", new HashMap<>()));
   }
 }

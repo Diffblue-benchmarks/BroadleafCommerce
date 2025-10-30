@@ -26,60 +26,57 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.util.ThirdPartyInteractionLatencySimulationActivity;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SequenceProcessorDiffblueTest {
+  @InjectMocks
+  private SequenceProcessor<Object, Object> sequenceProcessor;
+
   /**
    * Test {@link SequenceProcessor#supports(Activity)}.
-   *
-   * <p>Method under test: {@link SequenceProcessor#supports(Activity)}
+   * <p>
+   * Method under test: {@link SequenceProcessor#supports(Activity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SequenceProcessor.supports(Activity)"})
   public void testSupports() {
-    // Arrange
-    SequenceProcessor<Object, Object> sequenceProcessor = new SequenceProcessor<>();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertTrue(sequenceProcessor.supports(new ThirdPartyInteractionLatencySimulationActivity()));
   }
 
   /**
    * Test {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}.
-   *
    * <ul>
-   *   <li>Given {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}
+   * <p>
+   * Method under test: {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SequenceProcessor.processShouldStop(ProcessContext, Activity)"})
   public void testProcessShouldStop_givenTrue_thenReturnTrue() {
     // Arrange
-    SequenceProcessor<Object, Object> sequenceProcessor = new SequenceProcessor<>();
-
     DefaultProcessContextImpl<Object> context = mock(DefaultProcessContextImpl.class);
     when(context.isStopped()).thenReturn(true);
 
     // Act
-    boolean actualProcessShouldStopResult =
-        sequenceProcessor.processShouldStop(
-            context, new ThirdPartyInteractionLatencySimulationActivity());
+    boolean actualProcessShouldStopResult = sequenceProcessor.processShouldStop(context,
+        new ThirdPartyInteractionLatencySimulationActivity());
 
     // Assert
     verify(context).isStopped();
@@ -88,72 +85,57 @@ public class SequenceProcessorDiffblueTest {
 
   /**
    * Test {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}.
-   *
    * <ul>
-   *   <li>When {@link DefaultProcessContextImpl} (default constructor).
-   *   <li>Then return {@code false}.
+   *   <li>When {@link DefaultProcessContextImpl} (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}
+   * <p>
+   * Method under test: {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SequenceProcessor.processShouldStop(ProcessContext, Activity)"})
   public void testProcessShouldStop_whenDefaultProcessContextImpl_thenReturnFalse() {
     // Arrange
-    SequenceProcessor<Object, Object> sequenceProcessor = new SequenceProcessor<>();
     DefaultProcessContextImpl<Object> context = new DefaultProcessContextImpl<>();
 
     // Act and Assert
-    assertFalse(
-        sequenceProcessor.processShouldStop(
-            context, new ThirdPartyInteractionLatencySimulationActivity()));
+    assertFalse(sequenceProcessor.processShouldStop(context, new ThirdPartyInteractionLatencySimulationActivity()));
   }
 
   /**
    * Test {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}
+   * <p>
+   * Method under test: {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean SequenceProcessor.processShouldStop(ProcessContext, Activity)"})
   public void testProcessShouldStop_whenNull_thenReturnTrue() {
-    // Arrange
-    SequenceProcessor<Object, Object> sequenceProcessor = new SequenceProcessor<>();
-
-    // Act and Assert
-    assertTrue(
-        sequenceProcessor.processShouldStop(
-            null, new ThirdPartyInteractionLatencySimulationActivity()));
+    // Arrange, Act and Assert
+    assertTrue(sequenceProcessor.processShouldStop(null, new ThirdPartyInteractionLatencySimulationActivity()));
   }
 
   /**
    * Test {@link SequenceProcessor#createContext(Object)}.
-   *
    * <ul>
-   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).
+   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SequenceProcessor#createContext(Object)}
+   * <p>
+   * Method under test: {@link SequenceProcessor#createContext(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProcessContext SequenceProcessor.createContext(Object)"})
   public void testCreateContext_thenReturnDefaultProcessContextImpl() throws WorkflowException {
     // Arrange
     ProcessContextFactory<Object, Object> processContextFactory = mock(ProcessContextFactory.class);
     DefaultProcessContextImpl<Object> defaultProcessContextImpl = new DefaultProcessContextImpl<>();
-    when(processContextFactory.createContext(Mockito.<Object>any()))
-        .thenReturn(defaultProcessContextImpl);
+    when(processContextFactory.createContext(Mockito.<Object>any())).thenReturn(defaultProcessContextImpl);
 
     SequenceProcessor<Object, Object> sequenceProcessor = new SequenceProcessor<>();
     sequenceProcessor.setProcessContextFactory(processContextFactory);
@@ -168,12 +150,11 @@ public class SequenceProcessorDiffblueTest {
 
   /**
    * Test new {@link SequenceProcessor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SequenceProcessor}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SequenceProcessor}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SequenceProcessor.<init>()"})
   public void testNewSequenceProcessor() {
     // Arrange and Act

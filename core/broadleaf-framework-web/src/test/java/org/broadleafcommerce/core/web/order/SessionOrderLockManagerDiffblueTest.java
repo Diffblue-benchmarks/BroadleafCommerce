@@ -20,7 +20,6 @@ package org.broadleafcommerce.core.web.order;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
@@ -31,100 +30,89 @@ import org.junit.jupiter.api.Test;
 class SessionOrderLockManagerDiffblueTest {
   /**
    * Test {@link SessionOrderLockManager#acquireLock(Order)}.
-   *
-   * <p>Method under test: {@link SessionOrderLockManager#acquireLock(Order)}
+   * <p>
+   * Method under test: {@link SessionOrderLockManager#acquireLock(Order)}
    */
   @Test
   @DisplayName("Test acquireLock(Order)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"java.lang.Object SessionOrderLockManager.acquireLock(Order)"})
   void testAcquireLock() {
     // Arrange
     SessionOrderLockManager sessionOrderLockManager = new SessionOrderLockManager();
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
-        () -> sessionOrderLockManager.acquireLock(new NullOrderImpl()));
+    assertThrows(IllegalStateException.class, () -> sessionOrderLockManager.acquireLock(new NullOrderImpl()));
   }
 
   /**
    * Test {@link SessionOrderLockManager#acquireLockIfAvailable(Order)}.
-   *
-   * <p>Method under test: {@link SessionOrderLockManager#acquireLockIfAvailable(Order)}
+   * <p>
+   * Method under test: {@link SessionOrderLockManager#acquireLockIfAvailable(Order)}
    */
   @Test
   @DisplayName("Test acquireLockIfAvailable(Order)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"java.lang.Object SessionOrderLockManager.acquireLockIfAvailable(Order)"})
   void testAcquireLockIfAvailable() {
     // Arrange
     SessionOrderLockManager sessionOrderLockManager = new SessionOrderLockManager();
 
     // Act and Assert
-    assertThrows(
-        IllegalStateException.class,
+    assertThrows(IllegalStateException.class,
         () -> sessionOrderLockManager.acquireLockIfAvailable(new NullOrderImpl()));
   }
 
   /**
    * Test {@link SessionOrderLockManager#getRequest()}.
-   *
-   * <p>Method under test: {@link SessionOrderLockManager#getRequest()}
+   * <p>
+   * Method under test: {@link SessionOrderLockManager#getRequest()}
    */
   @Test
   @DisplayName("Test getRequest()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"javax.servlet.http.HttpServletRequest SessionOrderLockManager.getRequest()"})
   void testGetRequest() {
     // Arrange, Act and Assert
-    assertNull(new SessionOrderLockManager().getRequest());
+    assertNull((new SessionOrderLockManager()).getRequest());
   }
 
   /**
    * Test {@link SessionOrderLockManager#getSessionLock()}.
-   *
-   * <p>Method under test: {@link SessionOrderLockManager#getSessionLock()}
+   * <p>
+   * Method under test: {@link SessionOrderLockManager#getSessionLock()}
    */
   @Test
   @DisplayName("Test getSessionLock()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.util.concurrent.locks.ReentrantLock SessionOrderLockManager.getSessionLock()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"java.util.concurrent.locks.ReentrantLock SessionOrderLockManager.getSessionLock()"})
   void testGetSessionLock() {
     // Arrange, Act and Assert
-    assertThrows(IllegalStateException.class, () -> new SessionOrderLockManager().getSessionLock());
+    assertThrows(IllegalStateException.class, () -> (new SessionOrderLockManager()).getSessionLock());
   }
 
   /**
    * Test {@link SessionOrderLockManager#isActive()}.
-   *
-   * <p>Method under test: {@link SessionOrderLockManager#isActive()}
+   * <p>
+   * Method under test: {@link SessionOrderLockManager#isActive()}
    */
   @Test
   @DisplayName("Test isActive()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean SessionOrderLockManager.isActive()"})
   void testIsActive() {
     // Arrange, Act and Assert
-    assertFalse(new SessionOrderLockManager().isActive());
+    assertFalse((new SessionOrderLockManager()).isActive());
   }
 
   /**
    * Test new {@link SessionOrderLockManager} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SessionOrderLockManager}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SessionOrderLockManager}
    */
   @Test
   @DisplayName("Test new SessionOrderLockManager (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void SessionOrderLockManager.<init>()"})
   void testNewSessionOrderLockManager() {
     // Arrange and Act

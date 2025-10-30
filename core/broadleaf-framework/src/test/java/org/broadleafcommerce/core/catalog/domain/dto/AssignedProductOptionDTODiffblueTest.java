@@ -19,8 +19,7 @@ package org.broadleafcommerce.core.catalog.domain.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
@@ -32,12 +31,10 @@ import org.junit.experimental.categories.Category;
 public class AssignedProductOptionDTODiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link AssignedProductOptionDTO#AssignedProductOptionDTO(Long, String,
-   *       ProductOptionValue, Sku)}
+   *   <li>{@link AssignedProductOptionDTO#AssignedProductOptionDTO(Long, String, ProductOptionValue, Sku)}
    *   <li>{@link AssignedProductOptionDTO#setProductId(Long)}
    *   <li>{@link AssignedProductOptionDTO#setProductOptionAttrName(String)}
    *   <li>{@link AssignedProductOptionDTO#setProductOptionValue(ProductOptionValue)}
@@ -49,27 +46,21 @@ public class AssignedProductOptionDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AssignedProductOptionDTO.<init>(Long, String, ProductOptionValue, Sku)",
-    "Long AssignedProductOptionDTO.getProductId()",
-    "String AssignedProductOptionDTO.getProductOptionAttrName()",
-    "ProductOptionValue AssignedProductOptionDTO.getProductOptionValue()",
-    "Sku AssignedProductOptionDTO.getSku()",
-    "void AssignedProductOptionDTO.setProductId(Long)",
-    "void AssignedProductOptionDTO.setProductOptionAttrName(String)",
-    "void AssignedProductOptionDTO.setProductOptionValue(ProductOptionValue)",
-    "void AssignedProductOptionDTO.setSku(Sku)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AssignedProductOptionDTO.<init>(Long, String, ProductOptionValue, Sku)",
+      "Long AssignedProductOptionDTO.getProductId()", "String AssignedProductOptionDTO.getProductOptionAttrName()",
+      "ProductOptionValue AssignedProductOptionDTO.getProductOptionValue()", "Sku AssignedProductOptionDTO.getSku()",
+      "void AssignedProductOptionDTO.setProductId(Long)",
+      "void AssignedProductOptionDTO.setProductOptionAttrName(String)",
+      "void AssignedProductOptionDTO.setProductOptionValue(ProductOptionValue)",
+      "void AssignedProductOptionDTO.setSku(Sku)"})
   public void testGettersAndSetters() {
     // Arrange
     ProductOptionValueImpl productOptionValue = new ProductOptionValueImpl();
 
     // Act
-    AssignedProductOptionDTO actualAssignedProductOptionDTO =
-        new AssignedProductOptionDTO(
-            1L, "Product Option Attr Name", productOptionValue, new SkuImpl());
+    AssignedProductOptionDTO actualAssignedProductOptionDTO = new AssignedProductOptionDTO(1L,
+        "Product Option Attr Name", productOptionValue, new SkuImpl());
     actualAssignedProductOptionDTO.setProductId(1L);
     actualAssignedProductOptionDTO.setProductOptionAttrName("Product Option Attr Name");
     ProductOptionValueImpl productOptionValue2 = new ProductOptionValueImpl();
@@ -78,8 +69,7 @@ public class AssignedProductOptionDTODiffblueTest {
     actualAssignedProductOptionDTO.setSku(sku);
     Long actualProductId = actualAssignedProductOptionDTO.getProductId();
     String actualProductOptionAttrName = actualAssignedProductOptionDTO.getProductOptionAttrName();
-    ProductOptionValue actualProductOptionValue =
-        actualAssignedProductOptionDTO.getProductOptionValue();
+    ProductOptionValue actualProductOptionValue = actualAssignedProductOptionDTO.getProductOptionValue();
     Sku actualSku = actualAssignedProductOptionDTO.getSku();
 
     // Assert

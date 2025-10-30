@@ -19,15 +19,14 @@ package org.broadleafcommerce.openadmin.web.filter;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -35,7 +34,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.security.service.ExploitProtectionService;
@@ -51,17 +49,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
-import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 @ContextConfiguration(classes = {AdminSecurityFilter.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminSecurityFilterDiffblueTest {
-  @Autowired private AdminSecurityFilter adminSecurityFilter;
+  @Autowired
+  private AdminSecurityFilter adminSecurityFilter;
 
   @MockBean(name = "blExploitProtectionService")
   private ExploitProtectionService exploitProtectionService;
@@ -70,192 +67,26 @@ public class AdminSecurityFilterDiffblueTest {
   private StaleStateProtectionService staleStateProtectionService;
 
   /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
+   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code blStaleStateProtectionService} {@link StaleStateProtectionService#compareToken(String)} does nothing.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal() throws IOException, ServletException {
-    // Arrange
-    when(staleStateProtectionService.isEnabled())
-        .thenThrow(new StaleStateServiceException("An error occurred"));
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-
-    // Act and Assert
-    assertThrows(
-        StaleStateServiceException.class,
-        () ->
-            adminSecurityFilter.doFilterInternal(
-                baseRequest, new MockHttpServletResponse(), mock(FilterChain.class)));
-    verify(staleStateProtectionService).isEnabled();
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal2() throws IOException, ServletException {
-    // Arrange
-    when(exploitProtectionService.getCsrfTokenParameter())
-        .thenThrow(new StaleStateServiceException("An error occurred"));
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockMultipartHttpServletRequest()));
-
-    // Act and Assert
-    assertThrows(
-        StaleStateServiceException.class,
-        () ->
-            adminSecurityFilter.doFilterInternal(
-                baseRequest, new MockHttpServletResponse(), mock(FilterChain.class)));
-    verify(exploitProtectionService).getCsrfTokenParameter();
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal3() throws IOException, ServletException, ServiceException {
-    // Arrange
-    doThrow(new StaleStateServiceException("An error occurred"))
-        .when(exploitProtectionService)
-        .compareToken(Mockito.<String>any());
-    when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockMultipartHttpServletRequest()));
-
-    // Act and Assert
-    assertThrows(
-        StaleStateServiceException.class,
-        () ->
-            adminSecurityFilter.doFilterInternal(
-                baseRequest, new MockHttpServletResponse(), mock(FilterChain.class)));
-    verify(exploitProtectionService).compareToken(null);
-    verify(exploitProtectionService).getCsrfTokenParameter();
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal4() throws IOException, ServletException, ServiceException {
-    // Arrange
-    doThrow(new ServiceException("An error occurred"))
-        .when(exploitProtectionService)
-        .compareToken(Mockito.<String>any());
-    when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockMultipartHttpServletRequest()));
-
-    // Act and Assert
-    assertThrows(
-        ServletException.class,
-        () ->
-            adminSecurityFilter.doFilterInternal(
-                baseRequest, new MockHttpServletResponse(), mock(FilterChain.class)));
-    verify(exploitProtectionService).compareToken(null);
-    verify(exploitProtectionService).getCsrfTokenParameter();
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal5() throws IOException, ServletException, ServiceException {
-    // Arrange
-    doNothing().when(exploitProtectionService).compareToken(Mockito.<String>any());
-    when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    when(staleStateProtectionService.getStateVersionTokenParameter())
-        .thenThrow(new StaleStateServiceException("An error occurred"));
-    when(staleStateProtectionService.isEnabled()).thenReturn(true);
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockMultipartHttpServletRequest()));
-
-    // Act and Assert
-    assertThrows(
-        StaleStateServiceException.class,
-        () ->
-            adminSecurityFilter.doFilterInternal(
-                baseRequest, new MockHttpServletResponse(), mock(FilterChain.class)));
-    verify(exploitProtectionService).compareToken(null);
-    verify(exploitProtectionService).getCsrfTokenParameter();
-    verify(staleStateProtectionService).getStateVersionTokenParameter();
-    verify(staleStateProtectionService).isEnabled();
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal6() throws IOException, ServletException, ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternal_givenBlStaleStateProtectionServiceCompareTokenDoesNothing()
+      throws IOException, ServletException, ServiceException {
     // Arrange
     doNothing().when(exploitProtectionService).compareToken(Mockito.<String>any());
     when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
     doNothing().when(staleStateProtectionService).compareToken(Mockito.<String>any());
     when(staleStateProtectionService.getStateVersionTokenParameter()).thenReturn("MD");
     when(staleStateProtectionService.isEnabled()).thenReturn(true);
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockMultipartHttpServletRequest()));
+    MockMultipartHttpServletRequest baseRequest = new MockMultipartHttpServletRequest();
     MockHttpServletResponse baseResponse = new MockHttpServletResponse();
-
     FilterChain chain = mock(FilterChain.class);
     doNothing().when(chain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
@@ -264,66 +95,33 @@ public class AdminSecurityFilterDiffblueTest {
 
     // Assert that nothing has changed
     verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(exploitProtectionService).compareToken(null);
+    verify(exploitProtectionService).compareToken(isNull());
     verify(exploitProtectionService).getCsrfTokenParameter();
-    verify(staleStateProtectionService).compareToken(null);
+    verify(staleStateProtectionService).compareToken(isNull());
     verify(staleStateProtectionService).getStateVersionTokenParameter();
     verify(staleStateProtectionService).isEnabled();
     assertEquals("", baseResponse.getContentAsString());
     assertEquals(200, baseResponse.getStatus());
-    assertArrayEquals(new byte[] {}, baseResponse.getContentAsByteArray());
+    assertArrayEquals(new byte[]{}, baseResponse.getContentAsByteArray());
   }
 
   /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
+   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code blStaleStateProtectionService} {@link StaleStateProtectionService#isEnabled()} return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal7() throws IOException, ServletException {
-    // Arrange
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.getMethod()).thenThrow(new StaleStateServiceException("An error occurred"));
-    JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
-    HttpServletRequestWrapper baseRequest = new HttpServletRequestWrapper(request2);
-
-    // Act and Assert
-    assertThrows(
-        StaleStateServiceException.class,
-        () ->
-            adminSecurityFilter.doFilterInternal(
-                baseRequest, new MockHttpServletResponse(), mock(FilterChain.class)));
-    verify(request).getMethod();
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal8() throws IOException, ServletException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternal_givenBlStaleStateProtectionServiceIsEnabledReturnFalse()
+      throws IOException, ServletException {
     // Arrange
     when(staleStateProtectionService.isEnabled()).thenReturn(false);
-
-    DefaultMultipartHttpServletRequest baseRequest = mock(DefaultMultipartHttpServletRequest.class);
-    when(baseRequest.getMethod()).thenReturn("https://example.org/example");
+    JSCompatibilityRequestWrapper baseRequest = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
     MockHttpServletResponse baseResponse = new MockHttpServletResponse();
-
     FilterChain chain = mock(FilterChain.class);
     doNothing().when(chain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
@@ -332,131 +130,42 @@ public class AdminSecurityFilterDiffblueTest {
 
     // Assert that nothing has changed
     verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(baseRequest).getMethod();
     verify(staleStateProtectionService).isEnabled();
     assertEquals("", baseResponse.getContentAsString());
     assertEquals(200, baseResponse.getStatus());
-    assertArrayEquals(new byte[] {}, baseResponse.getContentAsByteArray());
+    assertArrayEquals(new byte[]{}, baseResponse.getContentAsByteArray());
   }
 
   /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
+   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Given {@code POST}.
-   *   <li>Then calls {@link DefaultMultipartHttpServletRequest#getParameter(String)}.
+   *   <li>Then {@link MockHttpServletResponse} (default constructor) ContentAsString is a string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
+   * <p>
+   * Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_givenPost_thenCallsGetParameter()
-      throws IOException, ServletException {
-    // Arrange
-    when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-
-    DefaultMultipartHttpServletRequest baseRequest = mock(DefaultMultipartHttpServletRequest.class);
-    when(baseRequest.getParameter(Mockito.<String>any()))
-        .thenThrow(new StaleStateServiceException("An error occurred"));
-    when(baseRequest.getMethod()).thenReturn("POST");
-
-    // Act and Assert
-    assertThrows(
-        StaleStateServiceException.class,
-        () ->
-            adminSecurityFilter.doFilterInternal(
-                baseRequest, new MockHttpServletResponse(), mock(FilterChain.class)));
-    verify(baseRequest).getMethod();
-    verify(exploitProtectionService).getCsrfTokenParameter();
-    verify(baseRequest).getParameter("ABC123");
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link ServletException#ServletException(String)} with message is {@code An error
-   *       occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_givenServletExceptionWithMessageIsAnErrorOccurred()
-      throws IOException, ServletException {
-    // Arrange
-    when(staleStateProtectionService.isEnabled()).thenReturn(true);
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse baseResponse = new MockHttpServletResponse();
-
-    FilterChain chain = mock(FilterChain.class);
-    doThrow(new ServletException("An error occurred"))
-        .when(chain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act and Assert
-    assertThrows(
-        ServletException.class,
-        () -> adminSecurityFilter.doFilterInternal(baseRequest, baseResponse, chain));
-    verify(chain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(staleStateProtectionService).isEnabled();
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Then {@link MockHttpServletResponse} (default constructor) ContentAsString is a string.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"})
   public void testDoFilterInternal_thenMockHttpServletResponseContentAsStringIsAString()
       throws IOException, ServletException, ServiceException {
     // Arrange
     doNothing().when(exploitProtectionService).compareToken(Mockito.<String>any());
     when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    doThrow(new StaleStateServiceException("An error occurred"))
-        .when(staleStateProtectionService)
+    doThrow(new StaleStateServiceException("An error occurred")).when(staleStateProtectionService)
         .compareToken(Mockito.<String>any());
     when(staleStateProtectionService.getStateVersionTokenParameter()).thenReturn("MD");
     when(staleStateProtectionService.isEnabled()).thenReturn(true);
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockMultipartHttpServletRequest()));
+    MockMultipartHttpServletRequest baseRequest = new MockMultipartHttpServletRequest();
     MockHttpServletResponse baseResponse = new MockHttpServletResponse();
 
     // Act
     adminSecurityFilter.doFilterInternal(baseRequest, baseResponse, mock(FilterChain.class));
 
     // Assert
-    verify(exploitProtectionService).compareToken(null);
+    verify(exploitProtectionService).compareToken(isNull());
     verify(exploitProtectionService).getCsrfTokenParameter();
-    verify(staleStateProtectionService).compareToken(null);
+    verify(staleStateProtectionService).compareToken(isNull());
     verify(staleStateProtectionService).getStateVersionTokenParameter();
     verify(staleStateProtectionService).isEnabled();
     assertEquals(
@@ -468,32 +177,22 @@ public class AdminSecurityFilterDiffblueTest {
   }
 
   /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
+   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Then {@link MockHttpServletResponse} (default constructor) ContentAsString is empty
-   *       string.
+   *   <li>Then {@link MockHttpServletResponse} (default constructor) ContentAsString is empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
+   * <p>
+   * Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"})
   public void testDoFilterInternal_thenMockHttpServletResponseContentAsStringIsEmptyString()
       throws IOException, ServletException {
     // Arrange
     when(staleStateProtectionService.isEnabled()).thenReturn(true);
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    JSCompatibilityRequestWrapper baseRequest = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
     MockHttpServletResponse baseResponse = new MockHttpServletResponse();
-
     FilterChain chain = mock(FilterChain.class);
     doNothing().when(chain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
@@ -505,50 +204,6 @@ public class AdminSecurityFilterDiffblueTest {
     verify(staleStateProtectionService).isEnabled();
     assertEquals("", baseResponse.getContentAsString());
     assertEquals(200, baseResponse.getStatus());
-    assertArrayEquals(new byte[] {}, baseResponse.getContentAsByteArray());
-  }
-
-  /**
-   * Test {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link SessionAuthenticationException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminSecurityFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminSecurityFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_thenThrowSessionAuthenticationException()
-      throws IOException, ServletException, ServiceException {
-    // Arrange
-    doNothing().when(exploitProtectionService).compareToken(Mockito.<String>any());
-    when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    doThrow(new SessionAuthenticationException("POST"))
-        .when(staleStateProtectionService)
-        .compareToken(Mockito.<String>any());
-    when(staleStateProtectionService.getStateVersionTokenParameter()).thenReturn("MD");
-    when(staleStateProtectionService.isEnabled()).thenReturn(true);
-    HttpServletRequestWrapper baseRequest =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockMultipartHttpServletRequest()));
-
-    // Act and Assert
-    assertThrows(
-        SessionAuthenticationException.class,
-        () ->
-            adminSecurityFilter.doFilterInternal(
-                baseRequest, new MockHttpServletResponse(), mock(FilterChain.class)));
-    verify(exploitProtectionService).compareToken(null);
-    verify(exploitProtectionService).getCsrfTokenParameter();
-    verify(staleStateProtectionService).compareToken(null);
-    verify(staleStateProtectionService).getStateVersionTokenParameter();
-    verify(staleStateProtectionService).isEnabled();
+    assertArrayEquals(new byte[]{}, baseResponse.getContentAsByteArray());
   }
 }

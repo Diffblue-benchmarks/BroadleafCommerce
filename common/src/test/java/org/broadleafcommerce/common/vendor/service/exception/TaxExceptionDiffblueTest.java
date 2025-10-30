@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.vendor.service.message.TaxResponse;
 import org.junit.Test;
@@ -31,51 +30,44 @@ import org.junit.experimental.categories.Category;
 public class TaxExceptionDiffblueTest {
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>Then return Message is {@code null}.
+   *   <li>Then return Message is {@code null}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TaxException#TaxException()}
+   *   <li>{@link TaxException#setTaxResponse(TaxResponse)}
    *   <li>{@link TaxException#getTaxResponse()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxException.<init>()",
-    "void TaxException.<init>(String)",
-    "void TaxException.<init>(String, Throwable)",
-    "void TaxException.<init>(Throwable)",
-    "TaxResponse TaxException.getTaxResponse()",
-    "void TaxException.setTaxResponse(TaxResponse)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxException.<init>()", "void TaxException.<init>(String)",
+      "void TaxException.<init>(String, Throwable)", "void TaxException.<init>(Throwable)",
+      "TaxResponse TaxException.getTaxResponse()", "void TaxException.setTaxResponse(TaxResponse)"})
   public void testGettersAndSetters_thenReturnMessageIsNull() {
     // Arrange and Act
     TaxException actualTaxException = new TaxException();
+    TaxResponse taxResponse = mock(TaxResponse.class);
+    actualTaxException.setTaxResponse(taxResponse);
     TaxResponse actualTaxResponse = actualTaxException.getTaxResponse();
 
     // Assert
     assertNull(actualTaxException.getMessage());
     assertNull(actualTaxException.getCause());
-    assertNull(actualTaxResponse);
     assertEquals(0, actualTaxException.getSuppressed().length);
+    assertSame(taxResponse, actualTaxResponse);
   }
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code An error occurred}.
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>When {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TaxException#TaxException(String)}
    *   <li>{@link TaxException#setTaxResponse(TaxResponse)}
@@ -83,16 +75,10 @@ public class TaxExceptionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxException.<init>()",
-    "void TaxException.<init>(String)",
-    "void TaxException.<init>(String, Throwable)",
-    "void TaxException.<init>(Throwable)",
-    "TaxResponse TaxException.getTaxResponse()",
-    "void TaxException.setTaxResponse(TaxResponse)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxException.<init>()", "void TaxException.<init>(String)",
+      "void TaxException.<init>(String, Throwable)", "void TaxException.<init>(Throwable)",
+      "TaxResponse TaxException.getTaxResponse()", "void TaxException.setTaxResponse(TaxResponse)"})
   public void testGettersAndSetters_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     TaxException actualTaxException = new TaxException("An error occurred");
@@ -109,14 +95,12 @@ public class TaxExceptionDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code An error occurred}.
-   *   <li>Then return Message is {@code An error occurred}.
+   *   <li>When {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TaxException#TaxException(String, Throwable)}
    *   <li>{@link TaxException#setTaxResponse(TaxResponse)}
@@ -124,16 +108,10 @@ public class TaxExceptionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxException.<init>()",
-    "void TaxException.<init>(String)",
-    "void TaxException.<init>(String, Throwable)",
-    "void TaxException.<init>(Throwable)",
-    "TaxResponse TaxException.getTaxResponse()",
-    "void TaxException.setTaxResponse(TaxResponse)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxException.<init>()", "void TaxException.<init>(String)",
+      "void TaxException.<init>(String, Throwable)", "void TaxException.<init>(Throwable)",
+      "TaxResponse TaxException.getTaxResponse()", "void TaxException.setTaxResponse(TaxResponse)"})
   public void testGettersAndSetters_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -153,14 +131,12 @@ public class TaxExceptionDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.
-   *   <li>Then return Message is {@code Throwable}.
+   *   <li>When {@link Throwable#Throwable()}.</li>
+   *   <li>Then return Message is {@code Throwable}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TaxException#TaxException(Throwable)}
    *   <li>{@link TaxException#setTaxResponse(TaxResponse)}
@@ -168,16 +144,10 @@ public class TaxExceptionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxException.<init>()",
-    "void TaxException.<init>(String)",
-    "void TaxException.<init>(String, Throwable)",
-    "void TaxException.<init>(Throwable)",
-    "TaxResponse TaxException.getTaxResponse()",
-    "void TaxException.setTaxResponse(TaxResponse)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void TaxException.<init>()", "void TaxException.<init>(String)",
+      "void TaxException.<init>(String, Throwable)", "void TaxException.<init>(Throwable)",
+      "TaxResponse TaxException.getTaxResponse()", "void TaxException.setTaxResponse(TaxResponse)"})
   public void testGettersAndSetters_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

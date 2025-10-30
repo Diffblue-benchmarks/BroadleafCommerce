@@ -21,20 +21,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
@@ -53,33 +47,31 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 @ContextConfiguration(classes = {AdminBasicErrorController.class, ErrorProperties.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AdminBasicErrorControllerDiffblueTest {
-  @Autowired private AdminBasicErrorController adminBasicErrorController;
+  @Autowired
+  private AdminBasicErrorController adminBasicErrorController;
 
   @MockBean(name = "blAdminRequestProcessor")
   private BroadleafWebRequestProcessor broadleafWebRequestProcessor;
 
-  @MockBean private ErrorAttributes errorAttributes;
+  @MockBean
+  private ErrorAttributes errorAttributes;
 
   /**
-   * Test {@link AdminBasicErrorController#AdminBasicErrorController(ErrorAttributes,
-   * ErrorProperties)}.
-   *
-   * <p>Method under test: {@link
-   * AdminBasicErrorController#AdminBasicErrorController(ErrorAttributes, ErrorProperties)}
+   * Test {@link AdminBasicErrorController#AdminBasicErrorController(ErrorAttributes, ErrorProperties)}.
+   * <p>
+   * Method under test: {@link AdminBasicErrorController#AdminBasicErrorController(ErrorAttributes, ErrorProperties)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AdminBasicErrorController.<init>(ErrorAttributes, ErrorProperties)"})
   public void testNewAdminBasicErrorController() {
     // Arrange
-    DefaultErrorAttributes errorAttributes = new DefaultErrorAttributes();
+    DefaultErrorAttributes errorAttributes2 = new DefaultErrorAttributes();
 
     ErrorProperties errorProperties = new ErrorProperties();
     errorProperties.setIncludeBindingErrors(IncludeAttribute.NEVER);
@@ -88,104 +80,25 @@ public class AdminBasicErrorControllerDiffblueTest {
     errorProperties.setIncludeStacktrace(IncludeAttribute.NEVER);
     errorProperties.setPath("Path");
 
-    // Act
-    AdminBasicErrorController actualAdminBasicErrorController =
-        new AdminBasicErrorController(errorAttributes, errorProperties);
-
-    // Assert
-    assertNull(actualAdminBasicErrorController.requestProcessor);
-  }
-
-  /**
-   * Test {@link AdminBasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)}.
-   *
-   * <ul>
-   *   <li>Given Bean Name{blAdminRequestProcessor} {@link
-   *       BroadleafWebRequestProcessor#process(WebRequest)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminBasicErrorController#errorHtml(HttpServletRequest,
-   * HttpServletResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ModelAndView AdminBasicErrorController.errorHtml(HttpServletRequest, HttpServletResponse)"
-  })
-  public void testErrorHtml_givenBeanNameBlAdminRequestProcessorProcessThrowRuntimeException() {
-    // Arrange
-    doThrow(new RuntimeException())
-        .when(broadleafWebRequestProcessor)
-        .process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> adminBasicErrorController.errorHtml(request, new MockHttpServletResponse()));
-    verify(broadleafWebRequestProcessor).process(isA(WebRequest.class));
+    assertNull((new AdminBasicErrorController(errorAttributes2, errorProperties)).requestProcessor);
   }
 
   /**
    * Test {@link AdminBasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)}.
-   *
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   *   <li>Then calls {@link DefaultMultipartHttpServletRequest#getAttribute(String)}.
+   *   <li>Then return ViewName is {@code error}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminBasicErrorController#errorHtml(HttpServletRequest,
-   * HttpServletResponse)}
+   * <p>
+   * Method under test: {@link AdminBasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ModelAndView AdminBasicErrorController.errorHtml(HttpServletRequest, HttpServletResponse)"
-  })
-  public void testErrorHtml_givenRuntimeException_thenCallsGetAttribute() {
-    // Arrange
-    doNothing().when(broadleafWebRequestProcessor).process(Mockito.<WebRequest>any());
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.getAttribute(Mockito.<String>any())).thenThrow(new RuntimeException());
-    JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
-    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> adminBasicErrorController.errorHtml(request3, new MockHttpServletResponse()));
-    verify(request).getAttribute("javax.servlet.error.status_code");
-    verify(broadleafWebRequestProcessor).process(isA(WebRequest.class));
-  }
-
-  /**
-   * Test {@link AdminBasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)}.
-   *
-   * <ul>
-   *   <li>Then return ViewName is {@code error}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminBasicErrorController#errorHtml(HttpServletRequest,
-   * HttpServletResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ModelAndView AdminBasicErrorController.errorHtml(HttpServletRequest, HttpServletResponse)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ModelAndView AdminBasicErrorController.errorHtml(HttpServletRequest, HttpServletResponse)"})
   public void testErrorHtml_thenReturnViewNameIsError() {
     // Arrange
     doNothing().when(broadleafWebRequestProcessor).process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act

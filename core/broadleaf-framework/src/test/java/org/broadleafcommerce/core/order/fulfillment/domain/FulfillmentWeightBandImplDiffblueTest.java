@@ -18,13 +18,11 @@
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.util.WeightUnitOfMeasureType;
@@ -39,16 +37,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class FulfillmentWeightBandImplDiffblueTest {
-  @Autowired private FulfillmentWeightBandImpl fulfillmentWeightBandImpl;
+  @Autowired
+  private FulfillmentWeightBandImpl fulfillmentWeightBandImpl;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentWeightBandImpl#setId(Long)}
    *   <li>{@link FulfillmentWeightBandImpl#setMinimumWeight(BigDecimal)}
@@ -59,16 +57,12 @@ public class FulfillmentWeightBandImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long FulfillmentWeightBandImpl.getId()",
-    "BigDecimal FulfillmentWeightBandImpl.getMinimumWeight()",
-    "BandedWeightFulfillmentOption FulfillmentWeightBandImpl.getOption()",
-    "void FulfillmentWeightBandImpl.setId(Long)",
-    "void FulfillmentWeightBandImpl.setMinimumWeight(BigDecimal)",
-    "void FulfillmentWeightBandImpl.setOption(BandedWeightFulfillmentOption)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Long FulfillmentWeightBandImpl.getId()",
+      "BigDecimal FulfillmentWeightBandImpl.getMinimumWeight()",
+      "BandedWeightFulfillmentOption FulfillmentWeightBandImpl.getOption()",
+      "void FulfillmentWeightBandImpl.setId(Long)", "void FulfillmentWeightBandImpl.setMinimumWeight(BigDecimal)",
+      "void FulfillmentWeightBandImpl.setOption(BandedWeightFulfillmentOption)"})
   public void testGettersAndSetters() {
     // Arrange
     FulfillmentWeightBandImpl fulfillmentWeightBandImpl = new FulfillmentWeightBandImpl();
@@ -91,94 +85,80 @@ public class FulfillmentWeightBandImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentWeightBandImpl#getWeightUnitOfMeasure()}.
-   *
-   * <p>Method under test: {@link FulfillmentWeightBandImpl#getWeightUnitOfMeasure()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"WeightUnitOfMeasureType FulfillmentWeightBandImpl.getWeightUnitOfMeasure()"})
-  public void testGetWeightUnitOfMeasure() {
-    // Arrange, Act and Assert
-    assertNull(fulfillmentWeightBandImpl.getWeightUnitOfMeasure());
-  }
-
-  /**
    * Test {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
-   *
-   * <p>Method under test: {@link
-   * FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
+   * <p>
+   * Method under test: {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentWeightBandImpl.setWeightUnitOfMeasure(WeightUnitOfMeasureType)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentWeightBandImpl.setWeightUnitOfMeasure(WeightUnitOfMeasureType)"})
   public void testSetWeightUnitOfMeasure() {
     // Arrange
-    WeightUnitOfMeasureType weightUnitOfMeasure =
-        new WeightUnitOfMeasureType("Type", "Friendly Type");
+    FulfillmentWeightBandImpl fulfillmentWeightBandImpl2 = new FulfillmentWeightBandImpl();
+    WeightUnitOfMeasureType weightUnitOfMeasure = new WeightUnitOfMeasureType("Type", "Friendly Type");
 
     // Act
-    fulfillmentWeightBandImpl.setWeightUnitOfMeasure(weightUnitOfMeasure);
+    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(weightUnitOfMeasure);
 
     // Assert
-    assertEquals("Type", fulfillmentWeightBandImpl.weightUnitOfMeasure);
-    assertEquals(weightUnitOfMeasure, fulfillmentWeightBandImpl.getWeightUnitOfMeasure());
+    assertEquals("Type", fulfillmentWeightBandImpl2.weightUnitOfMeasure);
+    assertEquals(weightUnitOfMeasure, fulfillmentWeightBandImpl2.getWeightUnitOfMeasure());
   }
 
   /**
    * Test {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
-   *
-   * <p>Method under test: {@link
-   * FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
+   * <ul>
+   *   <li>Given {@link FulfillmentWeightBandImpl} (default constructor) Id is one.</li>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentWeightBandImpl.setWeightUnitOfMeasure(WeightUnitOfMeasureType)"
-  })
-  public void testSetWeightUnitOfMeasure2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentWeightBandImpl.setWeightUnitOfMeasure(WeightUnitOfMeasureType)"})
+  public void testSetWeightUnitOfMeasure_givenFulfillmentWeightBandImplIdIsOne_whenNull() {
     // Arrange
+    FulfillmentWeightBandImpl fulfillmentWeightBandImpl2 = new FulfillmentWeightBandImpl();
+    fulfillmentWeightBandImpl2.setId(1L);
+    fulfillmentWeightBandImpl2.setMinimumWeight(new BigDecimal("2.3"));
+    fulfillmentWeightBandImpl2.setOption(new BandedWeightFulfillmentOptionImpl());
+    fulfillmentWeightBandImpl2.setResultAmount(new BigDecimal("2.3"));
+    fulfillmentWeightBandImpl2.setResultAmountType(FulfillmentBandResultAmountType.PERCENTAGE);
+    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(new WeightUnitOfMeasureType("Type", "Friendly Type"));
+
+    // Act
+    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(null);
+
+    // Assert that nothing has changed
+    assertEquals("Type", fulfillmentWeightBandImpl2.getWeightUnitOfMeasure().getType());
+    assertEquals("Type", fulfillmentWeightBandImpl2.weightUnitOfMeasure);
+  }
+
+  /**
+   * Test {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}.
+   * <ul>
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then calls {@link WeightUnitOfMeasureType#getType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentWeightBandImpl#setWeightUnitOfMeasure(WeightUnitOfMeasureType)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void FulfillmentWeightBandImpl.setWeightUnitOfMeasure(WeightUnitOfMeasureType)"})
+  public void testSetWeightUnitOfMeasure_givenType_thenCallsGetType() {
+    // Arrange
+    FulfillmentWeightBandImpl fulfillmentWeightBandImpl2 = new FulfillmentWeightBandImpl();
     WeightUnitOfMeasureType weightUnitOfMeasure = mock(WeightUnitOfMeasureType.class);
     when(weightUnitOfMeasure.getType()).thenReturn("Type");
 
     // Act
-    fulfillmentWeightBandImpl.setWeightUnitOfMeasure(weightUnitOfMeasure);
+    fulfillmentWeightBandImpl2.setWeightUnitOfMeasure(weightUnitOfMeasure);
 
     // Assert
     verify(weightUnitOfMeasure).getType();
-    assertEquals("Type", fulfillmentWeightBandImpl.getWeightUnitOfMeasure().getType());
-    assertEquals("Type", fulfillmentWeightBandImpl.weightUnitOfMeasure);
-  }
-
-  /**
-   * Test new {@link FulfillmentWeightBandImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link FulfillmentWeightBandImpl}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentWeightBandImpl.<init>()"})
-  public void testNewFulfillmentWeightBandImpl() {
-    // Arrange and Act
-    FulfillmentWeightBandImpl actualFulfillmentWeightBandImpl = new FulfillmentWeightBandImpl();
-
-    // Assert
-    FulfillmentBandResultAmountType resultAmountType =
-        actualFulfillmentWeightBandImpl.getResultAmountType();
-    assertEquals("RATE", resultAmountType.getType());
-    assertEquals("RATE", actualFulfillmentWeightBandImpl.resultAmountType);
-    assertEquals("Rate", resultAmountType.getFriendlyType());
-    assertNull(actualFulfillmentWeightBandImpl.getId());
-    assertNull(actualFulfillmentWeightBandImpl.weightUnitOfMeasure);
-    assertNull(actualFulfillmentWeightBandImpl.getResultAmount());
-    assertNull(actualFulfillmentWeightBandImpl.getMinimumWeight());
-    assertNull(actualFulfillmentWeightBandImpl.getWeightUnitOfMeasure());
-    assertNull(actualFulfillmentWeightBandImpl.getOption());
+    assertEquals("Type", fulfillmentWeightBandImpl2.getWeightUnitOfMeasure().getType());
+    assertEquals("Type", fulfillmentWeightBandImpl2.weightUnitOfMeasure);
   }
 }

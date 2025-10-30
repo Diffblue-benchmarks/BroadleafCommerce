@@ -22,7 +22,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.core.payment.service.PaymentRequestDTOService;
@@ -41,32 +40,28 @@ class DefaultCurrentCustomerPaymentRequestServiceDiffblueTest {
   @InjectMocks
   private DefaultCurrentCustomerPaymentRequestService defaultCurrentCustomerPaymentRequestService;
 
-  @Mock private PaymentRequestDTOService paymentRequestDTOService;
+  @Mock
+  private PaymentRequestDTOService paymentRequestDTOService;
 
   /**
-   * Test {@link
-   * DefaultCurrentCustomerPaymentRequestService#getPaymentRequestFromCurrentCustomer()}.
-   *
-   * <p>Method under test: {@link
-   * DefaultCurrentCustomerPaymentRequestService#getPaymentRequestFromCurrentCustomer()}
+   * Test {@link DefaultCurrentCustomerPaymentRequestService#getPaymentRequestFromCurrentCustomer()}.
+   * <p>
+   * Method under test: {@link DefaultCurrentCustomerPaymentRequestService#getPaymentRequestFromCurrentCustomer()}
    */
   @Test
   @DisplayName("Test getPaymentRequestFromCurrentCustomer()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "PaymentRequestDTO DefaultCurrentCustomerPaymentRequestService.getPaymentRequestFromCurrentCustomer()"
-  })
+      "PaymentRequestDTO DefaultCurrentCustomerPaymentRequestService.getPaymentRequestFromCurrentCustomer()"})
   void testGetPaymentRequestFromCurrentCustomer() {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
-    when(paymentRequestDTOService.populateCustomerInfo(
-            Mockito.<PaymentRequestDTO>any(), Mockito.<Customer>any()))
+    when(paymentRequestDTOService.populateCustomerInfo(Mockito.<PaymentRequestDTO>any(), Mockito.<Customer>any()))
         .thenReturn(paymentRequestDTO);
 
     // Act
-    PaymentRequestDTO actualPaymentRequestFromCurrentCustomer =
-        defaultCurrentCustomerPaymentRequestService.getPaymentRequestFromCurrentCustomer();
+    PaymentRequestDTO actualPaymentRequestFromCurrentCustomer = defaultCurrentCustomerPaymentRequestService
+        .getPaymentRequestFromCurrentCustomer();
 
     // Assert
     verify(paymentRequestDTOService).populateCustomerInfo(isA(PaymentRequestDTO.class), isNull());

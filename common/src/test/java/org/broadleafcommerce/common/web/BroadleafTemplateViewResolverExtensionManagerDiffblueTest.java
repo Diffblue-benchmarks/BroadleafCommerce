@@ -18,38 +18,45 @@
 package org.broadleafcommerce.common.web;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BroadleafTemplateViewResolverExtensionManagerDiffblueTest {
+  @InjectMocks
+  private BroadleafTemplateViewResolverExtensionManager broadleafTemplateViewResolverExtensionManager;
+
   /**
    * Test {@link BroadleafTemplateViewResolverExtensionManager#getHandlers()}.
-   *
-   * <p>Method under test: {@link BroadleafTemplateViewResolverExtensionManager#getHandlers()}
+   * <p>
+   * Method under test: {@link BroadleafTemplateViewResolverExtensionManager#getHandlers()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List BroadleafTemplateViewResolverExtensionManager.getHandlers()"})
   public void testGetHandlers() {
     // Arrange, Act and Assert
-    assertTrue(new BroadleafTemplateViewResolverExtensionManager().getHandlers().isEmpty());
+    assertTrue(broadleafTemplateViewResolverExtensionManager.getHandlers().isEmpty());
   }
 
   /**
    * Test {@link BroadleafTemplateViewResolverExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link BroadleafTemplateViewResolverExtensionManager#continueOnHandled()}
+   * <p>
+   * Method under test: {@link BroadleafTemplateViewResolverExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BroadleafTemplateViewResolverExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
     // Arrange, Act and Assert
-    assertTrue(new BroadleafTemplateViewResolverExtensionManager().continueOnHandled());
+    assertTrue(broadleafTemplateViewResolverExtensionManager.continueOnHandled());
   }
 }

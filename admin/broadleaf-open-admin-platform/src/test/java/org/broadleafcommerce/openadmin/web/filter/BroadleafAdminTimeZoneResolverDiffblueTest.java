@@ -28,11 +28,9 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.TimeZone;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -49,47 +47,41 @@ import org.springframework.web.context.request.WebRequest;
 @ContextConfiguration(classes = {BroadleafAdminTimeZoneResolver.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafAdminTimeZoneResolverDiffblueTest {
-  @Autowired private BroadleafAdminTimeZoneResolver broadleafAdminTimeZoneResolver;
+  @Autowired
+  private BroadleafAdminTimeZoneResolver broadleafAdminTimeZoneResolver;
 
   /**
    * Test {@link BroadleafAdminTimeZoneResolver#resolveTimeZone(WebRequest)}.
-   *
-   * <p>Method under test: {@link BroadleafAdminTimeZoneResolver#resolveTimeZone(WebRequest)}
+   * <p>
+   * Method under test: {@link BroadleafAdminTimeZoneResolver#resolveTimeZone(WebRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TimeZone BroadleafAdminTimeZoneResolver.resolveTimeZone(WebRequest)"})
   public void testResolveTimeZone() {
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
 
     // Act
-    broadleafAdminTimeZoneResolver.resolveTimeZone(request2);
+    broadleafAdminTimeZoneResolver.resolveTimeZone(request);
 
     // Assert
-    Object sessionMutex = request2.getSessionMutex();
+    Object sessionMutex = request.getSessionMutex();
     assertTrue(sessionMutex instanceof MockHttpSession);
-    assertArrayEquals(
-        new String[] {"blTimeZone"}, ((MockHttpSession) sessionMutex).getValueNames());
+    assertArrayEquals(new String[]{"blTimeZone"}, ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
    * Test {@link BroadleafAdminTimeZoneResolver#resolveTimeZone(WebRequest)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then return ID is {@code GMT}.
+   *   <li>Given {@code null}.</li>
+   *   <li>Then return ID is {@code GMT}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafAdminTimeZoneResolver#resolveTimeZone(WebRequest)}
+   * <p>
+   * Method under test: {@link BroadleafAdminTimeZoneResolver#resolveTimeZone(WebRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TimeZone BroadleafAdminTimeZoneResolver.resolveTimeZone(WebRequest)"})
   public void testResolveTimeZone_givenNull_thenReturnIdIsGmt() {
     // Arrange
@@ -104,7 +96,7 @@ public class BroadleafAdminTimeZoneResolverDiffblueTest {
     // Assert
     verify(request, atLeast(1)).getAttribute(Mockito.<String>any(), eq(0));
     verify(request).setAttribute(eq("blTimeZone"), isA(Object.class), eq(1));
-    verify(request, atLeast(1)).getHeader("blTimeZoneCode");
+    verify(request, atLeast(1)).getHeader(eq("blTimeZoneCode"));
     assertEquals("GMT", actualResolveTimeZoneResult.getID());
     assertEquals("Greenwich Mean Time", actualResolveTimeZoneResult.getDisplayName());
     assertEquals(0, actualResolveTimeZoneResult.getDSTSavings());

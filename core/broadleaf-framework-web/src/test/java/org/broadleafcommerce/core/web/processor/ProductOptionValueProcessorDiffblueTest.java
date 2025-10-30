@@ -19,12 +19,12 @@ package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -38,116 +38,149 @@ import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ProductOptionValueProcessorDiffblueTest {
+  @InjectMocks
+  private ProductOptionValueProcessor productOptionValueProcessor;
+
   /**
    * Test {@link ProductOptionValueProcessor#getName()}.
-   *
-   * <p>Method under test: {@link ProductOptionValueProcessor#getName()}
+   * <p>
+   * Method under test: {@link ProductOptionValueProcessor#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String ProductOptionValueProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("product_option_value", new ProductOptionValueProcessor().getName());
+    assertEquals("product_option_value", (new ProductOptionValueProcessor()).getName());
   }
 
   /**
    * Test {@link ProductOptionValueProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link ProductOptionValueProcessor#getPrecedence()}
+   * <p>
+   * Method under test: {@link ProductOptionValueProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int ProductOptionValueProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert
-    assertEquals(10000, new ProductOptionValueProcessor().getPrecedence());
+    assertEquals(10000, productOptionValueProcessor.getPrecedence());
   }
 
   /**
-   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map,
-   * String, String, BroadleafTemplateContext)}
+   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
+      "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetModifiedAttributes() {
     // Arrange
-    ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
-
-    ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
-    productOptionValueImpl.setDisplayOrder(1L);
-    productOptionValueImpl.setId(1L);
-    productOptionValueImpl.setPriceAdjustment(new Money());
-    productOptionValueImpl.setProductOption(new ProductOptionImpl());
-    productOptionValueImpl.setAttributeValue(null);
-
+    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
+    when(productOptionValueImpl.getId()).thenReturn(1L);
+    when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
+    when(productOptionValueImpl.getRawAttributeValue()).thenReturn("42");
+    when(productOptionValueImpl.getPriceAdjustment()).thenReturn(new Money());
+    when(productOptionValueImpl.getProductOption()).thenReturn(new ProductOptionImpl());
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn(productOptionValueImpl);
 
     // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        productOptionValueProcessor.getModifiedAttributes(
-            "Tag Name", tagAttributes, "Attribute Name", "42", context);
+    BroadleafAttributeModifier actualModifiedAttributes = productOptionValueProcessor.getModifiedAttributes("Tag Name",
+        tagAttributes, "Attribute Name", "42", context);
 
     // Assert
-    verify(context).parseExpression("42");
+    verify(productOptionValueImpl).getAttributeValue();
+    verify(productOptionValueImpl).getId();
+    verify(productOptionValueImpl, atLeast(1)).getPriceAdjustment();
+    verify(productOptionValueImpl).getProductOption();
+    verify(productOptionValueImpl).getRawAttributeValue();
+    verify(context).parseExpression(eq("42"));
     Map<String, String> added = actualModifiedAttributes.getAdded();
     assertEquals(1, added.size());
-    assertEquals(
-        "{\"optionId\":null,\"valueId\":1,\"valueName\":null,\"rawValue\":null,\"priceAdjustment\":0.00}",
+    assertEquals("{\"optionId\":null,\"valueId\":1,\"valueName\":\"42\",\"rawValue\":\"42\",\"priceAdjustment\":0.00}",
         added.get("data-product-option-value"));
     assertTrue(actualModifiedAttributes.getRemoved().isEmpty());
   }
 
   /**
-   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map,
-   * String, String, BroadleafTemplateContext)}
+   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
+      "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"})
   void testGetModifiedAttributes2() {
     // Arrange
-    ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
+    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
+    when(productOptionValueImpl.getId()).thenReturn(1L);
+    when(productOptionValueImpl.getAttributeValue()).thenReturn(null);
+    when(productOptionValueImpl.getRawAttributeValue()).thenReturn("42");
+    when(productOptionValueImpl.getPriceAdjustment()).thenReturn(new Money());
+    when(productOptionValueImpl.getProductOption()).thenReturn(new ProductOptionImpl());
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any())).thenReturn(productOptionValueImpl);
 
+    // Act
+    BroadleafAttributeModifier actualModifiedAttributes = productOptionValueProcessor.getModifiedAttributes("Tag Name",
+        tagAttributes, "Attribute Name", "42", context);
+
+    // Assert
+    verify(productOptionValueImpl).getAttributeValue();
+    verify(productOptionValueImpl).getId();
+    verify(productOptionValueImpl, atLeast(1)).getPriceAdjustment();
+    verify(productOptionValueImpl).getProductOption();
+    verify(productOptionValueImpl).getRawAttributeValue();
+    verify(context).parseExpression(eq("42"));
+    Map<String, String> added = actualModifiedAttributes.getAdded();
+    assertEquals(1, added.size());
+    assertEquals("{\"optionId\":null,\"valueId\":1,\"valueName\":null,\"rawValue\":\"42\",\"priceAdjustment\":0.00}",
+        added.get("data-product-option-value"));
+    assertTrue(actualModifiedAttributes.getRemoved().isEmpty());
+  }
+
+  /**
+   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({
+      "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"})
+  void testGetModifiedAttributes3() {
+    // Arrange
+    HashMap<String, String> tagAttributes = new HashMap<>();
     ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
     when(productOptionValueImpl.getId()).thenReturn(1L);
     when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
     when(productOptionValueImpl.getRawAttributeValue()).thenReturn("42");
     when(productOptionValueImpl.getPriceAdjustment()).thenReturn(null);
     when(productOptionValueImpl.getProductOption()).thenReturn(new ProductOptionImpl());
-
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn(productOptionValueImpl);
 
     // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        productOptionValueProcessor.getModifiedAttributes(
-            "Tag Name", tagAttributes, "Attribute Name", "42", context);
+    BroadleafAttributeModifier actualModifiedAttributes = productOptionValueProcessor.getModifiedAttributes("Tag Name",
+        tagAttributes, "Attribute Name", "42", context);
 
     // Assert
     verify(productOptionValueImpl).getAttributeValue();
@@ -155,149 +188,57 @@ class ProductOptionValueProcessorDiffblueTest {
     verify(productOptionValueImpl).getPriceAdjustment();
     verify(productOptionValueImpl).getProductOption();
     verify(productOptionValueImpl).getRawAttributeValue();
-    verify(context).parseExpression("42");
+    verify(context).parseExpression(eq("42"));
     Map<String, String> added = actualModifiedAttributes.getAdded();
     assertEquals(1, added.size());
-    assertEquals(
-        "{\"optionId\":null,\"valueId\":1,\"valueName\":\"42\",\"rawValue\":\"42\",\"priceAdjustment\":null}",
+    assertEquals("{\"optionId\":null,\"valueId\":1,\"valueName\":\"42\",\"rawValue\":\"42\",\"priceAdjustment\":null}",
         added.get("data-product-option-value"));
     assertTrue(actualModifiedAttributes.getRemoved().isEmpty());
   }
 
   /**
-   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
+   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}.
    * <ul>
-   *   <li>Given {@link ProductOptionValueImpl} {@link ProductOptionValueImpl#getId()} throw {@link
-   *       RuntimeException#RuntimeException()}.
+   *   <li>Given {@link ProductOptionValueImpl} (default constructor) AttributeValue is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map,
-   * String, String, BroadleafTemplateContext)}
+   * <p>
+   * Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName(
-      "Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext); given ProductOptionValueImpl getId() throw RuntimeException()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext); given ProductOptionValueImpl (default constructor) AttributeValue is '42'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  void testGetModifiedAttributes_givenProductOptionValueImplGetIdThrowRuntimeException() {
+      "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"})
+  void testGetModifiedAttributes_givenProductOptionValueImplAttributeValueIs42() {
     // Arrange
-    ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
-    when(productOptionValueImpl.getId()).thenThrow(new RuntimeException());
-    when(productOptionValueImpl.getProductOption()).thenReturn(new ProductOptionImpl());
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn(productOptionValueImpl);
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            productOptionValueProcessor.getModifiedAttributes(
-                "Tag Name", tagAttributes, "Attribute Name", "42", context));
-    verify(productOptionValueImpl).getId();
-    verify(productOptionValueImpl).getProductOption();
-    verify(context).parseExpression("42");
-  }
-
-  /**
-   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map,
-   * String, String, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName(
-      "Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext); given RuntimeException()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  void testGetModifiedAttributes_givenRuntimeException() {
-    // Arrange
-    ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenThrow(new RuntimeException());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            productOptionValueProcessor.getModifiedAttributes(
-                "Tag Name", tagAttributes, "Attribute Name", "42", context));
-    verify(context).parseExpression("42");
-  }
-
-  /**
-   * Test {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Then return Added {@code data-product-option-value} is a string.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValueProcessor#getModifiedAttributes(String, Map,
-   * String, String, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName(
-      "Test getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext); then return Added 'data-product-option-value' is a string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafAttributeModifier ProductOptionValueProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  void testGetModifiedAttributes_thenReturnAddedDataProductOptionValueIsAString() {
-    // Arrange
-    ProductOptionValueProcessor productOptionValueProcessor = new ProductOptionValueProcessor();
     HashMap<String, String> tagAttributes = new HashMap<>();
 
     ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
+    productOptionValueImpl.setAttributeValue("42");
     productOptionValueImpl.setDisplayOrder(1L);
     productOptionValueImpl.setId(1L);
     productOptionValueImpl.setPriceAdjustment(new Money());
     productOptionValueImpl.setProductOption(new ProductOptionImpl());
-    productOptionValueImpl.setAttributeValue("Parse Expression");
-
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn(productOptionValueImpl);
 
     // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        productOptionValueProcessor.getModifiedAttributes(
-            "Tag Name", tagAttributes, "Attribute Name", "42", context);
+    BroadleafAttributeModifier actualModifiedAttributes = productOptionValueProcessor.getModifiedAttributes("Tag Name",
+        tagAttributes, "Attribute Name", "42", context);
 
     // Assert
-    verify(context).parseExpression("42");
+    verify(context).parseExpression(eq("42"));
     Map<String, String> added = actualModifiedAttributes.getAdded();
     assertEquals(1, added.size());
-    assertEquals(
-        "{\"optionId\":null,\"valueId\":1,\"valueName\":\"Parse Expression\",\"rawValue\":\"Parse Expression\",\"priceAdjustment"
-            + "\":0.00}",
+    assertEquals("{\"optionId\":null,\"valueId\":1,\"valueName\":\"42\",\"rawValue\":\"42\",\"priceAdjustment\":0.00}",
         added.get("data-product-option-value"));
     assertTrue(actualModifiedAttributes.getRemoved().isEmpty());
   }
 
   /**
    * Test ProductOptionValueDTO getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionValueDTO#ProductOptionValueDTO(ProductOptionValueProcessor)}
    *   <li>{@link ProductOptionValueDTO#setOptionId(Long)}
@@ -314,25 +255,16 @@ class ProductOptionValueProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test ProductOptionValueDTO getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValueDTO.<init>(ProductOptionValueProcessor)",
-    "Long ProductOptionValueDTO.getOptionId()",
-    "BigDecimal ProductOptionValueDTO.getPriceAdjustment()",
-    "String ProductOptionValueDTO.getRawValue()",
-    "Long ProductOptionValueDTO.getValueId()",
-    "String ProductOptionValueDTO.getValueName()",
-    "void ProductOptionValueDTO.setOptionId(Long)",
-    "void ProductOptionValueDTO.setPriceAdjustment(BigDecimal)",
-    "void ProductOptionValueDTO.setRawValue(String)",
-    "void ProductOptionValueDTO.setValueId(Long)",
-    "void ProductOptionValueDTO.setValueName(String)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void ProductOptionValueDTO.<init>(ProductOptionValueProcessor)",
+      "Long ProductOptionValueDTO.getOptionId()", "BigDecimal ProductOptionValueDTO.getPriceAdjustment()",
+      "String ProductOptionValueDTO.getRawValue()", "Long ProductOptionValueDTO.getValueId()",
+      "String ProductOptionValueDTO.getValueName()", "void ProductOptionValueDTO.setOptionId(Long)",
+      "void ProductOptionValueDTO.setPriceAdjustment(BigDecimal)", "void ProductOptionValueDTO.setRawValue(String)",
+      "void ProductOptionValueDTO.setValueId(Long)", "void ProductOptionValueDTO.setValueName(String)"})
   void testProductOptionValueDTOGettersAndSetters() {
     // Arrange and Act
-    ProductOptionValueDTO actualProductOptionValueDTO =
-        new ProductOptionValueProcessor().new ProductOptionValueDTO();
+    ProductOptionValueDTO actualProductOptionValueDTO = (new ProductOptionValueProcessor()).new ProductOptionValueDTO();
     actualProductOptionValueDTO.setOptionId(1L);
     BigDecimal priceAdjustment = new BigDecimal("2.3");
     actualProductOptionValueDTO.setPriceAdjustment(priceAdjustment);
@@ -355,16 +287,15 @@ class ProductOptionValueProcessorDiffblueTest {
 
   /**
    * Test {@link ProductOptionValueProcessor#useSingleQuotes()}.
-   *
-   * <p>Method under test: {@link ProductOptionValueProcessor#useSingleQuotes()}
+   * <p>
+   * Method under test: {@link ProductOptionValueProcessor#useSingleQuotes()}
    */
   @Test
   @DisplayName("Test useSingleQuotes()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean ProductOptionValueProcessor.useSingleQuotes()"})
   void testUseSingleQuotes() {
     // Arrange, Act and Assert
-    assertTrue(new ProductOptionValueProcessor().useSingleQuotes());
+    assertTrue(productOptionValueProcessor.useSingleQuotes());
   }
 }

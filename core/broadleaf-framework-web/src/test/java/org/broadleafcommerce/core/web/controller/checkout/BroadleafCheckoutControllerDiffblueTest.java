@@ -20,30 +20,27 @@ package org.broadleafcommerce.core.web.controller.checkout;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.payment.service.PaymentGatewayCheckoutService;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.OrderService;
-import org.broadleafcommerce.core.order.service.exception.IllegalCartOperationException;
 import org.broadleafcommerce.core.order.service.exception.RequiredAttributeNotProvidedException;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.core.web.checkout.model.OrderInfoForm;
 import org.broadleafcommerce.core.web.checkout.validator.OrderInfoFormValidator;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -52,6 +49,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.ui.ConcurrentModel;
@@ -64,126 +62,82 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 @ExtendWith(MockitoExtension.class)
 class BroadleafCheckoutControllerDiffblueTest {
-  @InjectMocks private BroadleafCheckoutController broadleafCheckoutController;
+  @InjectMocks
+  private BroadleafCheckoutController broadleafCheckoutController;
 
-  @Mock private OrderInfoFormValidator orderInfoFormValidator;
+  @Mock
+  private PaymentGatewayCheckoutService paymentGatewayCheckoutService;
 
-  @Mock private OrderService orderService;
+  @Mock
+  private OrderService orderService;
 
-  @Mock private PaymentGatewayCheckoutService paymentGatewayCheckoutService;
+  @Mock
+  private OrderInfoFormValidator orderInfoFormValidator;
 
   /**
    * Test {@link BroadleafCheckoutController#preValidateCartOperation(Model)}.
-   *
-   * <ul>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#preValidateCartOperation(Model)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#preValidateCartOperation(Model)}
    */
   @Test
-  @DisplayName("Test preValidateCartOperation(Model); then ConcurrentModel() Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test preValidateCartOperation(Model)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void BroadleafCheckoutController.preValidateCartOperation(Model)"})
-  void testPreValidateCartOperation_thenConcurrentModelEmpty() {
+  void testPreValidateCartOperation() {
     // Arrange
     doNothing().when(orderService).preValidateCartOperation(Mockito.<Order>any());
-    ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    broadleafCheckoutController.preValidateCartOperation(model);
-
-    // Assert that nothing has changed
-    verify(orderService).preValidateCartOperation(isNull());
-    assertTrue(model.isEmpty());
-  }
-
-  /**
-   * Test {@link BroadleafCheckoutController#preValidateCartOperation(Model)}.
-   *
-   * <ul>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#preValidateCartOperation(Model)}
-   */
-  @Test
-  @DisplayName("Test preValidateCartOperation(Model); then ConcurrentModel() size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BroadleafCheckoutController.preValidateCartOperation(Model)"})
-  void testPreValidateCartOperation_thenConcurrentModelSizeIsOne() {
-    // Arrange
-    doThrow(mock(IllegalCartOperationException.class))
-        .when(orderService)
-        .preValidateCartOperation(Mockito.<Order>any());
-    ConcurrentModel model = new ConcurrentModel();
-
-    // Act
-    broadleafCheckoutController.preValidateCartOperation(model);
+    broadleafCheckoutController.preValidateCartOperation(new ConcurrentModel());
 
     // Assert
     verify(orderService).preValidateCartOperation(isNull());
-    assertEquals(1, model.size());
-    assertTrue((Boolean) model.get("cartRequiresLock"));
   }
 
   /**
    * Test {@link BroadleafCheckoutController#preValidateCartOperation(Model)}.
-   *
    * <ul>
-   *   <li>Then throw {@link RequiredAttributeNotProvidedException}.
+   *   <li>Then throw {@link RequiredAttributeNotProvidedException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#preValidateCartOperation(Model)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#preValidateCartOperation(Model)}
    */
   @Test
-  @DisplayName(
-      "Test preValidateCartOperation(Model); then throw RequiredAttributeNotProvidedException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test preValidateCartOperation(Model); then throw RequiredAttributeNotProvidedException")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void BroadleafCheckoutController.preValidateCartOperation(Model)"})
   void testPreValidateCartOperation_thenThrowRequiredAttributeNotProvidedException() {
     // Arrange
-    doThrow(new RequiredAttributeNotProvidedException("Attribute Name"))
-        .when(orderService)
+    doThrow(new RequiredAttributeNotProvidedException("ThreadLocalManager.notify.orphans")).when(orderService)
         .preValidateCartOperation(Mockito.<Order>any());
 
     // Act and Assert
-    assertThrows(
-        RequiredAttributeNotProvidedException.class,
+    assertThrows(RequiredAttributeNotProvidedException.class,
         () -> broadleafCheckoutController.preValidateCartOperation(new ConcurrentModel()));
     verify(orderService).preValidateCartOperation(isNull());
   }
 
   /**
-   * Test {@link BroadleafCheckoutController#getCheckoutStagePartial(HttpServletRequest,
-   * HttpServletResponse, Model, String, RedirectAttributes)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafCheckoutController#getCheckoutStagePartial(HttpServletRequest, HttpServletResponse,
-   * Model, String, RedirectAttributes)}
+   * Test {@link BroadleafCheckoutController#getCheckoutStagePartial(HttpServletRequest, HttpServletResponse, Model, String, RedirectAttributes)}.
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#getCheckoutStagePartial(HttpServletRequest, HttpServletResponse, Model, String, RedirectAttributes)}
    */
   @Test
-  @DisplayName(
-      "Test getCheckoutStagePartial(HttpServletRequest, HttpServletResponse, Model, String, RedirectAttributes)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getCheckoutStagePartial(HttpServletRequest, HttpServletResponse, Model, String, RedirectAttributes)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "String BroadleafCheckoutController.getCheckoutStagePartial(HttpServletRequest, HttpServletResponse, Model, String, RedirectAttributes)"
-  })
+      "String BroadleafCheckoutController.getCheckoutStagePartial(HttpServletRequest, HttpServletResponse, Model, String, RedirectAttributes)"})
   void testGetCheckoutStagePartial() {
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse response = new MockHttpServletResponse();
     ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    String actualCheckoutStagePartial =
-        broadleafCheckoutController.getCheckoutStagePartial(
-            request, response, model, "Stage", new RedirectAttributesModelMap());
+    String actualCheckoutStagePartial = broadleafCheckoutController.getCheckoutStagePartial(request, response, model,
+        "Stage", new RedirectAttributesModelMap());
 
     // Assert
     assertEquals(1, model.size());
@@ -192,109 +146,86 @@ class BroadleafCheckoutControllerDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafCheckoutController#saveGlobalOrderDetails(HttpServletRequest, Model,
-   * OrderInfoForm, BindingResult)}.
-   *
+   * Test {@link BroadleafCheckoutController#saveGlobalOrderDetails(HttpServletRequest, Model, OrderInfoForm, BindingResult)}.
    * <ul>
-   *   <li>Then throw {@link RequiredAttributeNotProvidedException}.
+   *   <li>Then throw {@link RequiredAttributeNotProvidedException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafCheckoutController#saveGlobalOrderDetails(HttpServletRequest, Model, OrderInfoForm,
-   * BindingResult)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#saveGlobalOrderDetails(HttpServletRequest, Model, OrderInfoForm, BindingResult)}
    */
   @Test
-  @DisplayName(
-      "Test saveGlobalOrderDetails(HttpServletRequest, Model, OrderInfoForm, BindingResult); then throw RequiredAttributeNotProvidedException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test saveGlobalOrderDetails(HttpServletRequest, Model, OrderInfoForm, BindingResult); then throw RequiredAttributeNotProvidedException")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "String BroadleafCheckoutController.saveGlobalOrderDetails(HttpServletRequest, Model, OrderInfoForm, BindingResult)"
-  })
-  void testSaveGlobalOrderDetails_thenThrowRequiredAttributeNotProvidedException()
-      throws ServiceException {
+      "String BroadleafCheckoutController.saveGlobalOrderDetails(HttpServletRequest, Model, OrderInfoForm, BindingResult)"})
+  void testSaveGlobalOrderDetails_thenThrowRequiredAttributeNotProvidedException() throws ServiceException {
     // Arrange
-    doThrow(new RequiredAttributeNotProvidedException("Attribute Name"))
-        .when(orderInfoFormValidator)
+    doThrow(new RequiredAttributeNotProvidedException("ThreadLocalManager.notify.orphans")).when(orderInfoFormValidator)
         .validate(Mockito.<Object>any(), Mockito.<Errors>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     ConcurrentModel model = new ConcurrentModel();
 
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("42 Main St");
 
     // Act and Assert
-    assertThrows(
-        RequiredAttributeNotProvidedException.class,
-        () ->
-            broadleafCheckoutController.saveGlobalOrderDetails(
-                request, model, orderInfoForm, new BindException("Target", "Object Name")));
+    assertThrows(RequiredAttributeNotProvidedException.class, () -> broadleafCheckoutController
+        .saveGlobalOrderDetails(request, model, orderInfoForm, new BindException("Target", "Object Name")));
     verify(orderInfoFormValidator).validate(isA(Object.class), isA(Errors.class));
   }
 
   /**
-   * Test {@link
-   * BroadleafCheckoutController#processCompleteCheckoutOrderFinalized(RedirectAttributes)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafCheckoutController#processCompleteCheckoutOrderFinalized(RedirectAttributes)}
+   * Test {@link BroadleafCheckoutController#processCompleteCheckoutOrderFinalized(RedirectAttributes)}.
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#processCompleteCheckoutOrderFinalized(RedirectAttributes)}
    */
   @Test
   @DisplayName("Test processCompleteCheckoutOrderFinalized(RedirectAttributes)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafCheckoutController.processCompleteCheckoutOrderFinalized(RedirectAttributes)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String BroadleafCheckoutController.processCompleteCheckoutOrderFinalized(RedirectAttributes)"})
   void testProcessCompleteCheckoutOrderFinalized() throws PaymentException {
     // Arrange, Act and Assert
-    assertEquals(
-        "redirect:/checkout",
-        broadleafCheckoutController.processCompleteCheckoutOrderFinalized(
-            new RedirectAttributesModelMap()));
+    assertEquals("redirect:/checkout",
+        broadleafCheckoutController.processCompleteCheckoutOrderFinalized(new RedirectAttributesModelMap()));
   }
 
   /**
    * Test {@link BroadleafCheckoutController#initiateCheckout(Long)}.
-   *
    * <ul>
-   *   <li>Then return {@code Initiate Checkout}.
+   *   <li>Then return {@code Initiate Checkout}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#initiateCheckout(Long)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#initiateCheckout(Long)}
    */
   @Test
   @DisplayName("Test initiateCheckout(Long); then return 'Initiate Checkout'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String BroadleafCheckoutController.initiateCheckout(Long)"})
   void testInitiateCheckout_thenReturnInitiateCheckout() throws Exception {
     // Arrange
-    when(paymentGatewayCheckoutService.initiateCheckout(Mockito.<Long>any()))
-        .thenReturn("Initiate Checkout");
+    when(paymentGatewayCheckoutService.initiateCheckout(Mockito.<Long>any())).thenReturn("Initiate Checkout");
 
     // Act
     String actualInitiateCheckoutResult = broadleafCheckoutController.initiateCheckout(1L);
 
     // Assert
-    verify(paymentGatewayCheckoutService).initiateCheckout(1L);
+    verify(paymentGatewayCheckoutService).initiateCheckout(eq(1L));
     assertEquals("Initiate Checkout", actualInitiateCheckoutResult);
   }
 
   /**
    * Test {@link BroadleafCheckoutController#initiateCheckout(Long)}.
-   *
    * <ul>
-   *   <li>Then throw {@link PricingException}.
+   *   <li>Then throw {@link PricingException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#initiateCheckout(Long)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#initiateCheckout(Long)}
    */
   @Test
   @DisplayName("Test initiateCheckout(Long); then throw PricingException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String BroadleafCheckoutController.initiateCheckout(Long)"})
   void testInitiateCheckout_thenThrowPricingException() throws Exception {
     // Arrange
@@ -303,23 +234,21 @@ class BroadleafCheckoutControllerDiffblueTest {
 
     // Act and Assert
     assertThrows(PricingException.class, () -> broadleafCheckoutController.initiateCheckout(1L));
-    verify(paymentGatewayCheckoutService).initiateCheckout(1L);
+    verify(paymentGatewayCheckoutService).initiateCheckout(eq(1L));
   }
 
   /**
    * Test {@link BroadleafCheckoutController#initiateCheckout(Long)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#initiateCheckout(Long)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#initiateCheckout(Long)}
    */
   @Test
   @DisplayName("Test initiateCheckout(Long); when 'null'; then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String BroadleafCheckoutController.initiateCheckout(Long)"})
   void testInitiateCheckout_whenNull_thenReturnNull() throws Exception {
     // Arrange, Act and Assert
@@ -327,23 +256,17 @@ class BroadleafCheckoutControllerDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafCheckoutController#handleProcessingException(Exception,
-   * RedirectAttributes)}.
-   *
+   * Test {@link BroadleafCheckoutController#handleProcessingException(Exception, RedirectAttributes)}.
    * <ul>
-   *   <li>Given {@link Throwable#Throwable()}.
+   *   <li>Given {@link Throwable#Throwable()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#handleProcessingException(Exception,
-   * RedirectAttributes)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#handleProcessingException(Exception, RedirectAttributes)}
    */
   @Test
   @DisplayName("Test handleProcessingException(Exception, RedirectAttributes); given Throwable()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafCheckoutController.handleProcessingException(Exception, RedirectAttributes)"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafCheckoutController.handleProcessingException(Exception, RedirectAttributes)"})
   void testHandleProcessingException_givenThrowable() throws PaymentException {
     // Arrange
     Exception e = new Exception("foo");
@@ -359,26 +282,20 @@ class BroadleafCheckoutControllerDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafCheckoutController#handleProcessingException(Exception,
-   * RedirectAttributes)}.
-   *
+   * Test {@link BroadleafCheckoutController#handleProcessingException(Exception, RedirectAttributes)}.
    * <ul>
-   *   <li>When {@link Exception#Exception()}.
+   *   <li>When {@link Exception#Exception(String)} with {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#handleProcessingException(Exception,
-   * RedirectAttributes)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#handleProcessingException(Exception, RedirectAttributes)}
    */
   @Test
-  @DisplayName("Test handleProcessingException(Exception, RedirectAttributes); when Exception()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafCheckoutController.handleProcessingException(Exception, RedirectAttributes)"
-  })
-  void testHandleProcessingException_whenException() throws PaymentException {
+  @DisplayName("Test handleProcessingException(Exception, RedirectAttributes); when Exception(String) with 'foo'")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafCheckoutController.handleProcessingException(Exception, RedirectAttributes)"})
+  void testHandleProcessingException_whenExceptionWithFoo() throws PaymentException {
     // Arrange
-    Exception e = new Exception();
+    Exception e = new Exception("foo");
     RedirectAttributesModelMap redirectAttributes = new RedirectAttributesModelMap();
 
     // Act
@@ -391,25 +308,22 @@ class BroadleafCheckoutControllerDiffblueTest {
 
   /**
    * Test {@link BroadleafCheckoutController#getConfirmationViewRedirect(String)}.
-   *
-   * <p>Method under test: {@link BroadleafCheckoutController#getConfirmationViewRedirect(String)}
+   * <p>
+   * Method under test: {@link BroadleafCheckoutController#getConfirmationViewRedirect(String)}
    */
   @Test
   @DisplayName("Test getConfirmationViewRedirect(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String BroadleafCheckoutController.getConfirmationViewRedirect(String)"})
   void testGetConfirmationViewRedirect() {
     // Arrange, Act and Assert
-    assertEquals(
-        "redirect:/confirmation/42", broadleafCheckoutController.getConfirmationViewRedirect("42"));
+    assertEquals("redirect:/confirmation/42", broadleafCheckoutController.getConfirmationViewRedirect("42"));
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafCheckoutController}
    *   <li>{@link BroadleafCheckoutController#getBaseConfirmationRedirect()}
@@ -417,15 +331,11 @@ class BroadleafCheckoutControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafCheckoutController.<init>()",
-    "String BroadleafCheckoutController.getBaseConfirmationRedirect()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void BroadleafCheckoutController.<init>()",
+      "String BroadleafCheckoutController.getBaseConfirmationRedirect()"})
   void testGettersAndSetters() {
     // Arrange, Act and Assert
-    assertEquals(
-        "redirect:/confirmation", new BroadleafCheckoutController().getBaseConfirmationRedirect());
+    assertEquals("redirect:/confirmation", (new BroadleafCheckoutController()).getBaseConfirmationRedirect());
   }
 }

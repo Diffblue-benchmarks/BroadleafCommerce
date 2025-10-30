@@ -18,10 +18,10 @@
 package org.broadleafcommerce.core.store.service;
 
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.store.dao.ZipCodeDao;
 import org.broadleafcommerce.core.store.domain.ZipCode;
@@ -36,18 +36,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ZipCodeServiceImplDiffblueTest {
-  @Mock private ZipCodeDao zipCodeDao;
+  @Mock
+  private ZipCodeDao zipCodeDao;
 
-  @InjectMocks private ZipCodeServiceImpl zipCodeServiceImpl;
+  @InjectMocks
+  private ZipCodeServiceImpl zipCodeServiceImpl;
 
   /**
    * Test {@link ZipCodeServiceImpl#findZipCodeByZipCode(Integer)}.
-   *
-   * <p>Method under test: {@link ZipCodeServiceImpl#findZipCodeByZipCode(Integer)}
+   * <p>
+   * Method under test: {@link ZipCodeServiceImpl#findZipCodeByZipCode(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ZipCode ZipCodeServiceImpl.findZipCodeByZipCode(Integer)"})
   public void testFindZipCodeByZipCode() {
     // Arrange
@@ -58,7 +59,7 @@ public class ZipCodeServiceImplDiffblueTest {
     ZipCode actualFindZipCodeByZipCodeResult = zipCodeServiceImpl.findZipCodeByZipCode(1);
 
     // Assert
-    verify(zipCodeDao).findZipCodeByZipCode(1);
+    verify(zipCodeDao).findZipCodeByZipCode(eq(1));
     assertSame(zipCodeImpl, actualFindZipCodeByZipCodeResult);
   }
 }

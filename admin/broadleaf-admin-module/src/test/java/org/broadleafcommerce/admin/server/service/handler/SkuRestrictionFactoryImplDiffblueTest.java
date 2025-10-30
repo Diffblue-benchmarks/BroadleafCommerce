@@ -20,11 +20,11 @@ package org.broadleafcommerce.admin.server.service.handler;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.Restriction;
@@ -40,39 +40,38 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SkuRestrictionFactoryImplDiffblueTest {
-  @Mock private RestrictionFactory restrictionFactory;
+  @Mock
+  private RestrictionFactory restrictionFactory;
 
-  @InjectMocks private SkuRestrictionFactoryImpl skuRestrictionFactoryImpl;
+  @InjectMocks
+  private SkuRestrictionFactoryImpl skuRestrictionFactoryImpl;
 
   /**
    * Test {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}.
-   *
    * <ul>
-   *   <li>Then calls {@link Restriction#getFilterValueConverter()}.
+   *   <li>Then calls {@link Restriction#getFilterValueConverter()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}
+   * <p>
+   * Method under test: {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Restriction SkuRestrictionFactoryImpl.getRestriction(String, String)"})
   public void testGetRestriction_thenCallsGetFilterValueConverter() {
     // Arrange
     Restriction restriction = mock(Restriction.class);
     when(restriction.getFilterValueConverter()).thenReturn(mock(FilterValueConverter.class));
-    when(restrictionFactory.getRestriction(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(restriction);
+    when(restrictionFactory.getRestriction(Mockito.<String>any(), Mockito.<String>any())).thenReturn(restriction);
 
     // Act
     Restriction actualRestriction = skuRestrictionFactoryImpl.getRestriction("Type", "42");
 
     // Assert
     verify(restriction).getFilterValueConverter();
-    verify(restrictionFactory).getRestriction("Type", "42");
+    verify(restrictionFactory).getRestriction(eq("Type"), eq("42"));
     FieldPathBuilder fieldPathBuilder = actualRestriction.getFieldPathBuilder();
     assertNull(fieldPathBuilder.getRestrictions());
     assertNull(fieldPathBuilder.getCriteria());
@@ -80,27 +79,24 @@ public class SkuRestrictionFactoryImplDiffblueTest {
 
   /**
    * Test {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}.
-   *
    * <ul>
-   *   <li>Then return FilterValueConverter is {@code null}.
+   *   <li>Then return FilterValueConverter is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}
+   * <p>
+   * Method under test: {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Restriction SkuRestrictionFactoryImpl.getRestriction(String, String)"})
   public void testGetRestriction_thenReturnFilterValueConverterIsNull() {
     // Arrange
-    when(restrictionFactory.getRestriction(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(new Restriction());
+    when(restrictionFactory.getRestriction(Mockito.<String>any(), Mockito.<String>any())).thenReturn(new Restriction());
 
     // Act
     Restriction actualRestriction = skuRestrictionFactoryImpl.getRestriction("Type", "42");
 
     // Assert
-    verify(restrictionFactory).getRestriction("Type", "42");
+    verify(restrictionFactory).getRestriction(eq("Type"), eq("42"));
     FieldPathBuilder fieldPathBuilder = actualRestriction.getFieldPathBuilder();
     assertNull(fieldPathBuilder.getRestrictions());
     assertNull(fieldPathBuilder.getCriteria());
@@ -109,9 +105,8 @@ public class SkuRestrictionFactoryImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SkuRestrictionFactoryImpl#setDelegate(RestrictionFactory)}
    *   <li>{@link SkuRestrictionFactoryImpl#getDelegate()}
@@ -119,13 +114,10 @@ public class SkuRestrictionFactoryImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "RestrictionFactory SkuRestrictionFactoryImpl.getDelegate()",
-    "String SkuRestrictionFactoryImpl.getSkuPropertyPrefix()",
-    "void SkuRestrictionFactoryImpl.setDelegate(RestrictionFactory)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RestrictionFactory SkuRestrictionFactoryImpl.getDelegate()",
+      "String SkuRestrictionFactoryImpl.getSkuPropertyPrefix()",
+      "void SkuRestrictionFactoryImpl.setDelegate(RestrictionFactory)"})
   public void testGettersAndSetters() {
     // Arrange
     SkuRestrictionFactoryImpl skuRestrictionFactoryImpl = new SkuRestrictionFactoryImpl();
@@ -142,12 +134,11 @@ public class SkuRestrictionFactoryImplDiffblueTest {
 
   /**
    * Test {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}.
-   *
-   * <p>Method under test: {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
+   * <p>
+   * Method under test: {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuRestrictionFactoryImpl.setSkuPropertyPrefix(String)"})
   public void testSetSkuPropertyPrefix() {
     // Arrange and Act
@@ -159,12 +150,11 @@ public class SkuRestrictionFactoryImplDiffblueTest {
 
   /**
    * Test {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}.
-   *
-   * <p>Method under test: {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
+   * <p>
+   * Method under test: {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuRestrictionFactoryImpl.setSkuPropertyPrefix(String)"})
   public void testSetSkuPropertyPrefix2() {
     // Arrange and Act
@@ -176,16 +166,14 @@ public class SkuRestrictionFactoryImplDiffblueTest {
 
   /**
    * Test {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}.
-   *
    * <ul>
-   *   <li>Then {@link SkuRestrictionFactoryImpl} SkuPropertyPrefix is {@code .}.
+   *   <li>Then {@link SkuRestrictionFactoryImpl} SkuPropertyPrefix is {@code .}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
+   * <p>
+   * Method under test: {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuRestrictionFactoryImpl.setSkuPropertyPrefix(String)"})
   public void testSetSkuPropertyPrefix_thenSkuRestrictionFactoryImplSkuPropertyPrefixIsDot() {
     // Arrange and Act
@@ -197,16 +185,14 @@ public class SkuRestrictionFactoryImplDiffblueTest {
 
   /**
    * Test {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}.
-   *
    * <ul>
-   *   <li>Then {@link SkuRestrictionFactoryImpl} SkuPropertyPrefix is {@code null}.
+   *   <li>Then {@link SkuRestrictionFactoryImpl} SkuPropertyPrefix is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
+   * <p>
+   * Method under test: {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SkuRestrictionFactoryImpl.setSkuPropertyPrefix(String)"})
   public void testSetSkuPropertyPrefix_thenSkuRestrictionFactoryImplSkuPropertyPrefixIsNull() {
     // Arrange and Act

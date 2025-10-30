@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,20 +38,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {PageDTO.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PageDTODiffblueTest {
-  @Autowired private PageDTO pageDTO;
+  @Autowired
+  private PageDTO pageDTO;
 
   /**
    * Test {@link PageDTO#getPropertyValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42}.
+   *   <li>When {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageDTO#getPropertyValue(String)}
+   * <p>
+   * Method under test: {@link PageDTO#getPropertyValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object PageDTO.getPropertyValue(String)"})
   public void testGetPropertyValue_when42() {
     // Arrange, Act and Assert
@@ -61,16 +59,14 @@ public class PageDTODiffblueTest {
 
   /**
    * Test {@link PageDTO#getPropertyValue(String)}.
-   *
    * <ul>
-   *   <li>When {@code Property Name}.
+   *   <li>When {@code Property Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageDTO#getPropertyValue(String)}
+   * <p>
+   * Method under test: {@link PageDTO#getPropertyValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object PageDTO.getPropertyValue(String)"})
   public void testGetPropertyValue_whenPropertyName() {
     // Arrange, Act and Assert
@@ -79,9 +75,8 @@ public class PageDTODiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PageDTO}
    *   <li>{@link PageDTO#setDescription(String)}
@@ -109,33 +104,15 @@ public class PageDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageDTO.<init>()",
-    "String PageDTO.getDescription()",
-    "Map PageDTO.getForeignPageFields()",
-    "Long PageDTO.getId()",
-    "List PageDTO.getItemCriteriaDTOList()",
-    "String PageDTO.getLocaleCode()",
-    "Map PageDTO.getPageAttributes()",
-    "Map PageDTO.getPageFields()",
-    "Integer PageDTO.getPriority()",
-    "String PageDTO.getRuleExpression()",
-    "String PageDTO.getTemplatePath()",
-    "String PageDTO.getUrl()",
-    "void PageDTO.setDescription(String)",
-    "void PageDTO.setForeignPageFields(Map)",
-    "void PageDTO.setId(Long)",
-    "void PageDTO.setItemCriteriaDTOList(List)",
-    "void PageDTO.setLocaleCode(String)",
-    "void PageDTO.setPageAttributes(Map)",
-    "void PageDTO.setPageFields(Map)",
-    "void PageDTO.setPriority(Integer)",
-    "void PageDTO.setRuleExpression(String)",
-    "void PageDTO.setTemplatePath(String)",
-    "void PageDTO.setUrl(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void PageDTO.<init>()", "String PageDTO.getDescription()", "Map PageDTO.getForeignPageFields()",
+      "Long PageDTO.getId()", "List PageDTO.getItemCriteriaDTOList()", "String PageDTO.getLocaleCode()",
+      "Map PageDTO.getPageAttributes()", "Map PageDTO.getPageFields()", "Integer PageDTO.getPriority()",
+      "String PageDTO.getRuleExpression()", "String PageDTO.getTemplatePath()", "String PageDTO.getUrl()",
+      "void PageDTO.setDescription(String)", "void PageDTO.setForeignPageFields(Map)", "void PageDTO.setId(Long)",
+      "void PageDTO.setItemCriteriaDTOList(List)", "void PageDTO.setLocaleCode(String)",
+      "void PageDTO.setPageAttributes(Map)", "void PageDTO.setPageFields(Map)", "void PageDTO.setPriority(Integer)",
+      "void PageDTO.setRuleExpression(String)", "void PageDTO.setTemplatePath(String)", "void PageDTO.setUrl(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     PageDTO actualPageDTO = new PageDTO();

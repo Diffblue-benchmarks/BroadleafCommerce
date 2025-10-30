@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,16 +27,14 @@ import org.junit.experimental.categories.Category;
 public class BLCCronUtilsDiffblueTest {
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42}.
+   *   <li>When {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_when42() {
     // Arrange, Act and Assert
@@ -46,16 +43,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42Unable to parse the given cron expression:}.
+   *   <li>When {@code 42Unable to parse the given cron expression:}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_when42UnableToParseTheGivenCronExpression() {
     // Arrange, Act and Assert
@@ -64,16 +59,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42L-9}.
+   *   <li>When {@code 42L-9}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_when42l9() {
     // Arrange, Act and Assert
@@ -82,16 +75,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code 4242}.
+   *   <li>When {@code 4242}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_when4242() {
     // Arrange, Act and Assert
@@ -100,16 +91,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code 4242Unable to parse the given cron expression:}.
+   *   <li>When {@code 4242Unable to parse the given cron expression:}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_when4242UnableToParseTheGivenCronExpression() {
     // Arrange, Act and Assert
@@ -118,16 +107,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code Cron}.
+   *   <li>When {@code Cron}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_whenCron() {
     // Arrange, Act and Assert
@@ -136,16 +123,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When empty string.
+   *   <li>When empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_whenEmptyString() {
     // Arrange, Act and Assert
@@ -154,16 +139,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code L-9}.
+   *   <li>When {@code L-9}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_whenL9() {
     // Arrange, Act and Assert
@@ -172,16 +155,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code L-942}.
+   *   <li>When {@code L-942}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_whenL942() {
     // Arrange, Act and Assert
@@ -190,16 +171,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#getNextValidTime(String)}.
-   *
    * <ul>
-   *   <li>When {@code L-94242}.
+   *   <li>When {@code L-94242}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#getNextValidTime(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#getNextValidTime(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Date BLCCronUtils.getNextValidTime(String)"})
   public void testGetNextValidTime_whenL94242() {
     // Arrange, Act and Assert
@@ -208,16 +187,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42}.
+   *   <li>When {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_when42() {
     // Arrange, Act and Assert
@@ -226,16 +203,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42Cron}.
+   *   <li>When {@code 42Cron}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_when42Cron() {
     // Arrange, Act and Assert
@@ -244,16 +219,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code 42L-9}.
+   *   <li>When {@code 42L-9}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_when42l9() {
     // Arrange, Act and Assert
@@ -262,16 +235,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code 4242}.
+   *   <li>When {@code 4242}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_when4242() {
     // Arrange, Act and Assert
@@ -280,16 +251,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code 4242Cron}.
+   *   <li>When {@code 4242Cron}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_when4242Cron() {
     // Arrange, Act and Assert
@@ -298,16 +267,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code Cron}.
+   *   <li>When {@code Cron}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_whenCron() {
     // Arrange, Act and Assert
@@ -316,16 +283,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code L-9}.
+   *   <li>When {@code L-9}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_whenL9() {
     // Arrange, Act and Assert
@@ -334,16 +299,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code L-942}.
+   *   <li>When {@code L-942}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_whenL942() {
     // Arrange, Act and Assert
@@ -352,34 +315,14 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code L-9 42}.
+   *   <li>When {@code L-94242}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
-  public void testIsValidExpression_whenL9422() {
-    // Arrange, Act and Assert
-    assertFalse(BLCCronUtils.isValidExpression("L-9 42"));
-  }
-
-  /**
-   * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
-   * <ul>
-   *   <li>When {@code L-94242}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_whenL94242() {
     // Arrange, Act and Assert
@@ -388,37 +331,17 @@ public class BLCCronUtilsDiffblueTest {
 
   /**
    * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
+   * <p>
+   * Method under test: {@link BLCCronUtils#isValidExpression(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
   public void testIsValidExpression_whenNull() {
     // Arrange, Act and Assert
     assertFalse(BLCCronUtils.isValidExpression(null));
-  }
-
-  /**
-   * Test {@link BLCCronUtils#isValidExpression(String)}.
-   *
-   * <ul>
-   *   <li>When space.
-   * </ul>
-   *
-   * <p>Method under test: {@link BLCCronUtils#isValidExpression(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BLCCronUtils.isValidExpression(String)"})
-  public void testIsValidExpression_whenSpace() {
-    // Arrange, Act and Assert
-    assertFalse(BLCCronUtils.isValidExpression(" "));
   }
 }

@@ -27,26 +27,17 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductOption;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionXref;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionXrefImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
@@ -64,1017 +55,644 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderItemRequestValidationServiceImplDiffblueTest {
-  @Mock private CatalogService catalogService;
+  @InjectMocks
+  private OrderItemRequestValidationServiceImpl orderItemRequestValidationServiceImpl;
 
-  @Mock private Environment environment;
+  @Mock
+  private CatalogService catalogService;
 
-  @InjectMocks private OrderItemRequestValidationServiceImpl orderItemRequestValidationServiceImpl;
+  @Mock
+  private Environment environment;
 
-  @Mock private ProductOptionValidationService productOptionValidationService;
+  @Mock
+  private ProductOptionValidationService productOptionValidationService;
 
   /**
-   * Test {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}
+   * Test {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"})
   public void testSatisfiesMinQuantityCondition() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenThrow(new IllegalArgumentException("enable.sku.minOrderQuantity.field"));
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    assertThrows(IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl
+        .satisfiesMinQuantityCondition(orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
   }
 
   /**
-   * Test {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}
+   * Test {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"})
   public void testSatisfiesMinQuantityCondition2() {
     // Arrange
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
 
     // Act
-    boolean actualSatisfiesMinQuantityConditionResult =
-        orderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    boolean actualSatisfiesMinQuantityConditionResult = orderItemRequestValidationServiceImpl
+        .satisfiesMinQuantityCondition(orderItemRequestDTO, new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(catalogService).findProductById(1L);
-    verify(environment, atLeast(1))
-        .getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
+    verify(catalogService).findProductById(eq(1L));
+    verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
     assertTrue(actualSatisfiesMinQuantityConditionResult);
   }
 
   /**
-   * Test {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"
-  })
-  public void testSatisfiesMinQuantityCondition3() {
-    // Arrange
-    when(catalogService.findProductById(Mockito.<Long>any()))
-        .thenThrow(new IllegalArgumentException());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(true);
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
-  }
-
-  /**
-   * Test {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"
-  })
-  public void testSatisfiesMinQuantityCondition4() {
-    // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(true);
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1L, 1);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(environment, atLeast(1))
-        .getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
-  }
-
-  /**
-   * Test {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@code
-   *       null}.
+   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"})
   public void testSatisfiesMinQuantityCondition_givenCatalogServiceFindProductByIdReturnNull() {
     // Arrange
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(null);
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    assertThrows(IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl
+        .satisfiesMinQuantityCondition(orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    verify(catalogService).findProductById(eq(1L));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
   }
 
   /**
-   * Test {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"})
   public void testSatisfiesMinQuantityCondition_givenEnvironmentGetPropertyReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
 
     // Act
-    boolean actualSatisfiesMinQuantityConditionResult =
-        orderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    boolean actualSatisfiesMinQuantityConditionResult = orderItemRequestValidationServiceImpl
+        .satisfiesMinQuantityCondition(orderItemRequestDTO, new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
     assertTrue(actualSatisfiesMinQuantityConditionResult);
   }
 
   /**
-   * Test {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>Then calls {@link CatalogService#findSkuById(Long)}.
+   *   <li>Then calls {@link CatalogService#findSkuById(Long)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"})
   public void testSatisfiesMinQuantityCondition_thenCallsFindSkuById() {
     // Arrange
     when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(mock(Product.class));
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1L, 1);
 
     // Act
-    boolean actualSatisfiesMinQuantityConditionResult =
-        orderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    boolean actualSatisfiesMinQuantityConditionResult = orderItemRequestValidationServiceImpl
+        .satisfiesMinQuantityCondition(orderItemRequestDTO, new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(environment, atLeast(1))
-        .getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
+    verify(catalogService).findProductById(eq(1L));
+    verify(catalogService).findSkuById(eq(1L));
+    verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
     assertTrue(actualSatisfiesMinQuantityConditionResult);
   }
 
   /**
-   * Test {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.
-   *   <li>Then return {@code true}.
+   *   <li>Then throw {@link RequiredAttributeNotProvidedException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO,
-   * ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"})
+  public void testSatisfiesMinQuantityCondition_thenThrowRequiredAttributeNotProvidedException() {
+    // Arrange
+    Product product = mock(Product.class);
+    when(product.getAdditionalSkus()).thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(product);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class, () -> orderItemRequestValidationServiceImpl
+        .satisfiesMinQuantityCondition(orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    verify(product).getAdditionalSkus();
+    verify(catalogService).findProductById(eq(1L));
+    verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
+  }
+
+  /**
+   * Test {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}.
+   * <ul>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean OrderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(OrderItemRequestDTO, ProcessContext)"})
   public void testSatisfiesMinQuantityCondition_whenOrderItemRequestDTO_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
 
     // Act
-    boolean actualSatisfiesMinQuantityConditionResult =
-        orderItemRequestValidationServiceImpl.satisfiesMinQuantityCondition(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    boolean actualSatisfiesMinQuantityConditionResult = orderItemRequestValidationServiceImpl
+        .satisfiesMinQuantityCondition(orderItemRequestDTO, new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(environment, atLeast(1))
-        .getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
+    verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
     assertTrue(actualSatisfiesMinQuantityConditionResult);
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
+   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"
-  })
+      "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"})
   public void testGetMinQuantity() {
     // Arrange
-    when(catalogService.findProductById(Mockito.<Long>any()))
-        .thenThrow(new IllegalArgumentException());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(true);
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenThrow(new IllegalArgumentException("enable.sku.minOrderQuantity.field"));
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.getMinQuantity(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    assertThrows(IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl
+        .getMinQuantity(orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@code
-   *       null}.
+   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"
-  })
+      "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"})
   public void testGetMinQuantity_givenCatalogServiceFindProductByIdReturnNull() {
     // Arrange
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(null);
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.getMinQuantity(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    assertThrows(IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl
+        .getMinQuantity(orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    verify(catalogService).findProductById(eq(1L));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>Given {@link CatalogService} {@link CatalogService#findSkuById(Long)} throw {@link
-   *       IllegalArgumentException#IllegalArgumentException()}.
+   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"
-  })
-  public void testGetMinQuantity_givenCatalogServiceFindSkuByIdThrowIllegalArgumentException() {
+      "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"})
+  public void testGetMinQuantity_givenCatalogServiceFindProductByIdReturnProductBundleImpl() {
     // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1L, 1);
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
 
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.getMinQuantity(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(environment, atLeast(1))
-        .getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
+    // Act
+    Integer actualMinQuantity = orderItemRequestValidationServiceImpl.getMinQuantity(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
+
+    // Assert
+    verify(catalogService).findProductById(eq(1L));
+    verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
+    assertEquals(1, actualMinQuantity.intValue());
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"
-  })
+      "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"})
   public void testGetMinQuantity_givenEnvironmentGetPropertyReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
 
     // Act
-    Integer actualMinQuantity =
-        orderItemRequestValidationServiceImpl.getMinQuantity(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    Integer actualMinQuantity = orderItemRequestValidationServiceImpl.getMinQuantity(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
     assertEquals(1, actualMinQuantity.intValue());
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} throw
-   *       {@link IllegalArgumentException#IllegalArgumentException()}.
+   *   <li>Then calls {@link CatalogService#findSkuById(Long)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"
-  })
-  public void testGetMinQuantity_givenEnvironmentGetPropertyThrowIllegalArgumentException() {
-    // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new IllegalArgumentException());
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.getMinQuantity(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CatalogService#findSkuById(Long)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"
-  })
+      "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"})
   public void testGetMinQuantity_thenCallsFindSkuById() {
     // Arrange
     when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(mock(Product.class));
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1L, 1);
 
     // Act
-    Integer actualMinQuantity =
-        orderItemRequestValidationServiceImpl.getMinQuantity(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    Integer actualMinQuantity = orderItemRequestValidationServiceImpl.getMinQuantity(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(environment, atLeast(1))
-        .getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
+    verify(catalogService).findProductById(eq(1L));
+    verify(catalogService).findSkuById(eq(1L));
+    verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
     assertEquals(1, actualMinQuantity.intValue());
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Integer)} with productId is one
-   *       and quantity is one.
+   *   <li>Then throw {@link RequiredAttributeNotProvidedException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"
-  })
-  public void testGetMinQuantity_whenOrderItemRequestDTOWithProductIdIsOneAndQuantityIsOne() {
+      "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"})
+  public void testGetMinQuantity_thenThrowRequiredAttributeNotProvidedException() {
     // Arrange
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    Product product = mock(Product.class);
+    when(product.getAdditionalSkus()).thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(product);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
 
-    // Act
-    Integer actualMinQuantity =
-        orderItemRequestValidationServiceImpl.getMinQuantity(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
-
-    // Assert
-    verify(catalogService).findProductById(1L);
-    verify(environment, atLeast(1))
-        .getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
-    assertEquals(1, actualMinQuantity.intValue());
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class, () -> orderItemRequestValidationServiceImpl
+        .getMinQuantity(orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    verify(product).getAdditionalSkus();
+    verify(catalogService).findProductById(eq(1L));
+    verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO,
-   * ProcessContext)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}.
    * <ul>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.
-   *   <li>Then return intValue is one.
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
+   *   <li>Then return intValue is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#getMinQuantity(OrderItemRequestDTO, ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"
-  })
+      "Integer OrderItemRequestValidationServiceImpl.getMinQuantity(OrderItemRequestDTO, ProcessContext)"})
   public void testGetMinQuantity_whenOrderItemRequestDTO_thenReturnIntValueIsOne() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
 
     // Act
-    Integer actualMinQuantity =
-        orderItemRequestValidationServiceImpl.getMinQuantity(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    Integer actualMinQuantity = orderItemRequestValidationServiceImpl.getMinQuantity(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(environment, atLeast(1))
-        .getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
+    verify(environment, atLeast(1)).getProperty(Mockito.<String>any(), isA(Class.class), isA(Object.class));
     assertEquals(1, actualMinQuantity.intValue());
   }
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Product OrderItemRequestValidationServiceImpl.determineProduct(OrderItemRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product OrderItemRequestValidationServiceImpl.determineProduct(OrderItemRequestDTO)"})
   public void testDetermineProduct() {
     // Arrange
-    when(catalogService.findProductById(Mockito.<Long>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenThrow(
+        new IllegalArgumentException("Product was specified but no matching product was found with the productId ("));
 
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
     orderItemRequestDTO.setProductId(1L);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
+    assertThrows(IllegalArgumentException.class,
         () -> orderItemRequestValidationServiceImpl.determineProduct(orderItemRequestDTO));
-    verify(catalogService).findProductById(1L);
+    verify(catalogService).findProductById(eq(1L));
   }
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}.
-   *
    * <ul>
-   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@code
-   *       null}.
+   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Product OrderItemRequestValidationServiceImpl.determineProduct(OrderItemRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product OrderItemRequestValidationServiceImpl.determineProduct(OrderItemRequestDTO)"})
   public void testDetermineProduct_givenCatalogServiceFindProductByIdReturnNull() {
     // Arrange
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(null);
 
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
     orderItemRequestDTO.setProductId(1L);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
+    assertThrows(IllegalArgumentException.class,
         () -> orderItemRequestValidationServiceImpl.determineProduct(orderItemRequestDTO));
-    verify(catalogService).findProductById(1L);
+    verify(catalogService).findProductById(eq(1L));
   }
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}.
-   *
    * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Product OrderItemRequestValidationServiceImpl.determineProduct(OrderItemRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product OrderItemRequestValidationServiceImpl.determineProduct(OrderItemRequestDTO)"})
   public void testDetermineProduct_thenReturnProductBundleImpl() {
     // Arrange
     ProductBundleImpl productBundleImpl = new ProductBundleImpl();
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(productBundleImpl);
 
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
     orderItemRequestDTO.setProductId(1L);
 
     // Act
-    Product actualDetermineProductResult =
-        orderItemRequestValidationServiceImpl.determineProduct(orderItemRequestDTO);
+    Product actualDetermineProductResult = orderItemRequestValidationServiceImpl.determineProduct(orderItemRequestDTO);
 
     // Assert
-    verify(catalogService).findProductById(1L);
+    verify(catalogService).findProductById(eq(1L));
     assertSame(productBundleImpl, actualDetermineProductResult);
   }
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}.
-   *
    * <ul>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineProduct(OrderItemRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Product OrderItemRequestValidationServiceImpl.determineProduct(OrderItemRequestDTO)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Product OrderItemRequestValidationServiceImpl.determineProduct(OrderItemRequestDTO)"})
   public void testDetermineProduct_whenOrderItemRequestDTO_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(orderItemRequestValidationServiceImpl.determineProduct(new OrderItemRequestDTO()));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO,
-   * ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"
-  })
-  public void testDetermineSkuWithOrderItemRequestDTOMessages()
-      throws RequiredAttributeNotProvidedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"})
+  public void testDetermineSkuWithOrderItemRequestDTOMessages() throws RequiredAttributeNotProvidedException {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(false);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
 
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.determineSku(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    // Act
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
+
+    // Assert
     verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
+    assertNull(actualDetermineSkuResult);
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO,
-   * ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"
-  })
-  public void testDetermineSkuWithOrderItemRequestDTOMessages2()
-      throws RequiredAttributeNotProvidedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"})
+  public void testDetermineSkuWithOrderItemRequestDTOMessages2() throws RequiredAttributeNotProvidedException {
     // Arrange
-    when(catalogService.findProductById(Mockito.<Long>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(null);
     OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.determineSku(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
+    assertThrows(IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl
+        .determineSku(orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    verify(catalogService).findProductById(eq(1L));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO,
-   * ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"
-  })
-  public void testDetermineSkuWithOrderItemRequestDTOMessages3()
-      throws RequiredAttributeNotProvidedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"})
+  public void testDetermineSkuWithOrderItemRequestDTOMessages3() throws RequiredAttributeNotProvidedException {
     // Arrange
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(null);
-
-    OrderItemRequestDTO orderItemRequestDTO = mock(OrderItemRequestDTO.class);
-    when(orderItemRequestDTO.getProductId()).thenReturn(1L);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.determineSku(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
-    verify(orderItemRequestDTO, atLeast(1)).getProductId();
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO,
-   * ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"
-  })
-  public void testDetermineSkuWithOrderItemRequestDTOMessages4()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
-
-    OrderItemRequestDTO orderItemRequestDTO = mock(OrderItemRequestDTO.class);
-    when(orderItemRequestDTO.getProductId()).thenReturn(1L);
-    when(orderItemRequestDTO.getSkuId()).thenReturn(1L);
-    when(orderItemRequestDTO.getItemAttributes()).thenReturn(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.determineSku(
-                orderItemRequestDTO, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(orderItemRequestDTO).getItemAttributes();
-    verify(orderItemRequestDTO, atLeast(1)).getProductId();
-    verify(orderItemRequestDTO).getSkuId();
-    verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO,
-   * ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"
-  })
-  public void testDetermineSkuWithOrderItemRequestDTOMessages5()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(null);
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(true);
-
-    OrderItemRequestDTO orderItemRequestDTO = mock(OrderItemRequestDTO.class);
-    when(orderItemRequestDTO.getProductId()).thenReturn(1L);
-    when(orderItemRequestDTO.getSkuId()).thenReturn(1L);
-    when(orderItemRequestDTO.getItemAttributes()).thenReturn(new HashMap<>());
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
 
     // Act
-    Sku actualDetermineSkuResult =
-        orderItemRequestValidationServiceImpl.determineSku(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(orderItemRequestDTO).getItemAttributes();
-    verify(orderItemRequestDTO, atLeast(1)).getProductId();
-    verify(orderItemRequestDTO).getSkuId();
+    verify(catalogService).findProductById(eq(1L));
     verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
     assertNull(actualDetermineSkuResult);
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO,
-   * ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"
-  })
-  public void testDetermineSkuWithOrderItemRequestDTOMessages6()
-      throws RequiredAttributeNotProvidedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"})
+  public void testDetermineSkuWithOrderItemRequestDTOMessages4() throws RequiredAttributeNotProvidedException {
     // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
-
-    OrderItemRequestDTO orderItemRequestDTO = mock(OrderItemRequestDTO.class);
-    when(orderItemRequestDTO.getProductId()).thenReturn(1L);
-    when(orderItemRequestDTO.getSkuId()).thenReturn(1L);
-    when(orderItemRequestDTO.getItemAttributes()).thenReturn(new HashMap<>());
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
 
     // Act
-    Sku actualDetermineSkuResult =
-        orderItemRequestValidationServiceImpl.determineSku(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
-    verify(orderItemRequestDTO).getItemAttributes();
-    verify(orderItemRequestDTO, atLeast(1)).getProductId();
-    verify(orderItemRequestDTO).getSkuId();
-    verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
-    assertSame(skuImpl, actualDetermineSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO,
-   * ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"
-  })
-  public void testDetermineSkuWithOrderItemRequestDTOMessages_givenNull()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(true);
-
-    OrderItemRequestDTO orderItemRequestDTO = mock(OrderItemRequestDTO.class);
-    when(orderItemRequestDTO.getProductId()).thenReturn(1L);
-    when(orderItemRequestDTO.getSkuId()).thenReturn(null);
-    when(orderItemRequestDTO.getItemAttributes()).thenReturn(new HashMap<>());
-
-    // Act
-    Sku actualDetermineSkuResult =
-        orderItemRequestValidationServiceImpl.determineSku(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
-
-    // Assert
-    verify(catalogService).findProductById(1L);
-    verify(orderItemRequestDTO).getItemAttributes();
-    verify(orderItemRequestDTO, atLeast(1)).getProductId();
-    verify(orderItemRequestDTO).getSkuId();
+    verify(catalogService).findProductById(eq(1L));
     verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
     assertNull(actualDetermineSkuResult);
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO,
-   * ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
-   *
-   * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"})
+  public void testDetermineSkuWithOrderItemRequestDTOMessages5() throws RequiredAttributeNotProvidedException {
+    // Arrange
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("solr.index.use.sku"));
+    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+    OrderItemRequestDTO orderItemRequestDTO = mock(OrderItemRequestDTO.class);
+    when(orderItemRequestDTO.getProductId()).thenReturn(1L);
+    when(orderItemRequestDTO.getSkuId()).thenReturn(1L);
+    when(orderItemRequestDTO.getItemAttributes()).thenReturn(new HashMap<>());
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl
+        .determineSku(orderItemRequestDTO, new DefaultProcessContextImpl<>()));
+    verify(catalogService).findProductById(eq(1L));
+    verify(catalogService).findSkuById(eq(1L));
+    verify(orderItemRequestDTO).getItemAttributes();
+    verify(orderItemRequestDTO, atLeast(1)).getProductId();
+    verify(orderItemRequestDTO).getSkuId();
+    verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
+  }
+
+  /**
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
+   * <ul>
+   *   <li>Then return {@link SkuImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"})
   public void testDetermineSkuWithOrderItemRequestDTOMessages_thenReturnSkuImpl()
       throws RequiredAttributeNotProvidedException {
     // Arrange
     SkuImpl skuImpl = new SkuImpl();
     when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
     when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
-
     OrderItemRequestDTO orderItemRequestDTO = mock(OrderItemRequestDTO.class);
     when(orderItemRequestDTO.getProductId()).thenReturn(1L);
     when(orderItemRequestDTO.getSkuId()).thenReturn(1L);
     when(orderItemRequestDTO.getItemAttributes()).thenReturn(new HashMap<>());
 
     // Act
-    Sku actualDetermineSkuResult =
-        orderItemRequestValidationServiceImpl.determineSku(
-            orderItemRequestDTO, new DefaultProcessContextImpl<>());
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(catalogService).findProductById(1L);
-    verify(catalogService).findSkuById(1L);
+    verify(catalogService).findProductById(eq(1L));
+    verify(catalogService).findSkuById(eq(1L));
     verify(orderItemRequestDTO).getItemAttributes();
     verify(orderItemRequestDTO, atLeast(1)).getProductId();
     verify(orderItemRequestDTO).getSkuId();
@@ -1083,252 +701,162 @@ public class OrderItemRequestValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map,
-   * ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code
-   * messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long,
-   * Map, ActivityMessages)}
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)} with {@code orderItemRequestDTO}, {@code messages}.
+   * <ul>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(OrderItemRequestDTO, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"
-  })
-  public void testDetermineSkuWithProductSkuIdAttributeValuesMessages()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(OrderItemRequestDTO, ActivityMessages)"})
+  public void testDetermineSkuWithOrderItemRequestDTOMessages_whenOrderItemRequestDTO()
       throws RequiredAttributeNotProvidedException {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new IllegalArgumentException());
-    ProductBundleImpl product = new ProductBundleImpl();
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.determineSku(
-                product, 1L, attributeValues, new DefaultProcessContextImpl<>()));
-    verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map,
-   * ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code
-   * messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"
-  })
-  public void testDetermineSkuWithProductSkuIdAttributeValuesMessages2()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
-    ProductBundleImpl product = new ProductBundleImpl();
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.determineSku(
-                product, 1L, attributeValues, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findSkuById(1L);
-    verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map,
-   * ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code
-   * messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"
-  })
-  public void testDetermineSkuWithProductSkuIdAttributeValuesMessages3()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(null);
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(true);
-    ProductBundleImpl product = new ProductBundleImpl();
-    HashMap<String, String> attributeValues = new HashMap<>();
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
 
     // Act
-    Sku actualDetermineSkuResult =
-        orderItemRequestValidationServiceImpl.determineSku(
-            product, 1L, attributeValues, new DefaultProcessContextImpl<>());
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(orderItemRequestDTO,
+        new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(catalogService).findSkuById(1L);
     verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
     assertNull(actualDetermineSkuResult);
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map,
-   * ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code
-   * messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long,
-   * Map, ActivityMessages)}
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code messages}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"
-  })
-  public void testDetermineSkuWithProductSkuIdAttributeValuesMessages4()
-      throws RequiredAttributeNotProvidedException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"})
+  public void testDetermineSkuWithProductSkuIdAttributeValuesMessages() throws RequiredAttributeNotProvidedException {
     // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(null);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+    ProductBundleImpl product = new ProductBundleImpl();
+    HashMap<String, String> attributeValues = new HashMap<>();
+
+    // Act
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(product, 1L, attributeValues,
+        new DefaultProcessContextImpl<>());
+
+    // Assert
+    verify(catalogService).findSkuById(eq(1L));
+    verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
+    assertNull(actualDetermineSkuResult);
+  }
+
+  /**
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code messages}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"})
+  public void testDetermineSkuWithProductSkuIdAttributeValuesMessages2() throws RequiredAttributeNotProvidedException {
+    // Arrange
+    SkuImpl skuImpl = new SkuImpl();
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
     ProductBundleImpl product = new ProductBundleImpl();
     HashMap<String, String> attributeValues = new HashMap<>();
 
+    // Act
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(product, 1L, attributeValues,
+        new DefaultProcessContextImpl<>());
+
+    // Assert
+    verify(catalogService).findSkuById(eq(1L));
+    verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
+    assertSame(skuImpl, actualDetermineSkuResult);
+  }
+
+  /**
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code messages}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"})
+  public void testDetermineSkuWithProductSkuIdAttributeValuesMessages3() throws RequiredAttributeNotProvidedException {
+    // Arrange
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("solr.index.use.sku"));
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenReturn(true);
+    ProductBundleImpl product = new ProductBundleImpl();
+    HashMap<String, String> attributeValues = new HashMap<>();
+
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.determineSku(
-                product, 1L, attributeValues, new DefaultProcessContextImpl<>()));
-    verify(catalogService).findSkuById(1L);
+    assertThrows(IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl.determineSku(product, 1L,
+        attributeValues, new DefaultProcessContextImpl<>()));
+    verify(catalogService).findSkuById(eq(1L));
     verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map,
-   * ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code
-   * messages}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code messages}.
    * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor).
+   *   <li>Then return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long,
-   * Map, ActivityMessages)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"})
   public void testDetermineSkuWithProductSkuIdAttributeValuesMessages_thenReturnSkuImpl()
       throws RequiredAttributeNotProvidedException {
     // Arrange
     SkuImpl skuImpl = new SkuImpl();
     when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     ProductBundleImpl product = new ProductBundleImpl();
     HashMap<String, String> attributeValues = new HashMap<>();
 
     // Act
-    Sku actualDetermineSkuResult =
-        orderItemRequestValidationServiceImpl.determineSku(
-            product, 1L, attributeValues, new DefaultProcessContextImpl<>());
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(product, 1L, attributeValues,
+        new DefaultProcessContextImpl<>());
 
     // Assert
-    verify(catalogService).findSkuById(1L);
+    verify(catalogService).findSkuById(eq(1L));
     verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
     assertSame(skuImpl, actualDetermineSkuResult);
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map,
-   * ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code
-   * messages}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code messages}.
    * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor).
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long,
-   * Map, ActivityMessages)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"
-  })
-  public void testDetermineSkuWithProductSkuIdAttributeValuesMessages_thenReturnSkuImpl2()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(false);
-    ProductBundleImpl product = new ProductBundleImpl();
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act
-    Sku actualDetermineSkuResult =
-        orderItemRequestValidationServiceImpl.determineSku(
-            product, 1L, attributeValues, new DefaultProcessContextImpl<>());
-
-    // Assert
-    verify(catalogService).findSkuById(1L);
-    verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
-    assertSame(skuImpl, actualDetermineSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long, Map,
-   * ActivityMessages)} with {@code product}, {@code skuId}, {@code attributeValues}, {@code
-   * messages}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#determineSku(Product, Long,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.determineSku(Product, Long, Map, ActivityMessages)"})
   public void testDetermineSkuWithProductSkuIdAttributeValuesMessages_whenNull_thenReturnNull()
       throws RequiredAttributeNotProvidedException {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
     ProductBundleImpl product = new ProductBundleImpl();
     HashMap<String, String> attributeValues = new HashMap<>();
 
     // Act
-    Sku actualDetermineSkuResult =
-        orderItemRequestValidationServiceImpl.determineSku(
-            product, null, attributeValues, new DefaultProcessContextImpl<>());
+    Sku actualDetermineSkuResult = orderItemRequestValidationServiceImpl.determineSku(product, null, attributeValues,
+        new DefaultProcessContextImpl<>());
 
     // Assert
     verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
@@ -1337,141 +865,15 @@ public class OrderItemRequestValidationServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}.
-   *
    * <ul>
-   *   <li>Given {@code false}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.canSellDefaultSku(Product)"})
-  public void testCanSellDefaultSku_givenFalse_thenReturnFalse() {
-    // Arrange
-    LinkedList<Sku> skuList = new LinkedList<>();
-    skuList.add(new SkuImpl());
-
-    Product product = mock(Product.class);
-    when(product.getCanSellWithoutOptions()).thenReturn(false);
-    when(product.getAdditionalSkus()).thenReturn(skuList);
-
-    // Act
-    boolean actualCanSellDefaultSkuResult =
-        orderItemRequestValidationServiceImpl.canSellDefaultSku(product);
-
-    // Assert
-    verify(product).getAdditionalSkus();
-    verify(product).getCanSellWithoutOptions();
-    assertFalse(actualCanSellDefaultSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Product} {@link Product#getAdditionalSkus()} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.canSellDefaultSku(Product)"})
-  public void testCanSellDefaultSku_givenNull_whenProductGetAdditionalSkusReturnNull() {
-    // Arrange
-    Product product = mock(Product.class);
-    when(product.getAdditionalSkus()).thenReturn(null);
-
-    // Act
-    boolean actualCanSellDefaultSkuResult =
-        orderItemRequestValidationServiceImpl.canSellDefaultSku(product);
-
-    // Assert
-    verify(product).getAdditionalSkus();
-    assertTrue(actualCanSellDefaultSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link Product} {@link Product#getCanSellWithoutOptions()} return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.canSellDefaultSku(Product)"})
-  public void testCanSellDefaultSku_givenTrue_whenProductGetCanSellWithoutOptionsReturnTrue() {
-    // Arrange
-    LinkedList<Sku> skuList = new LinkedList<>();
-    skuList.add(new SkuImpl());
-
-    Product product = mock(Product.class);
-    when(product.getCanSellWithoutOptions()).thenReturn(true);
-    when(product.getAdditionalSkus()).thenReturn(skuList);
-
-    // Act
-    boolean actualCanSellDefaultSkuResult =
-        orderItemRequestValidationServiceImpl.canSellDefaultSku(product);
-
-    // Assert
-    verify(product).getAdditionalSkus();
-    verify(product).getCanSellWithoutOptions();
-    assertTrue(actualCanSellDefaultSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.canSellDefaultSku(Product)"})
-  public void testCanSellDefaultSku_thenThrowIllegalArgumentException() {
-    // Arrange
-    LinkedList<Sku> skuList = new LinkedList<>();
-    skuList.add(new SkuImpl());
-
-    Product product = mock(Product.class);
-    when(product.getCanSellWithoutOptions()).thenThrow(new IllegalArgumentException());
-    when(product.getAdditionalSkus()).thenReturn(skuList);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> orderItemRequestValidationServiceImpl.canSellDefaultSku(product));
-    verify(product).getAdditionalSkus();
-    verify(product).getCanSellWithoutOptions();
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.canSellDefaultSku(Product)"})
   public void testCanSellDefaultSku_whenProductBundleImpl_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -1479,147 +881,74 @@ public class OrderItemRequestValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductImpl} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#canSellDefaultSku(Product)}
+   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code product}, {@code attributeValuesForSku}.
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.canSellDefaultSku(Product)"})
-  public void testCanSellDefaultSku_whenProductImpl_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(orderItemRequestValidationServiceImpl.canSellDefaultSku(new ProductImpl()));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code
-   * product}, {@code attributeValuesForSku}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map)"})
   public void testFindMatchingSkuWithProductAttributeValuesForSku() {
     // Arrange
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenThrow(new IllegalArgumentException());
-    ProductBundleImpl product = new ProductBundleImpl();
-
-    HashMap<String, String> attributeValuesForSku = new HashMap<>();
-    attributeValuesForSku.put("foo", "foo");
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.findMatchingSku(product, attributeValuesForSku));
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(isNull(), eq("foo"), eq("foo"), isA(List.class));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code
-   * product}, {@code attributeValuesForSku}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map)"})
-  public void testFindMatchingSkuWithProductAttributeValuesForSku2() {
-    // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException("foo"));
 
     ArrayList<Long> resultLongList = new ArrayList<>();
     resultLongList.add(1L);
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(resultLongList);
+    when(productOptionValidationService.findSkuIdsForProductOptionValues(Mockito.<Long>any(), Mockito.<String>any(),
+        Mockito.<String>any(), Mockito.<List<Long>>any())).thenReturn(resultLongList);
     ProductBundleImpl product = new ProductBundleImpl();
 
     HashMap<String, String> attributeValuesForSku = new HashMap<>();
     attributeValuesForSku.put("foo", "foo");
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.findMatchingSku(product, attributeValuesForSku));
-    verify(catalogService).findSkuById(1L);
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(isNull(), eq("foo"), eq("foo"), isA(List.class));
+    assertThrows(IllegalArgumentException.class,
+        () -> orderItemRequestValidationServiceImpl.findMatchingSku(product, attributeValuesForSku));
+    verify(catalogService).findSkuById(eq(1L));
+    verify(productOptionValidationService).findSkuIdsForProductOptionValues(isNull(), eq("foo"), eq("foo"),
+        isA(List.class));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code
-   * product}, {@code attributeValuesForSku}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code product}, {@code attributeValuesForSku}.
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map)"})
   public void testFindMatchingSkuWithProductAttributeValuesForSku_thenReturnNull() {
     // Arrange
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(new ArrayList<>());
+    when(productOptionValidationService.findSkuIdsForProductOptionValues(Mockito.<Long>any(), Mockito.<String>any(),
+        Mockito.<String>any(), Mockito.<List<Long>>any())).thenReturn(new ArrayList<>());
     ProductBundleImpl product = new ProductBundleImpl();
 
     HashMap<String, String> attributeValuesForSku = new HashMap<>();
     attributeValuesForSku.put("foo", "foo");
 
     // Act
-    Sku actualFindMatchingSkuResult =
-        orderItemRequestValidationServiceImpl.findMatchingSku(product, attributeValuesForSku);
+    Sku actualFindMatchingSkuResult = orderItemRequestValidationServiceImpl.findMatchingSku(product,
+        attributeValuesForSku);
 
     // Assert
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(isNull(), eq("foo"), eq("foo"), isA(List.class));
+    verify(productOptionValidationService).findSkuIdsForProductOptionValues(isNull(), eq("foo"), eq("foo"),
+        isA(List.class));
     assertNull(actualFindMatchingSkuResult);
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code
-   * product}, {@code attributeValuesForSku}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code product}, {@code attributeValuesForSku}.
    * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor).
+   *   <li>Then return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map)"})
   public void testFindMatchingSkuWithProductAttributeValuesForSku_thenReturnSkuImpl() {
     // Arrange
@@ -1628,43 +957,35 @@ public class OrderItemRequestValidationServiceImplDiffblueTest {
 
     ArrayList<Long> resultLongList = new ArrayList<>();
     resultLongList.add(1L);
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(resultLongList);
+    when(productOptionValidationService.findSkuIdsForProductOptionValues(Mockito.<Long>any(), Mockito.<String>any(),
+        Mockito.<String>any(), Mockito.<List<Long>>any())).thenReturn(resultLongList);
     ProductBundleImpl product = new ProductBundleImpl();
 
     HashMap<String, String> attributeValuesForSku = new HashMap<>();
     attributeValuesForSku.put("foo", "foo");
 
     // Act
-    Sku actualFindMatchingSkuResult =
-        orderItemRequestValidationServiceImpl.findMatchingSku(product, attributeValuesForSku);
+    Sku actualFindMatchingSkuResult = orderItemRequestValidationServiceImpl.findMatchingSku(product,
+        attributeValuesForSku);
 
     // Assert
-    verify(catalogService).findSkuById(1L);
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(isNull(), eq("foo"), eq("foo"), isA(List.class));
+    verify(catalogService).findSkuById(eq(1L));
+    verify(productOptionValidationService).findSkuIdsForProductOptionValues(isNull(), eq("foo"), eq("foo"),
+        isA(List.class));
     assertSame(skuImpl, actualFindMatchingSkuResult);
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code
-   * product}, {@code attributeValuesForSku}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)} with {@code product}, {@code attributeValuesForSku}.
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map)"})
   public void testFindMatchingSkuWithProductAttributeValuesForSku_whenHashMap_thenReturnNull() {
     // Arrange
@@ -1675,579 +996,38 @@ public class OrderItemRequestValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
-  public void testFindMatchingSkuWithProductAttributeValuesMessages()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    when(productOptionValidationService.hasProductOptionValidationStrategy(
-            Mockito.<ProductOption>any()))
-        .thenThrow(new IllegalArgumentException());
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getRequired()).thenReturn(true);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ProductOptionXrefImpl productOptionXrefImpl = mock(ProductOptionXrefImpl.class);
-    when(productOptionXrefImpl.getProductOption()).thenReturn(productOptionImpl);
-
-    ArrayList<ProductOptionXref> productOptions = new ArrayList<>();
-    productOptions.add(productOptionXrefImpl);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductOptionXrefs(productOptions);
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.findMatchingSku(
-                product, attributeValues, new DefaultProcessContextImpl<>()));
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getRequired();
-    verify(productOptionXrefImpl).getProductOption();
-    verify(productOptionValidationService)
-        .hasProductOptionValidationStrategy(isA(ProductOption.class));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
-  public void testFindMatchingSkuWithProductAttributeValuesMessages2()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenThrow(new IllegalArgumentException());
-
-    ArrayList<Long> resultLongList = new ArrayList<>();
-    resultLongList.add(1L);
-    when(productOptionValidationService.hasProductOptionValidationStrategy(
-            Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.isAddOrNoneType(Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.validate(
-            Mockito.<ProductOption>any(), Mockito.<String>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(resultLongList);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getRequired()).thenReturn(true);
-    when(productOptionImpl.getUseInSkuGeneration()).thenReturn(true);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ProductOptionXrefImpl productOptionXrefImpl = mock(ProductOptionXrefImpl.class);
-    when(productOptionXrefImpl.getProductOption()).thenReturn(productOptionImpl);
-
-    ArrayList<ProductOptionXref> productOptions = new ArrayList<>();
-    productOptions.add(productOptionXrefImpl);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductOptionXrefs(productOptions);
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.findMatchingSku(
-                product, attributeValues, new DefaultProcessContextImpl<>()));
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getRequired();
-    verify(productOptionImpl).getUseInSkuGeneration();
-    verify(productOptionXrefImpl).getProductOption();
-    verify(catalogService).findSkuById(1L);
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(
-            isNull(), eq("Attribute Name"), isNull(), isA(List.class));
-    verify(productOptionValidationService)
-        .hasProductOptionValidationStrategy(isA(ProductOption.class));
-    verify(productOptionValidationService).isAddOrNoneType(isA(ProductOption.class));
-    verify(productOptionValidationService).validate(isA(ProductOption.class), isNull());
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
-  public void testFindMatchingSkuWithProductAttributeValuesMessages3()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
-
-    ArrayList<Long> resultLongList = new ArrayList<>();
-    resultLongList.add(1L);
-    when(productOptionValidationService.hasProductOptionValidationStrategy(
-            Mockito.<ProductOption>any()))
-        .thenReturn(false);
-    when(productOptionValidationService.isAddOrNoneType(Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.validate(
-            Mockito.<ProductOption>any(), Mockito.<String>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(resultLongList);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getRequired()).thenReturn(true);
-    when(productOptionImpl.getUseInSkuGeneration()).thenReturn(true);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ProductOptionXrefImpl productOptionXrefImpl = mock(ProductOptionXrefImpl.class);
-    when(productOptionXrefImpl.getProductOption()).thenReturn(productOptionImpl);
-
-    ArrayList<ProductOptionXref> productOptions = new ArrayList<>();
-    productOptions.add(productOptionXrefImpl);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductOptionXrefs(productOptions);
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act
-    Sku actualFindMatchingSkuResult =
-        orderItemRequestValidationServiceImpl.findMatchingSku(
-            product, attributeValues, new DefaultProcessContextImpl<>());
-
-    // Assert
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getRequired();
-    verify(productOptionImpl).getUseInSkuGeneration();
-    verify(productOptionXrefImpl).getProductOption();
-    verify(catalogService).findSkuById(1L);
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(
-            isNull(), eq("Attribute Name"), isNull(), isA(List.class));
-    verify(productOptionValidationService)
-        .hasProductOptionValidationStrategy(isA(ProductOption.class));
-    verify(productOptionValidationService).isAddOrNoneType(isA(ProductOption.class));
-    verify(productOptionValidationService).validate(isA(ProductOption.class), isNull());
-    assertSame(skuImpl, actualFindMatchingSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
-  public void testFindMatchingSkuWithProductAttributeValuesMessages4()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    doThrow(new IllegalArgumentException())
-        .when(productOptionValidationService)
-        .validateWithoutException(
-            Mockito.<ProductOption>any(), Mockito.<String>any(), Mockito.<ActivityMessages>any());
-    when(productOptionValidationService.hasProductOptionValidationStrategy(
-            Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.isAddOrNoneType(Mockito.<ProductOption>any()))
-        .thenReturn(false);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getRequired()).thenReturn(true);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ProductOptionXrefImpl productOptionXrefImpl = mock(ProductOptionXrefImpl.class);
-    when(productOptionXrefImpl.getProductOption()).thenReturn(productOptionImpl);
-
-    ArrayList<ProductOptionXref> productOptions = new ArrayList<>();
-    productOptions.add(productOptionXrefImpl);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductOptionXrefs(productOptions);
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            orderItemRequestValidationServiceImpl.findMatchingSku(
-                product, attributeValues, new DefaultProcessContextImpl<>()));
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getRequired();
-    verify(productOptionXrefImpl).getProductOption();
-    verify(productOptionValidationService)
-        .hasProductOptionValidationStrategy(isA(ProductOption.class));
-    verify(productOptionValidationService).isAddOrNoneType(isA(ProductOption.class));
-    verify(productOptionValidationService)
-        .validateWithoutException(isA(ProductOption.class), isNull(), isA(ActivityMessages.class));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
-  public void testFindMatchingSkuWithProductAttributeValuesMessages5()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    doNothing()
-        .when(productOptionValidationService)
-        .validateWithoutException(
-            Mockito.<ProductOption>any(), Mockito.<String>any(), Mockito.<ActivityMessages>any());
-    when(productOptionValidationService.hasProductOptionValidationStrategy(
-            Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.isAddOrNoneType(Mockito.<ProductOption>any()))
-        .thenReturn(false);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getRequired()).thenReturn(true);
-    when(productOptionImpl.getUseInSkuGeneration()).thenReturn(false);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ProductOptionXrefImpl productOptionXrefImpl = mock(ProductOptionXrefImpl.class);
-    when(productOptionXrefImpl.getProductOption()).thenReturn(productOptionImpl);
-
-    ArrayList<ProductOptionXref> productOptions = new ArrayList<>();
-    productOptions.add(productOptionXrefImpl);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductOptionXrefs(productOptions);
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act
-    Sku actualFindMatchingSkuResult =
-        orderItemRequestValidationServiceImpl.findMatchingSku(
-            product, attributeValues, new DefaultProcessContextImpl<>());
-
-    // Assert
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getRequired();
-    verify(productOptionImpl).getUseInSkuGeneration();
-    verify(productOptionXrefImpl).getProductOption();
-    verify(productOptionValidationService)
-        .hasProductOptionValidationStrategy(isA(ProductOption.class));
-    verify(productOptionValidationService).isAddOrNoneType(isA(ProductOption.class));
-    verify(productOptionValidationService)
-        .validateWithoutException(isA(ProductOption.class), isNull(), isA(ActivityMessages.class));
-    assertNull(actualFindMatchingSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map, ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
-  public void testFindMatchingSkuWithProductAttributeValuesMessages_thenReturnNull()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    when(productOptionValidationService.hasProductOptionValidationStrategy(
-            Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.isAddOrNoneType(Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.validate(
-            Mockito.<ProductOption>any(), Mockito.<String>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(new ArrayList<>());
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getRequired()).thenReturn(true);
-    when(productOptionImpl.getUseInSkuGeneration()).thenReturn(true);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ProductOptionXrefImpl productOptionXrefImpl = mock(ProductOptionXrefImpl.class);
-    when(productOptionXrefImpl.getProductOption()).thenReturn(productOptionImpl);
-
-    ArrayList<ProductOptionXref> productOptions = new ArrayList<>();
-    productOptions.add(productOptionXrefImpl);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductOptionXrefs(productOptions);
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act
-    Sku actualFindMatchingSkuResult =
-        orderItemRequestValidationServiceImpl.findMatchingSku(
-            product, attributeValues, new DefaultProcessContextImpl<>());
-
-    // Assert
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getRequired();
-    verify(productOptionImpl).getUseInSkuGeneration();
-    verify(productOptionXrefImpl).getProductOption();
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(
-            isNull(), eq("Attribute Name"), isNull(), isA(List.class));
-    verify(productOptionValidationService)
-        .hasProductOptionValidationStrategy(isA(ProductOption.class));
-    verify(productOptionValidationService).isAddOrNoneType(isA(ProductOption.class));
-    verify(productOptionValidationService).validate(isA(ProductOption.class), isNull());
-    assertNull(actualFindMatchingSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
-   * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
-  public void testFindMatchingSkuWithProductAttributeValuesMessages_thenReturnSkuImpl()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
-
-    ArrayList<Long> resultLongList = new ArrayList<>();
-    resultLongList.add(1L);
-    when(productOptionValidationService.hasProductOptionValidationStrategy(
-            Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.isAddOrNoneType(Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.validate(
-            Mockito.<ProductOption>any(), Mockito.<String>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(resultLongList);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getRequired()).thenReturn(true);
-    when(productOptionImpl.getUseInSkuGeneration()).thenReturn(true);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ProductOptionXrefImpl productOptionXrefImpl = mock(ProductOptionXrefImpl.class);
-    when(productOptionXrefImpl.getProductOption()).thenReturn(productOptionImpl);
-
-    ArrayList<ProductOptionXref> productOptions = new ArrayList<>();
-    productOptions.add(productOptionXrefImpl);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductOptionXrefs(productOptions);
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act
-    Sku actualFindMatchingSkuResult =
-        orderItemRequestValidationServiceImpl.findMatchingSku(
-            product, attributeValues, new DefaultProcessContextImpl<>());
-
-    // Assert
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getRequired();
-    verify(productOptionImpl).getUseInSkuGeneration();
-    verify(productOptionXrefImpl).getProductOption();
-    verify(catalogService).findSkuById(1L);
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(
-            isNull(), eq("Attribute Name"), isNull(), isA(List.class));
-    verify(productOptionValidationService)
-        .hasProductOptionValidationStrategy(isA(ProductOption.class));
-    verify(productOptionValidationService).isAddOrNoneType(isA(ProductOption.class));
-    verify(productOptionValidationService).validate(isA(ProductOption.class), isNull());
-    assertSame(skuImpl, actualFindMatchingSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
-   * <ul>
-   *   <li>Then return {@link SkuImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
-  public void testFindMatchingSkuWithProductAttributeValuesMessages_thenReturnSkuImpl2()
-      throws RequiredAttributeNotProvidedException {
-    // Arrange
-    SkuImpl skuImpl = new SkuImpl();
-    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
-
-    ArrayList<Long> resultLongList = new ArrayList<>();
-    resultLongList.add(1L);
-    doNothing()
-        .when(productOptionValidationService)
-        .validateWithoutException(
-            Mockito.<ProductOption>any(), Mockito.<String>any(), Mockito.<ActivityMessages>any());
-    when(productOptionValidationService.hasProductOptionValidationStrategy(
-            Mockito.<ProductOption>any()))
-        .thenReturn(true);
-    when(productOptionValidationService.isAddOrNoneType(Mockito.<ProductOption>any()))
-        .thenReturn(false);
-    when(productOptionValidationService.findSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(resultLongList);
-
-    ProductOptionImpl productOptionImpl = mock(ProductOptionImpl.class);
-    when(productOptionImpl.getRequired()).thenReturn(true);
-    when(productOptionImpl.getUseInSkuGeneration()).thenReturn(true);
-    when(productOptionImpl.getAttributeName()).thenReturn("Attribute Name");
-
-    ProductOptionXrefImpl productOptionXrefImpl = mock(ProductOptionXrefImpl.class);
-    when(productOptionXrefImpl.getProductOption()).thenReturn(productOptionImpl);
-
-    ArrayList<ProductOptionXref> productOptions = new ArrayList<>();
-    productOptions.add(productOptionXrefImpl);
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductOptionXrefs(productOptions);
-    HashMap<String, String> attributeValues = new HashMap<>();
-
-    // Act
-    Sku actualFindMatchingSkuResult =
-        orderItemRequestValidationServiceImpl.findMatchingSku(
-            product, attributeValues, new DefaultProcessContextImpl<>());
-
-    // Assert
-    verify(productOptionImpl).getAttributeName();
-    verify(productOptionImpl).getRequired();
-    verify(productOptionImpl).getUseInSkuGeneration();
-    verify(productOptionXrefImpl).getProductOption();
-    verify(catalogService).findSkuById(1L);
-    verify(productOptionValidationService)
-        .findSkuIdsForProductOptionValues(
-            isNull(), eq("Attribute Name"), isNull(), isA(List.class));
-    verify(productOptionValidationService)
-        .hasProductOptionValidationStrategy(isA(ProductOption.class));
-    verify(productOptionValidationService).isAddOrNoneType(isA(ProductOption.class));
-    verify(productOptionValidationService)
-        .validateWithoutException(isA(ProductOption.class), isNull(), isA(ActivityMessages.class));
-    assertSame(skuImpl, actualFindMatchingSkuResult);
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"})
   public void testFindMatchingSkuWithProductAttributeValuesMessages_whenNull_thenReturnNull()
       throws RequiredAttributeNotProvidedException {
     // Arrange
     HashMap<String, String> attributeValues = new HashMap<>();
 
     // Act and Assert
-    assertNull(
-        orderItemRequestValidationServiceImpl.findMatchingSku(
-            null, attributeValues, new DefaultProcessContextImpl<>()));
+    assertNull(orderItemRequestValidationServiceImpl.findMatchingSku(null, attributeValues,
+        new DefaultProcessContextImpl<>()));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map,
-   * ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map, ActivityMessages)} with {@code product}, {@code attributeValues}, {@code messages}.
    * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).
+   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product,
-   * Map, ActivityMessages)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#findMatchingSku(Product, Map, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Sku OrderItemRequestValidationServiceImpl.findMatchingSku(Product, Map, ActivityMessages)"})
   public void testFindMatchingSkuWithProductAttributeValuesMessages_whenProductBundleImpl()
       throws RequiredAttributeNotProvidedException {
     // Arrange
@@ -2255,253 +1035,189 @@ public class OrderItemRequestValidationServiceImplDiffblueTest {
     HashMap<String, String> attributeValues = new HashMap<>();
 
     // Act and Assert
-    assertNull(
-        orderItemRequestValidationServiceImpl.findMatchingSku(
-            product, attributeValues, new DefaultProcessContextImpl<>()));
+    assertNull(orderItemRequestValidationServiceImpl.findMatchingSku(product, attributeValues,
+        new DefaultProcessContextImpl<>()));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean,
-   * String, boolean)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}.
    * <ul>
-   *   <li>When empty string.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code 0123456789ABCDEF}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String,
-   * boolean)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"
-  })
-  public void testShouldValidateWithException_whenEmptyString_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(
-        orderItemRequestValidationServiceImpl.shouldValidateWithException(false, false, "", false));
-  }
-
-  /**
-   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean,
-   * String, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code not empty}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"
-  })
-  public void testShouldValidateWithException_whenNotEmpty_thenReturnTrue() {
+      "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"})
+  public void testShouldValidateWithException_when0123456789abcdef_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(
-        orderItemRequestValidationServiceImpl.shouldValidateWithException(
-            false, false, "not empty", false));
+        orderItemRequestValidationServiceImpl.shouldValidateWithException(false, false, "0123456789ABCDEF", false));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean,
-   * String, boolean)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}.
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
+   *   <li>When empty string.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String,
-   * boolean)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"})
+  public void testShouldValidateWithException_whenEmptyString_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(orderItemRequestValidationServiceImpl.shouldValidateWithException(false, false, "", false));
+  }
+
+  /**
+   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"})
   public void testShouldValidateWithException_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(
-        orderItemRequestValidationServiceImpl.shouldValidateWithException(
-            false, false, null, false));
+    assertFalse(orderItemRequestValidationServiceImpl.shouldValidateWithException(false, false, null, false));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean,
-   * String, boolean)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}.
    * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code true}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String,
-   * boolean)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"})
   public void testShouldValidateWithException_whenTrue_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(
-        orderItemRequestValidationServiceImpl.shouldValidateWithException(
-            true, false, "0123456789ABCDEF", true));
+        orderItemRequestValidationServiceImpl.shouldValidateWithException(true, false, "0123456789ABCDEF", true));
   }
 
   /**
-   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean,
-   * String, boolean)}.
-   *
+   * Test {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}.
    * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String,
-   * boolean)}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#shouldValidateWithException(boolean, boolean, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"
-  })
+      "boolean OrderItemRequestValidationServiceImpl.shouldValidateWithException(boolean, boolean, String, boolean)"})
   public void testShouldValidateWithException_whenTrue_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(
-        orderItemRequestValidationServiceImpl.shouldValidateWithException(
-            true, true, "0123456789ABCDEF", true));
+    assertTrue(orderItemRequestValidationServiceImpl.shouldValidateWithException(true, true, "0123456789ABCDEF", true));
   }
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled()"})
   public void testMinOrderQuantityCheckIsEnabled_thenReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
 
     // Act
-    boolean actualMinOrderQuantityCheckIsEnabledResult =
-        orderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled();
+    boolean actualMinOrderQuantityCheckIsEnabledResult = orderItemRequestValidationServiceImpl
+        .minOrderQuantityCheckIsEnabled();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
     assertFalse(actualMinOrderQuantityCheckIsEnabledResult);
   }
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled()"})
   public void testMinOrderQuantityCheckIsEnabled_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
 
     // Act
-    boolean actualMinOrderQuantityCheckIsEnabledResult =
-        orderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled();
+    boolean actualMinOrderQuantityCheckIsEnabledResult = orderItemRequestValidationServiceImpl
+        .minOrderQuantityCheckIsEnabled();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
     assertTrue(actualMinOrderQuantityCheckIsEnabledResult);
   }
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#minOrderQuantityCheckIsEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled()"})
   public void testMinOrderQuantityCheckIsEnabled_thenThrowIllegalArgumentException() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenThrow(new IllegalArgumentException("enable.sku.minOrderQuantity.field"));
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
+    assertThrows(IllegalArgumentException.class,
         () -> orderItemRequestValidationServiceImpl.minOrderQuantityCheckIsEnabled());
-    verify(environment)
-        .getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("enable.sku.minOrderQuantity.field"), isA(Class.class), isA(Object.class));
   }
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code false}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.shouldUseSku()"})
   public void testShouldUseSku_givenEnvironmentGetPropertyReturnFalse_thenReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
 
     // Act
@@ -2514,23 +1230,19 @@ public class OrderItemRequestValidationServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.shouldUseSku()"})
   public void testShouldUseSku_givenEnvironmentGetPropertyReturnTrue_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
 
     // Act
@@ -2543,26 +1255,22 @@ public class OrderItemRequestValidationServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}
+   * <p>
+   * Method under test: {@link OrderItemRequestValidationServiceImpl#shouldUseSku()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderItemRequestValidationServiceImpl.shouldUseSku()"})
   public void testShouldUseSku_thenThrowIllegalArgumentException() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenThrow(new IllegalArgumentException());
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+        .thenThrow(new IllegalArgumentException("solr.index.use.sku"));
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl.shouldUseSku());
+    assertThrows(IllegalArgumentException.class, () -> orderItemRequestValidationServiceImpl.shouldUseSku());
     verify(environment).getProperty(eq("solr.index.use.sku"), isA(Class.class), isA(Object.class));
   }
 }

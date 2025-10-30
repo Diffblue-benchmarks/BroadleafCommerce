@@ -20,16 +20,11 @@ package org.broadleafcommerce.core.order.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.common.page.dto.NullPageDTO;
 import org.broadleafcommerce.common.page.dto.PageDTO;
 import org.broadleafcommerce.common.structure.dto.ItemCriteriaDTO;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -43,22 +38,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {PageCartRuleProcessor.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PageCartRuleProcessorDiffblueTest {
-  @Autowired private PageCartRuleProcessor pageCartRuleProcessor;
+  @Autowired
+  private PageCartRuleProcessor pageCartRuleProcessor;
 
   /**
-   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
+   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
+   * <p>
+   * Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageCartRuleProcessor.checkForMatch(PageDTO, Map)"})
   public void testCheckForMatchWithPageDTOMap_givenArrayList_thenReturnTrue() {
     // Arrange
@@ -73,20 +66,18 @@ public class PageCartRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
+   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Given {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
+   * <p>
+   * Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageCartRuleProcessor.checkForMatch(PageDTO, Map)"})
-  public void testCheckForMatchWithPageDTOMap_thenReturnFalse() {
+  public void testCheckForMatchWithPageDTOMap_givenNull_thenReturnFalse() {
     // Arrange
     ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
     itemCriteriaDTO.setMatchRule("Match Rule");
@@ -95,31 +86,27 @@ public class PageCartRuleProcessorDiffblueTest {
     ArrayList<ItemCriteriaDTO> itemCriteriaDTOList = new ArrayList<>();
     itemCriteriaDTOList.add(itemCriteriaDTO);
 
-    NullPageDTO page = mock(NullPageDTO.class);
-    when(page.getItemCriteriaDTOList()).thenReturn(itemCriteriaDTOList);
+    PageDTO page = new PageDTO();
+    page.setItemCriteriaDTOList(itemCriteriaDTOList);
 
-    // Act
-    boolean actualCheckForMatchResult = pageCartRuleProcessor.checkForMatch(page, new HashMap<>());
+    HashMap<String, Object> valueMap = new HashMap<>();
+    valueMap.put("customer", null);
 
-    // Assert
-    verify(page).getItemCriteriaDTOList();
-    assertFalse(actualCheckForMatchResult);
+    // Act and Assert
+    assertFalse(pageCartRuleProcessor.checkForMatch(page, valueMap));
   }
 
   /**
-   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code
-   * Map}.
-   *
+   * Test {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)} with {@code PageDTO}, {@code Map}.
    * <ul>
-   *   <li>When {@link PageDTO} (default constructor).
-   *   <li>Then return {@code true}.
+   *   <li>When {@link PageDTO} (default constructor).</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
+   * <p>
+   * Method under test: {@link PageCartRuleProcessor#checkForMatch(PageDTO, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PageCartRuleProcessor.checkForMatch(PageDTO, Map)"})
   public void testCheckForMatchWithPageDTOMap_whenPageDTO_thenReturnTrue() {
     // Arrange
@@ -131,12 +118,11 @@ public class PageCartRuleProcessorDiffblueTest {
 
   /**
    * Test new {@link PageCartRuleProcessor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link PageCartRuleProcessor}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link PageCartRuleProcessor}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PageCartRuleProcessor.<init>()"})
   public void testNewPageCartRuleProcessor() {
     // Arrange and Act

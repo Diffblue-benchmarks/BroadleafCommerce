@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.search.dao;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,30 +36,26 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SolrIndexDaoImplDiffblueTest {
-  @Mock private SandBoxHelper sandBoxHelper;
+  @Mock
+  private SandBoxHelper sandBoxHelper;
 
-  @InjectMocks private SolrIndexDaoImpl solrIndexDaoImpl;
+  @InjectMocks
+  private SolrIndexDaoImpl solrIndexDaoImpl;
 
   /**
    * Test {@link SolrIndexDaoImpl#populateProductCatalogStructure(List, CatalogStructure)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SandBoxHelper#getSandBoxToOriginalMap(Class, Long[])}.
+   *   <li>Then calls {@link SandBoxHelper#getSandBoxToOriginalMap(Class, Long[])}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SolrIndexDaoImpl#populateProductCatalogStructure(List,
-   * CatalogStructure)}
+   * <p>
+   * Method under test: {@link SolrIndexDaoImpl#populateProductCatalogStructure(List, CatalogStructure)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SolrIndexDaoImpl.populateProductCatalogStructure(List, CatalogStructure)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SolrIndexDaoImpl.populateProductCatalogStructure(List, CatalogStructure)"})
   public void testPopulateProductCatalogStructure_thenCallsGetSandBoxToOriginalMap() {
     // Arrange
-    when(sandBoxHelper.getSandBoxToOriginalMap(Mockito.<Class<?>>any(), (Long[]) Mockito.any()))
-        .thenReturn(null);
+    when(sandBoxHelper.getSandBoxToOriginalMap(Mockito.<Class<Object>>any(), (Long[]) Mockito.any())).thenReturn(null);
     ArrayList<Long> productIds = new ArrayList<>();
 
     CatalogStructure catalogStructure = new CatalogStructure();

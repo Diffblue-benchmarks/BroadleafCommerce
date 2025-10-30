@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -34,39 +33,36 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class DynamicPriceDiscreteOrderItemImplDiffblueTest {
-  @Autowired private DynamicPriceDiscreteOrderItemImpl dynamicPriceDiscreteOrderItemImpl;
+  @Autowired
+  private DynamicPriceDiscreteOrderItemImpl dynamicPriceDiscreteOrderItemImpl;
 
   /**
    * Test {@link DynamicPriceDiscreteOrderItemImpl#updateSaleAndRetailPrices()}.
-   *
-   * <p>Method under test: {@link DynamicPriceDiscreteOrderItemImpl#updateSaleAndRetailPrices()}
+   * <p>
+   * Method under test: {@link DynamicPriceDiscreteOrderItemImpl#updateSaleAndRetailPrices()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean DynamicPriceDiscreteOrderItemImpl.updateSaleAndRetailPrices()"})
   public void testUpdateSaleAndRetailPrices() {
     // Arrange, Act and Assert
-    assertFalse(dynamicPriceDiscreteOrderItemImpl.updateSaleAndRetailPrices());
+    assertFalse((new DynamicPriceDiscreteOrderItemImpl()).updateSaleAndRetailPrices());
   }
 
   /**
    * Test new {@link DynamicPriceDiscreteOrderItemImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * DynamicPriceDiscreteOrderItemImpl}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link DynamicPriceDiscreteOrderItemImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void DynamicPriceDiscreteOrderItemImpl.<init>()"})
   public void testNewDynamicPriceDiscreteOrderItemImpl() {
     // Arrange and Act
-    DynamicPriceDiscreteOrderItemImpl actualDynamicPriceDiscreteOrderItemImpl =
-        new DynamicPriceDiscreteOrderItemImpl();
+    DynamicPriceDiscreteOrderItemImpl actualDynamicPriceDiscreteOrderItemImpl = new DynamicPriceDiscreteOrderItemImpl();
 
     // Assert
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.discountsAllowed);

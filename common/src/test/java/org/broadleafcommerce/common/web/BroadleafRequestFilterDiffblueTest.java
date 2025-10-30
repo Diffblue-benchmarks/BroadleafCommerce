@@ -26,22 +26,20 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
+import java.nio.file.Paths;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import org.broadleafcommerce.common.exception.SiteNotFoundException;
 import org.broadleafcommerce.common.web.exception.HaltFilterChainException;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
+import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -59,216 +57,139 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.request.WebRequest;
 
 @ContextConfiguration(classes = {BroadleafRequestFilter.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BroadleafRequestFilterDiffblueTest {
-  @Autowired private BroadleafRequestFilter broadleafRequestFilter;
+  @Autowired
+  private BroadleafRequestFilter broadleafRequestFilter;
 
   @MockBean(name = "blRequestProcessor")
   private BroadleafRequestProcessor broadleafRequestProcessor;
 
   /**
-   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
   public void testDoFilterInternalUnlessIgnored() throws IOException, ServletException {
     // Arrange
     doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
     doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response, filterChain);
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain);
 
     // Assert that nothing has changed
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
     verify(broadleafRequestProcessor).process(isA(WebRequest.class));
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals(200, response.getStatus());
-    assertEquals(200, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(200, ((MockHttpServletResponse) response3).getStatus());
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
   public void testDoFilterInternalUnlessIgnored2() throws IOException, ServletException {
     // Arrange
     doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
     doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new HaltFilterChainException("An error occurred"))
-        .when(filterChain)
+    doThrow(new HaltFilterChainException("An error occurred")).when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response, filterChain);
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain);
 
     // Assert that nothing has changed
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
     verify(broadleafRequestProcessor).process(isA(WebRequest.class));
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals(200, response.getStatus());
-    assertEquals(200, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(200, ((MockHttpServletResponse) response3).getStatus());
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
   public void testDoFilterInternalUnlessIgnored3() throws IOException, ServletException {
     // Arrange
     doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
     doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new SiteNotFoundException("An error occurred"))
-        .when(filterChain)
+    doThrow(new SiteNotFoundException("An error occurred")).when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response, filterChain);
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain);
 
     // Assert
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
     verify(broadleafRequestProcessor).process(isA(WebRequest.class));
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals(404, response.getStatus());
-    assertEquals(404, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(404, ((MockHttpServletResponse) response3).getStatus());
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(404, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(404, response2.getStatus());
+    assertEquals(404, ((MockHttpServletResponse) response4).getStatus());
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
   public void testDoFilterInternalUnlessIgnored4() throws IOException, ServletException {
-    // Arrange
-    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
-    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
-
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.addParameter("https://example.org/example", "https://example.org/example");
-    HttpServletRequestWrapper request2 =
-        new HttpServletRequestWrapper(new SessionlessHttpServletRequestWrapper(request));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
-    FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act
-    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response, filterChain);
-
-    // Assert that nothing has changed
-    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
-    verify(broadleafRequestProcessor).process(isA(WebRequest.class));
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals(200, response.getStatus());
-    assertEquals(200, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(200, ((MockHttpServletResponse) response3).getStatus());
-  }
-
-  /**
-   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternalUnlessIgnored5() throws IOException, ServletException {
     // Arrange
     doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
     doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
@@ -276,96 +197,83 @@ public class BroadleafRequestFilterDiffblueTest {
     MockHttpServletRequest request = new MockHttpServletRequest();
     request.setQueryString("https://example.org/example");
     request.addParameter("https://example.org/example", "https://example.org/example");
-    HttpServletRequestWrapper request2 =
-        new HttpServletRequestWrapper(new SessionlessHttpServletRequestWrapper(request));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response, filterChain);
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
 
     // Assert that nothing has changed
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
     verify(broadleafRequestProcessor).process(isA(WebRequest.class));
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals(200, response.getStatus());
-    assertEquals(200, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(200, ((MockHttpServletResponse) response3).getStatus());
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
+   *   <li>Given {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternalUnlessIgnored_givenIOException_thenThrowIOException()
-      throws IOException, ServletException {
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_givenHttpsExampleOrgExample() throws IOException, ServletException {
     // Arrange
     doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
     doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
 
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.addParameter("https://example.org/example", "https://example.org/example");
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new IOException())
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
-    // Act and Assert
-    assertThrows(
-        IOException.class,
-        () -> broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response, filterChain));
+    // Act
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
+
+    // Assert that nothing has changed
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
     verify(broadleafRequestProcessor).process(isA(WebRequest.class));
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Given {@code true}.
+   *   <li>Given {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
   public void testDoFilterInternalUnlessIgnored_givenTrue() throws IOException, ServletException {
     // Arrange
     doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
@@ -374,346 +282,221 @@ public class BroadleafRequestFilterDiffblueTest {
     MockHttpServletRequest request = new MockHttpServletRequest();
     request.setSecure(true);
     request.addParameter("https://example.org/example", "https://example.org/example");
-    HttpServletRequestWrapper request2 =
-        new HttpServletRequestWrapper(new SessionlessHttpServletRequestWrapper(request));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
+    SessionlessHttpServletRequestWrapper request2 = new SessionlessHttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response, filterChain);
+    broadleafRequestFilter.doFilterInternalUnlessIgnored(request2, response2, filterChain);
 
     // Assert that nothing has changed
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
     verify(broadleafRequestProcessor).process(isA(WebRequest.class));
-    ServletResponse response2 = response.getResponse();
-    assertTrue(response2 instanceof StatusExposingServletResponse);
-    ServletResponse response3 = ((StatusExposingServletResponse) response2).getResponse();
-    assertTrue(response3 instanceof MockHttpServletResponse);
-    assertEquals(200, response.getStatus());
-    assertEquals(200, ((StatusExposingServletResponse) response2).getStatus());
-    assertEquals(200, ((MockHttpServletResponse) response3).getStatus());
+    ServletResponse response3 = response2.getResponse();
+    assertTrue(response3 instanceof FileSystemResponseWrapper);
+    ServletResponse response4 = ((FileSystemResponseWrapper) response3).getResponse();
+    assertTrue(response4 instanceof MockHttpServletResponse);
+    assertEquals(200, ((FileSystemResponseWrapper) response3).getStatus());
+    assertEquals(200, response2.getStatus());
+    assertEquals(200, ((MockHttpServletResponse) response4).getStatus());
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
+   * Test {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Then throw {@link HaltFilterChainException}.
+   *   <li>Then throw {@link IOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternalUnlessIgnored_thenThrowHaltFilterChainException()
-      throws IOException, ServletException {
+      "void BroadleafRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternalUnlessIgnored_thenThrowIOException() throws IOException, ServletException {
     // Arrange
-    doThrow(new HaltFilterChainException("An error occurred"))
-        .when(broadleafRequestProcessor)
-        .postProcess(Mockito.<WebRequest>any());
-    doThrow(new HaltFilterChainException("An error occurred"))
-        .when(broadleafRequestProcessor)
-        .process(Mockito.<WebRequest>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    doNothing().when(broadleafRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    doNothing().when(broadleafRequestProcessor).process(Mockito.<WebRequest>any());
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doThrow(new IOException("org.broadleafcommerce.admin")).when(filterChain)
+        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act and Assert
-    assertThrows(
-        HaltFilterChainException.class,
-        () ->
-            broadleafRequestFilter.doFilterInternalUnlessIgnored(
-                request,
-                new HttpServletResponseWrapper(
-                    new StatusExposingServletResponse(new MockHttpServletResponse())),
-                mock(FilterChain.class)));
+    assertThrows(IOException.class,
+        () -> broadleafRequestFilter.doFilterInternalUnlessIgnored(request, response2, filterChain));
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
     verify(broadleafRequestProcessor).postProcess(isA(WebRequest.class));
     verify(broadleafRequestProcessor).process(isA(WebRequest.class));
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with
-   * {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String, boolean)}
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
   public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck() {
     // Arrange, Act and Assert
-    assertFalse(
-        broadleafRequestFilter.shouldProcessURL(null, "org.broadleafcommerce.admin", false));
+    assertFalse(broadleafRequestFilter.shouldProcessURL(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "org.broadleafcommerce.admin", true));
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with
-   * {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String, boolean)}
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"
-  })
-  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
+  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(
-        broadleafRequestFilter.shouldProcessURL(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())),
-            "https://example.org/example",
-            false));
+    assertTrue(broadleafRequestFilter.shouldProcessURL(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "https://example.org/example", true));
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with
-   * {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   *
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
    * <ul>
-   *   <li>Given {@code false}.
+   *   <li>When {@code blcadmin}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String, boolean)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"
-  })
-  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_givenFalse() {
-    // Arrange
-    SessionlessHttpServletRequestWrapper request = mock(SessionlessHttpServletRequestWrapper.class);
-    when(request.getAttribute(Mockito.<String>any())).thenReturn(false);
-
-    // Act
-    boolean actualShouldProcessURLResult =
-        broadleafRequestFilter.shouldProcessURL(request, "https://example.org/example", false);
-
-    // Assert
-    verify(request).getAttribute("blOkToUseSession");
-    assertTrue(actualShouldProcessURLResult);
-  }
-
-  /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with
-   * {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"
-  })
-  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_givenTrue() {
-    // Arrange
-    SessionlessHttpServletRequestWrapper request = mock(SessionlessHttpServletRequestWrapper.class);
-    when(request.getAttribute(Mockito.<String>any())).thenReturn(true);
-
-    // Act
-    boolean actualShouldProcessURLResult =
-        broadleafRequestFilter.shouldProcessURL(request, "https://example.org/example", false);
-
-    // Assert
-    verify(request).getAttribute("blOkToUseSession");
-    assertTrue(actualShouldProcessURLResult);
-  }
-
-  /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with
-   * {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   *
-   * <ul>
-   *   <li>When {@code blcadmin}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
   public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_whenBlcadmin() {
     // Arrange, Act and Assert
-    assertFalse(broadleafRequestFilter.shouldProcessURL(null, "blcadmin", false));
+    assertFalse(broadleafRequestFilter
+        .shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "blcadmin", true));
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with
-   * {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   *
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
    * <ul>
-   *   <li>When {@code .service}.
+   *   <li>When {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String, boolean)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
+  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_whenFalse() {
+    // Arrange, Act and Assert
+    assertTrue(broadleafRequestFilter.shouldProcessURL(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "https://example.org/example", false));
+  }
+
+  /**
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
+   * <ul>
+   *   <li>When {@code .service}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"})
   public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_whenService() {
     // Arrange, Act and Assert
-    assertFalse(broadleafRequestFilter.shouldProcessURL(null, ".service", false));
+    assertFalse(broadleafRequestFilter
+        .shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), ".service", true));
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String, boolean)} with
-   * {@code request}, {@code requestURI}, {@code ignoreSessionCheck}.
-   *
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code request}, {@code requestURI}.
    * <ul>
-   *   <li>When {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String, boolean)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String, boolean)"
-  })
-  public void testShouldProcessURLWithRequestRequestURIIgnoreSessionCheck_whenTrue() {
-    // Arrange, Act and Assert
-    assertTrue(
-        broadleafRequestFilter.shouldProcessURL(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())),
-            "https://example.org/example",
-            true));
-  }
-
-  /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code
-   * request}, {@code requestURI}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURLWithRequestRequestURI_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(
-        broadleafRequestFilter.shouldProcessURL(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())),
-            "https://example.org/example"));
+    assertTrue(broadleafRequestFilter.shouldProcessURL(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "https://example.org/example"));
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code
-   * request}, {@code requestURI}.
-   *
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code request}, {@code requestURI}.
    * <ul>
-   *   <li>When {@code blcadmin}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code blcadmin}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURLWithRequestRequestURI_whenBlcadmin_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(broadleafRequestFilter.shouldProcessURL(null, "blcadmin"));
+    assertFalse(broadleafRequestFilter
+        .shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "blcadmin"));
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code
-   * request}, {@code requestURI}.
-   *
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code request}, {@code requestURI}.
    * <ul>
-   *   <li>When {@code org.broadleafcommerce.admin}.
+   *   <li>When {@code org.broadleafcommerce.admin}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURLWithRequestRequestURI_whenOrgBroadleafcommerceAdmin() {
     // Arrange, Act and Assert
-    assertFalse(broadleafRequestFilter.shouldProcessURL(null, "org.broadleafcommerce.admin"));
+    assertFalse(broadleafRequestFilter.shouldProcessURL(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "org.broadleafcommerce.admin"));
   }
 
   /**
-   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code
-   * request}, {@code requestURI}.
-   *
+   * Test {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)} with {@code request}, {@code requestURI}.
    * <ul>
-   *   <li>When {@code .service}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code .service}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest,
-   * String)}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
   public void testShouldProcessURLWithRequestRequestURI_whenService_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(broadleafRequestFilter.shouldProcessURL(null, ".service"));
+    assertFalse(broadleafRequestFilter
+        .shouldProcessURL(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), ".service"));
   }
 
   /**
    * Test {@link BroadleafRequestFilter#getIgnoreSuffixes()}.
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#getIgnoreSuffixes()}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#getIgnoreSuffixes()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.Set BroadleafRequestFilter.getIgnoreSuffixes()"})
   public void testGetIgnoreSuffixes() {
     // Arrange, Act and Assert
@@ -722,12 +505,11 @@ public class BroadleafRequestFilterDiffblueTest {
 
   /**
    * Test {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}.
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#shouldNotFilterErrorDispatch()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BroadleafRequestFilter.shouldNotFilterErrorDispatch()"})
   public void testShouldNotFilterErrorDispatch() {
     // Arrange, Act and Assert
@@ -736,12 +518,11 @@ public class BroadleafRequestFilterDiffblueTest {
 
   /**
    * Test {@link BroadleafRequestFilter#getOrder()}.
-   *
-   * <p>Method under test: {@link BroadleafRequestFilter#getOrder()}
+   * <p>
+   * Method under test: {@link BroadleafRequestFilter#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int BroadleafRequestFilter.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert

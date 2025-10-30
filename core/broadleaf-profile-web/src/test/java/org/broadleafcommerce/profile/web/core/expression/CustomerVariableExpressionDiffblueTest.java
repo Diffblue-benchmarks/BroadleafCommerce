@@ -20,13 +20,14 @@ package org.broadleafcommerce.profile.web.core.expression;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,40 +42,39 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerVariableExpressionDiffblueTest {
-  @InjectMocks private CustomerVariableExpression customerVariableExpression;
+  @InjectMocks
+  private CustomerVariableExpression customerVariableExpression;
 
-  @Mock private Environment environment;
+  @Mock
+  private Environment environment;
 
   /**
    * Test {@link CustomerVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link CustomerVariableExpression#getName()}
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String CustomerVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("customer", new CustomerVariableExpression().getName());
+    assertEquals("customer", (new CustomerVariableExpression()).getName());
   }
 
   /**
    * Test {@link CustomerVariableExpression#getCurrent()}.
-   *
-   * <p>Method under test: {@link CustomerVariableExpression#getCurrent()}
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#getCurrent()}
    */
   @Test
   @DisplayName("Test getCurrent()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.profile.core.domain.Customer CustomerVariableExpression.getCurrent()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"org.broadleafcommerce.profile.core.domain.Customer CustomerVariableExpression.getCurrent()"})
   void testGetCurrent() {
     // Arrange, Act and Assert
     assertNull(customerVariableExpression.getCurrent());
@@ -82,151 +82,129 @@ class CustomerVariableExpressionDiffblueTest {
 
   /**
    * Test {@link CustomerVariableExpression#savedPaymentsAreEnabled()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code true}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerVariableExpression#savedPaymentsAreEnabled()}
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#savedPaymentsAreEnabled()}
    */
   @Test
-  @DisplayName(
-      "Test savedPaymentsAreEnabled(); given Environment getProperty(String, Class, Object) return 'true'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test savedPaymentsAreEnabled(); given Environment getProperty(String, Class, Object) return 'true'; then return 'true'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CustomerVariableExpression.savedPaymentsAreEnabled()"})
   void testSavedPaymentsAreEnabled_givenEnvironmentGetPropertyReturnTrue_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
 
     // Act
-    boolean actualSavedPaymentsAreEnabledResult =
-        customerVariableExpression.savedPaymentsAreEnabled();
+    boolean actualSavedPaymentsAreEnabledResult = customerVariableExpression.savedPaymentsAreEnabled();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
     assertTrue(actualSavedPaymentsAreEnabledResult);
   }
 
   /**
    * Test {@link CustomerVariableExpression#savedPaymentsAreEnabled()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerVariableExpression#savedPaymentsAreEnabled()}
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#savedPaymentsAreEnabled()}
    */
   @Test
   @DisplayName("Test savedPaymentsAreEnabled(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"boolean CustomerVariableExpression.savedPaymentsAreEnabled()"})
   void testSavedPaymentsAreEnabled_thenReturnFalse() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
 
     // Act
-    boolean actualSavedPaymentsAreEnabledResult =
-        customerVariableExpression.savedPaymentsAreEnabled();
+    boolean actualSavedPaymentsAreEnabledResult = customerVariableExpression.savedPaymentsAreEnabled();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
     assertFalse(actualSavedPaymentsAreEnabledResult);
   }
 
   /**
    * Test {@link CustomerVariableExpression#getCustomerPayments()}.
-   *
    * <ul>
-   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
-   *       {@code false}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerVariableExpression#getCustomerPayments()}
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#getCustomerPayments()}
    */
   @Test
-  @DisplayName(
-      "Test getCustomerPayments(); given Environment getProperty(String, Class, Object) return 'false'; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getCustomerPayments(); given Environment getProperty(String, Class, Object) return 'false'; then return Empty")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"List CustomerVariableExpression.getCustomerPayments()"})
   void testGetCustomerPayments_givenEnvironmentGetPropertyReturnFalse_thenReturnEmpty() {
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
 
     // Act
     List<CustomerPayment> actualCustomerPayments = customerVariableExpression.getCustomerPayments();
 
     // Assert
-    verify(environment)
-        .getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
+    verify(environment).getProperty(eq("saved.customer.payments.enabled"), isA(Class.class), isA(Object.class));
     assertTrue(actualCustomerPayments.isEmpty());
   }
 
   /**
    * Test {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}.
-   *
    * <ul>
-   *   <li>Given {@link CustomerPaymentImpl}.
-   *   <li>Then calls {@link CustomerPaymentImpl#isDefault()}.
+   *   <li>Then {@link ArrayList#ArrayList()} size is three.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}
    */
   @Test
-  @DisplayName(
-      "Test sortCustomerPaymentsByDefault(List); given CustomerPaymentImpl; then calls isDefault()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test sortCustomerPaymentsByDefault(List); then ArrayList() size is three")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CustomerVariableExpression.sortCustomerPaymentsByDefault(List)"})
-  void testSortCustomerPaymentsByDefault_givenCustomerPaymentImpl_thenCallsIsDefault() {
+  void testSortCustomerPaymentsByDefault_thenArrayListSizeIsThree() {
     // Arrange
-    CustomerPaymentImpl customerPaymentImpl = mock(CustomerPaymentImpl.class);
-    when(customerPaymentImpl.isDefault()).thenReturn(true);
-
     ArrayList<CustomerPayment> savedPayments = new ArrayList<>();
-    savedPayments.add(mock(CustomerPaymentImpl.class));
+    savedPayments.add(new CustomerPaymentImpl());
+    CustomerPaymentImpl customerPaymentImpl = new CustomerPaymentImpl();
     savedPayments.add(customerPaymentImpl);
+    savedPayments.add(new CustomerPaymentImpl());
 
     // Act
     customerVariableExpression.sortCustomerPaymentsByDefault(savedPayments);
 
-    // Assert
-    verify(customerPaymentImpl).isDefault();
+    // Assert that nothing has changed
+    assertEquals(3, savedPayments.size());
+    assertSame(customerPaymentImpl, savedPayments.get(1));
   }
 
   /**
    * Test {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}.
-   *
    * <ul>
-   *   <li>Then calls {@link CustomerPaymentImpl#isDefault()}.
+   *   <li>Then {@link ArrayList#ArrayList()} size is three.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}
    */
   @Test
-  @DisplayName("Test sortCustomerPaymentsByDefault(List); then calls isDefault()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test sortCustomerPaymentsByDefault(List); then ArrayList() size is three")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"void CustomerVariableExpression.sortCustomerPaymentsByDefault(List)"})
-  void testSortCustomerPaymentsByDefault_thenCallsIsDefault() {
+  void testSortCustomerPaymentsByDefault_thenArrayListSizeIsThree2() {
     // Arrange
     CustomerPaymentImpl customerPaymentImpl = mock(CustomerPaymentImpl.class);
     when(customerPaymentImpl.isDefault()).thenReturn(true);
 
     ArrayList<CustomerPayment> savedPayments = new ArrayList<>();
+    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
+    savedPayments.add(customerPaymentImpl2);
     savedPayments.add(customerPaymentImpl);
     savedPayments.add(new CustomerPaymentImpl());
 
@@ -234,6 +212,66 @@ class CustomerVariableExpressionDiffblueTest {
     customerVariableExpression.sortCustomerPaymentsByDefault(savedPayments);
 
     // Assert
+    verify(customerPaymentImpl, atLeast(1)).isDefault();
+    assertEquals(3, savedPayments.size());
+    assertSame(customerPaymentImpl2, savedPayments.get(1));
+  }
+
+  /**
+   * Test {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}.
+   * <ul>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}
+   */
+  @Test
+  @DisplayName("Test sortCustomerPaymentsByDefault(List); then ArrayList() size is two")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerVariableExpression.sortCustomerPaymentsByDefault(List)"})
+  void testSortCustomerPaymentsByDefault_thenArrayListSizeIsTwo() {
+    // Arrange
+    ArrayList<CustomerPayment> savedPayments = new ArrayList<>();
+    savedPayments.add(new CustomerPaymentImpl());
+    CustomerPaymentImpl customerPaymentImpl = new CustomerPaymentImpl();
+    savedPayments.add(customerPaymentImpl);
+
+    // Act
+    customerVariableExpression.sortCustomerPaymentsByDefault(savedPayments);
+
+    // Assert that nothing has changed
+    assertEquals(2, savedPayments.size());
+    assertSame(customerPaymentImpl, savedPayments.get(1));
+  }
+
+  /**
+   * Test {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}.
+   * <ul>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}
+   */
+  @Test
+  @DisplayName("Test sortCustomerPaymentsByDefault(List); then ArrayList() size is two")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void CustomerVariableExpression.sortCustomerPaymentsByDefault(List)"})
+  void testSortCustomerPaymentsByDefault_thenArrayListSizeIsTwo2() {
+    // Arrange
+    CustomerPaymentImpl customerPaymentImpl = mock(CustomerPaymentImpl.class);
+    when(customerPaymentImpl.isDefault()).thenReturn(true);
+
+    ArrayList<CustomerPayment> savedPayments = new ArrayList<>();
+    savedPayments.add(customerPaymentImpl);
+    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
+    savedPayments.add(customerPaymentImpl2);
+
+    // Act
+    customerVariableExpression.sortCustomerPaymentsByDefault(savedPayments);
+
+    // Assert that nothing has changed
     verify(customerPaymentImpl).isDefault();
+    assertEquals(2, savedPayments.size());
+    assertSame(customerPaymentImpl2, savedPayments.get(1));
   }
 }

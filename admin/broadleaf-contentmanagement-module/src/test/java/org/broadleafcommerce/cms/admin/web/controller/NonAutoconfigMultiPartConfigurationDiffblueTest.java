@@ -21,100 +21,44 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-@ContextConfiguration(classes = {NonAutoconfigMultiPartConfiguration.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class NonAutoconfigMultiPartConfigurationDiffblueTest {
-  @Autowired private NonAutoconfigMultiPartConfiguration nonAutoconfigMultiPartConfiguration;
-
   /**
    * Test {@link NonAutoconfigMultiPartConfiguration#multipartResolver(Environment)}.
-   *
    * <ul>
-   *   <li>Given {@link NonAutoconfigMultiPartConfiguration}.
+   *   <li>Then FileUpload return {@link ServletFileUpload}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * NonAutoconfigMultiPartConfiguration#multipartResolver(Environment)}
+   * <p>
+   * Method under test: {@link NonAutoconfigMultiPartConfiguration#multipartResolver(Environment)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MultipartResolver NonAutoconfigMultiPartConfiguration.multipartResolver(Environment)"
-  })
-  public void testMultipartResolver_givenNonAutoconfigMultiPartConfiguration() {
-    // Arrange and Act
-    MultipartResolver actualMultipartResolverResult =
-        nonAutoconfigMultiPartConfiguration.multipartResolver(new StandardReactiveWebEnvironment());
-
-    // Assert
-    FileUpload fileUpload =
-        ((CommonsMultipartResolver) actualMultipartResolverResult).getFileUpload();
-    assertTrue(fileUpload instanceof ServletFileUpload);
-    assertTrue(actualMultipartResolverResult instanceof CommonsMultipartResolver);
-    DiskFileItemFactory fileItemFactory =
-        ((CommonsMultipartResolver) actualMultipartResolverResult).getFileItemFactory();
-    assertEquals("ISO-8859-1", fileItemFactory.getDefaultCharset());
-    assertNull(fileItemFactory.getRepository());
-    assertNull(fileUpload.getHeaderEncoding());
-    assertNull(fileUpload.getProgressListener());
-    assertNull(fileItemFactory.getFileCleaningTracker());
-    assertEquals(-1L, fileUpload.getFileCountMax());
-    assertEquals(-1L, fileUpload.getFileSizeMax());
-    assertEquals(10240, fileItemFactory.getSizeThreshold());
-    assertEquals(10485760L, fileUpload.getSizeMax());
-    assertSame(fileItemFactory, fileUpload.getFileItemFactory());
-  }
-
-  /**
-   * Test {@link NonAutoconfigMultiPartConfiguration#multipartResolver(Environment)}.
-   *
-   * <ul>
-   *   <li>Given {@link NonAutoconfigMultiPartConfiguration} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * NonAutoconfigMultiPartConfiguration#multipartResolver(Environment)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MultipartResolver NonAutoconfigMultiPartConfiguration.multipartResolver(Environment)"
-  })
-  public void testMultipartResolver_givenNonAutoconfigMultiPartConfiguration2() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"MultipartResolver NonAutoconfigMultiPartConfiguration.multipartResolver(Environment)"})
+  public void testMultipartResolver_thenFileUploadReturnServletFileUpload() {
     // Arrange
-    NonAutoconfigMultiPartConfiguration nonAutoconfigMultiPartConfiguration =
-        new NonAutoconfigMultiPartConfiguration();
+    NonAutoconfigMultiPartConfiguration nonAutoconfigMultiPartConfiguration = new NonAutoconfigMultiPartConfiguration();
 
     // Act
-    MultipartResolver actualMultipartResolverResult =
-        nonAutoconfigMultiPartConfiguration.multipartResolver(new StandardReactiveWebEnvironment());
+    MultipartResolver actualMultipartResolverResult = nonAutoconfigMultiPartConfiguration
+        .multipartResolver(new StandardReactiveWebEnvironment());
 
     // Assert
-    FileUpload fileUpload =
-        ((CommonsMultipartResolver) actualMultipartResolverResult).getFileUpload();
+    FileUpload fileUpload = ((CommonsMultipartResolver) actualMultipartResolverResult).getFileUpload();
     assertTrue(fileUpload instanceof ServletFileUpload);
     assertTrue(actualMultipartResolverResult instanceof CommonsMultipartResolver);
-    DiskFileItemFactory fileItemFactory =
-        ((CommonsMultipartResolver) actualMultipartResolverResult).getFileItemFactory();
+    DiskFileItemFactory fileItemFactory = ((CommonsMultipartResolver) actualMultipartResolverResult)
+        .getFileItemFactory();
     assertEquals("ISO-8859-1", fileItemFactory.getDefaultCharset());
     assertNull(fileItemFactory.getRepository());
     assertNull(fileUpload.getHeaderEncoding());

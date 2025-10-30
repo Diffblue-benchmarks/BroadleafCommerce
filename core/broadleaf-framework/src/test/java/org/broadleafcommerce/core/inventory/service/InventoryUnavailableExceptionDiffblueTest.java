@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.inventory.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,36 +28,29 @@ import org.junit.experimental.categories.Category;
 public class InventoryUnavailableExceptionDiffblueTest {
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code Arg0}.
-   *   <li>Then return Message is {@code Arg0}.
+   *   <li>When {@code Arg0}.</li>
+   *   <li>Then return Message is {@code Arg0}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(String, Long, Integer,
-   *       Integer)}
+   *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(String, Long, Integer, Integer)}
    *   <li>{@link InventoryUnavailableException#setSkuId(Long)}
    *   <li>{@link InventoryUnavailableException#getSkuId()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void InventoryUnavailableException.<init>(Long, Integer, Integer)",
-    "void InventoryUnavailableException.<init>(String)",
-    "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
-    "void InventoryUnavailableException.<init>(String, Throwable)",
-    "Long InventoryUnavailableException.getSkuId()",
-    "void InventoryUnavailableException.setSkuId(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.<init>(Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String)",
+      "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String, Throwable)", "Long InventoryUnavailableException.getSkuId()",
+      "void InventoryUnavailableException.setSkuId(Long)"})
   public void testGettersAndSetters_whenArg0_thenReturnMessageIsArg0() {
     // Arrange and Act
-    InventoryUnavailableException actualInventoryUnavailableException =
-        new InventoryUnavailableException("Arg0", 1L, 1, 1);
+    InventoryUnavailableException actualInventoryUnavailableException = new InventoryUnavailableException("Arg0", 1L, 1,
+        1);
     actualInventoryUnavailableException.setSkuId(1L);
     Long actualSkuId = actualInventoryUnavailableException.getSkuId();
 
@@ -73,14 +65,12 @@ public class InventoryUnavailableExceptionDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code Msg}.
-   *   <li>Then return Message is {@code Msg}.
+   *   <li>When {@code Msg}.</li>
+   *   <li>Then return Message is {@code Msg}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(String)}
    *   <li>{@link InventoryUnavailableException#setSkuId(Long)}
@@ -88,20 +78,15 @@ public class InventoryUnavailableExceptionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void InventoryUnavailableException.<init>(Long, Integer, Integer)",
-    "void InventoryUnavailableException.<init>(String)",
-    "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
-    "void InventoryUnavailableException.<init>(String, Throwable)",
-    "Long InventoryUnavailableException.getSkuId()",
-    "void InventoryUnavailableException.setSkuId(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.<init>(Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String)",
+      "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String, Throwable)", "Long InventoryUnavailableException.getSkuId()",
+      "void InventoryUnavailableException.setSkuId(Long)"})
   public void testGettersAndSetters_whenMsg_thenReturnMessageIsMsg() {
     // Arrange and Act
-    InventoryUnavailableException actualInventoryUnavailableException =
-        new InventoryUnavailableException("Msg");
+    InventoryUnavailableException actualInventoryUnavailableException = new InventoryUnavailableException("Msg");
     actualInventoryUnavailableException.setSkuId(1L);
     Long actualSkuId = actualInventoryUnavailableException.getSkuId();
 
@@ -114,36 +99,28 @@ public class InventoryUnavailableExceptionDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When one.
-   *   <li>Then return Message is {@code null}.
+   *   <li>When one.</li>
+   *   <li>Then return Message is {@code null}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(Long, Integer,
-   *       Integer)}
+   *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(Long, Integer, Integer)}
    *   <li>{@link InventoryUnavailableException#setSkuId(Long)}
    *   <li>{@link InventoryUnavailableException#getSkuId()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void InventoryUnavailableException.<init>(Long, Integer, Integer)",
-    "void InventoryUnavailableException.<init>(String)",
-    "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
-    "void InventoryUnavailableException.<init>(String, Throwable)",
-    "Long InventoryUnavailableException.getSkuId()",
-    "void InventoryUnavailableException.setSkuId(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.<init>(Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String)",
+      "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String, Throwable)", "Long InventoryUnavailableException.getSkuId()",
+      "void InventoryUnavailableException.setSkuId(Long)"})
   public void testGettersAndSetters_whenOne_thenReturnMessageIsNull() {
     // Arrange and Act
-    InventoryUnavailableException actualInventoryUnavailableException =
-        new InventoryUnavailableException(1L, 1, 1);
+    InventoryUnavailableException actualInventoryUnavailableException = new InventoryUnavailableException(1L, 1, 1);
     actualInventoryUnavailableException.setSkuId(1L);
     Long actualSkuId = actualInventoryUnavailableException.getSkuId();
 
@@ -158,14 +135,12 @@ public class InventoryUnavailableExceptionDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.
-   *   <li>Then return Cause is {@link Throwable#Throwable()}.
+   *   <li>When {@link Throwable#Throwable()}.</li>
+   *   <li>Then return Cause is {@link Throwable#Throwable()}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link InventoryUnavailableException#InventoryUnavailableException(String, Throwable)}
    *   <li>{@link InventoryUnavailableException#setSkuId(Long)}
@@ -173,23 +148,18 @@ public class InventoryUnavailableExceptionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void InventoryUnavailableException.<init>(Long, Integer, Integer)",
-    "void InventoryUnavailableException.<init>(String)",
-    "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
-    "void InventoryUnavailableException.<init>(String, Throwable)",
-    "Long InventoryUnavailableException.getSkuId()",
-    "void InventoryUnavailableException.setSkuId(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void InventoryUnavailableException.<init>(Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String)",
+      "void InventoryUnavailableException.<init>(String, Long, Integer, Integer)",
+      "void InventoryUnavailableException.<init>(String, Throwable)", "Long InventoryUnavailableException.getSkuId()",
+      "void InventoryUnavailableException.setSkuId(Long)"})
   public void testGettersAndSetters_whenThrowable_thenReturnCauseIsThrowable() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    InventoryUnavailableException actualInventoryUnavailableException =
-        new InventoryUnavailableException("Msg", cause);
+    InventoryUnavailableException actualInventoryUnavailableException = new InventoryUnavailableException("Msg", cause);
     actualInventoryUnavailableException.setSkuId(1L);
     Long actualSkuId = actualInventoryUnavailableException.getSkuId();
 
@@ -202,21 +172,18 @@ public class InventoryUnavailableExceptionDiffblueTest {
 
   /**
    * Test {@link InventoryUnavailableException#getQuantityRequested()}.
-   *
    * <ul>
-   *   <li>Then return one.
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link InventoryUnavailableException#getQuantityRequested()}
+   * <p>
+   * Method under test: {@link InventoryUnavailableException#getQuantityRequested()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int InventoryUnavailableException.getQuantityRequested()"})
   public void testGetQuantityRequested_thenReturnOne() {
     // Arrange
-    InventoryUnavailableException inventoryUnavailableException =
-        new InventoryUnavailableException("Msg");
+    InventoryUnavailableException inventoryUnavailableException = new InventoryUnavailableException("Msg");
     inventoryUnavailableException.setQuantityRequested(1);
 
     // Act and Assert
@@ -225,17 +192,15 @@ public class InventoryUnavailableExceptionDiffblueTest {
 
   /**
    * Test {@link InventoryUnavailableException#setQuantityRequested(int)}.
-   *
-   * <p>Method under test: {@link InventoryUnavailableException#setQuantityRequested(int)}
+   * <p>
+   * Method under test: {@link InventoryUnavailableException#setQuantityRequested(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void InventoryUnavailableException.setQuantityRequested(int)"})
   public void testSetQuantityRequested() {
     // Arrange
-    InventoryUnavailableException inventoryUnavailableException =
-        new InventoryUnavailableException("Msg");
+    InventoryUnavailableException inventoryUnavailableException = new InventoryUnavailableException("Msg");
 
     // Act
     inventoryUnavailableException.setQuantityRequested(1);
@@ -247,21 +212,18 @@ public class InventoryUnavailableExceptionDiffblueTest {
 
   /**
    * Test {@link InventoryUnavailableException#getQuantityAvailable()}.
-   *
    * <ul>
-   *   <li>Then return one.
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link InventoryUnavailableException#getQuantityAvailable()}
+   * <p>
+   * Method under test: {@link InventoryUnavailableException#getQuantityAvailable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int InventoryUnavailableException.getQuantityAvailable()"})
   public void testGetQuantityAvailable_thenReturnOne() {
     // Arrange
-    InventoryUnavailableException inventoryUnavailableException =
-        new InventoryUnavailableException("Msg");
+    InventoryUnavailableException inventoryUnavailableException = new InventoryUnavailableException("Msg");
     inventoryUnavailableException.setQuantityAvailable(1);
 
     // Act and Assert
@@ -270,17 +232,15 @@ public class InventoryUnavailableExceptionDiffblueTest {
 
   /**
    * Test {@link InventoryUnavailableException#setQuantityAvailable(int)}.
-   *
-   * <p>Method under test: {@link InventoryUnavailableException#setQuantityAvailable(int)}
+   * <p>
+   * Method under test: {@link InventoryUnavailableException#setQuantityAvailable(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void InventoryUnavailableException.setQuantityAvailable(int)"})
   public void testSetQuantityAvailable() {
     // Arrange
-    InventoryUnavailableException inventoryUnavailableException =
-        new InventoryUnavailableException("Msg");
+    InventoryUnavailableException inventoryUnavailableException = new InventoryUnavailableException("Msg");
 
     // Act
     inventoryUnavailableException.setQuantityAvailable(1);

@@ -22,9 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +30,6 @@ import org.broadleafcommerce.core.checkout.service.workflow.CheckoutSeed;
 import org.broadleafcommerce.core.checkout.service.workflow.CommitTaxActivity;
 import org.broadleafcommerce.core.checkout.service.workflow.CommitTaxRollbackHandler;
 import org.broadleafcommerce.core.checkout.service.workflow.CompositeActivity;
-import org.broadleafcommerce.core.workflow.state.RollbackHandler;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -43,19 +40,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CompositeActivity.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BaseActivityDiffblueTest {
-  @Autowired private BaseActivity<ProcessContext<CheckoutSeed>> baseActivity;
+  @Autowired
+  private BaseActivity<ProcessContext<CheckoutSeed>> baseActivity;
 
   /**
    * Test {@link BaseActivity#shouldExecute(ProcessContext)}.
-   *
-   * <p>Method under test: {@link BaseActivity#shouldExecute(ProcessContext)}
+   * <p>
+   * Method under test: {@link BaseActivity#shouldExecute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BaseActivity.shouldExecute(ProcessContext)"})
   public void testShouldExecute() {
     // Arrange
@@ -67,26 +64,24 @@ public class BaseActivityDiffblueTest {
 
   /**
    * Test {@link BaseActivity#getErrorHandler()}.
-   *
-   * <p>Method under test: {@link BaseActivity#getErrorHandler()}
+   * <p>
+   * Method under test: {@link BaseActivity#getErrorHandler()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ErrorHandler BaseActivity.getErrorHandler()"})
   public void testGetErrorHandler() {
     // Arrange, Act and Assert
-    assertNull(new CompositeActivity().getErrorHandler());
+    assertNull((new CompositeActivity()).getErrorHandler());
   }
 
   /**
    * Test {@link BaseActivity#setBeanName(String)}.
-   *
-   * <p>Method under test: {@link BaseActivity#setBeanName(String)}
+   * <p>
+   * Method under test: {@link BaseActivity#setBeanName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseActivity.setBeanName(String)"})
   public void testSetBeanName() {
     // Arrange and Act
@@ -99,12 +94,11 @@ public class BaseActivityDiffblueTest {
 
   /**
    * Test {@link BaseActivity#setErrorHandler(ErrorHandler)}.
-   *
-   * <p>Method under test: {@link BaseActivity#setErrorHandler(ErrorHandler)}
+   * <p>
+   * Method under test: {@link BaseActivity#setErrorHandler(ErrorHandler)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseActivity.setErrorHandler(ErrorHandler)"})
   public void testSetErrorHandler() {
     // Arrange
@@ -120,79 +114,37 @@ public class BaseActivityDiffblueTest {
 
   /**
    * Test {@link BaseActivity#getBeanName()}.
-   *
-   * <p>Method under test: {@link BaseActivity#getBeanName()}
+   * <p>
+   * Method under test: {@link BaseActivity#getBeanName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BaseActivity.getBeanName()"})
   public void testGetBeanName() {
     // Arrange, Act and Assert
-    assertNull(new CompositeActivity().getBeanName());
-  }
-
-  /**
-   * Test {@link BaseActivity#getRollbackHandler()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BaseActivity#getRollbackHandler()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"RollbackHandler BaseActivity.getRollbackHandler()"})
-  public void testGetRollbackHandler_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new CompositeActivity().getRollbackHandler());
-  }
-
-  /**
-   * Test {@link BaseActivity#setRollbackHandler(RollbackHandler)}.
-   *
-   * <p>Method under test: {@link BaseActivity#setRollbackHandler(RollbackHandler)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BaseActivity.setRollbackHandler(RollbackHandler)"})
-  public void testSetRollbackHandler() {
-    // Arrange
-    CompositeActivity compositeActivity = new CompositeActivity();
-    RollbackHandler<ProcessContext<CheckoutSeed>> rollbackHandler = mock(RollbackHandler.class);
-
-    // Act
-    compositeActivity.setRollbackHandler(rollbackHandler);
-
-    // Assert
-    assertSame(rollbackHandler, compositeActivity.getRollbackHandler());
+    assertNull((new CompositeActivity()).getBeanName());
   }
 
   /**
    * Test {@link BaseActivity#getRollbackRegion()}.
-   *
-   * <p>Method under test: {@link BaseActivity#getRollbackRegion()}
+   * <p>
+   * Method under test: {@link BaseActivity#getRollbackRegion()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String BaseActivity.getRollbackRegion()"})
   public void testGetRollbackRegion() {
     // Arrange, Act and Assert
-    assertNull(new CompositeActivity().getRollbackRegion());
+    assertNull((new CompositeActivity()).getRollbackRegion());
   }
 
   /**
    * Test {@link BaseActivity#setRollbackRegion(String)}.
-   *
-   * <p>Method under test: {@link BaseActivity#setRollbackRegion(String)}
+   * <p>
+   * Method under test: {@link BaseActivity#setRollbackRegion(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseActivity.setRollbackRegion(String)"})
   public void testSetRollbackRegion() {
     // Arrange and Act
@@ -205,26 +157,24 @@ public class BaseActivityDiffblueTest {
 
   /**
    * Test {@link BaseActivity#getStateConfiguration()}.
-   *
-   * <p>Method under test: {@link BaseActivity#getStateConfiguration()}
+   * <p>
+   * Method under test: {@link BaseActivity#getStateConfiguration()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map BaseActivity.getStateConfiguration()"})
   public void testGetStateConfiguration() {
     // Arrange, Act and Assert
-    assertNull(new CompositeActivity().getStateConfiguration());
+    assertNull((new CompositeActivity()).getStateConfiguration());
   }
 
   /**
    * Test {@link BaseActivity#setStateConfiguration(Map)}.
-   *
-   * <p>Method under test: {@link BaseActivity#setStateConfiguration(Map)}
+   * <p>
+   * Method under test: {@link BaseActivity#setStateConfiguration(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseActivity.setStateConfiguration(Map)"})
   public void testSetStateConfiguration() {
     // Arrange
@@ -240,50 +190,43 @@ public class BaseActivityDiffblueTest {
 
   /**
    * Test {@link BaseActivity#getAutomaticallyRegisterRollbackHandler()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BaseActivity#getAutomaticallyRegisterRollbackHandler()}
+   * <p>
+   * Method under test: {@link BaseActivity#getAutomaticallyRegisterRollbackHandler()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BaseActivity.getAutomaticallyRegisterRollbackHandler()"})
   public void testGetAutomaticallyRegisterRollbackHandler_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new CompositeActivity().getAutomaticallyRegisterRollbackHandler());
+    assertFalse((new CompositeActivity()).getAutomaticallyRegisterRollbackHandler());
   }
 
   /**
    * Test {@link BaseActivity#getAutomaticallyRegisterRollbackHandler()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BaseActivity#getAutomaticallyRegisterRollbackHandler()}
+   * <p>
+   * Method under test: {@link BaseActivity#getAutomaticallyRegisterRollbackHandler()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean BaseActivity.getAutomaticallyRegisterRollbackHandler()"})
   public void testGetAutomaticallyRegisterRollbackHandler_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(
-        new CommitTaxActivity(new CommitTaxRollbackHandler())
-            .getAutomaticallyRegisterRollbackHandler());
+    assertTrue((new CommitTaxActivity(new CommitTaxRollbackHandler())).getAutomaticallyRegisterRollbackHandler());
   }
 
   /**
    * Test {@link BaseActivity#setAutomaticallyRegisterRollbackHandler(boolean)}.
-   *
-   * <p>Method under test: {@link BaseActivity#setAutomaticallyRegisterRollbackHandler(boolean)}
+   * <p>
+   * Method under test: {@link BaseActivity#setAutomaticallyRegisterRollbackHandler(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseActivity.setAutomaticallyRegisterRollbackHandler(boolean)"})
   public void testSetAutomaticallyRegisterRollbackHandler() {
     // Arrange
@@ -298,26 +241,24 @@ public class BaseActivityDiffblueTest {
 
   /**
    * Test {@link BaseActivity#getOrder()}.
-   *
-   * <p>Method under test: {@link BaseActivity#getOrder()}
+   * <p>
+   * Method under test: {@link BaseActivity#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int BaseActivity.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(Integer.MAX_VALUE, new CompositeActivity().getOrder());
+    assertEquals(Integer.MAX_VALUE, (new CompositeActivity()).getOrder());
   }
 
   /**
    * Test {@link BaseActivity#setOrder(int)}.
-   *
-   * <p>Method under test: {@link BaseActivity#setOrder(int)}
+   * <p>
+   * Method under test: {@link BaseActivity#setOrder(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BaseActivity.setOrder(int)"})
   public void testSetOrder() {
     // Arrange

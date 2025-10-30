@@ -23,8 +23,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,43 +39,40 @@ import org.springframework.core.io.Resource;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
-  @Mock private RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptionsExtensionManager;
+  @InjectMocks
+  private RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler;
 
-  @InjectMocks private RuleBuilderEnumOptionsResourceHandler ruleBuilderEnumOptionsResourceHandler;
+  @Mock
+  private RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptionsExtensionManager;
 
   /**
    * Test {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}.
-   *
    * <ul>
-   *   <li>When {@code admin/components/ruleBuilder-options.js}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code admin/components/ruleBuilder-options.js}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean RuleBuilderEnumOptionsResourceHandler.canHandle(String)"})
   public void testCanHandle_whenAdminComponentsRuleBuilderOptionsJs_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(
-        ruleBuilderEnumOptionsResourceHandler.canHandle("admin/components/ruleBuilder-options.js"));
+    assertTrue(ruleBuilderEnumOptionsResourceHandler.canHandle("admin/components/ruleBuilder-options.js"));
   }
 
   /**
    * Test {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}.
-   *
    * <ul>
-   *   <li>When {@code Path}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Path}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#canHandle(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean RuleBuilderEnumOptionsResourceHandler.canHandle(String)"})
   public void testCanHandle_whenPath_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -85,23 +81,17 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
 
   /**
    * Test {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}.
-   *
    * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String,
-   * List)}
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"
-  })
-  public void testGetFileContents_givenGeneratedResource_whenArrayListAddGeneratedResource()
-      throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"})
+  public void testGetFileContents_givenGeneratedResource_whenArrayListAddGeneratedResource() throws IOException {
     // Arrange
     when(ruleBuilderEnumOptionsExtensionManager.getOptionValues()).thenReturn("42");
 
@@ -109,8 +99,7 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
     locations.add(new GeneratedResource());
 
     // Act
-    Resource actualFileContents =
-        ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", locations);
+    Resource actualFileContents = ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", locations);
 
     // Assert
     verify(ruleBuilderEnumOptionsExtensionManager).getOptionValues();
@@ -121,29 +110,23 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
     assertEquals(2, actualFileContents.getInputStream().read(byteArray));
     assertFalse(actualFileContents.isFile());
     assertFalse(actualFileContents.isOpen());
-    assertArrayEquals(new byte[] {'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
-    assertArrayEquals(new byte[] {'4', '2'}, byteArray);
+    assertArrayEquals(new byte[]{'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
+    assertArrayEquals(new byte[]{'4', '2'}, byteArray);
   }
 
   /**
    * Test {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}.
-   *
    * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String,
-   * List)}
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"
-  })
-  public void testGetFileContents_givenGeneratedResource_whenArrayListAddGeneratedResource2()
-      throws IOException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"})
+  public void testGetFileContents_givenGeneratedResource_whenArrayListAddGeneratedResource2() throws IOException {
     // Arrange
     when(ruleBuilderEnumOptionsExtensionManager.getOptionValues()).thenReturn("42");
 
@@ -152,8 +135,7 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
     locations.add(new GeneratedResource());
 
     // Act
-    Resource actualFileContents =
-        ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", locations);
+    Resource actualFileContents = ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", locations);
 
     // Assert
     verify(ruleBuilderEnumOptionsExtensionManager).getOptionValues();
@@ -164,33 +146,27 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
     assertEquals(2, actualFileContents.getInputStream().read(byteArray));
     assertFalse(actualFileContents.isFile());
     assertFalse(actualFileContents.isOpen());
-    assertArrayEquals(new byte[] {'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
-    assertArrayEquals(new byte[] {'4', '2'}, byteArray);
+    assertArrayEquals(new byte[]{'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
+    assertArrayEquals(new byte[]{'4', '2'}, byteArray);
   }
 
   /**
    * Test {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String,
-   * List)}
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#getFileContents(String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Resource RuleBuilderEnumOptionsResourceHandler.getFileContents(String, List)"})
   public void testGetFileContents_whenArrayList() throws IOException {
     // Arrange
     when(ruleBuilderEnumOptionsExtensionManager.getOptionValues()).thenReturn("42");
 
     // Act
-    Resource actualFileContents =
-        ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", new ArrayList<>());
+    Resource actualFileContents = ruleBuilderEnumOptionsResourceHandler.getFileContents("Path", new ArrayList<>());
 
     // Assert
     verify(ruleBuilderEnumOptionsExtensionManager).getOptionValues();
@@ -201,27 +177,22 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
     assertEquals(2, actualFileContents.getInputStream().read(byteArray));
     assertFalse(actualFileContents.isFile());
     assertFalse(actualFileContents.isOpen());
-    assertArrayEquals(new byte[] {'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
-    assertArrayEquals(new byte[] {'4', '2'}, byteArray);
+    assertArrayEquals(new byte[]{'4', '2'}, ((GeneratedResource) actualFileContents).getBytes());
+    assertArrayEquals(new byte[]{'4', '2'}, byteArray);
   }
 
   /**
-   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource,
-   * String, List)}.
-   *
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
    * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"
-  })
+      "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"})
   public void testIsCachedResourceExpired_givenGeneratedResource() {
     // Arrange
     GeneratedResource cachedResource = new GeneratedResource();
@@ -230,28 +201,21 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
     locations.add(new GeneratedResource());
 
     // Act and Assert
-    assertFalse(
-        ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(
-            cachedResource, "Path", locations));
+    assertFalse(ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(cachedResource, "Path", locations));
   }
 
   /**
-   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource,
-   * String, List)}.
-   *
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
    * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"
-  })
+      "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"})
   public void testIsCachedResourceExpired_givenGeneratedResource2() {
     // Arrange
     GeneratedResource cachedResource = new GeneratedResource();
@@ -261,35 +225,27 @@ public class RuleBuilderEnumOptionsResourceHandlerDiffblueTest {
     locations.add(new GeneratedResource());
 
     // Act and Assert
-    assertFalse(
-        ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(
-            cachedResource, "Path", locations));
+    assertFalse(ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(cachedResource, "Path", locations));
   }
 
   /**
-   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource,
-   * String, List)}.
-   *
+   * Test {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
+   * <p>
+   * Method under test: {@link RuleBuilderEnumOptionsResourceHandler#isCachedResourceExpired(GeneratedResource, String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"
-  })
+      "boolean RuleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(GeneratedResource, String, List)"})
   public void testIsCachedResourceExpired_whenArrayList() {
     // Arrange
     GeneratedResource cachedResource = new GeneratedResource();
 
     // Act and Assert
     assertFalse(
-        ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(
-            cachedResource, "Path", new ArrayList<>()));
+        ruleBuilderEnumOptionsResourceHandler.isCachedResourceExpired(cachedResource, "Path", new ArrayList<>()));
   }
 }

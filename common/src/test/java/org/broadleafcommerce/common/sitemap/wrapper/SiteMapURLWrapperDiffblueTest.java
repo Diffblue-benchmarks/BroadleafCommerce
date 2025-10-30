@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +33,11 @@ import org.junit.experimental.categories.Category;
 public class SiteMapURLWrapperDiffblueTest {
   /**
    * Test {@link SiteMapURLWrapper#addImage(SiteMapImageWrapper)}.
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#addImage(SiteMapImageWrapper)}
+   * <p>
+   * Method under test: {@link SiteMapURLWrapper#addImage(SiteMapImageWrapper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SiteMapURLWrapper.addImage(SiteMapImageWrapper)"})
   public void testAddImage() {
     // Arrange
@@ -59,17 +57,15 @@ public class SiteMapURLWrapperDiffblueTest {
 
   /**
    * Test {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Priority is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Priority is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
+   * <p>
+   * Method under test: {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SiteMapURLWrapper.setPriorityType(SiteMapPriorityType)"})
   public void testSetPriorityType_whenNull_thenSiteMapURLWrapperPriorityIsNull() {
     // Arrange
@@ -84,17 +80,15 @@ public class SiteMapURLWrapperDiffblueTest {
 
   /**
    * Test {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}.
-   *
    * <ul>
-   *   <li>When {@link SiteMapPriorityType#ONE}.
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Priority is {@code 1.0}.
+   *   <li>When {@link SiteMapPriorityType#ONE}.</li>
+   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Priority is {@code 1.0}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
+   * <p>
+   * Method under test: {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SiteMapURLWrapper.setPriorityType(SiteMapPriorityType)"})
   public void testSetPriorityType_whenOne_thenSiteMapURLWrapperPriorityIs10() {
     // Arrange
@@ -109,17 +103,15 @@ public class SiteMapURLWrapperDiffblueTest {
 
   /**
    * Test {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}.
-   *
    * <ul>
-   *   <li>When {@link SiteMapChangeFreqType#ALWAYS}.
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Changefreq is {@code always}.
+   *   <li>When {@link SiteMapChangeFreqType#ALWAYS}.</li>
+   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Changefreq is {@code always}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
+   * <p>
+   * Method under test: {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SiteMapURLWrapper.setChangeFreqType(SiteMapChangeFreqType)"})
   public void testSetChangeFreqType_whenAlways_thenSiteMapURLWrapperChangefreqIsAlways() {
     // Arrange
@@ -134,17 +126,15 @@ public class SiteMapURLWrapperDiffblueTest {
 
   /**
    * Test {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Changefreq is {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Changefreq is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
+   * <p>
+   * Method under test: {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SiteMapURLWrapper.setChangeFreqType(SiteMapChangeFreqType)"})
   public void testSetChangeFreqType_whenNull_thenSiteMapURLWrapperChangefreqIsNull() {
     // Arrange
@@ -159,9 +149,8 @@ public class SiteMapURLWrapperDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SiteMapURLWrapper}
    *   <li>{@link SiteMapURLWrapper#setChangefreq(String)}
@@ -177,21 +166,13 @@ public class SiteMapURLWrapperDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SiteMapURLWrapper.<init>()",
-    "String SiteMapURLWrapper.getChangefreq()",
-    "String SiteMapURLWrapper.getLastmod()",
-    "String SiteMapURLWrapper.getLoc()",
-    "String SiteMapURLWrapper.getPriority()",
-    "List SiteMapURLWrapper.getSiteMapImageWrappers()",
-    "void SiteMapURLWrapper.setChangefreq(String)",
-    "void SiteMapURLWrapper.setLastmod(String)",
-    "void SiteMapURLWrapper.setLoc(String)",
-    "void SiteMapURLWrapper.setPriority(String)",
-    "void SiteMapURLWrapper.setSiteMapImageWrappers(List)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapURLWrapper.<init>()", "String SiteMapURLWrapper.getChangefreq()",
+      "String SiteMapURLWrapper.getLastmod()", "String SiteMapURLWrapper.getLoc()",
+      "String SiteMapURLWrapper.getPriority()", "List SiteMapURLWrapper.getSiteMapImageWrappers()",
+      "void SiteMapURLWrapper.setChangefreq(String)", "void SiteMapURLWrapper.setLastmod(String)",
+      "void SiteMapURLWrapper.setLoc(String)", "void SiteMapURLWrapper.setPriority(String)",
+      "void SiteMapURLWrapper.setSiteMapImageWrappers(List)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapURLWrapper actualSiteMapURLWrapper = new SiteMapURLWrapper();
@@ -205,8 +186,7 @@ public class SiteMapURLWrapperDiffblueTest {
     String actualLastmod = actualSiteMapURLWrapper.getLastmod();
     String actualLoc = actualSiteMapURLWrapper.getLoc();
     String actualPriority = actualSiteMapURLWrapper.getPriority();
-    List<SiteMapImageWrapper> actualSiteMapImageWrappers =
-        actualSiteMapURLWrapper.getSiteMapImageWrappers();
+    List<SiteMapImageWrapper> actualSiteMapImageWrappers = actualSiteMapURLWrapper.getSiteMapImageWrappers();
 
     // Assert
     assertEquals("https://example.org/example", actualChangefreq);

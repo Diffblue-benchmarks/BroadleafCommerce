@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.breadcrumbs.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {BreadcrumbDTOType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BreadcrumbDTOTypeDiffblueTest {
-  @Autowired private BreadcrumbDTOType breadcrumbDTOType;
+  @Autowired
+  private BreadcrumbDTOType breadcrumbDTOType;
 
   /**
    * Test {@link BreadcrumbDTOType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link BreadcrumbDTOType#getInstance(String)}
+   * <p>
+   * Method under test: {@link BreadcrumbDTOType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"BreadcrumbDTOType BreadcrumbDTOType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,9 +54,8 @@ public class BreadcrumbDTOTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BreadcrumbDTOType#BreadcrumbDTOType()}
    *   <li>{@link BreadcrumbDTOType#getFriendlyType()}
@@ -65,13 +63,9 @@ public class BreadcrumbDTOTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BreadcrumbDTOType.<init>()",
-    "String BreadcrumbDTOType.getFriendlyType()",
-    "String BreadcrumbDTOType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BreadcrumbDTOType.<init>()", "String BreadcrumbDTOType.getFriendlyType()",
+      "String BreadcrumbDTOType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     BreadcrumbDTOType actualBreadcrumbDTOType = new BreadcrumbDTOType();
@@ -84,14 +78,38 @@ public class BreadcrumbDTOTypeDiffblueTest {
 
   /**
    * Test {@link BreadcrumbDTOType#BreadcrumbDTOType(String, String)}.
-   *
-   * <p>Method under test: {@link BreadcrumbDTOType#BreadcrumbDTOType(String, String)}
+   * <ul>
+   *   <li>When {@code Home}.</li>
+   *   <li>Then return Type is {@code Home}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BreadcrumbDTOType#BreadcrumbDTOType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BreadcrumbDTOType.<init>(String, String)"})
-  public void testNewBreadcrumbDTOType() {
+  public void testNewBreadcrumbDTOType_whenHome_thenReturnTypeIsHome() {
+    // Arrange and Act
+    BreadcrumbDTOType actualBreadcrumbDTOType = new BreadcrumbDTOType("Home", "Friendly Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualBreadcrumbDTOType.getFriendlyType());
+    assertEquals("Home", actualBreadcrumbDTOType.getType());
+  }
+
+  /**
+   * Test {@link BreadcrumbDTOType#BreadcrumbDTOType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   *   <li>Then return {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BreadcrumbDTOType#BreadcrumbDTOType(String, String)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void BreadcrumbDTOType.<init>(String, String)"})
+  public void testNewBreadcrumbDTOType_whenType_thenReturnType() {
     // Arrange and Act
     BreadcrumbDTOType actualBreadcrumbDTOType = new BreadcrumbDTOType("Type", "Friendly Type");
 
@@ -102,26 +120,20 @@ public class BreadcrumbDTOTypeDiffblueTest {
 
   /**
    * Test {@link BreadcrumbDTOType#equals(Object)}, and {@link BreadcrumbDTOType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BreadcrumbDTOType#equals(Object)}
    *   <li>{@link BreadcrumbDTOType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BreadcrumbDTOType.equals(Object)",
-    "int BreadcrumbDTOType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BreadcrumbDTOType.equals(Object)", "int BreadcrumbDTOType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     BreadcrumbDTOType breadcrumbDTOType = BreadcrumbDTOType.CATEGORY;
@@ -129,95 +141,80 @@ public class BreadcrumbDTOTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(breadcrumbDTOType, breadcrumbDTOType2);
-    assertEquals(breadcrumbDTOType.hashCode(), breadcrumbDTOType2.hashCode());
+    int expectedHashCodeResult = breadcrumbDTOType.hashCode();
+    assertEquals(expectedHashCodeResult, breadcrumbDTOType2.hashCode());
   }
 
   /**
    * Test {@link BreadcrumbDTOType#equals(Object)}, and {@link BreadcrumbDTOType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BreadcrumbDTOType#equals(Object)}
    *   <li>{@link BreadcrumbDTOType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BreadcrumbDTOType.equals(Object)",
-    "int BreadcrumbDTOType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BreadcrumbDTOType.equals(Object)", "int BreadcrumbDTOType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    BreadcrumbDTOType breadcrumbDTOType = BreadcrumbDTOType.HOME;
-    BreadcrumbDTOType breadcrumbDTOType2 = new BreadcrumbDTOType("HOME", "HOME");
-
-    // Act and Assert
-    assertEquals(breadcrumbDTOType, breadcrumbDTOType2);
-    assertEquals(breadcrumbDTOType.hashCode(), breadcrumbDTOType2.hashCode());
-  }
-
-  /**
-   * Test {@link BreadcrumbDTOType#equals(Object)}, and {@link BreadcrumbDTOType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BreadcrumbDTOType#equals(Object)}
-   *   <li>{@link BreadcrumbDTOType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BreadcrumbDTOType.equals(Object)",
-    "int BreadcrumbDTOType.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     BreadcrumbDTOType breadcrumbDTOType = new BreadcrumbDTOType();
     BreadcrumbDTOType breadcrumbDTOType2 = new BreadcrumbDTOType();
 
     // Act and Assert
     assertEquals(breadcrumbDTOType, breadcrumbDTOType2);
-    assertEquals(breadcrumbDTOType.hashCode(), breadcrumbDTOType2.hashCode());
+    int expectedHashCodeResult = breadcrumbDTOType.hashCode();
+    assertEquals(expectedHashCodeResult, breadcrumbDTOType2.hashCode());
   }
 
   /**
    * Test {@link BreadcrumbDTOType#equals(Object)}, and {@link BreadcrumbDTOType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link BreadcrumbDTOType#equals(Object)}
    *   <li>{@link BreadcrumbDTOType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BreadcrumbDTOType.equals(Object)",
-    "int BreadcrumbDTOType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BreadcrumbDTOType.equals(Object)", "int BreadcrumbDTOType.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    BreadcrumbDTOType breadcrumbDTOType = new BreadcrumbDTOType("CATEGORY", "Friendly Type");
+    BreadcrumbDTOType breadcrumbDTOType2 = BreadcrumbDTOType.CATEGORY;
+
+    // Act and Assert
+    assertEquals(breadcrumbDTOType, breadcrumbDTOType2);
+    int expectedHashCodeResult = breadcrumbDTOType.hashCode();
+    assertEquals(expectedHashCodeResult, breadcrumbDTOType2.hashCode());
+  }
+
+  /**
+   * Test {@link BreadcrumbDTOType#equals(Object)}, and {@link BreadcrumbDTOType#hashCode()}.
+   * <ul>
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BreadcrumbDTOType#equals(Object)}
+   *   <li>{@link BreadcrumbDTOType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BreadcrumbDTOType.equals(Object)", "int BreadcrumbDTOType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     BreadcrumbDTOType breadcrumbDTOType = BreadcrumbDTOType.CATEGORY;
@@ -230,21 +227,16 @@ public class BreadcrumbDTOTypeDiffblueTest {
 
   /**
    * Test {@link BreadcrumbDTOType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BreadcrumbDTOType#equals(Object)}
+   * <p>
+   * Method under test: {@link BreadcrumbDTOType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BreadcrumbDTOType.equals(Object)",
-    "int BreadcrumbDTOType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BreadcrumbDTOType.equals(Object)", "int BreadcrumbDTOType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(BreadcrumbDTOType.HOME, BreadcrumbDTOType.CATEGORY);
@@ -252,21 +244,16 @@ public class BreadcrumbDTOTypeDiffblueTest {
 
   /**
    * Test {@link BreadcrumbDTOType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BreadcrumbDTOType#equals(Object)}
+   * <p>
+   * Method under test: {@link BreadcrumbDTOType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BreadcrumbDTOType.equals(Object)",
-    "int BreadcrumbDTOType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BreadcrumbDTOType.equals(Object)", "int BreadcrumbDTOType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new BreadcrumbDTOType(), BreadcrumbDTOType.CATEGORY);
@@ -274,21 +261,16 @@ public class BreadcrumbDTOTypeDiffblueTest {
 
   /**
    * Test {@link BreadcrumbDTOType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BreadcrumbDTOType#equals(Object)}
+   * <p>
+   * Method under test: {@link BreadcrumbDTOType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BreadcrumbDTOType.equals(Object)",
-    "int BreadcrumbDTOType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BreadcrumbDTOType.equals(Object)", "int BreadcrumbDTOType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(BreadcrumbDTOType.CATEGORY, null);
@@ -296,21 +278,16 @@ public class BreadcrumbDTOTypeDiffblueTest {
 
   /**
    * Test {@link BreadcrumbDTOType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link BreadcrumbDTOType#equals(Object)}
+   * <p>
+   * Method under test: {@link BreadcrumbDTOType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BreadcrumbDTOType.equals(Object)",
-    "int BreadcrumbDTOType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean BreadcrumbDTOType.equals(Object)", "int BreadcrumbDTOType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(BreadcrumbDTOType.CATEGORY, "Different type to BreadcrumbDTOType");

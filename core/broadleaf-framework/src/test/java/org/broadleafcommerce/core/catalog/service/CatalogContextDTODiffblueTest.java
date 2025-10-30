@@ -20,8 +20,7 @@ package org.broadleafcommerce.core.catalog.service;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,27 +34,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {CatalogContextDTO.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CatalogContextDTODiffblueTest {
-  @Autowired private CatalogContextDTO catalogContextDTO;
+  @Autowired
+  private CatalogContextDTO catalogContextDTO;
 
   /**
    * Test {@link CatalogContextDTO#get(String)}.
-   *
-   * <p>Method under test: {@link CatalogContextDTO#get(String)}
+   * <p>
+   * Method under test: {@link CatalogContextDTO#get(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object CatalogContextDTO.get(String)"})
   public void testGet() {
     // Arrange, Act and Assert
-    assertNull(catalogContextDTO.get("Key"));
+    assertNull((new CatalogContextDTO()).get("Key"));
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CatalogContextDTO}
    *   <li>{@link CatalogContextDTO#setAttributes(Map)}
@@ -63,13 +61,9 @@ public class CatalogContextDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CatalogContextDTO.<init>()",
-    "Map CatalogContextDTO.getAttributes()",
-    "void CatalogContextDTO.setAttributes(Map)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CatalogContextDTO.<init>()", "Map CatalogContextDTO.getAttributes()",
+      "void CatalogContextDTO.setAttributes(Map)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     CatalogContextDTO actualCatalogContextDTO = new CatalogContextDTO();

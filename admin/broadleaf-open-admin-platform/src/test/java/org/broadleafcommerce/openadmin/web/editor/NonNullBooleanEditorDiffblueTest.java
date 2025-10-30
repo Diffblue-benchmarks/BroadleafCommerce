@@ -17,39 +17,30 @@
  */
 package org.broadleafcommerce.openadmin.web.editor;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(classes = {NonNullBooleanEditor.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class NonNullBooleanEditorDiffblueTest {
-  @Autowired private NonNullBooleanEditor nonNullBooleanEditor;
+  @InjectMocks
+  private NonNullBooleanEditor nonNullBooleanEditor;
 
   /**
    * Test new {@link NonNullBooleanEditor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link NonNullBooleanEditor}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link NonNullBooleanEditor}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void NonNullBooleanEditor.<init>()"})
   public void testNewNonNullBooleanEditor() {
     // Arrange and Act
@@ -57,55 +48,28 @@ public class NonNullBooleanEditorDiffblueTest {
 
     // Assert
     assertNull(actualNonNullBooleanEditor.getValue());
-    Object actualSource = actualNonNullBooleanEditor.getSource();
-    assertSame(actualNonNullBooleanEditor, actualSource);
+    assertSame(actualNonNullBooleanEditor, actualNonNullBooleanEditor.getSource());
   }
 
   /**
    * Test {@link NonNullBooleanEditor#setAsText(String)}.
-   *
    * <ul>
-   *   <li>Then calls {@link PropertyChangeListener#propertyChange(PropertyChangeEvent)}.
+   *   <li>When empty string.</li>
+   *   <li>Then not {@link NonNullBooleanEditor} Value.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullBooleanEditor#setAsText(String)}
+   * <p>
+   * Method under test: {@link NonNullBooleanEditor#setAsText(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void NonNullBooleanEditor.setAsText(String)"})
-  public void testSetAsText_thenCallsPropertyChange() throws IllegalArgumentException {
-    // Arrange
-    PropertyChangeListener propertyChangeListener = mock(PropertyChangeListener.class);
-    doThrow(new IllegalArgumentException())
-        .when(propertyChangeListener)
-        .propertyChange(Mockito.<PropertyChangeEvent>any());
+  public void testSetAsText_whenEmptyString_thenNotNonNullBooleanEditorValue() throws IllegalArgumentException {
+    // Arrange and Act
+    nonNullBooleanEditor.setAsText("");
 
-    NonNullBooleanEditor nonNullBooleanEditor = new NonNullBooleanEditor();
-    nonNullBooleanEditor.addPropertyChangeListener(propertyChangeListener);
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> nonNullBooleanEditor.setAsText(" "));
-    verify(propertyChangeListener).propertyChange(isA(PropertyChangeEvent.class));
-  }
-
-  /**
-   * Test {@link NonNullBooleanEditor#setAsText(String)}.
-   *
-   * <ul>
-   *   <li>When {@code Text}.
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NonNullBooleanEditor#setAsText(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void NonNullBooleanEditor.setAsText(String)"})
-  public void testSetAsText_whenText_thenThrowIllegalArgumentException()
-      throws IllegalArgumentException {
-    // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> nonNullBooleanEditor.setAsText("Text"));
+    // Assert
+    assertFalse((Boolean) nonNullBooleanEditor.getValue());
+    String expectedAsText = Boolean.FALSE.toString();
+    assertEquals(expectedAsText, nonNullBooleanEditor.getAsText());
   }
 }

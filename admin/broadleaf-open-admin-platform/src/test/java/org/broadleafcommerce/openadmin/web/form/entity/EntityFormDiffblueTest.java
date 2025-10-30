@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,25 +42,23 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {EntityForm.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class EntityFormDiffblueTest {
-  @Autowired private EntityForm entityForm;
+  @Autowired
+  private EntityForm entityForm;
 
   /**
    * Test {@link EntityForm#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getFields()}
+   * <p>
+   * Method under test: {@link EntityForm#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map EntityForm.getFields()"})
   public void testGetFields_givenEntityFormAddTabFromTabMetadataTabMetadata_thenReturnEmpty() {
     // Arrange
@@ -74,18 +71,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) DynamicForm {@code Name} is {@link
-   *       EntityForm} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link EntityForm} (default constructor) DynamicForm {@code Name} is {@link EntityForm} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getFields()}
+   * <p>
+   * Method under test: {@link EntityForm#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map EntityForm.getFields()"})
   public void testGetFields_givenEntityFormDynamicFormNameIsEntityForm_thenReturnEmpty() {
     // Arrange
@@ -98,17 +92,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) ReadOnly is {@code true}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link EntityForm} (default constructor) ReadOnly is {@code true}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getFields()}
+   * <p>
+   * Method under test: {@link EntityForm#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map EntityForm.getFields()"})
   public void testGetFields_givenEntityFormReadOnlyIsTrue_thenReturnEmpty() {
     // Arrange
@@ -122,28 +114,25 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getFields()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getFields()}
+   * <p>
+   * Method under test: {@link EntityForm#getFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map EntityForm.getFields()"})
   public void testGetFields_givenEntityForm_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(new EntityForm().getFields().isEmpty());
+    assertTrue((new EntityForm()).getFields().isEmpty());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link EntityForm#setActions(List)}
    *   <li>{@link EntityForm#setAttributes(Map)}
@@ -178,40 +167,20 @@ public class EntityFormDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EntityForm.clearFieldsMap()",
-    "Map EntityForm.getAttributes()",
-    "String EntityForm.getCeilingEntityClassname()",
-    "Map EntityForm.getDynamicFormInfos()",
-    "Map EntityForm.getDynamicForms()",
-    "String EntityForm.getEncType()",
-    "String EntityForm.getEntityType()",
-    "String EntityForm.getId()",
-    "String EntityForm.getIdProperty()",
-    "String EntityForm.getJsErrorMap()",
-    "String EntityForm.getParentId()",
-    "Boolean EntityForm.getPreventSubmit()",
-    "Boolean EntityForm.getReadOnly()",
-    "List EntityForm.getSectionCrumbsImpl()",
-    "Set EntityForm.getTabs()",
-    "void EntityForm.setActions(List)",
-    "void EntityForm.setAttributes(Map)",
-    "void EntityForm.setCeilingEntityClassname(String)",
-    "void EntityForm.setDynamicFormInfos(Map)",
-    "void EntityForm.setDynamicForms(Map)",
-    "void EntityForm.setEncType(String)",
-    "void EntityForm.setEntityType(String)",
-    "void EntityForm.setId(String)",
-    "void EntityForm.setIdProperty(String)",
-    "void EntityForm.setJsErrorMap(String)",
-    "void EntityForm.setMainEntityName(String)",
-    "void EntityForm.setParentId(String)",
-    "void EntityForm.setSectionKey(String)",
-    "void EntityForm.setTranslationCeilingEntity(String)",
-    "void EntityForm.setTranslationId(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityForm.clearFieldsMap()", "Map EntityForm.getAttributes()",
+      "String EntityForm.getCeilingEntityClassname()", "Map EntityForm.getDynamicFormInfos()",
+      "Map EntityForm.getDynamicForms()", "String EntityForm.getEncType()", "String EntityForm.getEntityType()",
+      "String EntityForm.getId()", "String EntityForm.getIdProperty()", "String EntityForm.getJsErrorMap()",
+      "String EntityForm.getParentId()", "Boolean EntityForm.getPreventSubmit()", "Boolean EntityForm.getReadOnly()",
+      "List EntityForm.getSectionCrumbsImpl()", "Set EntityForm.getTabs()", "void EntityForm.setActions(List)",
+      "void EntityForm.setAttributes(Map)", "void EntityForm.setCeilingEntityClassname(String)",
+      "void EntityForm.setDynamicFormInfos(Map)", "void EntityForm.setDynamicForms(Map)",
+      "void EntityForm.setEncType(String)", "void EntityForm.setEntityType(String)", "void EntityForm.setId(String)",
+      "void EntityForm.setIdProperty(String)", "void EntityForm.setJsErrorMap(String)",
+      "void EntityForm.setMainEntityName(String)", "void EntityForm.setParentId(String)",
+      "void EntityForm.setSectionKey(String)", "void EntityForm.setTranslationCeilingEntity(String)",
+      "void EntityForm.setTranslationId(String)"})
   public void testGettersAndSetters() {
     // Arrange
     EntityForm entityForm = new EntityForm();
@@ -273,35 +242,30 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getAllListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
+   *   <li>Given {@link EntityForm} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getAllListGrids()}
+   * <p>
+   * Method under test: {@link EntityForm#getAllListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List EntityForm.getAllListGrids()"})
   public void testGetAllListGrids_givenEntityForm() {
     // Arrange, Act and Assert
-    assertTrue(new EntityForm().getAllListGrids().isEmpty());
+    assertTrue((new EntityForm()).getAllListGrids().isEmpty());
   }
 
   /**
    * Test {@link EntityForm#getAllListGrids()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
+   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getAllListGrids()}
+   * <p>
+   * Method under test: {@link EntityForm#getAllListGrids()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List EntityForm.getAllListGrids()"})
   public void testGetAllListGrids_givenEntityFormAddTabFromTabMetadataTabMetadata() {
     // Arrange
@@ -313,249 +277,35 @@ public class EntityFormDiffblueTest {
   }
 
   /**
-   * Test {@link EntityForm#findListGrid(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findListGrid(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.openadmin.web.form.component.ListGrid EntityForm.findListGrid(String)"
-  })
-  public void testFindListGrid_givenEntityFormAddTabFromTabMetadataTabMetadata() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    // Act and Assert
-    assertNull(entityForm.findListGrid("Collection Field Name"));
-  }
-
-  /**
-   * Test {@link EntityForm#findGroup(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findGroup(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldGroup EntityForm.findGroup(String)"})
-  public void testFindGroup_givenEntityFormAddTabFromTabMetadataTabMetadata() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    // Act and Assert
-    assertNull(entityForm.findGroup("Group Name"));
-  }
-
-  /**
-   * Test {@link EntityForm#findTab(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findTab(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Tab EntityForm.findTab(String)"})
-  public void testFindTab_givenEntityFormAddTabFromTabMetadataTabMetadata() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    // Act and Assert
-    assertNull(entityForm.findTab("Tab Key"));
-  }
-
-  /**
-   * Test {@link EntityForm#findTabForField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findTabForField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Tab EntityForm.findTabForField(String)"})
-  public void testFindTabForField_givenEntityFormAddTabFromTabMetadataTabMetadata() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    // Act and Assert
-    assertNull(entityForm.findTabForField("Field Name"));
-  }
-
-  /**
    * Test {@link EntityForm#findField(String)}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
+   *   <li>When {@code Field Name}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findField(String)}
+   * <p>
+   * Method under test: {@link EntityForm#findField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Field EntityForm.findField(String)"})
-  public void testFindField_givenEntityFormAddTabFromTabMetadataTabMetadata() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    // Act and Assert
-    assertNull(entityForm.findField("Field Name"));
-    assertTrue(entityForm.fields.isEmpty());
-  }
-
-  /**
-   * Test {@link EntityForm#findField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) DynamicForm {@code [} is {@link
-   *       EntityForm} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field EntityForm.findField(String)"})
-  public void testFindField_givenEntityFormDynamicFormLeftSquareBracketIsEntityForm() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.putDynamicForm("[", new EntityForm());
-
-    // Act and Assert
-    assertNull(entityForm.findField("Field Name"));
-    assertTrue(entityForm.fields.isEmpty());
-  }
-
-  /**
-   * Test {@link EntityForm#findField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm}.
-   *   <li>When {@link EntityForm#DEFAULT_GROUP_NAME}.
-   *   <li>Then {@link EntityForm} {@link EntityForm#fields} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field EntityForm.findField(String)"})
-  public void testFindField_givenEntityForm_whenDefault_group_name_thenEntityFormFieldsEmpty() {
-    // Arrange, Act and Assert
-    assertNull(entityForm.findField(EntityForm.DEFAULT_GROUP_NAME));
-    assertTrue(entityForm.fields.isEmpty());
-  }
-
-  /**
-   * Test {@link EntityForm#findField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm}.
-   *   <li>When {@code Field Name}.
-   *   <li>Then {@link EntityForm} {@link EntityForm#fields} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field EntityForm.findField(String)"})
-  public void testFindField_givenEntityForm_whenFieldName_thenEntityFormFieldsEmpty() {
+  public void testFindField_whenFieldName_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(entityForm.findField("Field Name"));
     assertTrue(entityForm.fields.isEmpty());
-  }
-
-  /**
-   * Test {@link EntityForm#removeField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#removeField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field EntityForm.removeField(String)"})
-  public void testRemoveField_givenEntityFormAddTabFromTabMetadataTabMetadata() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    // Act and Assert
-    assertNull(entityForm.removeField("Field Name"));
-  }
-
-  /**
-   * Test {@link EntityForm#removeField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) ReadOnly is {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#removeField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field EntityForm.removeField(String)"})
-  public void testRemoveField_givenEntityFormReadOnlyIsTrue() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.setReadOnly(true);
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    // Act and Assert
-    assertNull(entityForm.removeField("Field Name"));
   }
 
   /**
    * Test {@link EntityForm#removeTab(Tab)} with {@code tab}.
-   *
    * <ul>
-   *   <li>Given {@code Dr}.
-   *   <li>When {@link Tab} (default constructor) Title is {@code Dr}.
-   *   <li>Then {@link EntityForm} (default constructor) Tabs size is one.
+   *   <li>Given {@code Dr}.</li>
+   *   <li>When {@link Tab} (default constructor) Title is {@code Dr}.</li>
+   *   <li>Then {@link EntityForm} (default constructor) Tabs size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#removeTab(Tab)}
+   * <p>
+   * Method under test: {@link EntityForm#removeTab(Tab)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.removeTab(Tab)"})
   public void testRemoveTabWithTab_givenDr_whenTabTitleIsDr_thenEntityFormTabsSizeIsOne() {
     // Arrange
@@ -564,7 +314,7 @@ public class EntityFormDiffblueTest {
 
     Tab tab = new Tab();
     tab.setTitle("Dr");
-    tab.setKey("messageSource");
+    tab.setKey("ThreadLocalManager.notify.orphans");
 
     // Act
     entityForm.removeTab(tab);
@@ -575,18 +325,16 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#removeTab(Tab)} with {@code tab}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>When {@link Tab} (default constructor).
-   *   <li>Then {@link EntityForm} (default constructor) Tabs Empty.
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   *   <li>When {@link Tab} (default constructor).</li>
+   *   <li>Then {@link EntityForm} (default constructor) Tabs Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#removeTab(Tab)}
+   * <p>
+   * Method under test: {@link EntityForm#removeTab(Tab)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.removeTab(Tab)"})
   public void testRemoveTabWithTab_givenEntityForm_whenTab_thenEntityFormTabsEmpty() {
     // Arrange
@@ -601,17 +349,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#removeTab(Tab)} with {@code tab}.
-   *
    * <ul>
-   *   <li>When {@link Tab} (default constructor).
-   *   <li>Then {@link EntityForm} (default constructor) Tabs Empty.
+   *   <li>When {@link Tab} (default constructor).</li>
+   *   <li>Then {@link EntityForm} (default constructor) Tabs Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#removeTab(Tab)}
+   * <p>
+   * Method under test: {@link EntityForm#removeTab(Tab)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.removeTab(Tab)"})
   public void testRemoveTabWithTab_whenTab_thenEntityFormTabsEmpty() {
     // Arrange
@@ -626,38 +372,12 @@ public class EntityFormDiffblueTest {
   }
 
   /**
-   * Test {@link EntityForm#removeListGrid(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#removeListGrid(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.openadmin.web.form.component.ListGrid EntityForm.removeListGrid(String)"
-  })
-  public void testRemoveListGrid_givenEntityFormAddTabFromTabMetadataTabMetadata() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    // Act and Assert
-    assertNull(entityForm.removeListGrid("Sub Collection Field Name"));
-  }
-
-  /**
    * Test {@link EntityForm#addAction(EntityFormAction)} with {@code action}.
-   *
-   * <p>Method under test: {@link EntityForm#addAction(EntityFormAction)}
+   * <p>
+   * Method under test: {@link EntityForm#addAction(EntityFormAction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.addAction(EntityFormAction)"})
   public void testAddActionWithAction() {
     // Arrange
@@ -678,17 +398,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#addAction(int, EntityFormAction)} with {@code position}, {@code action}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then {@link EntityForm} (default constructor) Actions size is one.
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   *   <li>Then {@link EntityForm} (default constructor) Actions size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#addAction(int, EntityFormAction)}
+   * <p>
+   * Method under test: {@link EntityForm#addAction(int, EntityFormAction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.addAction(int, EntityFormAction)"})
   public void testAddActionWithPositionAction_givenEntityForm_thenEntityFormActionsSizeIsOne() {
     // Arrange
@@ -709,21 +427,19 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#addAction(int, EntityFormAction)} with {@code position}, {@code action}.
-   *
    * <ul>
-   *   <li>Then {@link EntityForm} (default constructor) Actions size is three.
+   *   <li>Then {@link EntityForm} (default constructor) Actions size is three.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#addAction(int, EntityFormAction)}
+   * <p>
+   * Method under test: {@link EntityForm#addAction(int, EntityFormAction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.addAction(int, EntityFormAction)"})
   public void testAddActionWithPositionAction_thenEntityFormActionsSizeIsThree() {
     // Arrange
     EntityForm entityForm = new EntityForm();
-    entityForm.addAction(0, DefaultAdornedEntityFormActions.Add);
+    entityForm.addAction(2, DefaultAdornedEntityFormActions.Add);
     entityForm.addAction(1, DefaultAdornedEntityFormActions.Add);
     EntityFormAction action = DefaultAdornedEntityFormActions.Add;
 
@@ -743,12 +459,11 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#putDynamicForm(String, EntityForm)}.
-   *
-   * <p>Method under test: {@link EntityForm#putDynamicForm(String, EntityForm)}
+   * <p>
+   * Method under test: {@link EntityForm#putDynamicForm(String, EntityForm)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.putDynamicForm(String, EntityForm)"})
   public void testPutDynamicForm() {
     // Arrange and Act
@@ -762,12 +477,11 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#putDynamicFormInfo(String, DynamicEntityFormInfo)}.
-   *
-   * <p>Method under test: {@link EntityForm#putDynamicFormInfo(String, DynamicEntityFormInfo)}
+   * <p>
+   * Method under test: {@link EntityForm#putDynamicFormInfo(String, DynamicEntityFormInfo)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.putDynamicFormInfo(String, DynamicEntityFormInfo)"})
   public void testPutDynamicFormInfo() {
     // Arrange
@@ -784,12 +498,11 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setPreventSubmit()}.
-   *
-   * <p>Method under test: {@link EntityForm#setPreventSubmit()}
+   * <p>
+   * Method under test: {@link EntityForm#setPreventSubmit()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setPreventSubmit()"})
   public void testSetPreventSubmit() {
     // Arrange
@@ -804,17 +517,37 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setReadOnly(boolean)} with {@code boolean}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
+   *   <li>Given {@link EntityForm} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setReadOnly(boolean)}
+   * <p>
+   * Method under test: {@link EntityForm#setReadOnly(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityForm.setReadOnly(boolean)"})
+  public void testSetReadOnlyWithBoolean_givenEntityForm() {
+    // Arrange
+    EntityForm entityForm = new EntityForm();
+
+    // Act
+    entityForm.setReadOnly(true);
+
+    // Assert
+    assertTrue(entityForm.fields.isEmpty());
+    assertTrue(entityForm.getReadOnly());
+  }
+
+  /**
+   * Test {@link EntityForm#setReadOnly(boolean)} with {@code boolean}.
+   * <ul>
+   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityForm#setReadOnly(boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setReadOnly(boolean)"})
   public void testSetReadOnlyWithBoolean_givenEntityFormAddTabFromTabMetadataTabMetadata() {
     // Arrange
@@ -831,42 +564,14 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setReadOnly(boolean)} with {@code boolean}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then {@link EntityForm} (default constructor) {@link EntityForm#fields} Empty.
+   *   <li>Then {@link EntityForm} (default constructor) DynamicForms size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setReadOnly(boolean)}
+   * <p>
+   * Method under test: {@link EntityForm#setReadOnly(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void EntityForm.setReadOnly(boolean)"})
-  public void testSetReadOnlyWithBoolean_givenEntityForm_thenEntityFormFieldsEmpty() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-
-    // Act
-    entityForm.setReadOnly(true);
-
-    // Assert
-    assertTrue(entityForm.fields.isEmpty());
-    assertTrue(entityForm.getReadOnly());
-  }
-
-  /**
-   * Test {@link EntityForm#setReadOnly(boolean)} with {@code boolean}.
-   *
-   * <ul>
-   *   <li>Then {@link EntityForm} (default constructor) DynamicForms size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setReadOnly(boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setReadOnly(boolean)"})
   public void testSetReadOnlyWithBoolean_thenEntityFormDynamicFormsSizeIsOne() {
     // Arrange
@@ -886,17 +591,37 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setReadOnly()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
+   *   <li>Given {@link EntityForm} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setReadOnly()}
+   * <p>
+   * Method under test: {@link EntityForm#setReadOnly()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void EntityForm.setReadOnly()"})
+  public void testSetReadOnly_givenEntityForm() {
+    // Arrange
+    EntityForm entityForm = new EntityForm();
+
+    // Act
+    entityForm.setReadOnly();
+
+    // Assert
+    assertTrue(entityForm.fields.isEmpty());
+    assertTrue(entityForm.getReadOnly());
+  }
+
+  /**
+   * Test {@link EntityForm#setReadOnly()}.
+   * <ul>
+   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityForm#setReadOnly()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setReadOnly()"})
   public void testSetReadOnly_givenEntityFormAddTabFromTabMetadataTabMetadata() {
     // Arrange
@@ -913,42 +638,14 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setReadOnly()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then {@link EntityForm} (default constructor) {@link EntityForm#fields} Empty.
+   *   <li>Then {@link EntityForm} (default constructor) DynamicForms size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setReadOnly()}
+   * <p>
+   * Method under test: {@link EntityForm#setReadOnly()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void EntityForm.setReadOnly()"})
-  public void testSetReadOnly_givenEntityForm_thenEntityFormFieldsEmpty() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-
-    // Act
-    entityForm.setReadOnly();
-
-    // Assert
-    assertTrue(entityForm.fields.isEmpty());
-    assertTrue(entityForm.getReadOnly());
-  }
-
-  /**
-   * Test {@link EntityForm#setReadOnly()}.
-   *
-   * <ul>
-   *   <li>Then {@link EntityForm} (default constructor) DynamicForms size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setReadOnly()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setReadOnly()"})
   public void testSetReadOnly_thenEntityFormDynamicFormsSizeIsOne() {
     // Arrange
@@ -968,77 +665,27 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getActions()}.
-   *
-   * <p>Method under test: {@link EntityForm#getActions()}
+   * <p>
+   * Method under test: {@link EntityForm#getActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List EntityForm.getActions()"})
   public void testGetActions() {
     // Arrange, Act and Assert
-    assertTrue(new EntityForm().getActions().isEmpty());
-  }
-
-  /**
-   * Test {@link EntityForm#findActionById(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addAction one and {@link
-   *       DefaultAdornedEntityFormActions#Add}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findActionById(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"EntityFormAction EntityForm.findActionById(String)"})
-  public void testFindActionById_givenEntityFormAddActionOneAndAdd_thenReturnNull() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.addAction(1, DefaultAdornedEntityFormActions.Add);
-
-    // Act and Assert
-    assertNull(entityForm.findActionById("42"));
-  }
-
-  /**
-   * Test {@link EntityForm#findActionById(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@link EntityFormAction#EntityFormAction(String)} with id is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#findActionById(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"EntityFormAction EntityForm.findActionById(String)"})
-  public void testFindActionById_thenReturnEntityFormActionWithIdIs42() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    EntityFormAction action = new EntityFormAction("42");
-    entityForm.addAction(1, action);
-
-    // Act and Assert
-    assertSame(action, entityForm.findActionById("42"));
+    assertTrue((new EntityForm()).getActions().isEmpty());
   }
 
   /**
    * Test {@link EntityForm#collapseToOneFieldGroup()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
+   *   <li>Given {@link EntityForm} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#collapseToOneFieldGroup()}
+   * <p>
+   * Method under test: {@link EntityForm#collapseToOneFieldGroup()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroup EntityForm.collapseToOneFieldGroup()"})
   public void testCollapseToOneFieldGroup_givenEntityForm() {
     // Arrange
@@ -1073,17 +720,14 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#collapseToOneFieldGroup()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
-   *       (default constructor).
+   *   <li>Given {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#collapseToOneFieldGroup()}
+   * <p>
+   * Method under test: {@link EntityForm#collapseToOneFieldGroup()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"FieldGroup EntityForm.collapseToOneFieldGroup()"})
   public void testCollapseToOneFieldGroup_givenEntityFormAddTabFromTabMetadataTabMetadata() {
     // Arrange
@@ -1119,35 +763,31 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getTranslationCeilingEntity()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getTranslationCeilingEntity()}
+   * <p>
+   * Method under test: {@link EntityForm#getTranslationCeilingEntity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getTranslationCeilingEntity()"})
   public void testGetTranslationCeilingEntity_givenEntityForm_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new EntityForm().getTranslationCeilingEntity());
+    assertNull((new EntityForm()).getTranslationCeilingEntity());
   }
 
   /**
    * Test {@link EntityForm#getTranslationCeilingEntity()}.
-   *
    * <ul>
-   *   <li>Then return {@code foo}.
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getTranslationCeilingEntity()}
+   * <p>
+   * Method under test: {@link EntityForm#getTranslationCeilingEntity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getTranslationCeilingEntity()"})
   public void testGetTranslationCeilingEntity_thenReturnFoo() {
     // Arrange
@@ -1160,17 +800,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getTranslationId()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) TranslationId is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link EntityForm} (default constructor) TranslationId is {@code foo}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getTranslationId()}
+   * <p>
+   * Method under test: {@link EntityForm#getTranslationId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getTranslationId()"})
   public void testGetTranslationId_givenEntityFormTranslationIdIsFoo_thenReturnFoo() {
     // Arrange
@@ -1183,36 +821,32 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getTranslationId()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getTranslationId()}
+   * <p>
+   * Method under test: {@link EntityForm#getTranslationId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getTranslationId()"})
   public void testGetTranslationId_givenEntityForm_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new EntityForm().getTranslationId());
+    assertNull((new EntityForm()).getTranslationId());
   }
 
   /**
    * Test {@link EntityForm#getMainEntityName()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) MainEntityName is {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>Given {@link EntityForm} (default constructor) MainEntityName is {@code foo}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getMainEntityName()}
+   * <p>
+   * Method under test: {@link EntityForm#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getMainEntityName()"})
   public void testGetMainEntityName_givenEntityFormMainEntityNameIsFoo_thenReturnFoo() {
     // Arrange
@@ -1225,59 +859,32 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getMainEntityName()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) MainEntityName is space.
-   *   <li>Then return empty string.
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getMainEntityName()}
+   * <p>
+   * Method under test: {@link EntityForm#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String EntityForm.getMainEntityName()"})
-  public void testGetMainEntityName_givenEntityFormMainEntityNameIsSpace_thenReturnEmptyString() {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    entityForm.setMainEntityName(" ");
-
-    // Act and Assert
-    assertEquals("", entityForm.getMainEntityName());
-  }
-
-  /**
-   * Test {@link EntityForm#getMainEntityName()}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getMainEntityName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getMainEntityName()"})
   public void testGetMainEntityName_givenEntityForm_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals("", new EntityForm().getMainEntityName());
+    assertEquals("", (new EntityForm()).getMainEntityName());
   }
 
   /**
    * Test {@link EntityForm#getSectionKey()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor) SectionKey is {@code foo}.
-   *   <li>Then return {@code /foo}.
+   *   <li>Given {@link EntityForm} (default constructor) SectionKey is {@code foo}.</li>
+   *   <li>Then return {@code /foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getSectionKey()}
+   * <p>
+   * Method under test: {@link EntityForm#getSectionKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getSectionKey()"})
   public void testGetSectionKey_givenEntityFormSectionKeyIsFoo_thenReturnFoo() {
     // Arrange
@@ -1290,37 +897,33 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getSectionKey()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getSectionKey()}
+   * <p>
+   * Method under test: {@link EntityForm#getSectionKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getSectionKey()"})
   public void testGetSectionKey_givenEntityForm_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new EntityForm().getSectionKey());
+    assertNull((new EntityForm()).getSectionKey());
   }
 
   /**
    * Test {@link EntityForm#setTabs(Set)}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor) Title is {@code Dr}.
-   *   <li>When {@link HashSet#HashSet()} add {@link Tab} (default constructor).
-   *   <li>Then {@link EntityForm} (default constructor) Tabs is {@link HashSet#HashSet()}.
+   *   <li>Given {@link Tab} (default constructor) Title is {@code Dr}.</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link Tab} (default constructor).</li>
+   *   <li>Then {@link EntityForm} (default constructor) Tabs is {@link HashSet#HashSet()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setTabs(Set)}
+   * <p>
+   * Method under test: {@link EntityForm#setTabs(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setTabs(Set)"})
   public void testSetTabs_givenTabTitleIsDr_whenHashSetAddTab_thenEntityFormTabsIsHashSet() {
     // Arrange
@@ -1328,7 +931,7 @@ public class EntityFormDiffblueTest {
 
     Tab tab = new Tab();
     tab.setTitle("Dr");
-    tab.setKey("messageSource");
+    tab.setKey("ThreadLocalManager.notify.orphans");
 
     HashSet<Tab> tabs = new HashSet<>();
     tabs.add(tab);
@@ -1342,18 +945,16 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setTabs(Set)}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor).
-   *   <li>When {@link HashSet#HashSet()} add {@link Tab} (default constructor).
-   *   <li>Then {@link EntityForm} (default constructor) Tabs is {@link HashSet#HashSet()}.
+   *   <li>Given {@link Tab} (default constructor).</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link Tab} (default constructor).</li>
+   *   <li>Then {@link EntityForm} (default constructor) Tabs is {@link HashSet#HashSet()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setTabs(Set)}
+   * <p>
+   * Method under test: {@link EntityForm#setTabs(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setTabs(Set)"})
   public void testSetTabs_givenTab_whenHashSetAddTab_thenEntityFormTabsIsHashSet() {
     // Arrange
@@ -1371,18 +972,16 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setTabs(Set)}.
-   *
    * <ul>
-   *   <li>Given {@link Tab} (default constructor).
-   *   <li>When {@link HashSet#HashSet()} add {@link Tab} (default constructor).
-   *   <li>Then {@link EntityForm} (default constructor) Tabs size is one.
+   *   <li>Given {@link Tab} (default constructor).</li>
+   *   <li>When {@link HashSet#HashSet()} add {@link Tab} (default constructor).</li>
+   *   <li>Then {@link EntityForm} (default constructor) Tabs size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setTabs(Set)}
+   * <p>
+   * Method under test: {@link EntityForm#setTabs(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setTabs(Set)"})
   public void testSetTabs_givenTab_whenHashSetAddTab_thenEntityFormTabsSizeIsOne() {
     // Arrange
@@ -1401,17 +1000,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setTabs(Set)}.
-   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
-   *   <li>Then {@link EntityForm} (default constructor) Tabs Empty.
+   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>Then {@link EntityForm} (default constructor) Tabs Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setTabs(Set)}
+   * <p>
+   * Method under test: {@link EntityForm#setTabs(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setTabs(Set)"})
   public void testSetTabs_whenHashSet_thenEntityFormTabsEmpty() {
     // Arrange
@@ -1426,12 +1023,11 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setSectionCrumbsImpl(List)}.
-   *
-   * <p>Method under test: {@link EntityForm#setSectionCrumbsImpl(List)}
+   * <p>
+   * Method under test: {@link EntityForm#setSectionCrumbsImpl(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setSectionCrumbsImpl(List)"})
   public void testSetSectionCrumbsImpl() {
     // Arrange
@@ -1459,16 +1055,14 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setSectionCrumbsImpl(List)}.
-   *
    * <ul>
-   *   <li>Then {@link EntityForm} SectionCrumbs is {@code 42--42}.
+   *   <li>Then {@link EntityForm} SectionCrumbs is {@code 42--42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setSectionCrumbsImpl(List)}
+   * <p>
+   * Method under test: {@link EntityForm#setSectionCrumbsImpl(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setSectionCrumbsImpl(List)"})
   public void testSetSectionCrumbsImpl_thenEntityFormSectionCrumbsIs4242() {
     // Arrange
@@ -1490,17 +1084,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setSectionCrumbsImpl(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then {@link EntityForm} SectionCrumbs is empty string.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link EntityForm} SectionCrumbs is empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setSectionCrumbsImpl(List)}
+   * <p>
+   * Method under test: {@link EntityForm#setSectionCrumbsImpl(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setSectionCrumbsImpl(List)"})
   public void testSetSectionCrumbsImpl_whenArrayList_thenEntityFormSectionCrumbsIsEmptyString() {
     // Arrange
@@ -1516,17 +1108,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#setSectionCrumbsImpl(List)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link EntityForm} SectionCrumbsImpl Empty.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link EntityForm} SectionCrumbsImpl Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#setSectionCrumbsImpl(List)}
+   * <p>
+   * Method under test: {@link EntityForm#setSectionCrumbsImpl(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.setSectionCrumbsImpl(List)"})
   public void testSetSectionCrumbsImpl_whenNull_thenEntityFormSectionCrumbsImplEmpty() {
     // Arrange and Act
@@ -1539,35 +1129,31 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getSectionCrumbs()}.
-   *
    * <ul>
-   *   <li>Given {@link EntityForm} (default constructor).
-   *   <li>Then return empty string.
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getSectionCrumbs()}
+   * <p>
+   * Method under test: {@link EntityForm#getSectionCrumbs()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getSectionCrumbs()"})
   public void testGetSectionCrumbs_givenEntityForm_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals("", new EntityForm().getSectionCrumbs());
+    assertEquals("", (new EntityForm()).getSectionCrumbs());
   }
 
   /**
    * Test {@link EntityForm#getSectionCrumbs()}.
-   *
    * <ul>
-   *   <li>Then return {@code 42--42}.
+   *   <li>Then return {@code 42--42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getSectionCrumbs()}
+   * <p>
+   * Method under test: {@link EntityForm#getSectionCrumbs()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getSectionCrumbs()"})
   public void testGetSectionCrumbs_thenReturn4242() {
     // Arrange
@@ -1588,16 +1174,14 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#getSectionCrumbs()}.
-   *
    * <ul>
-   *   <li>Then return {@code 42--42,42--42}.
+   *   <li>Then return {@code 42--42,42--42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#getSectionCrumbs()}
+   * <p>
+   * Method under test: {@link EntityForm#getSectionCrumbs()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.getSectionCrumbs()"})
   public void testGetSectionCrumbs_thenReturn42424242() {
     // Arrange
@@ -1624,17 +1208,15 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test {@link EntityForm#addTabFromTabMetadata(TabMetadata)}.
-   *
    * <ul>
-   *   <li>When {@link TabMetadata} (default constructor).
-   *   <li>Then return {@code null}.
+   *   <li>When {@link TabMetadata} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link EntityForm#addTabFromTabMetadata(TabMetadata)}
+   * <p>
+   * Method under test: {@link EntityForm#addTabFromTabMetadata(TabMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String EntityForm.addTabFromTabMetadata(TabMetadata)"})
   public void testAddTabFromTabMetadata_whenTabMetadata_thenReturnNull() {
     // Arrange
@@ -1647,12 +1229,11 @@ public class EntityFormDiffblueTest {
 
   /**
    * Test new {@link EntityForm} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link EntityForm}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link EntityForm}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void EntityForm.<init>()"})
   public void testNewEntityForm() {
     // Arrange and Act

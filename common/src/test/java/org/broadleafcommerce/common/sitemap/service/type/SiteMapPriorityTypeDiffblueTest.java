@@ -20,8 +20,7 @@ package org.broadleafcommerce.common.sitemap.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {SiteMapPriorityType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SiteMapPriorityTypeDiffblueTest {
-  @Autowired private SiteMapPriorityType siteMapPriorityType;
+  @Autowired
+  private SiteMapPriorityType siteMapPriorityType;
 
   /**
    * Test {@link SiteMapPriorityType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link SiteMapPriorityType#getInstance(String)}
+   * <p>
+   * Method under test: {@link SiteMapPriorityType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SiteMapPriorityType SiteMapPriorityType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -55,9 +54,8 @@ public class SiteMapPriorityTypeDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteMapPriorityType#SiteMapPriorityType()}
    *   <li>{@link SiteMapPriorityType#getFriendlyType()}
@@ -65,13 +63,9 @@ public class SiteMapPriorityTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SiteMapPriorityType.<init>()",
-    "String SiteMapPriorityType.getFriendlyType()",
-    "String SiteMapPriorityType.getType()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SiteMapPriorityType.<init>()", "String SiteMapPriorityType.getFriendlyType()",
+      "String SiteMapPriorityType.getType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapPriorityType actualSiteMapPriorityType = new SiteMapPriorityType();
@@ -84,17 +78,15 @@ public class SiteMapPriorityTypeDiffblueTest {
 
   /**
    * Test {@link SiteMapPriorityType#SiteMapPriorityType(String, String)}.
-   *
-   * <p>Method under test: {@link SiteMapPriorityType#SiteMapPriorityType(String, String)}
+   * <p>
+   * Method under test: {@link SiteMapPriorityType#SiteMapPriorityType(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SiteMapPriorityType.<init>(String, String)"})
   public void testNewSiteMapPriorityType() {
     // Arrange and Act
-    SiteMapPriorityType actualSiteMapPriorityType =
-        new SiteMapPriorityType("Type", "Friendly Type");
+    SiteMapPriorityType actualSiteMapPriorityType = new SiteMapPriorityType("Type", "Friendly Type");
 
     // Assert
     assertEquals("Friendly Type", actualSiteMapPriorityType.getFriendlyType());
@@ -103,26 +95,20 @@ public class SiteMapPriorityTypeDiffblueTest {
 
   /**
    * Test {@link SiteMapPriorityType#equals(Object)}, and {@link SiteMapPriorityType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteMapPriorityType#equals(Object)}
    *   <li>{@link SiteMapPriorityType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteMapPriorityType.equals(Object)",
-    "int SiteMapPriorityType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapPriorityType.equals(Object)", "int SiteMapPriorityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SiteMapPriorityType siteMapPriorityType = SiteMapPriorityType.ONE;
@@ -130,95 +116,53 @@ public class SiteMapPriorityTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(siteMapPriorityType, siteMapPriorityType2);
-    assertEquals(siteMapPriorityType.hashCode(), siteMapPriorityType2.hashCode());
+    int expectedHashCodeResult = siteMapPriorityType.hashCode();
+    assertEquals(expectedHashCodeResult, siteMapPriorityType2.hashCode());
   }
 
   /**
    * Test {@link SiteMapPriorityType#equals(Object)}, and {@link SiteMapPriorityType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteMapPriorityType#equals(Object)}
    *   <li>{@link SiteMapPriorityType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteMapPriorityType.equals(Object)",
-    "int SiteMapPriorityType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapPriorityType.equals(Object)", "int SiteMapPriorityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    SiteMapPriorityType siteMapPriorityType = SiteMapPriorityType.POINT1;
-    SiteMapPriorityType siteMapPriorityType2 = new SiteMapPriorityType("0.1", "0.1");
-
-    // Act and Assert
-    assertEquals(siteMapPriorityType, siteMapPriorityType2);
-    assertEquals(siteMapPriorityType.hashCode(), siteMapPriorityType2.hashCode());
-  }
-
-  /**
-   * Test {@link SiteMapPriorityType#equals(Object)}, and {@link SiteMapPriorityType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SiteMapPriorityType#equals(Object)}
-   *   <li>{@link SiteMapPriorityType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteMapPriorityType.equals(Object)",
-    "int SiteMapPriorityType.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     SiteMapPriorityType siteMapPriorityType = new SiteMapPriorityType();
     SiteMapPriorityType siteMapPriorityType2 = new SiteMapPriorityType();
 
     // Act and Assert
     assertEquals(siteMapPriorityType, siteMapPriorityType2);
-    assertEquals(siteMapPriorityType.hashCode(), siteMapPriorityType2.hashCode());
+    int expectedHashCodeResult = siteMapPriorityType.hashCode();
+    assertEquals(expectedHashCodeResult, siteMapPriorityType2.hashCode());
   }
 
   /**
    * Test {@link SiteMapPriorityType#equals(Object)}, and {@link SiteMapPriorityType#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteMapPriorityType#equals(Object)}
    *   <li>{@link SiteMapPriorityType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteMapPriorityType.equals(Object)",
-    "int SiteMapPriorityType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapPriorityType.equals(Object)", "int SiteMapPriorityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SiteMapPriorityType siteMapPriorityType = SiteMapPriorityType.ONE;
@@ -231,21 +175,16 @@ public class SiteMapPriorityTypeDiffblueTest {
 
   /**
    * Test {@link SiteMapPriorityType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapPriorityType#equals(Object)}
+   * <p>
+   * Method under test: {@link SiteMapPriorityType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteMapPriorityType.equals(Object)",
-    "int SiteMapPriorityType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapPriorityType.equals(Object)", "int SiteMapPriorityType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteMapPriorityType.POINT1, SiteMapPriorityType.ONE);
@@ -253,21 +192,16 @@ public class SiteMapPriorityTypeDiffblueTest {
 
   /**
    * Test {@link SiteMapPriorityType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapPriorityType#equals(Object)}
+   * <p>
+   * Method under test: {@link SiteMapPriorityType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteMapPriorityType.equals(Object)",
-    "int SiteMapPriorityType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapPriorityType.equals(Object)", "int SiteMapPriorityType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new SiteMapPriorityType(), SiteMapPriorityType.ONE);
@@ -275,21 +209,16 @@ public class SiteMapPriorityTypeDiffblueTest {
 
   /**
    * Test {@link SiteMapPriorityType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapPriorityType#equals(Object)}
+   * <p>
+   * Method under test: {@link SiteMapPriorityType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteMapPriorityType.equals(Object)",
-    "int SiteMapPriorityType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapPriorityType.equals(Object)", "int SiteMapPriorityType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteMapPriorityType.ONE, null);
@@ -297,21 +226,16 @@ public class SiteMapPriorityTypeDiffblueTest {
 
   /**
    * Test {@link SiteMapPriorityType#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapPriorityType#equals(Object)}
+   * <p>
+   * Method under test: {@link SiteMapPriorityType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteMapPriorityType.equals(Object)",
-    "int SiteMapPriorityType.hashCode()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean SiteMapPriorityType.equals(Object)", "int SiteMapPriorityType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteMapPriorityType.ONE, "Different type to SiteMapPriorityType");

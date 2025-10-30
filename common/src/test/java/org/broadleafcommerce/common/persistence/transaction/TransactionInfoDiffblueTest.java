@@ -26,8 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -46,17 +45,15 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 public class TransactionInfoDiffblueTest {
   /**
    * Test {@link TransactionInfo#getEntityManager()}.
-   *
    * <ul>
-   *   <li>Given {@link TransactionInfo#TransactionInfo()} EntityManager is {@code null}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link TransactionInfo#TransactionInfo()} EntityManager is {@code null}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#getEntityManager()}
+   * <p>
+   * Method under test: {@link TransactionInfo#getEntityManager()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"EntityManager TransactionInfo.getEntityManager()"})
   public void testGetEntityManager_givenTransactionInfoEntityManagerIsNull_thenReturnNull() {
     // Arrange
@@ -69,18 +66,15 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#setEntityManager(EntityManager)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link TransactionInfo#TransactionInfo()} {@link TransactionInfo#entityManager} is
-   *       {@code null}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link TransactionInfo#TransactionInfo()} {@link TransactionInfo#entityManager} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#setEntityManager(EntityManager)}
+   * <p>
+   * Method under test: {@link TransactionInfo#setEntityManager(EntityManager)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TransactionInfo.setEntityManager(EntityManager)"})
   public void testSetEntityManager_whenNull_thenTransactionInfoEntityManagerIsNull() {
     // Arrange
@@ -98,16 +92,14 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#getDefinition()}.
-   *
    * <ul>
-   *   <li>Then return {@link DefaultTransactionAttribute#DefaultTransactionAttribute()}.
+   *   <li>Then return {@link DefaultTransactionAttribute#DefaultTransactionAttribute()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#getDefinition()}
+   * <p>
+   * Method under test: {@link TransactionInfo#getDefinition()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"TransactionDefinition TransactionInfo.getDefinition()"})
   public void testGetDefinition_thenReturnDefaultTransactionAttribute() {
     // Arrange
@@ -121,12 +113,11 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#setDefinition(TransactionDefinition)}.
-   *
-   * <p>Method under test: {@link TransactionInfo#setDefinition(TransactionDefinition)}
+   * <p>
+   * Method under test: {@link TransactionInfo#setDefinition(TransactionDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TransactionInfo.setDefinition(TransactionDefinition)"})
   public void testSetDefinition() {
     // Arrange
@@ -145,12 +136,11 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#setThread(Thread)}.
-   *
-   * <p>Method under test: {@link TransactionInfo#setThread(Thread)}
+   * <p>
+   * Method under test: {@link TransactionInfo#setThread(Thread)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TransactionInfo.setThread(Thread)"})
   public void testSetThread() {
     // Arrange
@@ -167,9 +157,8 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link TransactionInfo#setAbbreviated(Boolean)}
    *   <li>{@link TransactionInfo#setAbbreviatedLength(Integer)}
@@ -206,42 +195,25 @@ public class TransactionInfoDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean TransactionInfo.getAbbreviated()",
-    "Integer TransactionInfo.getAbbreviatedLength()",
-    "Map TransactionInfo.getAdditionalParams()",
-    "String TransactionInfo.getBeginStack()",
-    "CompressedItem TransactionInfo.getCompressedBeginStack()",
-    "LinkedBlockingQueue TransactionInfo.getCompressedQueries()",
-    "String TransactionInfo.getCurrentStackElement()",
-    "Boolean TransactionInfo.getDecompressStatementForLog()",
-    "Boolean TransactionInfo.getFaultStateDetected()",
-    "Long TransactionInfo.getLastLogTime()",
-    "Integer TransactionInfo.getMaxQueryListLength()",
-    "LinkedBlockingQueue TransactionInfo.getQueries()",
-    "Long TransactionInfo.getStartTime()",
-    "Long TransactionInfo.getStuckThreadStartTime()",
-    "String TransactionInfo.getThreadId()",
-    "String TransactionInfo.getThreadName()",
-    "void TransactionInfo.setAbbreviated(Boolean)",
-    "void TransactionInfo.setAbbreviatedLength(Integer)",
-    "void TransactionInfo.setAdditionalParams(Map)",
-    "void TransactionInfo.setBeginStack(String)",
-    "void TransactionInfo.setCompressedBeginStack(CompressedItem)",
-    "void TransactionInfo.setCompressedQueries(LinkedBlockingQueue)",
-    "void TransactionInfo.setCurrentStackElement(String)",
-    "void TransactionInfo.setDecompressStatementForLog(Boolean)",
-    "void TransactionInfo.setFaultStateDetected(Boolean)",
-    "void TransactionInfo.setLastLogTime(Long)",
-    "void TransactionInfo.setMaxQueryListLength(Integer)",
-    "void TransactionInfo.setQueries(LinkedBlockingQueue)",
-    "void TransactionInfo.setStartTime(Long)",
-    "void TransactionInfo.setStuckThreadStartTime(Long)",
-    "void TransactionInfo.setThreadId(String)",
-    "void TransactionInfo.setThreadName(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Boolean TransactionInfo.getAbbreviated()", "Integer TransactionInfo.getAbbreviatedLength()",
+      "Map TransactionInfo.getAdditionalParams()", "String TransactionInfo.getBeginStack()",
+      "CompressedItem TransactionInfo.getCompressedBeginStack()",
+      "LinkedBlockingQueue TransactionInfo.getCompressedQueries()", "String TransactionInfo.getCurrentStackElement()",
+      "Boolean TransactionInfo.getDecompressStatementForLog()", "Boolean TransactionInfo.getFaultStateDetected()",
+      "Long TransactionInfo.getLastLogTime()", "Integer TransactionInfo.getMaxQueryListLength()",
+      "LinkedBlockingQueue TransactionInfo.getQueries()", "Long TransactionInfo.getStartTime()",
+      "Long TransactionInfo.getStuckThreadStartTime()", "String TransactionInfo.getThreadId()",
+      "String TransactionInfo.getThreadName()", "void TransactionInfo.setAbbreviated(Boolean)",
+      "void TransactionInfo.setAbbreviatedLength(Integer)", "void TransactionInfo.setAdditionalParams(Map)",
+      "void TransactionInfo.setBeginStack(String)", "void TransactionInfo.setCompressedBeginStack(CompressedItem)",
+      "void TransactionInfo.setCompressedQueries(LinkedBlockingQueue)",
+      "void TransactionInfo.setCurrentStackElement(String)",
+      "void TransactionInfo.setDecompressStatementForLog(Boolean)",
+      "void TransactionInfo.setFaultStateDetected(Boolean)", "void TransactionInfo.setLastLogTime(Long)",
+      "void TransactionInfo.setMaxQueryListLength(Integer)", "void TransactionInfo.setQueries(LinkedBlockingQueue)",
+      "void TransactionInfo.setStartTime(Long)", "void TransactionInfo.setStuckThreadStartTime(Long)",
+      "void TransactionInfo.setThreadId(String)", "void TransactionInfo.setThreadName(String)"})
   public void testGettersAndSetters() throws IOException {
     // Arrange
     TransactionInfo transactionInfo = new TransactionInfo();
@@ -253,6 +225,7 @@ public class TransactionInfoDiffblueTest {
     transactionInfo.setAdditionalParams(additionalParams);
     transactionInfo.setBeginStack("Begin Stack");
     CompressedItem compressedBeginStack = new CompressedItem("Start", true);
+
     transactionInfo.setCompressedBeginStack(compressedBeginStack);
     LinkedBlockingQueue<CompressedItem> compressedQueries = new LinkedBlockingQueue<>();
     transactionInfo.setCompressedQueries(compressedQueries);
@@ -272,8 +245,7 @@ public class TransactionInfoDiffblueTest {
     Map<String, String> actualAdditionalParams = transactionInfo.getAdditionalParams();
     String actualBeginStack = transactionInfo.getBeginStack();
     CompressedItem actualCompressedBeginStack = transactionInfo.getCompressedBeginStack();
-    LinkedBlockingQueue<CompressedItem> actualCompressedQueries =
-        transactionInfo.getCompressedQueries();
+    LinkedBlockingQueue<CompressedItem> actualCompressedQueries = transactionInfo.getCompressedQueries();
     String actualCurrentStackElement = transactionInfo.getCurrentStackElement();
     Boolean actualDecompressStatementForLog = transactionInfo.getDecompressStatementForLog();
     Boolean actualFaultStateDetected = transactionInfo.getFaultStateDetected();
@@ -306,17 +278,14 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#clear()}.
-   *
    * <ul>
-   *   <li>Then {@link TransactionInfo#TransactionInfo()} {@link TransactionInfo#thread} is {@code
-   *       null}.
+   *   <li>Then {@link TransactionInfo#TransactionInfo()} {@link TransactionInfo#thread} is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#clear()}
+   * <p>
+   * Method under test: {@link TransactionInfo#clear()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TransactionInfo.clear()"})
   public void testClear_thenTransactionInfoThreadIsNull() {
     // Arrange
@@ -336,81 +305,14 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#logStatement(String)}.
-   *
    * <ul>
-   *   <li>Given {@link TransactionInfo#TransactionInfo()} AbbreviatedLength is one.
+   *   <li>Then {@link TransactionInfo#TransactionInfo()} {@link TransactionInfo#totalQueries} intValue is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#logStatement(String)}
+   * <p>
+   * Method under test: {@link TransactionInfo#logStatement(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void TransactionInfo.logStatement(String)"})
-  public void testLogStatement_givenTransactionInfoAbbreviatedLengthIsOne() throws IOException {
-    // Arrange
-    LinkedBlockingQueue<CompressedItem> compressedQueries = new LinkedBlockingQueue<>();
-    compressedQueries.add(new CompressedItem("\n", true));
-
-    TransactionInfo transactionInfo = new TransactionInfo();
-    transactionInfo.setDecompressStatementForLog(true);
-    transactionInfo.setAbbreviatedLength(1);
-    transactionInfo.setCompressedQueries(compressedQueries);
-    transactionInfo.setAbbreviated(true);
-
-    // Act
-    transactionInfo.logStatement("MD");
-
-    // Assert
-    assertEquals(1, transactionInfo.totalQueries.intValue());
-    assertSame(compressedQueries, transactionInfo.getCompressedQueries());
-  }
-
-  /**
-   * Test {@link TransactionInfo#logStatement(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link TransactionInfo#TransactionInfo()} AbbreviatedLength is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#logStatement(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void TransactionInfo.logStatement(String)"})
-  public void testLogStatement_givenTransactionInfoAbbreviatedLengthIsThree() throws IOException {
-    // Arrange
-    LinkedBlockingQueue<CompressedItem> compressedQueries = new LinkedBlockingQueue<>();
-    compressedQueries.add(new CompressedItem("\n", true));
-
-    TransactionInfo transactionInfo = new TransactionInfo();
-    transactionInfo.setDecompressStatementForLog(true);
-    transactionInfo.setAbbreviatedLength(3);
-    transactionInfo.setCompressedQueries(compressedQueries);
-    transactionInfo.setAbbreviated(true);
-
-    // Act
-    transactionInfo.logStatement("MD");
-
-    // Assert
-    assertEquals(1, transactionInfo.totalQueries.intValue());
-    assertSame(compressedQueries, transactionInfo.getCompressedQueries());
-  }
-
-  /**
-   * Test {@link TransactionInfo#logStatement(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link TransactionInfo#TransactionInfo()} {@link TransactionInfo#totalQueries}
-   *       intValue is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#logStatement(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void TransactionInfo.logStatement(String)"})
   public void testLogStatement_thenTransactionInfoTotalQueriesIntValueIsOne() throws IOException {
     // Arrange
@@ -432,21 +334,17 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#toString()}.
-   *
    * <ul>
-   *   <li>Given {@link CompressedItem} {@link CompressedItem#decompress()} return {@code
-   *       Decompress}.
-   *   <li>Then calls {@link CompressedItem#decompress()}.
+   *   <li>Given {@link CompressedItem} {@link CompressedItem#decompress()} return {@code Decompress}.</li>
+   *   <li>Then calls {@link CompressedItem#decompress()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#toString()}
+   * <p>
+   * Method under test: {@link TransactionInfo#toString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String TransactionInfo.toString()"})
-  public void testToString_givenCompressedItemDecompressReturnDecompress_thenCallsDecompress()
-      throws IOException {
+  public void testToString_givenCompressedItemDecompressReturnDecompress_thenCallsDecompress() throws IOException {
     // Arrange
     CompressedItem compressedItem = mock(CompressedItem.class);
     when(compressedItem.decompress()).thenReturn("Decompress");
@@ -468,24 +366,19 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#toString()}.
-   *
    * <ul>
-   *   <li>Given {@link CompressedItem} {@link CompressedItem#decompress()} throw {@link
-   *       IOException#IOException()}.
-   *   <li>Then calls {@link CompressedItem#decompress()}.
+   *   <li>Given {@link CompressedItem} {@link CompressedItem#decompress()} throw {@link IOException#IOException(String)} with {@code TransactionInfo{}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#toString()}
+   * <p>
+   * Method under test: {@link TransactionInfo#toString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String TransactionInfo.toString()"})
-  public void testToString_givenCompressedItemDecompressThrowIOException_thenCallsDecompress()
-      throws IOException {
+  public void testToString_givenCompressedItemDecompressThrowIOExceptionWithTransactionInfo() throws IOException {
     // Arrange
     CompressedItem compressedItem = mock(CompressedItem.class);
-    when(compressedItem.decompress()).thenThrow(new IOException());
+    when(compressedItem.decompress()).thenThrow(new IOException("TransactionInfo{"));
 
     LinkedBlockingQueue<CompressedItem> compressedQueries = new LinkedBlockingQueue<>();
     compressedQueries.add(compressedItem);
@@ -504,21 +397,19 @@ public class TransactionInfoDiffblueTest {
 
   /**
    * Test {@link TransactionInfo#toString()}.
-   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TransactionInfo#toString()}
+   * <p>
+   * Method under test: {@link TransactionInfo#toString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String TransactionInfo.toString()"})
   public void testToString_thenThrowRuntimeException() throws IOException {
     // Arrange
     CompressedItem compressedItem = mock(CompressedItem.class);
-    when(compressedItem.decompress()).thenThrow(new RuntimeException());
+    when(compressedItem.decompress()).thenThrow(new RuntimeException("TransactionInfo{"));
 
     LinkedBlockingQueue<CompressedItem> compressedQueries = new LinkedBlockingQueue<>();
     compressedQueries.add(compressedItem);

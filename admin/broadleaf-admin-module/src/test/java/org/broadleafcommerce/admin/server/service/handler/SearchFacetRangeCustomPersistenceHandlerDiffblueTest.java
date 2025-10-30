@@ -29,8 +29,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,21 +64,16 @@ public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * <p>
+   * Method under test: {@link SearchFacetRangeCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(searchFacetRangeCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
@@ -87,21 +81,16 @@ public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * <p>
+   * Method under test: {@link SearchFacetRangeCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
   public void testCanHandleRemove_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(searchFacetRangeCustomPersistenceHandler.canHandleRemove(new PersistencePackage()));
@@ -109,161 +98,33 @@ public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeCustomPersistenceHandler#canHandle(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#canHandle(PersistencePackage)}
+   * <p>
+   * Method under test: {@link SearchFacetRangeCustomPersistenceHandler#canHandle(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandle(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandle(PersistencePackage)"})
   public void testCanHandle_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(searchFacetRangeCustomPersistenceHandler.canHandle(new PersistencePackage()));
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is four.
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is three.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "DynamicResultSet SearchFacetRangeCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsFour() throws ServiceException {
-    // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    cto.add(new FilterAndSortCriteria("42"));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(new DynamicResultSet());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    searchFacetRangeCustomPersistenceHandler.fetch(
-        persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(4, criteriaMap.size());
-    assertTrue(criteriaMap.containsKey("42"));
-    assertTrue(criteriaMap.containsKey("embeddablePriceList.priceList"));
-    assertTrue(criteriaMap.containsKey("maxValue"));
-    assertTrue(criteriaMap.containsKey("minValue"));
-  }
-
-  /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SearchFacetRangeCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsOne() throws ServiceException {
-    // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    FilterAndSortCriteria criteria = mock(FilterAndSortCriteria.class);
-    when(criteria.getPropertyId()).thenReturn("42");
-    when(criteria.getSortDirection()).thenReturn(SortDirection.ASCENDING);
-
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    cto.add(criteria);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        searchFacetRangeCustomPersistenceHandler.fetch(
-            persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(criteria).getPropertyId();
-    verify(criteria).getSortDirection();
-    verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(1, criteriaMap.size());
-    assertTrue(criteriaMap.containsKey("42"));
-    assertSame(dynamicResultSet, actualFetchResult);
-  }
-
-  /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SearchFacetRangeCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
+      "DynamicResultSet SearchFacetRangeCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
   public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsThree() throws ServiceException {
     // Arrange
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
@@ -273,49 +134,41 @@ public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
     persistencePackage.setPersistencePerspective(persistencePerspective);
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(new DynamicResultSet());
-
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    searchFacetRangeCustomPersistenceHandler.fetch(
-        persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = searchFacetRangeCustomPersistenceHandler.fetch(persistencePackage, cto,
+        dynamicEntityDao, helper);
 
     // Assert
     verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
     Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
     assertEquals(3, criteriaMap.size());
     assertTrue(criteriaMap.containsKey("embeddablePriceList.priceList"));
     assertTrue(criteriaMap.containsKey("maxValue"));
     assertTrue(criteriaMap.containsKey("minValue"));
+    assertSame(dynamicResultSet, actualFetchResult);
   }
 
   /**
    * Test {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is four.
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is four.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsFour() {
     // Arrange
     CriteriaTransferObject cto = new CriteriaTransferObject();
@@ -335,20 +188,15 @@ public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
     // Arrange
     FilterAndSortCriteria criteria = mock(FilterAndSortCriteria.class);
@@ -371,20 +219,15 @@ public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is three.
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is three.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * <p>
+   * Method under test: {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"})
   public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsThree() {
     // Arrange
     CriteriaTransferObject cto = new CriteriaTransferObject();
@@ -401,49 +244,37 @@ public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
+   * Test {@link SearchFacetRangeCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Then throw {@link ServiceException}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()} Entity is {@link Entity}.</li>
+   *   <li>Then throw {@link ServiceException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}
+   * <p>
+   * Method under test: {@link SearchFacetRangeCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void SearchFacetRangeCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_thenThrowServiceException() throws ServiceException {
+      "void SearchFacetRangeCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testRemove_whenPersistencePackageEntityIsEntity_thenThrowServiceException() throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
+    when(entity.getType()).thenReturn(new String[]{"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
     RecordHelper helper = mock(RecordHelper.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            searchFacetRangeCustomPersistenceHandler.remove(
-                persistencePackage, dynamicEntityDao, helper));
+    assertThrows(ServiceException.class,
+        () -> searchFacetRangeCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper));
     verify(entity, atLeast(1)).getType();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.search.domain.SearchFacetRange"), isNull());
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.search.domain.SearchFacetRange"), isNull());
   }
 }

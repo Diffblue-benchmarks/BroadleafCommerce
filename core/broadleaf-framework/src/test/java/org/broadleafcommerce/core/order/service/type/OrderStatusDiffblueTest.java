@@ -22,8 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -35,16 +34,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {OrderStatus.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderStatusDiffblueTest {
-  @Autowired private OrderStatus orderStatus;
+  @Autowired
+  private OrderStatus orderStatus;
 
   /**
    * Test {@link OrderStatus#getInstance(String)}.
-   *
-   * <p>Method under test: {@link OrderStatus#getInstance(String)}
+   * <p>
+   * Method under test: {@link OrderStatus#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"OrderStatus OrderStatus.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
@@ -58,9 +57,8 @@ public class OrderStatusDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderStatus#OrderStatus()}
    *   <li>{@link OrderStatus#getFriendlyType()}
@@ -69,14 +67,9 @@ public class OrderStatusDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderStatus.<init>()",
-    "String OrderStatus.getFriendlyType()",
-    "String OrderStatus.getType()",
-    "boolean OrderStatus.isEditable()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void OrderStatus.<init>()", "String OrderStatus.getFriendlyType()",
+      "String OrderStatus.getType()", "boolean OrderStatus.isEditable()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderStatus actualOrderStatus = new OrderStatus();
@@ -91,12 +84,11 @@ public class OrderStatusDiffblueTest {
 
   /**
    * Test {@link OrderStatus#OrderStatus(String, String)}.
-   *
-   * <p>Method under test: {@link OrderStatus#OrderStatus(String, String)}
+   * <p>
+   * Method under test: {@link OrderStatus#OrderStatus(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderStatus.<init>(String, String)"})
   public void testNewOrderStatus() {
     // Arrange and Act
@@ -110,12 +102,11 @@ public class OrderStatusDiffblueTest {
 
   /**
    * Test {@link OrderStatus#OrderStatus(String, String, boolean)}.
-   *
-   * <p>Method under test: {@link OrderStatus#OrderStatus(String, String, boolean)}
+   * <p>
+   * Method under test: {@link OrderStatus#OrderStatus(String, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void OrderStatus.<init>(String, String, boolean)"})
   public void testNewOrderStatus2() {
     // Arrange and Act
@@ -129,22 +120,19 @@ public class OrderStatusDiffblueTest {
 
   /**
    * Test {@link OrderStatus#equals(Object)}, and {@link OrderStatus#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderStatus#equals(Object)}
    *   <li>{@link OrderStatus#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderStatus.equals(Object)", "int OrderStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -153,56 +141,52 @@ public class OrderStatusDiffblueTest {
 
     // Act and Assert
     assertEquals(orderStatus, orderStatus2);
-    assertEquals(orderStatus.hashCode(), orderStatus2.hashCode());
+    int expectedHashCodeResult = orderStatus.hashCode();
+    assertEquals(expectedHashCodeResult, orderStatus2.hashCode());
   }
 
   /**
    * Test {@link OrderStatus#equals(Object)}, and {@link OrderStatus#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderStatus#equals(Object)}
    *   <li>{@link OrderStatus#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderStatus.equals(Object)", "int OrderStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OrderStatus orderStatus = OrderStatus.CANCELLED;
-    OrderStatus orderStatus2 = new OrderStatus("CANCELLED", "CANCELLED");
+    OrderStatus orderStatus2 = new OrderStatus("CANCELLED", "CANCELLED", true);
 
     // Act and Assert
     assertEquals(orderStatus, orderStatus2);
-    assertEquals(orderStatus.hashCode(), orderStatus2.hashCode());
+    int expectedHashCodeResult = orderStatus.hashCode();
+    assertEquals(expectedHashCodeResult, orderStatus2.hashCode());
   }
 
   /**
    * Test {@link OrderStatus#equals(Object)}, and {@link OrderStatus#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderStatus#equals(Object)}
    *   <li>{@link OrderStatus#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderStatus.equals(Object)", "int OrderStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -211,27 +195,25 @@ public class OrderStatusDiffblueTest {
 
     // Act and Assert
     assertEquals(orderStatus, orderStatus2);
-    assertEquals(orderStatus.hashCode(), orderStatus2.hashCode());
+    int expectedHashCodeResult = orderStatus.hashCode();
+    assertEquals(expectedHashCodeResult, orderStatus2.hashCode());
   }
 
   /**
    * Test {@link OrderStatus#equals(Object)}, and {@link OrderStatus#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderStatus#equals(Object)}
    *   <li>{@link OrderStatus#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderStatus.equals(Object)", "int OrderStatus.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -245,17 +227,15 @@ public class OrderStatusDiffblueTest {
 
   /**
    * Test {@link OrderStatus#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderStatus#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderStatus#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderStatus.equals(Object)", "int OrderStatus.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -264,17 +244,15 @@ public class OrderStatusDiffblueTest {
 
   /**
    * Test {@link OrderStatus#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderStatus#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderStatus#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderStatus.equals(Object)", "int OrderStatus.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -283,17 +261,15 @@ public class OrderStatusDiffblueTest {
 
   /**
    * Test {@link OrderStatus#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderStatus#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderStatus#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderStatus.equals(Object)", "int OrderStatus.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -302,17 +278,15 @@ public class OrderStatusDiffblueTest {
 
   /**
    * Test {@link OrderStatus#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link OrderStatus#equals(Object)}
+   * <p>
+   * Method under test: {@link OrderStatus#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean OrderStatus.equals(Object)", "int OrderStatus.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

@@ -19,8 +19,7 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.provid
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
@@ -35,233 +34,145 @@ import org.junit.experimental.categories.Category;
 public class PopulateValueRequestDiffblueTest {
   /**
    * Test {@link PopulateValueRequest#getSetId()}.
-   *
-   * <p>Method under test: {@link PopulateValueRequest#getSetId()}
+   * <p>
+   * Method under test: {@link PopulateValueRequest#getSetId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Boolean PopulateValueRequest.getSetId()"})
   public void testGetSetId() {
     // Arrange
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            false,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertFalse(populateValueRequest.getSetId());
+    assertFalse((new PopulateValueRequest(false, fieldManager, property, metadata, returnType, "42", persistenceManager,
+        dataFormatProvider, true, new Entity())).getSetId());
   }
 
   /**
    * Test {@link PopulateValueRequest#getSetId()}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PopulateValueRequest#getSetId()}
+   * <p>
+   * Method under test: {@link PopulateValueRequest#getSetId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Boolean PopulateValueRequest.getSetId()"})
-  public void testGetSetId_thenReturnFalse() {
+  public void testGetSetId2() {
     // Arrange
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            null,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertFalse(populateValueRequest.getSetId());
+    assertFalse((new PopulateValueRequest(null, fieldManager, property, metadata, returnType, "42", persistenceManager,
+        dataFormatProvider, true, new Entity())).getSetId());
   }
 
   /**
    * Test {@link PopulateValueRequest#getSetId()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PopulateValueRequest#getSetId()}
+   * <p>
+   * Method under test: {@link PopulateValueRequest#getSetId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Boolean PopulateValueRequest.getSetId()"})
   public void testGetSetId_thenReturnTrue() {
     // Arrange
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertTrue(populateValueRequest.getSetId());
+    assertTrue((new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42", persistenceManager,
+        dataFormatProvider, true, new Entity())).getSetId());
   }
 
   /**
    * Test {@link PopulateValueRequest#getPreAdd()}.
-   *
-   * <p>Method under test: {@link PopulateValueRequest#getPreAdd()}
+   * <p>
+   * Method under test: {@link PopulateValueRequest#getPreAdd()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Boolean PopulateValueRequest.getPreAdd()"})
   public void testGetPreAdd() {
     // Arrange
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            false,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertFalse(populateValueRequest.getPreAdd());
+    assertFalse((new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42", persistenceManager,
+        dataFormatProvider, false, new Entity())).getPreAdd());
   }
 
   /**
    * Test {@link PopulateValueRequest#getPreAdd()}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PopulateValueRequest#getPreAdd()}
+   * <p>
+   * Method under test: {@link PopulateValueRequest#getPreAdd()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Boolean PopulateValueRequest.getPreAdd()"})
-  public void testGetPreAdd_thenReturnFalse() {
+  public void testGetPreAdd2() {
     // Arrange
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            null,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertFalse(populateValueRequest.getPreAdd());
+    assertFalse((new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42", persistenceManager,
+        dataFormatProvider, null, new Entity())).getPreAdd());
   }
 
   /**
    * Test {@link PopulateValueRequest#getPreAdd()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PopulateValueRequest#getPreAdd()}
+   * <p>
+   * Method under test: {@link PopulateValueRequest#getPreAdd()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Boolean PopulateValueRequest.getPreAdd()"})
   public void testGetPreAdd_thenReturnTrue() {
     // Arrange
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertTrue(populateValueRequest.getPreAdd());
+    assertTrue((new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42", persistenceManager,
+        dataFormatProvider, true, new Entity())).getPreAdd());
   }
 }

@@ -22,26 +22,25 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
+import org.broadleafcommerce.common.sandbox.SandBoxHelper;
+import org.broadleafcommerce.core.catalog.dao.CategoryDao;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.CategoryXref;
 import org.broadleafcommerce.core.catalog.domain.CategoryXrefImpl;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
-import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
@@ -52,6 +51,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -60,31 +60,27 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   @InjectMocks
   private ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
 
+  @Mock
+  private CategoryDao categoryDao;
+
+  @Mock
+  private SandBoxHelper sandBoxHelper;
+
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>Given {@code allChildCategoryXrefs}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@code allChildCategoryXrefs}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ChildCategoriesCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ChildCategoriesCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_givenAllChildCategoryXrefs_thenReturnTrue() {
     // Arrange
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setSectionEntityField("allChildCategoryXrefs");
 
     // Act and Assert
@@ -93,89 +89,109 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean ChildCategoriesCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.Boolean ChildCategoriesCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(childCategoriesCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
   }
 
   /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#addGlobalValidationError(String)} throw {@link
-   *       RuntimeException#RuntimeException()}.
+   *   <li>Given {@link AdornedTargetListPersistenceModule} {@link AdornedTargetListPersistenceModule#add(PersistencePackage)} return {@link Entity} (default constructor).</li>
+   *   <li>Then return {@link Entity} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenEntityAddGlobalValidationErrorThrowRuntimeException()
+      "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenAdornedTargetListPersistenceModuleAddReturnEntity_thenReturnEntity()
       throws ServiceException {
     // Arrange
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn(null);
     Entity entity = mock(Entity.class);
-    doThrow(new RuntimeException()).when(entity).addGlobalValidationError(Mockito.<String>any());
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "42"));
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setEntity(entity);
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    Entity entity2 = new Entity();
+    when(adornedTargetListPersistenceModule.add(Mockito.<PersistencePackage>any())).thenReturn(entity2);
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    Entity actualAddResult = childCategoriesCustomPersistenceHandler.add(persistencePackage, dynamicEntityDao, helper);
+
+    // Assert
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+    verify(adornedTargetListPersistenceModule).add(isA(PersistencePackage.class));
+    verify(helper).getCompatibleModule(eq(OperationType.ADORNEDTARGETLIST));
+    assertSame(entity2, actualAddResult);
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <ul>
+   *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property(String, String)} with name is {@code category.id} and value is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenEntityFindPropertyReturnPropertyWithNameIsCategoryIdAndValueIs42() throws ServiceException {
+    // Arrange
+    Entity entity = mock(Entity.class);
+    doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            childCategoriesCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).addGlobalValidationError("validateCategorySelfLink");
+    assertThrows(ValidationException.class, () -> childCategoriesCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity).addGlobalValidationError(eq("validateCategorySelfLink"));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
   }
 
   /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.
-   *   <li>Then throw {@link ValidationException}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then throw {@link ValidationException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenPropertyGetValueReturn42_thenThrowValidationException()
-      throws ServiceException {
+      "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+  public void testAdd_givenPropertyGetValueReturn42_thenThrowValidationException() throws ServiceException {
     // Arrange
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
-
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
@@ -185,467 +201,236 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ValidationException.class,
-        () ->
-            childCategoriesCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).addGlobalValidationError("validateCategorySelfLink");
+    assertThrows(ValidationException.class, () -> childCategoriesCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    verify(entity).addGlobalValidationError(eq("validateCategorySelfLink"));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
   }
 
   /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.
-   *   <li>Then return {@link Entity} (default constructor).
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenPropertyGetValueReturnNull_thenReturnEntity() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
+  public void testValidateChildCategory_givenPropertyGetValueReturn42() throws ValidationException {
+    // Arrange
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    // Act and Assert
+    assertThrows(ValidationException.class,
+        () -> childCategoriesCustomPersistenceHandler.validateChildCategory(entity));
+    verify(entity).addGlobalValidationError(eq("validateCategorySelfLink"));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
+  public void testValidateChildCategory_givenPropertyGetValueReturnNull_thenCallsGetValue() throws ValidationException {
     // Arrange
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn(null);
-
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    Entity entity2 = new Entity();
-    when(adornedTargetListPersistenceModule.add(Mockito.<PersistencePackage>any()))
-        .thenReturn(entity2);
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
     // Act
-    Entity actualAddResult =
-        childCategoriesCustomPersistenceHandler.add(persistencePackage, dynamicEntityDao, helper);
+    childCategoriesCustomPersistenceHandler.validateChildCategory(entity);
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
-    verify(adornedTargetListPersistenceModule).add(isA(PersistencePackage.class));
-    verify(helper).getCompatibleModule(OperationType.ADORNEDTARGETLIST);
-    assertSame(entity2, actualAddResult);
   }
 
   /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Given {@link Property#Property(String, String)} with name is {@code category.id} and value is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenPropertyGetValueThrowRuntimeException_thenThrowRuntimeException()
-      throws ServiceException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getValue()).thenThrow(new RuntimeException());
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            childCategoriesCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link ValidationException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_thenThrowValidationException() throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
+  public void testValidateChildCategory_givenPropertyWithNameIsCategoryIdAndValueIs42() throws ValidationException {
     // Arrange
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "42"));
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
     // Act and Assert
-    assertThrows(
-        ValidationException.class,
-        () ->
-            childCategoriesCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).addGlobalValidationError("validateCategorySelfLink");
+    assertThrows(ValidationException.class,
+        () -> childCategoriesCustomPersistenceHandler.validateChildCategory(entity));
+    verify(entity).addGlobalValidationError(eq("validateCategorySelfLink"));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
   }
 
   /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
    * <ul>
-   *   <li>When {@link PersistencePackage} {@link PersistencePackage#getEntity()} return {@link
-   *       Entity} (default constructor).
-   *   <li>Then calls {@link PersistencePackage#getEntity()}.
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_whenPersistencePackageGetEntityReturnEntity_thenCallsGetEntity()
-      throws ServiceException {
-    // Arrange
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(new Entity());
-    doNothing().when(persistencePackage).setEntity(Mockito.<Entity>any());
-    persistencePackage.setEntity(mock(Entity.class));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    Entity entity = new Entity();
-    when(adornedTargetListPersistenceModule.add(Mockito.<PersistencePackage>any()))
-        .thenReturn(entity);
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
-
-    // Act
-    Entity actualAddResult =
-        childCategoriesCustomPersistenceHandler.add(persistencePackage, dynamicEntityDao, helper);
-
-    // Assert
-    verify(persistencePackage).getEntity();
-    verify(persistencePackage).setEntity(isA(Entity.class));
-    verify(adornedTargetListPersistenceModule).add(isA(PersistencePackage.class));
-    verify(helper).getCompatibleModule(OperationType.ADORNEDTARGETLIST);
-    assertSame(entity, actualAddResult);
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage} {@link PersistencePackage#getEntity()} return {@link
-   *       Entity}.
-   *   <li>Then calls {@link PersistencePackage#getEntity()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ChildCategoriesCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_whenPersistencePackageGetEntityReturnEntity_thenCallsGetEntity2()
-      throws ServiceException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
+  public void testValidateChildCategory_givenProperty_whenEntityFindPropertyReturnProperty()
+      throws ValidationException {
     // Arrange
     Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getEntity()).thenReturn(entity);
-    doNothing().when(persistencePackage).setEntity(Mockito.<Entity>any());
-    persistencePackage.setEntity(mock(Entity.class));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    Entity entity2 = new Entity();
-    when(adornedTargetListPersistenceModule.add(Mockito.<PersistencePackage>any()))
-        .thenReturn(entity2);
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
     // Act
-    Entity actualAddResult =
-        childCategoriesCustomPersistenceHandler.add(persistencePackage, dynamicEntityDao, helper);
+    childCategoriesCustomPersistenceHandler.validateChildCategory(entity);
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(persistencePackage).getEntity();
-    verify(persistencePackage).setEntity(isA(Entity.class));
-    verify(adornedTargetListPersistenceModule).add(isA(PersistencePackage.class));
-    verify(helper).getCompatibleModule(OperationType.ADORNEDTARGETLIST);
-    assertSame(entity2, actualAddResult);
   }
 
   /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
-   *
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@code null}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
-  public void testValidateChildCategory_givenNull_whenEntityFindPropertyReturnNull()
-      throws ValidationException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(null);
-
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateChildCategory(entity);
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
-  public void testValidateChildCategory_givenPropertyGetValueReturnNull()
-      throws ValidationException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
+  public void testValidateSelfLink_givenPropertyGetValueReturn42_thenCallsGetValue() throws ValidationException {
     // Arrange
     Property property = mock(Property.class);
-    when(property.getValue()).thenReturn(null);
-
+    when(property.getValue()).thenReturn("42");
     Entity entity = mock(Entity.class);
+    doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
 
     // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateChildCategory(entity);
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
-  public void testValidateChildCategory_givenPropertyWithNameAndValueIsNull()
-      throws ValidationException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateChildCategory(entity);
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
-   *
-   * <ul>
-   *   <li>When {@link Entity} (default constructor).
-   *   <li>Then does not throw.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateChildCategory(Entity)"})
-  public void testValidateChildCategory_whenEntity_thenDoesNotThrow() throws ValidationException {
-    // Arrange, Act and Assert
-    childCategoriesCustomPersistenceHandler.validateChildCategory(new Entity());
+    assertThrows(ValidationException.class, () -> childCategoriesCustomPersistenceHandler.validateSelfLink(entity));
+    verify(entity).addGlobalValidationError(eq("validateCategorySelfLink"));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
   }
 
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@code null}.
-   *   <li>Then does not throw.
+   *   <li>Given {@link Property#Property(String, String)} with name is {@code category.id} and value is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
-  public void testValidateSelfLink_givenNull_whenEntityFindPropertyReturnNull_thenDoesNotThrow()
-      throws ValidationException {
+  public void testValidateSelfLink_givenPropertyWithNameIsCategoryIdAndValueIs42() throws ValidationException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(null);
+    doNothing().when(entity).addGlobalValidationError(Mockito.<String>any());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
     // Act and Assert
+    assertThrows(ValidationException.class, () -> childCategoriesCustomPersistenceHandler.validateSelfLink(entity));
+    verify(entity).addGlobalValidationError(eq("validateCategorySelfLink"));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
+   * <ul>
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
+  public void testValidateSelfLink_givenProperty_whenEntityFindPropertyReturnProperty() throws ValidationException {
+    // Arrange
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+
+    // Act
     childCategoriesCustomPersistenceHandler.validateSelfLink(entity);
-  }
 
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
-  public void testValidateSelfLink_givenPropertyGetValueReturnNull() throws ValidationException {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn(null);
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateSelfLink(entity);
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
-  public void testValidateSelfLink_givenPropertyWithNameAndValueIsNull()
-      throws ValidationException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateSelfLink(entity);
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
-   *
-   * <ul>
-   *   <li>When {@link Entity} (default constructor).
-   *   <li>Then does not throw.
-   * </ul>
-   *
-   * <p>Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateSelfLink(Entity)"})
-  public void testValidateSelfLink_whenEntity_thenDoesNotThrow() throws ValidationException {
-    // Arrange, Act and Assert
-    childCategoriesCustomPersistenceHandler.validateSelfLink(new Entity());
+    // Assert
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
   }
 
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@code null}.
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
+   *   <li>Then calls {@link Property#getValue()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateDuplicateChild(Entity)"})
-  public void testValidateDuplicateChild_givenNull_whenEntityFindPropertyReturnNull()
+  public void testValidateDuplicateChild_givenPropertyGetValueReturn42_thenCallsGetValue() throws ValidationException {
+    // Arrange
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateDuplicateChild(entity);
+
+    // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
+   * <ul>
+   *   <li>Given {@link Property#Property()}.</li>
+   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateDuplicateChild(Entity)"})
+  public void testValidateDuplicateChild_givenProperty_whenEntityFindPropertyReturnProperty()
       throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler =
-        new ChildCategoriesCustomPersistenceHandler();
-
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(null);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
     // Act
     childCategoriesCustomPersistenceHandler.validateDuplicateChild(entity);
@@ -656,341 +441,284 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
-   *
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code null}.
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Then calls {@link CategoryDao#readCategoryById(Long)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateDuplicateChild(Entity)"})
-  public void testValidateDuplicateChild_givenPropertyGetValueReturnNull_thenCallsGetValue()
-      throws ValidationException {
+  public void testValidateDuplicateChild_thenCallsReadCategoryById() throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler =
-        new ChildCategoriesCustomPersistenceHandler();
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn(null);
-
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
     // Act
     childCategoriesCustomPersistenceHandler.validateDuplicateChild(entity);
 
     // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateDuplicateChild(Entity)"})
-  public void testValidateDuplicateChild_givenPropertyWithNameAndValueIsNull()
-      throws ValidationException {
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler =
-        new ChildCategoriesCustomPersistenceHandler();
-
-    Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    childCategoriesCustomPersistenceHandler.validateDuplicateChild(entity);
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
-   *
-   * <ul>
-   *   <li>When {@link Entity} (default constructor).
-   *   <li>Then does not throw.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateDuplicateChild(Entity)"})
-  public void testValidateDuplicateChild_whenEntity_thenDoesNotThrow() throws ValidationException {
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler =
-        new ChildCategoriesCustomPersistenceHandler();
-
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateDuplicateChild(new Entity());
   }
 
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"
-  })
-  public void testValidateRecursiveRelationship_givenNull_whenEntityFindPropertyReturnNull()
-      throws ValidationException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship() throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler =
-        new ChildCategoriesCustomPersistenceHandler();
-
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(null);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
     // Act
     childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
 
     // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
   }
 
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
-   *
    * <ul>
-   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@code
-   *       null}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryXrefImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"
-  })
-  public void testValidateRecursiveRelationship_givenPropertyWithNameAndValueIsNull()
-      throws ValidationException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_givenArrayListAddCategoryXrefImpl() throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler =
-        new ChildCategoriesCustomPersistenceHandler();
-
+    ArrayList<CategoryXref> categoryXrefList = new ArrayList<>();
+    categoryXrefList.add(new CategoryXrefImpl());
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(categoryXrefList);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    when(sandBoxHelper.getOriginalId(Mockito.<Object>any())).thenReturn(1L);
     Entity entity = mock(Entity.class);
-    Property property = new Property("Name", null);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
     // Act
     childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
 
     // Assert
+    verify(sandBoxHelper).getOriginalId(isA(Object.class));
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
   }
 
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
-   *
    * <ul>
-   *   <li>Then calls {@link Property#getValue()}.
+   *   <li>Given {@link CategoryXrefImpl} {@link CategoryXrefImpl#getSubCategory()} return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"
-  })
-  public void testValidateRecursiveRelationship_thenCallsGetValue() throws ValidationException {
-    // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler =
-        new ChildCategoriesCustomPersistenceHandler();
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn(null);
-
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-
-    // Act
-    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property).getValue();
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
-   *
-   * <ul>
-   *   <li>When {@link Entity} (default constructor).
-   *   <li>Then does not throw.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"
-  })
-  public void testValidateRecursiveRelationship_whenEntity_thenDoesNotThrow()
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_givenCategoryXrefImplGetSubCategoryReturnNull()
       throws ValidationException {
     // Arrange
-    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler =
-        new ChildCategoriesCustomPersistenceHandler();
-
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(new Entity());
-  }
-
-  /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity, Category,
-   * Long, StringBuilder)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryXrefImpl} (default constructor) SubCategory is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity,
-   * org.broadleafcommerce.core.catalog.domain.Category, Long, StringBuilder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ChildCategoriesCustomPersistenceHandler.validateChildCategories(Entity, org.broadleafcommerce.core.catalog.domain.Category, Long, StringBuilder)"
-  })
-  public void testValidateChildCategories_givenCategoryXrefImplSubCategoryIsNull()
-      throws ValidationException {
-    // Arrange
-    Entity entity = new Entity();
-
-    CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
-    categoryXrefImpl.setCategory(new CategoryImpl());
-    categoryXrefImpl.setDefaultReference(true);
-    categoryXrefImpl.setDisplayOrder(new BigDecimal("2.3"));
-    categoryXrefImpl.setId(1L);
-    categoryXrefImpl.setSubCategory(null);
+    CategoryXrefImpl categoryXrefImpl = mock(CategoryXrefImpl.class);
+    when(categoryXrefImpl.getSubCategory()).thenReturn(null);
 
     ArrayList<CategoryXref> categoryXrefList = new ArrayList<>();
     categoryXrefList.add(categoryXrefImpl);
-
-    org.broadleafcommerce.core.catalog.domain.Category category =
-        mock(org.broadleafcommerce.core.catalog.domain.Category.class);
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
     when(category.getChildCategoryXrefs()).thenReturn(categoryXrefList);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateChildCategories(
-        entity, category, 1L, new StringBuilder("foo"));
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(categoryXrefImpl).getSubCategory();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
   }
 
   /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity, Category,
-   * Long, StringBuilder)}.
-   *
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
    * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then does not throw.
+   *   <li>Given {@link Property#Property()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity,
-   * org.broadleafcommerce.core.catalog.domain.Category, Long, StringBuilder)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ChildCategoriesCustomPersistenceHandler.validateChildCategories(Entity, org.broadleafcommerce.core.catalog.domain.Category, Long, StringBuilder)"
-  })
-  public void testValidateChildCategories_whenCategoryImpl_thenDoesNotThrow()
-      throws ValidationException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_givenProperty() throws ValidationException {
     // Arrange
-    Entity entity = new Entity();
-    CategoryImpl category = new CategoryImpl();
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateChildCategories(
-        entity, category, 1L, new StringBuilder("foo"));
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
   }
 
   /**
-   * Test {@link ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity, Category,
-   * Long, StringBuilder)}.
-   *
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then does not throw.
+   *   <li>Then calls {@link org.broadleafcommerce.core.catalog.domain.Category#getChildCategoryXrefs()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity,
-   * org.broadleafcommerce.core.catalog.domain.Category, Long, StringBuilder)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ChildCategoriesCustomPersistenceHandler.validateChildCategories(Entity, org.broadleafcommerce.core.catalog.domain.Category, Long, StringBuilder)"
-  })
-  public void testValidateChildCategories_whenNull_thenDoesNotThrow() throws ValidationException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_thenCallsGetChildCategoryXrefs() throws ValidationException {
     // Arrange
-    Entity entity = new Entity();
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(new ArrayList<>());
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
 
-    // Act and Assert
-    childCategoriesCustomPersistenceHandler.validateChildCategories(
-        entity, null, 1L, new StringBuilder("foo"));
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * <ul>
+   *   <li>Then calls {@link CategoryImpl#getChildCategoryXrefs()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_thenCallsGetChildCategoryXrefs2() throws ValidationException {
+    // Arrange
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getId()).thenReturn(1L);
+    when(categoryImpl.getName()).thenReturn("Name");
+    when(categoryImpl.getChildCategoryXrefs()).thenReturn(new ArrayList<>());
+    CategoryXrefImpl categoryXrefImpl = mock(CategoryXrefImpl.class);
+    when(categoryXrefImpl.getSubCategory()).thenReturn(categoryImpl);
+
+    ArrayList<CategoryXref> categoryXrefList = new ArrayList<>();
+    categoryXrefList.add(categoryXrefImpl);
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(categoryXrefList);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    when(sandBoxHelper.getOriginalId(Mockito.<Object>any())).thenReturn(1L);
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("category.id", "42"));
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(sandBoxHelper).getOriginalId(isA(Object.class));
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(categoryImpl).getChildCategoryXrefs();
+    verify(categoryImpl).getId();
+    verify(categoryImpl).getName();
+    verify(categoryXrefImpl).getSubCategory();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * <ul>
+   *   <li>Then calls {@link Property#getValue()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship(Entity)"})
+  public void testValidateRecursiveRelationship_thenCallsGetValue() throws ValidationException {
+    // Arrange
+    CategoryImpl categoryImpl = mock(CategoryImpl.class);
+    when(categoryImpl.getId()).thenReturn(1L);
+    when(categoryImpl.getName()).thenReturn("Name");
+    when(categoryImpl.getChildCategoryXrefs()).thenReturn(new ArrayList<>());
+    CategoryXrefImpl categoryXrefImpl = mock(CategoryXrefImpl.class);
+    when(categoryXrefImpl.getSubCategory()).thenReturn(categoryImpl);
+
+    ArrayList<CategoryXref> categoryXrefList = new ArrayList<>();
+    categoryXrefList.add(categoryXrefImpl);
+    org.broadleafcommerce.core.catalog.domain.Category category = mock(
+        org.broadleafcommerce.core.catalog.domain.Category.class);
+    when(category.getName()).thenReturn("Name");
+    when(category.getChildCategoryXrefs()).thenReturn(categoryXrefList);
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(category);
+    when(sandBoxHelper.getOriginalId(Mockito.<Object>any())).thenReturn(1L);
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    // Act
+    childCategoriesCustomPersistenceHandler.validateRecursiveRelationship(entity);
+
+    // Assert
+    verify(sandBoxHelper).getOriginalId(isA(Object.class));
+    verify(categoryDao, atLeast(1)).readCategoryById(eq(42L));
+    verify(category).getChildCategoryXrefs();
+    verify(category, atLeast(1)).getName();
+    verify(categoryImpl).getChildCategoryXrefs();
+    verify(categoryImpl).getId();
+    verify(categoryImpl).getName();
+    verify(categoryXrefImpl).getSubCategory();
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(property, atLeast(1)).getValue();
   }
 
   /**
    * Test {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}.
-   *
    * <ul>
-   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo} toString is {@code
-   *       fooCategory Name ->}.
+   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo} toString is {@code fooCategory Name ->}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}
+   * <p>
+   * Method under test: {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ChildCategoriesCustomPersistenceHandler.addCategoryLink(StringBuilder, String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ChildCategoriesCustomPersistenceHandler.addCategoryLink(StringBuilder, String)"})
   public void testAddCategoryLink_thenStringBuilderWithFooToStringIsFooCategoryName() {
     // Arrange
     StringBuilder productLinks = new StringBuilder("foo");

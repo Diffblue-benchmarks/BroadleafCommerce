@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -40,13 +39,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ReviewDetailImplDiffblueTest {
-  @Autowired private ReviewDetailImpl reviewDetailImpl;
+  @Autowired
+  private ReviewDetailImpl reviewDetailImpl;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ReviewDetailImpl#ReviewDetailImpl()}
    *   <li>{@link ReviewDetailImpl#setReviewText(String)}
@@ -61,20 +60,12 @@ public class ReviewDetailImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ReviewDetailImpl.<init>()",
-    "Customer ReviewDetailImpl.getCustomer()",
-    "Long ReviewDetailImpl.getId()",
-    "RatingDetail ReviewDetailImpl.getRatingDetail()",
-    "RatingSummary ReviewDetailImpl.getRatingSummary()",
-    "Date ReviewDetailImpl.getReviewSubmittedDate()",
-    "String ReviewDetailImpl.getReviewText()",
-    "Integer ReviewDetailImpl.helpfulCount()",
-    "Integer ReviewDetailImpl.notHelpfulCount()",
-    "void ReviewDetailImpl.setReviewText(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReviewDetailImpl.<init>()", "Customer ReviewDetailImpl.getCustomer()",
+      "Long ReviewDetailImpl.getId()", "RatingDetail ReviewDetailImpl.getRatingDetail()",
+      "RatingSummary ReviewDetailImpl.getRatingSummary()", "Date ReviewDetailImpl.getReviewSubmittedDate()",
+      "String ReviewDetailImpl.getReviewText()", "Integer ReviewDetailImpl.helpfulCount()",
+      "Integer ReviewDetailImpl.notHelpfulCount()", "void ReviewDetailImpl.setReviewText(String)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ReviewDetailImpl actualReviewDetailImpl = new ReviewDetailImpl();
@@ -99,30 +90,23 @@ public class ReviewDetailImplDiffblueTest {
   }
 
   /**
-   * Test {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String,
-   * RatingSummary)}.
-   *
-   * <p>Method under test: {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail,
-   * String, RatingSummary)}
+   * Test {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}.
+   * <p>
+   * Method under test: {@link ReviewDetailImpl#ReviewDetailImpl(Customer, Date, RatingDetail, String, RatingSummary)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ReviewDetailImpl.<init>(Customer, Date, RatingDetail, String, RatingSummary)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReviewDetailImpl.<init>(Customer, Date, RatingDetail, String, RatingSummary)"})
   public void testNewReviewDetailImpl() {
     // Arrange
     CustomerImpl customer = new CustomerImpl();
-    Date reivewSubmittedDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date reivewSubmittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     RatingDetailImpl ratingDetail = new RatingDetailImpl();
     RatingSummaryImpl ratingSummary = new RatingSummaryImpl();
 
     // Act
-    ReviewDetailImpl actualReviewDetailImpl =
-        new ReviewDetailImpl(
-            customer, reivewSubmittedDate, ratingDetail, "Review Text", ratingSummary);
+    ReviewDetailImpl actualReviewDetailImpl = new ReviewDetailImpl(customer, reivewSubmittedDate, ratingDetail,
+        "Review Text", ratingSummary);
 
     // Assert
     RatingDetail ratingDetail2 = actualReviewDetailImpl.getRatingDetail();
@@ -147,16 +131,15 @@ public class ReviewDetailImplDiffblueTest {
 
   /**
    * Test {@link ReviewDetailImpl#getStatus()}.
-   *
-   * <p>Method under test: {@link ReviewDetailImpl#getStatus()}
+   * <p>
+   * Method under test: {@link ReviewDetailImpl#getStatus()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ReviewStatusType ReviewDetailImpl.getStatus()"})
   public void testGetStatus() {
     // Arrange and Act
-    ReviewStatusType actualStatus = reviewDetailImpl.getStatus();
+    ReviewStatusType actualStatus = (new ReviewDetailImpl()).getStatus();
 
     // Assert
     assertNull(actualStatus.getFriendlyType());
@@ -165,15 +148,38 @@ public class ReviewDetailImplDiffblueTest {
 
   /**
    * Test {@link ReviewDetailImpl#getReviewFeedback()}.
-   *
-   * <p>Method under test: {@link ReviewDetailImpl#getReviewFeedback()}
+   * <p>
+   * Method under test: {@link ReviewDetailImpl#getReviewFeedback()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List ReviewDetailImpl.getReviewFeedback()"})
   public void testGetReviewFeedback() {
+    // Arrange
+    CustomerImpl customer = new CustomerImpl();
+    Date reivewSubmittedDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    RatingDetailImpl ratingDetail = new RatingDetailImpl();
+
+    // Act and Assert
+    assertTrue(
+        (new ReviewDetailImpl(customer, reivewSubmittedDate, ratingDetail, "Review Text", new RatingSummaryImpl()))
+            .getReviewFeedback()
+            .isEmpty());
+  }
+
+  /**
+   * Test {@link ReviewDetailImpl#getReviewFeedback()}.
+   * <ul>
+   *   <li>Given {@link ReviewDetailImpl#ReviewDetailImpl()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ReviewDetailImpl#getReviewFeedback()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List ReviewDetailImpl.getReviewFeedback()"})
+  public void testGetReviewFeedback_givenReviewDetailImpl() {
     // Arrange, Act and Assert
-    assertTrue(reviewDetailImpl.getReviewFeedback().isEmpty());
+    assertTrue((new ReviewDetailImpl()).getReviewFeedback().isEmpty());
   }
 }

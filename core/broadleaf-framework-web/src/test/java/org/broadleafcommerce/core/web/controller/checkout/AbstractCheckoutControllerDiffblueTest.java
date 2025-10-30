@@ -23,12 +23,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import org.broadleafcommerce.common.extension.ExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.broadleafcommerce.core.web.service.InitBinderService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -38,6 +38,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -45,180 +46,152 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractCheckoutControllerDiffblueTest {
-  @InjectMocks private BroadleafBillingInfoController broadleafBillingInfoController;
+  @InjectMocks
+  private BroadleafBillingInfoController broadleafBillingInfoController;
+
+  @Mock
+  private InitBinderService initBinderService;
 
   @Mock
   private BroadleafCheckoutControllerExtensionManager broadleafCheckoutControllerExtensionManager;
 
-  @Mock private InitBinderService initBinderService;
-
   /**
    * Test {@link AbstractCheckoutController#getCartPageRedirect()}.
-   *
-   * <p>Method under test: {@link AbstractCheckoutController#getCartPageRedirect()}
+   * <p>
+   * Method under test: {@link AbstractCheckoutController#getCartPageRedirect()}
    */
   @Test
   @DisplayName("Test getCartPageRedirect()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String AbstractCheckoutController.getCartPageRedirect()"})
   void testGetCartPageRedirect() {
     // Arrange, Act and Assert
-    assertEquals("redirect:/cart", new BroadleafBillingInfoController().getCartPageRedirect());
+    assertEquals("redirect:/cart", (new BroadleafBillingInfoController()).getCartPageRedirect());
   }
 
   /**
    * Test {@link AbstractCheckoutController#getCheckoutView()}.
-   *
-   * <p>Method under test: {@link AbstractCheckoutController#getCheckoutView()}
+   * <p>
+   * Method under test: {@link AbstractCheckoutController#getCheckoutView()}
    */
   @Test
   @DisplayName("Test getCheckoutView()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String AbstractCheckoutController.getCheckoutView()"})
   void testGetCheckoutView() {
     // Arrange, Act and Assert
-    assertEquals("checkout/checkout", new BroadleafBillingInfoController().getCheckoutView());
+    assertEquals("checkout/checkout", (new BroadleafBillingInfoController()).getCheckoutView());
   }
 
   /**
    * Test {@link AbstractCheckoutController#getCheckoutStagesPartial()}.
-   *
-   * <p>Method under test: {@link AbstractCheckoutController#getCheckoutStagesPartial()}
+   * <p>
+   * Method under test: {@link AbstractCheckoutController#getCheckoutStagesPartial()}
    */
   @Test
   @DisplayName("Test getCheckoutStagesPartial()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String AbstractCheckoutController.getCheckoutStagesPartial()"})
   void testGetCheckoutStagesPartial() {
     // Arrange, Act and Assert
-    assertEquals(
-        "checkout/partials/checkoutStages",
-        new BroadleafBillingInfoController().getCheckoutStagesPartial());
+    assertEquals("checkout/partials/checkoutStages", (new BroadleafBillingInfoController()).getCheckoutStagesPartial());
   }
 
   /**
    * Test {@link AbstractCheckoutController#getCheckoutPageRedirect()}.
-   *
-   * <p>Method under test: {@link AbstractCheckoutController#getCheckoutPageRedirect()}
+   * <p>
+   * Method under test: {@link AbstractCheckoutController#getCheckoutPageRedirect()}
    */
   @Test
   @DisplayName("Test getCheckoutPageRedirect()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String AbstractCheckoutController.getCheckoutPageRedirect()"})
   void testGetCheckoutPageRedirect() {
     // Arrange, Act and Assert
-    assertEquals(
-        "redirect:/checkout", new BroadleafBillingInfoController().getCheckoutPageRedirect());
+    assertEquals("redirect:/checkout", (new BroadleafBillingInfoController()).getCheckoutPageRedirect());
   }
 
   /**
    * Test {@link AbstractCheckoutController#getBaseConfirmationView()}.
-   *
-   * <p>Method under test: {@link AbstractCheckoutController#getBaseConfirmationView()}
+   * <p>
+   * Method under test: {@link AbstractCheckoutController#getBaseConfirmationView()}
    */
   @Test
   @DisplayName("Test getBaseConfirmationView()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String AbstractCheckoutController.getBaseConfirmationView()"})
   void testGetBaseConfirmationView() {
     // Arrange, Act and Assert
-    assertEquals(
-        "ajaxredirect:/confirmation",
-        new BroadleafBillingInfoController().getBaseConfirmationView());
+    assertEquals("ajaxredirect:/confirmation", (new BroadleafBillingInfoController()).getBaseConfirmationView());
   }
 
   /**
    * Test {@link AbstractCheckoutController#getConfirmationView(String)}.
-   *
-   * <p>Method under test: {@link AbstractCheckoutController#getConfirmationView(String)}
+   * <p>
+   * Method under test: {@link AbstractCheckoutController#getConfirmationView(String)}
    */
   @Test
   @DisplayName("Test getConfirmationView(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String AbstractCheckoutController.getConfirmationView(String)"})
   void testGetConfirmationView() {
     // Arrange, Act and Assert
-    assertEquals(
-        "ajaxredirect:/confirmation/42",
-        new BroadleafBillingInfoController().getConfirmationView("42"));
+    assertEquals("ajaxredirect:/confirmation/42", (new BroadleafBillingInfoController()).getConfirmationView("42"));
   }
 
   /**
-   * Test {@link AbstractCheckoutController#populateModelWithReferenceData(HttpServletRequest,
-   * Model)}.
-   *
+   * Test {@link AbstractCheckoutController#populateModelWithReferenceData(HttpServletRequest, Model)}.
    * <ul>
-   *   <li>Then calls {@link BroadleafCheckoutControllerExtensionManager#getProxy()}.
+   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractCheckoutController#populateModelWithReferenceData(HttpServletRequest, Model)}
+   * <p>
+   * Method under test: {@link AbstractCheckoutController#populateModelWithReferenceData(HttpServletRequest, Model)}
    */
   @Test
-  @DisplayName(
-      "Test populateModelWithReferenceData(HttpServletRequest, Model); then calls getProxy()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractCheckoutController.populateModelWithReferenceData(HttpServletRequest, Model)"
-  })
+  @DisplayName("Test populateModelWithReferenceData(HttpServletRequest, Model); then calls getProxy()")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void AbstractCheckoutController.populateModelWithReferenceData(HttpServletRequest, Model)"})
   void testPopulateModelWithReferenceData_thenCallsGetProxy() {
     // Arrange
-    BroadleafCheckoutControllerExtensionHandler broadleafCheckoutControllerExtensionHandler =
-        mock(BroadleafCheckoutControllerExtensionHandler.class);
-    when(broadleafCheckoutControllerExtensionHandler.addAdditionalModelVariables(
-            Mockito.<Model>any()))
+    BroadleafCheckoutControllerExtensionHandler broadleafCheckoutControllerExtensionHandler = mock(
+        BroadleafCheckoutControllerExtensionHandler.class);
+    when(broadleafCheckoutControllerExtensionHandler.addAdditionalModelVariables(Mockito.<Model>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(broadleafCheckoutControllerExtensionManager.getProxy())
         .thenReturn(broadleafCheckoutControllerExtensionHandler);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act
     broadleafBillingInfoController.populateModelWithReferenceData(request, new ConcurrentModel());
 
     // Assert
     verify(broadleafCheckoutControllerExtensionManager).getProxy();
-    verify(broadleafCheckoutControllerExtensionHandler)
-        .addAdditionalModelVariables(isA(Model.class));
+    verify(broadleafCheckoutControllerExtensionHandler).addAdditionalModelVariables(isA(Model.class));
   }
 
   /**
-   * Test {@link AbstractCheckoutController#initBinder(HttpServletRequest,
-   * ServletRequestDataBinder)}.
-   *
+   * Test {@link AbstractCheckoutController#initBinder(HttpServletRequest, ServletRequestDataBinder)}.
    * <ul>
-   *   <li>Then calls {@link InitBinderService#configAddressInitBinder(ServletRequestDataBinder)}.
+   *   <li>Then calls {@link InitBinderService#configAddressInitBinder(ServletRequestDataBinder)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractCheckoutController#initBinder(HttpServletRequest,
-   * ServletRequestDataBinder)}
+   * <p>
+   * Method under test: {@link AbstractCheckoutController#initBinder(HttpServletRequest, ServletRequestDataBinder)}
    */
   @Test
-  @DisplayName(
-      "Test initBinder(HttpServletRequest, ServletRequestDataBinder); then calls configAddressInitBinder(ServletRequestDataBinder)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractCheckoutController.initBinder(HttpServletRequest, ServletRequestDataBinder)"
-  })
+  @DisplayName("Test initBinder(HttpServletRequest, ServletRequestDataBinder); then calls configAddressInitBinder(ServletRequestDataBinder)")
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"void AbstractCheckoutController.initBinder(HttpServletRequest, ServletRequestDataBinder)"})
   void testInitBinder_thenCallsConfigAddressInitBinder() throws Exception {
     // Arrange
-    doNothing()
-        .when(initBinderService)
-        .configAddressInitBinder(Mockito.<ServletRequestDataBinder>any());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    doNothing().when(initBinderService).configAddressInitBinder(Mockito.<ServletRequestDataBinder>any());
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act
-    broadleafBillingInfoController.initBinder(
-        request, new ServletRequestDataBinder("Target", "Object Name"));
+    broadleafBillingInfoController.initBinder(request, new ServletRequestDataBinder("Target", "Object Name"));
 
     // Assert
     verify(initBinderService).configAddressInitBinder(isA(ServletRequestDataBinder.class));

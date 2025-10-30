@@ -19,8 +19,7 @@ package org.broadleafcommerce.cms.web;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
@@ -30,23 +29,20 @@ import org.junit.experimental.categories.Category;
 public class URLHandlerFilterDiffblueTest {
   /**
    * Test {@link URLHandlerFilter#getExistingQueryParams(String)}.
-   *
    * <ul>
-   *   <li>When {@code https://example.org/example}.
-   *   <li>Then return Empty.
+   *   <li>When {@code https://example.org/example}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerFilter#getExistingQueryParams(String)}
+   * <p>
+   * Method under test: {@link URLHandlerFilter#getExistingQueryParams(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set URLHandlerFilter.getExistingQueryParams(String)"})
   public void testGetExistingQueryParams_whenHttpsExampleOrgExample_thenReturnEmpty()
       throws UnsupportedEncodingException {
     // Arrange and Act
-    Set<String> actualExistingQueryParams =
-        URLHandlerFilter.getExistingQueryParams("https://example.org/example");
+    Set<String> actualExistingQueryParams = URLHandlerFilter.getExistingQueryParams("https://example.org/example");
 
     // Assert
     assertTrue(actualExistingQueryParams.isEmpty());
@@ -54,23 +50,20 @@ public class URLHandlerFilterDiffblueTest {
 
   /**
    * Test {@link URLHandlerFilter#getExistingQueryParams(String)}.
-   *
    * <ul>
-   *   <li>When {@code https://example.org/example?}.
-   *   <li>Then return size is one.
+   *   <li>When {@code https://example.org/example?}.</li>
+   *   <li>Then return size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link URLHandlerFilter#getExistingQueryParams(String)}
+   * <p>
+   * Method under test: {@link URLHandlerFilter#getExistingQueryParams(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Set URLHandlerFilter.getExistingQueryParams(String)"})
   public void testGetExistingQueryParams_whenHttpsExampleOrgExample_thenReturnSizeIsOne()
       throws UnsupportedEncodingException {
     // Arrange and Act
-    Set<String> actualExistingQueryParams =
-        URLHandlerFilter.getExistingQueryParams("https://example.org/example?");
+    Set<String> actualExistingQueryParams = URLHandlerFilter.getExistingQueryParams("https://example.org/example?");
 
     // Assert
     assertEquals(1, actualExistingQueryParams.size());
@@ -79,15 +72,14 @@ public class URLHandlerFilterDiffblueTest {
 
   /**
    * Test {@link URLHandlerFilter#getOrder()}.
-   *
-   * <p>Method under test: {@link URLHandlerFilter#getOrder()}
+   * <p>
+   * Method under test: {@link URLHandlerFilter#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int URLHandlerFilter.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(1000000, new URLHandlerFilter().getOrder());
+    assertEquals(1000000, (new URLHandlerFilter()).getOrder());
   }
 }

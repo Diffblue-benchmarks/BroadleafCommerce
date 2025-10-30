@@ -18,9 +18,9 @@
 package org.broadleafcommerce.admin.web.controller.extension;
 
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.admin.domain.TypedEntity;
 import org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -36,23 +36,20 @@ public class TypedEntityBasicEntityExtensionHandlerDiffblueTest {
   @MockBean(name = "blAdminAbstractControllerExtensionManager")
   private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
 
-  @Autowired private TypedEntityBasicEntityExtensionHandler typedEntityBasicEntityExtensionHandler;
+  @Autowired
+  private TypedEntityBasicEntityExtensionHandler typedEntityBasicEntityExtensionHandler;
 
   /**
    * Test {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}.
-   *
-   * <p>Method under test: {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}
+   * <p>
+   * Method under test: {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String TypedEntityBasicEntityExtensionHandler.getDefaultType(Class)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String TypedEntityBasicEntityExtensionHandler.getDefaultType(Class)"})
   public void testGetDefaultType() {
     // Arrange
-    Class<TypedEntityBasicEntityExtensionHandler> implClass =
-        TypedEntityBasicEntityExtensionHandler.class;
+    Class<TypedEntityBasicEntityExtensionHandler> implClass = TypedEntityBasicEntityExtensionHandler.class;
 
     // Act and Assert
     assertNull(typedEntityBasicEntityExtensionHandler.getDefaultType(implClass));
@@ -60,19 +57,15 @@ public class TypedEntityBasicEntityExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
+   *   <li>When {@code Object}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}
+   * <p>
+   * Method under test: {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String TypedEntityBasicEntityExtensionHandler.getDefaultType(Class)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String TypedEntityBasicEntityExtensionHandler.getDefaultType(Class)"})
   public void testGetDefaultType_whenJavaLangObject() {
     // Arrange
     Class<Object> implClass = Object.class;
@@ -83,39 +76,34 @@ public class TypedEntityBasicEntityExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code TypedEntity}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}
+   * <p>
+   * Method under test: {@link TypedEntityBasicEntityExtensionHandler#getDefaultType(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String TypedEntityBasicEntityExtensionHandler.getDefaultType(Class)"
-  })
-  public void testGetDefaultType_whenNull() {
-    // Arrange, Act and Assert
-    assertNull(typedEntityBasicEntityExtensionHandler.getDefaultType(null));
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String TypedEntityBasicEntityExtensionHandler.getDefaultType(Class)"})
+  public void testGetDefaultType_whenOrgBroadleafcommerceCommonAdminDomainTypedEntity() {
+    // Arrange
+    Class<TypedEntity> implClass = TypedEntity.class;
+
+    // Act and Assert
+    assertNull(typedEntityBasicEntityExtensionHandler.getDefaultType(implClass));
   }
 
   /**
    * Test {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}.
-   *
-   * <p>Method under test: {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}
+   * <p>
+   * Method under test: {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String TypedEntityBasicEntityExtensionHandler.getTypeFieldName(Class)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String TypedEntityBasicEntityExtensionHandler.getTypeFieldName(Class)"})
   public void testGetTypeFieldName() {
     // Arrange
-    Class<TypedEntityBasicEntityExtensionHandler> implClass =
-        TypedEntityBasicEntityExtensionHandler.class;
+    Class<TypedEntityBasicEntityExtensionHandler> implClass = TypedEntityBasicEntityExtensionHandler.class;
 
     // Act and Assert
     assertNull(typedEntityBasicEntityExtensionHandler.getTypeFieldName(implClass));
@@ -123,19 +111,15 @@ public class TypedEntityBasicEntityExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}.
-   *
    * <ul>
-   *   <li>When {@code Object}.
+   *   <li>When {@code Object}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}
+   * <p>
+   * Method under test: {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String TypedEntityBasicEntityExtensionHandler.getTypeFieldName(Class)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String TypedEntityBasicEntityExtensionHandler.getTypeFieldName(Class)"})
   public void testGetTypeFieldName_whenJavaLangObject() {
     // Arrange
     Class<Object> implClass = Object.class;
@@ -146,21 +130,20 @@ public class TypedEntityBasicEntityExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code TypedEntity}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}
+   * <p>
+   * Method under test: {@link TypedEntityBasicEntityExtensionHandler#getTypeFieldName(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String TypedEntityBasicEntityExtensionHandler.getTypeFieldName(Class)"
-  })
-  public void testGetTypeFieldName_whenNull() {
-    // Arrange, Act and Assert
-    assertNull(typedEntityBasicEntityExtensionHandler.getTypeFieldName(null));
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String TypedEntityBasicEntityExtensionHandler.getTypeFieldName(Class)"})
+  public void testGetTypeFieldName_whenOrgBroadleafcommerceCommonAdminDomainTypedEntity() {
+    // Arrange
+    Class<TypedEntity> implClass = TypedEntity.class;
+
+    // Act and Assert
+    assertNull(typedEntityBasicEntityExtensionHandler.getTypeFieldName(implClass));
   }
 }

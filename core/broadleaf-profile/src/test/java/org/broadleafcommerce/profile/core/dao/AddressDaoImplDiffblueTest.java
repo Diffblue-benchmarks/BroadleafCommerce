@@ -18,10 +18,10 @@
 package org.broadleafcommerce.profile.core.dao;
 
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
@@ -40,18 +40,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddressDaoImplDiffblueTest {
-  @InjectMocks private AddressDaoImpl addressDaoImpl;
+  @InjectMocks
+  private AddressDaoImpl addressDaoImpl;
 
-  @Mock private EntityConfiguration entityConfiguration;
+  @Mock
+  private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link AddressDaoImpl#create()}.
-   *
-   * <p>Method under test: {@link AddressDaoImpl#create()}
+   * <p>
+   * Method under test: {@link AddressDaoImpl#create()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Address AddressDaoImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -94,8 +95,7 @@ public class AddressDaoImplDiffblueTest {
     Address actualCreateResult = addressDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.profile.core.domain.Address");
+    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.Address"));
     assertSame(addressImpl, actualCreateResult);
   }
 }

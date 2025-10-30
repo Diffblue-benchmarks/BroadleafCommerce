@@ -22,7 +22,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,39 +43,35 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class SeoPropertyServiceImplDiffblueTest {
-  @Mock private List<SeoPropertyGenerator> list;
+  @Mock
+  private List<SeoPropertyGenerator> list;
 
-  @InjectMocks private SeoPropertyServiceImpl seoPropertyServiceImpl;
+  @InjectMocks
+  private SeoPropertyServiceImpl seoPropertyServiceImpl;
 
   /**
    * Test {@link SeoPropertyServiceImpl#getSeoProperties(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>Then calls {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Category)}.
+   *   <li>Then calls {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Category)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(Category)}
+   * <p>
+   * Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(Category)}
    */
   @Test
-  @DisplayName(
-      "Test getSeoProperties(Category) with 'category'; then calls gatherSeoProperties(Category)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getSeoProperties(Category) with 'category'; then calls gatherSeoProperties(Category)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map SeoPropertyServiceImpl.getSeoProperties(Category)"})
   void testGetSeoPropertiesWithCategory_thenCallsGatherSeoProperties() {
     // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        mock(BasicSeoPropertyGeneratorImpl.class);
-    when(basicSeoPropertyGeneratorImpl.gatherSeoProperties(Mockito.<Category>any()))
-        .thenReturn(new HashMap<>());
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = mock(BasicSeoPropertyGeneratorImpl.class);
+    when(basicSeoPropertyGeneratorImpl.gatherSeoProperties(Mockito.<Category>any())).thenReturn(new HashMap<>());
 
     ArrayList<SeoPropertyGenerator> seoPropertyGeneratorList = new ArrayList<>();
     seoPropertyGeneratorList.add(basicSeoPropertyGeneratorImpl);
     when(list.iterator()).thenReturn(seoPropertyGeneratorList.iterator());
 
     // Act
-    Map<String, String> actualSeoProperties =
-        seoPropertyServiceImpl.getSeoProperties(new CategoryImpl());
+    Map<String, String> actualSeoProperties = seoPropertyServiceImpl.getSeoProperties(new CategoryImpl());
 
     // Assert
     verify(list).iterator();
@@ -86,17 +81,15 @@ class SeoPropertyServiceImplDiffblueTest {
 
   /**
    * Test {@link SeoPropertyServiceImpl#getSeoProperties(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(Category)}
+   * <p>
+   * Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(Category)}
    */
   @Test
   @DisplayName("Test getSeoProperties(Category) with 'category'; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map SeoPropertyServiceImpl.getSeoProperties(Category)"})
   void testGetSeoPropertiesWithCategory_thenReturnEmpty() {
     // Arrange
@@ -104,8 +97,7 @@ class SeoPropertyServiceImplDiffblueTest {
     when(list.iterator()).thenReturn(seoPropertyGeneratorList.iterator());
 
     // Act
-    Map<String, String> actualSeoProperties =
-        seoPropertyServiceImpl.getSeoProperties(new CategoryImpl());
+    Map<String, String> actualSeoProperties = seoPropertyServiceImpl.getSeoProperties(new CategoryImpl());
 
     // Assert
     verify(list).iterator();
@@ -114,33 +106,27 @@ class SeoPropertyServiceImplDiffblueTest {
 
   /**
    * Test {@link SeoPropertyServiceImpl#getSeoProperties(PageDTO)} with {@code page}.
-   *
    * <ul>
-   *   <li>Then calls {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(PageDTO)}.
+   *   <li>Then calls {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(PageDTO)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(PageDTO)}
+   * <p>
+   * Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(PageDTO)}
    */
   @Test
-  @DisplayName(
-      "Test getSeoProperties(PageDTO) with 'page'; then calls gatherSeoProperties(PageDTO)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getSeoProperties(PageDTO) with 'page'; then calls gatherSeoProperties(PageDTO)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map SeoPropertyServiceImpl.getSeoProperties(PageDTO)"})
   void testGetSeoPropertiesWithPage_thenCallsGatherSeoProperties() {
     // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        mock(BasicSeoPropertyGeneratorImpl.class);
-    when(basicSeoPropertyGeneratorImpl.gatherSeoProperties(Mockito.<PageDTO>any()))
-        .thenReturn(new HashMap<>());
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = mock(BasicSeoPropertyGeneratorImpl.class);
+    when(basicSeoPropertyGeneratorImpl.gatherSeoProperties(Mockito.<PageDTO>any())).thenReturn(new HashMap<>());
 
     ArrayList<SeoPropertyGenerator> seoPropertyGeneratorList = new ArrayList<>();
     seoPropertyGeneratorList.add(basicSeoPropertyGeneratorImpl);
     when(list.iterator()).thenReturn(seoPropertyGeneratorList.iterator());
 
     // Act
-    Map<String, String> actualSeoProperties =
-        seoPropertyServiceImpl.getSeoProperties(new PageDTO());
+    Map<String, String> actualSeoProperties = seoPropertyServiceImpl.getSeoProperties(new PageDTO());
 
     // Assert
     verify(list).iterator();
@@ -150,17 +136,15 @@ class SeoPropertyServiceImplDiffblueTest {
 
   /**
    * Test {@link SeoPropertyServiceImpl#getSeoProperties(PageDTO)} with {@code page}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(PageDTO)}
+   * <p>
+   * Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(PageDTO)}
    */
   @Test
   @DisplayName("Test getSeoProperties(PageDTO) with 'page'; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map SeoPropertyServiceImpl.getSeoProperties(PageDTO)"})
   void testGetSeoPropertiesWithPage_thenReturnEmpty() {
     // Arrange
@@ -168,8 +152,7 @@ class SeoPropertyServiceImplDiffblueTest {
     when(list.iterator()).thenReturn(seoPropertyGeneratorList.iterator());
 
     // Act
-    Map<String, String> actualSeoProperties =
-        seoPropertyServiceImpl.getSeoProperties(new PageDTO());
+    Map<String, String> actualSeoProperties = seoPropertyServiceImpl.getSeoProperties(new PageDTO());
 
     // Assert
     verify(list).iterator();
@@ -178,33 +161,27 @@ class SeoPropertyServiceImplDiffblueTest {
 
   /**
    * Test {@link SeoPropertyServiceImpl#getSeoProperties(Product)} with {@code product}.
-   *
    * <ul>
-   *   <li>Then calls {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Product)}.
+   *   <li>Then calls {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Product)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(Product)}
+   * <p>
+   * Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(Product)}
    */
   @Test
-  @DisplayName(
-      "Test getSeoProperties(Product) with 'product'; then calls gatherSeoProperties(Product)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getSeoProperties(Product) with 'product'; then calls gatherSeoProperties(Product)")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map SeoPropertyServiceImpl.getSeoProperties(Product)"})
   void testGetSeoPropertiesWithProduct_thenCallsGatherSeoProperties() {
     // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        mock(BasicSeoPropertyGeneratorImpl.class);
-    when(basicSeoPropertyGeneratorImpl.gatherSeoProperties(Mockito.<Product>any()))
-        .thenReturn(new HashMap<>());
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = mock(BasicSeoPropertyGeneratorImpl.class);
+    when(basicSeoPropertyGeneratorImpl.gatherSeoProperties(Mockito.<Product>any())).thenReturn(new HashMap<>());
 
     ArrayList<SeoPropertyGenerator> seoPropertyGeneratorList = new ArrayList<>();
     seoPropertyGeneratorList.add(basicSeoPropertyGeneratorImpl);
     when(list.iterator()).thenReturn(seoPropertyGeneratorList.iterator());
 
     // Act
-    Map<String, String> actualSeoProperties =
-        seoPropertyServiceImpl.getSeoProperties(new ProductBundleImpl());
+    Map<String, String> actualSeoProperties = seoPropertyServiceImpl.getSeoProperties(new ProductBundleImpl());
 
     // Assert
     verify(list).iterator();
@@ -214,17 +191,15 @@ class SeoPropertyServiceImplDiffblueTest {
 
   /**
    * Test {@link SeoPropertyServiceImpl#getSeoProperties(Product)} with {@code product}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(Product)}
+   * <p>
+   * Method under test: {@link SeoPropertyServiceImpl#getSeoProperties(Product)}
    */
   @Test
   @DisplayName("Test getSeoProperties(Product) with 'product'; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"Map SeoPropertyServiceImpl.getSeoProperties(Product)"})
   void testGetSeoPropertiesWithProduct_thenReturnEmpty() {
     // Arrange
@@ -232,8 +207,7 @@ class SeoPropertyServiceImplDiffblueTest {
     when(list.iterator()).thenReturn(seoPropertyGeneratorList.iterator());
 
     // Act
-    Map<String, String> actualSeoProperties =
-        seoPropertyServiceImpl.getSeoProperties(new ProductBundleImpl());
+    Map<String, String> actualSeoProperties = seoPropertyServiceImpl.getSeoProperties(new ProductBundleImpl());
 
     // Assert
     verify(list).iterator();

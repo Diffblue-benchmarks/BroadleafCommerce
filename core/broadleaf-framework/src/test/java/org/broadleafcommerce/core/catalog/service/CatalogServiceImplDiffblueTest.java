@@ -29,8 +29,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -42,12 +41,9 @@ import java.util.Map;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.catalog.dao.CategoryDao;
-import org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl;
 import org.broadleafcommerce.core.catalog.dao.ProductDao;
-import org.broadleafcommerce.core.catalog.dao.ProductDaoImpl;
 import org.broadleafcommerce.core.catalog.dao.ProductOptionDao;
 import org.broadleafcommerce.core.catalog.dao.SkuDao;
-import org.broadleafcommerce.core.catalog.dao.SkuDaoImpl;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundle;
@@ -70,32 +66,34 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class CatalogServiceImplDiffblueTest {
-  @Mock private CatalogServiceExtensionManager catalogServiceExtensionManager;
+  @InjectMocks
+  private CatalogServiceImpl catalogServiceImpl;
 
-  @InjectMocks private CatalogServiceImpl catalogServiceImpl;
+  @Mock
+  private ProductOptionDao productOptionDao;
 
-  @Mock private CategoryDao categoryDao;
+  @Mock
+  private CategoryDao categoryDao;
 
-  @Mock private ProductDao productDao;
+  @Mock
+  private ProductDao productDao;
 
-  @Mock private ProductOptionDao productOptionDao;
+  @Mock
+  private SkuDao skuDao;
 
-  @Mock private SkuDao skuDao;
+  @Mock
+  private CatalogServiceExtensionManager catalogServiceExtensionManager;
 
   /**
    * Test {@link CatalogServiceImpl#findProductById(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductById(Long)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findProductById(Long)"})
   public void testFindProductById() {
     // Arrange
@@ -106,18 +104,17 @@ public class CatalogServiceImplDiffblueTest {
     Product actualFindProductByIdResult = catalogServiceImpl.findProductById(1L);
 
     // Assert
-    verify(productDao).readProductById(1L);
+    verify(productDao).readProductById(eq(1L));
     assertSame(productBundleImpl, actualFindProductByIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductByExternalId(String)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductByExternalId(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductByExternalId(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findProductByExternalId(String)"})
   public void testFindProductByExternalId() {
     // Arrange
@@ -128,84 +125,68 @@ public class CatalogServiceImplDiffblueTest {
     Product actualFindProductByExternalIdResult = catalogServiceImpl.findProductByExternalId("42");
 
     // Assert
-    verify(productDao).readProductByExternalId("42");
+    verify(productDao).readProductByExternalId(eq("42"));
     assertSame(productBundleImpl, actualFindProductByExternalIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductsByName(String)} with {@code searchName}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductsByName(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductsByName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findProductsByName(String)"})
   public void testFindProductsByNameWithSearchName() {
     // Arrange
     when(productDao.readProductsByName(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindProductsByNameResult =
-        catalogServiceImpl.findProductsByName("Search Name");
+    List<Product> actualFindProductsByNameResult = catalogServiceImpl.findProductsByName("Search Name");
 
     // Assert
-    verify(productDao).readProductsByName("Search Name");
+    verify(productDao).readProductsByName(eq("Search Name"));
     assertTrue(actualFindProductsByNameResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findProductsByName(String, int, int)} with {@code searchName},
-   * {@code limit}, {@code offset}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductsByName(String, int, int)}
+   * Test {@link CatalogServiceImpl#findProductsByName(String, int, int)} with {@code searchName}, {@code limit}, {@code offset}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductsByName(String, int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findProductsByName(String, int, int)"})
   public void testFindProductsByNameWithSearchNameLimitOffset() {
     // Arrange
-    when(productDao.readProductsByName(Mockito.<String>any(), anyInt(), anyInt()))
-        .thenReturn(new ArrayList<>());
+    when(productDao.readProductsByName(Mockito.<String>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindProductsByNameResult =
-        catalogServiceImpl.findProductsByName("Search Name", 1, 2);
+    List<Product> actualFindProductsByNameResult = catalogServiceImpl.findProductsByName("Search Name", 1, 2);
 
     // Assert
-    verify(productDao).readProductsByName("Search Name", 1, 2);
+    verify(productDao).readProductsByName(eq("Search Name"), eq(1), eq(2));
     assertTrue(actualFindProductsByNameResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date, int, int)} with
-   * {@code category}, {@code currentDate}, {@code limit}, {@code offset}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category,
-   * Date, int, int)}
+   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date, int, int)} with {@code category}, {@code currentDate}, {@code limit}, {@code offset}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, int, int)"
-  })
+      "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, int, int)"})
   public void testFindActiveProductsByCategoryWithCategoryCurrentDateLimitOffset() {
     // Arrange
-    when(productDao.readActiveProductsByCategory(
-            Mockito.<Long>any(), Mockito.<Date>any(), anyInt(), anyInt()))
+    when(productDao.readActiveProductsByCategory(Mockito.<Long>any(), Mockito.<Date>any(), anyInt(), anyInt()))
         .thenReturn(new ArrayList<>());
     CategoryImpl category = new CategoryImpl();
 
     // Act
-    List<Product> actualFindActiveProductsByCategoryResult =
-        catalogServiceImpl.findActiveProductsByCategory(
-            category,
-            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()),
-            1,
-            2);
+    List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl.findActiveProductsByCategory(category,
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()), 1, 2);
 
     // Assert
     verify(productDao).readActiveProductsByCategory(isNull(), isA(Date.class), eq(1), eq(2));
@@ -213,23 +194,17 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date)} with {@code
-   * category}, {@code currentDate}.
-   *
+   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, Date)} with {@code category}, {@code currentDate}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category,
-   * Date)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date)"
-  })
+      "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date)"})
   public void testFindActiveProductsByCategoryWithCategoryCurrentDate_thenReturnEmpty() {
     // Arrange
     when(productDao.readActiveProductsByCategory(Mockito.<Long>any(), Mockito.<Date>any()))
@@ -237,10 +212,8 @@ public class CatalogServiceImplDiffblueTest {
     CategoryImpl category = new CategoryImpl();
 
     // Act
-    List<Product> actualFindActiveProductsByCategoryResult =
-        catalogServiceImpl.findActiveProductsByCategory(
-            category,
-            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl.findActiveProductsByCategory(category,
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Assert
     verify(productDao).readActiveProductsByCategory(isNull(), isA(Date.class));
@@ -248,31 +221,25 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, int, int)} with {@code
-   * category}, {@code limit}, {@code offset}.
-   *
+   * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category, int, int)} with {@code category}, {@code limit}, {@code offset}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category,
-   * int, int)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"
-  })
+      "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"})
   public void testFindActiveProductsByCategoryWithCategoryLimitOffset_thenReturnEmpty() {
     // Arrange
     when(productDao.readActiveProductsByCategory(Mockito.<Long>any(), anyInt(), anyInt()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindActiveProductsByCategoryResult =
-        catalogServiceImpl.findActiveProductsByCategory(new CategoryImpl(), 1, 2);
+    List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl
+        .findActiveProductsByCategory(new CategoryImpl(), 1, 2);
 
     // Assert
     verify(productDao).readActiveProductsByCategory(isNull(), eq(1), eq(2));
@@ -281,29 +248,24 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findActiveProductsByCategory(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>When {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category)"
-  })
+      "List CatalogServiceImpl.findActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testFindActiveProductsByCategoryWithCategory_whenCategoryImpl_thenReturnEmpty() {
     // Arrange
-    when(productDao.readActiveProductsByCategory(Mockito.<Long>any()))
-        .thenReturn(new ArrayList<>());
+    when(productDao.readActiveProductsByCategory(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindActiveProductsByCategoryResult =
-        catalogServiceImpl.findActiveProductsByCategory(new CategoryImpl());
+    List<Product> actualFindActiveProductsByCategoryResult = catalogServiceImpl
+        .findActiveProductsByCategory(new CategoryImpl());
 
     // Assert
     verify(productDao).readActiveProductsByCategory(isNull());
@@ -311,63 +273,48 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, Date,
-   * SearchCriteria)} with {@code category}, {@code currentDate}, {@code searchCriteria}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category,
-   * Date, SearchCriteria)}
+   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, Date, SearchCriteria)} with {@code category}, {@code currentDate}, {@code searchCriteria}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, SearchCriteria)"
-  })
+      "List CatalogServiceImpl.findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, Date, SearchCriteria)"})
   public void testFindFilteredActiveProductsByCategoryWithCategoryCurrentDateSearchCriteria() {
     // Arrange
-    when(productDao.readFilteredActiveProductsByCategory(
-            Mockito.<Long>any(), Mockito.<Date>any(), Mockito.<SearchCriteria>any()))
-        .thenReturn(new ArrayList<>());
+    when(productDao.readFilteredActiveProductsByCategory(Mockito.<Long>any(), Mockito.<Date>any(),
+        Mockito.<SearchCriteria>any())).thenReturn(new ArrayList<>());
     CategoryImpl category = new CategoryImpl();
-    Date currentDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date currentDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
-    List<Product> actualFindFilteredActiveProductsByCategoryResult =
-        catalogServiceImpl.findFilteredActiveProductsByCategory(
-            category, currentDate, new SearchCriteria());
+    List<Product> actualFindFilteredActiveProductsByCategoryResult = catalogServiceImpl
+        .findFilteredActiveProductsByCategory(category, currentDate, new SearchCriteria());
 
     // Assert
-    verify(productDao)
-        .readFilteredActiveProductsByCategory(isNull(), isA(Date.class), isA(SearchCriteria.class));
+    verify(productDao).readFilteredActiveProductsByCategory(isNull(), isA(Date.class), isA(SearchCriteria.class));
     assertTrue(actualFindFilteredActiveProductsByCategoryResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, SearchCriteria)}
-   * with {@code category}, {@code searchCriteria}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category,
-   * SearchCriteria)}
+   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(Category, SearchCriteria)} with {@code category}, {@code searchCriteria}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"
-  })
+      "List CatalogServiceImpl.findFilteredActiveProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, SearchCriteria)"})
   public void testFindFilteredActiveProductsByCategoryWithCategorySearchCriteria() {
     // Arrange
-    when(productDao.readFilteredActiveProductsByCategory(
-            Mockito.<Long>any(), Mockito.<SearchCriteria>any()))
+    when(productDao.readFilteredActiveProductsByCategory(Mockito.<Long>any(), Mockito.<SearchCriteria>any()))
         .thenReturn(new ArrayList<>());
     CategoryImpl category = new CategoryImpl();
 
     // Act
-    List<Product> actualFindFilteredActiveProductsByCategoryResult =
-        catalogServiceImpl.findFilteredActiveProductsByCategory(category, new SearchCriteria());
+    List<Product> actualFindFilteredActiveProductsByCategoryResult = catalogServiceImpl
+        .findFilteredActiveProductsByCategory(category, new SearchCriteria());
 
     // Assert
     verify(productDao).readFilteredActiveProductsByCategory(isNull(), isA(SearchCriteria.class));
@@ -375,59 +322,44 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)}
-   * with {@code query}, {@code currentDate}, {@code searchCriteria}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date,
-   * SearchCriteria)}
+   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)} with {@code query}, {@code currentDate}, {@code searchCriteria}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, Date, SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List CatalogServiceImpl.findFilteredActiveProductsByQuery(String, Date, SearchCriteria)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findFilteredActiveProductsByQuery(String, Date, SearchCriteria)"})
   public void testFindFilteredActiveProductsByQueryWithQueryCurrentDateSearchCriteria() {
     // Arrange
-    when(productDao.readFilteredActiveProductsByQuery(
-            Mockito.<String>any(), Mockito.<Date>any(), Mockito.<SearchCriteria>any()))
-        .thenReturn(new ArrayList<>());
-    Date currentDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    when(productDao.readFilteredActiveProductsByQuery(Mockito.<String>any(), Mockito.<Date>any(),
+        Mockito.<SearchCriteria>any())).thenReturn(new ArrayList<>());
+    Date currentDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
-    List<Product> actualFindFilteredActiveProductsByQueryResult =
-        catalogServiceImpl.findFilteredActiveProductsByQuery(
-            "Query", currentDate, new SearchCriteria());
+    List<Product> actualFindFilteredActiveProductsByQueryResult = catalogServiceImpl
+        .findFilteredActiveProductsByQuery("Query", currentDate, new SearchCriteria());
 
     // Assert
-    verify(productDao)
-        .readFilteredActiveProductsByQuery(eq("Query"), isA(Date.class), isA(SearchCriteria.class));
+    verify(productDao).readFilteredActiveProductsByQuery(eq("Query"), isA(Date.class), isA(SearchCriteria.class));
     assertTrue(actualFindFilteredActiveProductsByQueryResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)} with
-   * {@code query}, {@code searchCriteria}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String,
-   * SearchCriteria)}
+   * Test {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)} with {@code query}, {@code searchCriteria}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findFilteredActiveProductsByQuery(String, SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List CatalogServiceImpl.findFilteredActiveProductsByQuery(String, SearchCriteria)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findFilteredActiveProductsByQuery(String, SearchCriteria)"})
   public void testFindFilteredActiveProductsByQueryWithQuerySearchCriteria() {
     // Arrange
-    when(productDao.readFilteredActiveProductsByQuery(
-            Mockito.<String>any(), Mockito.<SearchCriteria>any()))
+    when(productDao.readFilteredActiveProductsByQuery(Mockito.<String>any(), Mockito.<SearchCriteria>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindFilteredActiveProductsByQueryResult =
-        catalogServiceImpl.findFilteredActiveProductsByQuery("Query", new SearchCriteria());
+    List<Product> actualFindFilteredActiveProductsByQueryResult = catalogServiceImpl
+        .findFilteredActiveProductsByQuery("Query", new SearchCriteria());
 
     // Assert
     verify(productDao).readFilteredActiveProductsByQuery(eq("Query"), isA(SearchCriteria.class));
@@ -436,16 +368,14 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findAutomaticProductBundles()}.
-   *
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAutomaticProductBundles()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAutomaticProductBundles()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAutomaticProductBundles()"})
   public void testFindAutomaticProductBundles_thenReturnArrayList() {
     // Arrange
@@ -455,8 +385,7 @@ public class CatalogServiceImplDiffblueTest {
     when(productDao.readAutomaticProductBundles()).thenReturn(productBundleList);
 
     // Act
-    List<ProductBundle> actualFindAutomaticProductBundlesResult =
-        catalogServiceImpl.findAutomaticProductBundles();
+    List<ProductBundle> actualFindAutomaticProductBundlesResult = catalogServiceImpl.findAutomaticProductBundles();
 
     // Assert
     verify(productDao).readAutomaticProductBundles();
@@ -465,24 +394,21 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findAutomaticProductBundles()}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAutomaticProductBundles()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAutomaticProductBundles()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAutomaticProductBundles()"})
   public void testFindAutomaticProductBundles_thenReturnEmpty() {
     // Arrange
     when(productDao.readAutomaticProductBundles()).thenReturn(new ArrayList<>());
 
     // Act
-    List<ProductBundle> actualFindAutomaticProductBundlesResult =
-        catalogServiceImpl.findAutomaticProductBundles();
+    List<ProductBundle> actualFindAutomaticProductBundlesResult = catalogServiceImpl.findAutomaticProductBundles();
 
     // Assert
     verify(productDao).readAutomaticProductBundles();
@@ -491,12 +417,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#saveProduct(Product)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#saveProduct(Product)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#saveProduct(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.saveProduct(Product)"})
   public void testSaveProduct() {
     // Arrange
@@ -513,146 +438,131 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findCategoryById(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findCategoryById(Long)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoryById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryById(Long)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryById(Long)"})
   public void testFindCategoryById() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByIdResult =
-        catalogServiceImpl.findCategoryById(1L);
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByIdResult = catalogServiceImpl
+        .findCategoryById(1L);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
+    verify(categoryDao).readCategoryById(eq(1L));
     assertSame(categoryImpl, actualFindCategoryByIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findCategoryByExternalId(String)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findCategoryByExternalId(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoryByExternalId(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByExternalId(String)"
-  })
+      "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByExternalId(String)"})
   public void testFindCategoryByExternalId() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.readCategoryByExternalId(Mockito.<String>any())).thenReturn(categoryImpl);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByExternalIdResult =
-        catalogServiceImpl.findCategoryByExternalId("42");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByExternalIdResult = catalogServiceImpl
+        .findCategoryByExternalId("42");
 
     // Assert
-    verify(categoryDao).readCategoryByExternalId("42");
+    verify(categoryDao).readCategoryByExternalId(eq("42"));
     assertSame(categoryImpl, actualFindCategoryByExternalIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findCategoryByName(String)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findCategoryByName(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoryByName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByName(String)"
-  })
+      "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByName(String)"})
   public void testFindCategoryByName() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.readCategoryByName(Mockito.<String>any())).thenReturn(categoryImpl);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByNameResult =
-        catalogServiceImpl.findCategoryByName("Category Name");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByNameResult = catalogServiceImpl
+        .findCategoryByName("Category Name");
 
     // Assert
-    verify(categoryDao).readCategoryByName("Category Name");
+    verify(categoryDao).readCategoryByName(eq("Category Name"));
     assertSame(categoryImpl, actualFindCategoryByNameResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findCategoriesByName(String)} with {@code categoryName}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findCategoriesByName(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoriesByName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findCategoriesByName(String)"})
   public void testFindCategoriesByNameWithCategoryName() {
     // Arrange
     when(categoryDao.readCategoriesByName(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindCategoriesByNameResult =
-        catalogServiceImpl.findCategoriesByName("Category Name");
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindCategoriesByNameResult = catalogServiceImpl
+        .findCategoriesByName("Category Name");
 
     // Assert
-    verify(categoryDao).readCategoriesByName("Category Name");
+    verify(categoryDao).readCategoriesByName(eq("Category Name"));
     assertTrue(actualFindCategoriesByNameResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findCategoriesByName(String, int, int)} with {@code
-   * categoryName}, {@code limit}, {@code offset}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findCategoriesByName(String, int, int)}
+   * Test {@link CatalogServiceImpl#findCategoriesByName(String, int, int)} with {@code categoryName}, {@code limit}, {@code offset}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoriesByName(String, int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findCategoriesByName(String, int, int)"})
   public void testFindCategoriesByNameWithCategoryNameLimitOffset() {
     // Arrange
-    when(categoryDao.readCategoriesByName(Mockito.<String>any(), anyInt(), anyInt()))
-        .thenReturn(new ArrayList<>());
+    when(categoryDao.readCategoriesByName(Mockito.<String>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindCategoriesByNameResult =
-        catalogServiceImpl.findCategoriesByName("Category Name", 1, 2);
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindCategoriesByNameResult = catalogServiceImpl
+        .findCategoriesByName("Category Name", 1, 2);
 
     // Assert
-    verify(categoryDao).readCategoriesByName("Category Name", 1, 2);
+    verify(categoryDao).readCategoriesByName(eq("Category Name"), eq(1), eq(2));
     assertTrue(actualFindCategoriesByNameResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#saveCategory(Category)}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#saveCategory(org.broadleafcommerce.core.catalog.domain.Category)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#saveCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.saveCategory(org.broadleafcommerce.core.catalog.domain.Category)"
-  })
+      "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.saveCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testSaveCategory() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
-    when(categoryDao.save(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
-        .thenReturn(categoryImpl);
+    when(categoryDao.save(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any())).thenReturn(categoryImpl);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualSaveCategoryResult =
-        catalogServiceImpl.saveCategory(new CategoryImpl());
+    org.broadleafcommerce.core.catalog.domain.Category actualSaveCategoryResult = catalogServiceImpl
+        .saveCategory(new CategoryImpl());
 
     // Assert
     verify(categoryDao).save(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
@@ -661,21 +571,15 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#removeCategory(Category)}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#removeCategory(org.broadleafcommerce.core.catalog.domain.Category)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#removeCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CatalogServiceImpl.removeCategory(org.broadleafcommerce.core.catalog.domain.Category)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CatalogServiceImpl.removeCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testRemoveCategory() {
     // Arrange
-    doNothing()
-        .when(categoryDao)
-        .delete(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
+    doNothing().when(categoryDao).delete(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any());
 
     // Act
     catalogServiceImpl.removeCategory(new CategoryImpl());
@@ -686,12 +590,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#removeSku(Sku)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#removeSku(Sku)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#removeSku(Sku)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CatalogServiceImpl.removeSku(Sku)"})
   public void testRemoveSku() {
     // Arrange
@@ -706,12 +609,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#removeProduct(Product)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#removeProduct(Product)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#removeProduct(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CatalogServiceImpl.removeProduct(Product)"})
   public void testRemoveProduct() {
     // Arrange
@@ -726,20 +628,19 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findAllCategories()}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAllCategories()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAllCategories()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAllCategories()"})
   public void testFindAllCategories() {
     // Arrange
     when(categoryDao.readAllCategories()).thenReturn(new ArrayList<>());
 
     // Act
-    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllCategoriesResult =
-        catalogServiceImpl.findAllCategories();
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllCategoriesResult = catalogServiceImpl
+        .findAllCategories();
 
     // Assert
     verify(categoryDao).readAllCategories();
@@ -748,34 +649,32 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findAllCategories(int, int)} with {@code int}, {@code int}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAllCategories(int, int)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAllCategories(int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAllCategories(int, int)"})
   public void testFindAllCategoriesWithIntInt() {
     // Arrange
     when(categoryDao.readAllCategories(anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllCategoriesResult =
-        catalogServiceImpl.findAllCategories(1, 2);
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllCategoriesResult = catalogServiceImpl
+        .findAllCategories(1, 2);
 
     // Assert
-    verify(categoryDao).readAllCategories(1, 2);
+    verify(categoryDao).readAllCategories(eq(1), eq(2));
     assertTrue(actualFindAllCategoriesResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findTotalCategoryCount()}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findTotalCategoryCount()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findTotalCategoryCount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long CatalogServiceImpl.findTotalCategoryCount()"})
   public void testFindTotalCategoryCount() {
     // Arrange
@@ -791,134 +690,108 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findAllSubCategories(Category)} with {@code category}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category)"
-  })
+      "List CatalogServiceImpl.findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testFindAllSubCategoriesWithCategory() {
     // Arrange
-    when(categoryDao.readAllSubCategories(
-            Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
+    when(categoryDao.readAllSubCategories(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllSubCategoriesResult =
-        catalogServiceImpl.findAllSubCategories(new CategoryImpl());
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllSubCategoriesResult = catalogServiceImpl
+        .findAllSubCategories(new CategoryImpl());
 
     // Assert
-    verify(categoryDao)
-        .readAllSubCategories(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+    verify(categoryDao).readAllSubCategories(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
     assertTrue(actualFindAllSubCategoriesResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findAllSubCategories(Category, int, int)} with {@code category},
-   * {@code limit}, {@code offset}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category,
-   * int, int)}
+   * Test {@link CatalogServiceImpl#findAllSubCategories(Category, int, int)} with {@code category}, {@code limit}, {@code offset}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category, int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category, int, int)"
-  })
+      "List CatalogServiceImpl.findAllSubCategories(org.broadleafcommerce.core.catalog.domain.Category, int, int)"})
   public void testFindAllSubCategoriesWithCategoryLimitOffset() {
     // Arrange
-    when(categoryDao.readAllSubCategories(
-            Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any(), anyInt(), anyInt()))
-        .thenReturn(new ArrayList<>());
+    when(categoryDao.readAllSubCategories(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any(), anyInt(),
+        anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllSubCategoriesResult =
-        catalogServiceImpl.findAllSubCategories(new CategoryImpl(), 1, 2);
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindAllSubCategoriesResult = catalogServiceImpl
+        .findAllSubCategories(new CategoryImpl(), 1, 2);
 
     // Assert
-    verify(categoryDao)
-        .readAllSubCategories(
-            isA(org.broadleafcommerce.core.catalog.domain.Category.class), eq(1), eq(2));
+    verify(categoryDao).readAllSubCategories(isA(org.broadleafcommerce.core.catalog.domain.Category.class), eq(1),
+        eq(2));
     assertTrue(actualFindAllSubCategoriesResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category)} with {@code
-   * category}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category)}
+   * Test {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category)} with {@code category}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category)"
-  })
+      "List CatalogServiceImpl.findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testFindActiveSubCategoriesByCategoryWithCategory() {
     // Arrange
-    when(categoryDao.readActiveSubCategoriesByCategory(
-            Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
+    when(categoryDao
+        .readActiveSubCategoriesByCategory(Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<org.broadleafcommerce.core.catalog.domain.Category>
-        actualFindActiveSubCategoriesByCategoryResult =
-            catalogServiceImpl.findActiveSubCategoriesByCategory(new CategoryImpl());
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindActiveSubCategoriesByCategoryResult = catalogServiceImpl
+        .findActiveSubCategoriesByCategory(new CategoryImpl());
 
     // Assert
     verify(categoryDao)
-        .readActiveSubCategoriesByCategory(
-            isA(org.broadleafcommerce.core.catalog.domain.Category.class));
+        .readActiveSubCategoriesByCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class));
     assertTrue(actualFindActiveSubCategoriesByCategoryResult.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category, int, int)} with
-   * {@code category}, {@code limit}, {@code offset}.
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category,
-   * int, int)}
+   * Test {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(Category, int, int)} with {@code category}, {@code limit}, {@code offset}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"
-  })
+      "List CatalogServiceImpl.findActiveSubCategoriesByCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"})
   public void testFindActiveSubCategoriesByCategoryWithCategoryLimitOffset() {
     // Arrange
     when(categoryDao.readActiveSubCategoriesByCategory(
-            Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any(), anyInt(), anyInt()))
+        Mockito.<org.broadleafcommerce.core.catalog.domain.Category>any(), anyInt(), anyInt()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<org.broadleafcommerce.core.catalog.domain.Category>
-        actualFindActiveSubCategoriesByCategoryResult =
-            catalogServiceImpl.findActiveSubCategoriesByCategory(new CategoryImpl(), 1, 2);
+    List<org.broadleafcommerce.core.catalog.domain.Category> actualFindActiveSubCategoriesByCategoryResult = catalogServiceImpl
+        .findActiveSubCategoriesByCategory(new CategoryImpl(), 1, 2);
 
     // Assert
-    verify(categoryDao)
-        .readActiveSubCategoriesByCategory(
-            isA(org.broadleafcommerce.core.catalog.domain.Category.class), eq(1), eq(2));
+    verify(categoryDao).readActiveSubCategoriesByCategory(isA(org.broadleafcommerce.core.catalog.domain.Category.class),
+        eq(1), eq(2));
     assertTrue(actualFindActiveSubCategoriesByCategoryResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findAllProducts()}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAllProducts()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAllProducts()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAllProducts()"})
   public void testFindAllProducts() {
     // Arrange
@@ -934,12 +807,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findAllProducts(int, int)} with {@code int}, {@code int}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAllProducts(int, int)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAllProducts(int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAllProducts(int, int)"})
   public void testFindAllProductsWithIntInt() {
     // Arrange
@@ -949,18 +821,17 @@ public class CatalogServiceImplDiffblueTest {
     List<Product> actualFindAllProductsResult = catalogServiceImpl.findAllProducts(1, 2);
 
     // Assert
-    verify(categoryDao).readAllProducts(1, 2);
+    verify(categoryDao).readAllProducts(eq(1), eq(2));
     assertTrue(actualFindAllProductsResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findAllSkus()}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAllSkus()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAllSkus()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAllSkus()"})
   public void testFindAllSkus() {
     // Arrange
@@ -976,12 +847,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findAllSkus(int, int)} with {@code int}, {@code int}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAllSkus(int, int)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAllSkus(int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAllSkus(int, int)"})
   public void testFindAllSkusWithIntInt() {
     // Arrange
@@ -991,18 +861,17 @@ public class CatalogServiceImplDiffblueTest {
     List<Sku> actualFindAllSkusResult = catalogServiceImpl.findAllSkus(2, 1);
 
     // Assert
-    verify(skuDao).readAllSkus(2, 1);
+    verify(skuDao).readAllSkus(eq(2), eq(1));
     assertTrue(actualFindAllSkusResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuById(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuById(Long)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuById(Long)"})
   public void testFindSkuById() {
     // Arrange
@@ -1013,18 +882,17 @@ public class CatalogServiceImplDiffblueTest {
     Sku actualFindSkuByIdResult = catalogServiceImpl.findSkuById(1L);
 
     // Assert
-    verify(skuDao).readSkuById(1L);
+    verify(skuDao).readSkuById(eq(1L));
     assertSame(skuImpl, actualFindSkuByIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuByExternalId(String)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuByExternalId(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuByExternalId(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByExternalId(String)"})
   public void testFindSkuByExternalId() {
     // Arrange
@@ -1035,18 +903,17 @@ public class CatalogServiceImplDiffblueTest {
     Sku actualFindSkuByExternalIdResult = catalogServiceImpl.findSkuByExternalId("42");
 
     // Assert
-    verify(skuDao).readSkuByExternalId("42");
+    verify(skuDao).readSkuByExternalId(eq("42"));
     assertSame(skuImpl, actualFindSkuByExternalIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuByUpc(String)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuByUpc(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuByUpc(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByUpc(String)"})
   public void testFindSkuByUpc() {
     // Arrange
@@ -1057,18 +924,17 @@ public class CatalogServiceImplDiffblueTest {
     Sku actualFindSkuByUpcResult = catalogServiceImpl.findSkuByUpc("Upc");
 
     // Assert
-    verify(skuDao).readSkuByUpc("Upc");
+    verify(skuDao).readSkuByUpc(eq("Upc"));
     assertSame(skuImpl, actualFindSkuByUpcResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#saveSku(Sku)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#saveSku(Sku)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#saveSku(Sku)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.saveSku(Sku)"})
   public void testSaveSku() {
     // Arrange
@@ -1085,12 +951,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#saveSkuFee(SkuFee)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#saveSkuFee(SkuFee)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#saveSkuFee(SkuFee)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"SkuFee CatalogServiceImpl.saveSkuFee(SkuFee)"})
   public void testSaveSkuFee() {
     // Arrange
@@ -1107,17 +972,15 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findSkusByIds(List)}.
-   *
    * <ul>
-   *   <li>Given one.
-   *   <li>When {@link ArrayList#ArrayList()} add one.
+   *   <li>Given one.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findSkusByIds(List)"})
   public void testFindSkusByIds_givenOne_whenArrayListAddOne() {
     // Arrange
@@ -1136,17 +999,15 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findSkusByIds(List)}.
-   *
    * <ul>
-   *   <li>Given zero.
-   *   <li>When {@link ArrayList#ArrayList()} add zero.
+   *   <li>Given zero.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findSkusByIds(List)"})
   public void testFindSkusByIds_givenZero_whenArrayListAddZero() {
     // Arrange
@@ -1166,16 +1027,14 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findSkusByIds(List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkusByIds(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findSkusByIds(List)"})
   public void testFindSkusByIds_whenArrayList() {
     // Arrange
@@ -1190,31 +1049,24 @@ public class CatalogServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findProductsForCategory(Category, int, int)} with {@code
-   * category}, {@code limit}, {@code offset}.
-   *
+   * Test {@link CatalogServiceImpl#findProductsForCategory(Category, int, int)} with {@code category}, {@code limit}, {@code offset}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category,
-   * int, int)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"
-  })
+      "List CatalogServiceImpl.findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category, int, int)"})
   public void testFindProductsForCategoryWithCategoryLimitOffset_thenReturnEmpty() {
     // Arrange
-    when(productDao.readProductsByCategory(Mockito.<Long>any(), anyInt(), anyInt()))
-        .thenReturn(new ArrayList<>());
+    when(productDao.readProductsByCategory(Mockito.<Long>any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindProductsForCategoryResult =
-        catalogServiceImpl.findProductsForCategory(new CategoryImpl(), 1, 2);
+    List<Product> actualFindProductsForCategoryResult = catalogServiceImpl.findProductsForCategory(new CategoryImpl(),
+        1, 2);
 
     // Assert
     verify(productDao).readProductsByCategory(isNull(), eq(1), eq(2));
@@ -1223,28 +1075,23 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findProductsForCategory(Category)} with {@code category}.
-   *
    * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return Empty.
+   *   <li>When {@link CategoryImpl} (default constructor).</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * CatalogServiceImpl#findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "List CatalogServiceImpl.findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category)"
-  })
+      "List CatalogServiceImpl.findProductsForCategory(org.broadleafcommerce.core.catalog.domain.Category)"})
   public void testFindProductsForCategoryWithCategory_whenCategoryImpl_thenReturnEmpty() {
     // Arrange
     when(productDao.readProductsByCategory(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindProductsForCategoryResult =
-        catalogServiceImpl.findProductsForCategory(new CategoryImpl());
+    List<Product> actualFindProductsForCategoryResult = catalogServiceImpl.findProductsForCategory(new CategoryImpl());
 
     // Assert
     verify(productDao).readProductsByCategory(isNull());
@@ -1253,340 +1100,14 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId() {
-    // Arrange
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId2() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Cannot create childCategoryURLMap - the urlKey for a category(");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId3() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("cannot-create-childCategoryURLMap---the-urlKey-for-a-category");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
    * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code :}.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsColon() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(":");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code String}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsJavaLangString() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("java.lang.String");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsName() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("Name");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code ?}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsQuestionMark() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("?");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsSlash() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("/");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is space.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsSpace() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(" ");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code UU UU}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsUuUu() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("UU UU");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code .*?\W.*?}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsW_thenReturnNull() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName(".*?\\W.*?");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor) Name is {@code [^\w-]+}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
-  public void testGetChildCategoryURLMapByCategoryId_givenCategoryImplNameIsW_thenReturnNull2() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    categoryImpl.setName("[^\\w-]+");
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
-
-    // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
-
-    // Assert
-    verify(categoryDao).readCategoryById(1L);
-    assertNull(actualChildCategoryURLMapByCategoryId);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
   public void testGetChildCategoryURLMapByCategoryId_thenReturnEmpty() {
     // Arrange
@@ -1595,34 +1116,54 @@ public class CatalogServiceImplDiffblueTest {
     when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(categoryImpl);
 
     // Act
-    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId =
-        catalogServiceImpl.getChildCategoryURLMapByCategoryId(1L);
+    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId = catalogServiceImpl
+        .getChildCategoryURLMapByCategoryId(1L);
 
     // Assert
-    verify(categoryDao).readCategoryById(1L);
+    verify(categoryDao).readCategoryById(eq(1L));
     verify(categoryImpl).getChildCategoryURLMap();
     assertTrue(actualChildCategoryURLMapByCategoryId.isEmpty());
   }
 
   /**
-   * Test {@link CatalogServiceImpl#createCategory()}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#createCategory()}
+   * Test {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#getChildCategoryURLMapByCategoryId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.createCategory()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map CatalogServiceImpl.getChildCategoryURLMapByCategoryId(Long)"})
+  public void testGetChildCategoryURLMapByCategoryId_thenReturnNull() {
+    // Arrange
+    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(null);
+
+    // Act
+    Map<String, List<Long>> actualChildCategoryURLMapByCategoryId = catalogServiceImpl
+        .getChildCategoryURLMapByCategoryId(1L);
+
+    // Assert
+    verify(categoryDao).readCategoryById(eq(1L));
+    assertNull(actualChildCategoryURLMapByCategoryId);
+  }
+
+  /**
+   * Test {@link CatalogServiceImpl#createCategory()}.
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#createCategory()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.createCategory()"})
   public void testCreateCategory() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.create()).thenReturn(categoryImpl);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualCreateCategoryResult =
-        catalogServiceImpl.createCategory();
+    org.broadleafcommerce.core.catalog.domain.Category actualCreateCategoryResult = catalogServiceImpl.createCategory();
 
     // Assert
     verify(categoryDao).create();
@@ -1631,12 +1172,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#createSku()}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#createSku()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#createSku()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.createSku()"})
   public void testCreateSku() {
     // Arrange
@@ -1653,12 +1193,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#createProduct(ProductType)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#createProduct(ProductType)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#createProduct(ProductType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.createProduct(ProductType)"})
   public void testCreateProduct() {
     // Arrange
@@ -1675,20 +1214,18 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#readAllProductOptions()}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#readAllProductOptions()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#readAllProductOptions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.readAllProductOptions()"})
   public void testReadAllProductOptions() {
     // Arrange
     when(productOptionDao.readAllProductOptions()).thenReturn(new ArrayList<>());
 
     // Act
-    List<ProductOption> actualReadAllProductOptionsResult =
-        catalogServiceImpl.readAllProductOptions();
+    List<ProductOption> actualReadAllProductOptionsResult = catalogServiceImpl.readAllProductOptions();
 
     // Assert
     verify(productOptionDao).readAllProductOptions();
@@ -1697,22 +1234,19 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#saveProductOption(ProductOption)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#saveProductOption(ProductOption)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#saveProductOption(ProductOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProductOption CatalogServiceImpl.saveProductOption(ProductOption)"})
   public void testSaveProductOption() {
     // Arrange
     ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    when(productOptionDao.saveProductOption(Mockito.<ProductOption>any()))
-        .thenReturn(productOptionImpl);
+    when(productOptionDao.saveProductOption(Mockito.<ProductOption>any())).thenReturn(productOptionImpl);
 
     // Act
-    ProductOption actualSaveProductOptionResult =
-        catalogServiceImpl.saveProductOption(new ProductOptionImpl());
+    ProductOption actualSaveProductOptionResult = catalogServiceImpl.saveProductOption(new ProductOptionImpl());
 
     // Assert
     verify(productOptionDao).saveProductOption(isA(ProductOption.class));
@@ -1721,12 +1255,11 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findProductOptionById(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductOptionById(Long)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductOptionById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProductOption CatalogServiceImpl.findProductOptionById(Long)"})
   public void testFindProductOptionById() {
     // Arrange
@@ -1737,42 +1270,38 @@ public class CatalogServiceImplDiffblueTest {
     ProductOption actualFindProductOptionByIdResult = catalogServiceImpl.findProductOptionById(1L);
 
     // Assert
-    verify(productOptionDao).readProductOptionById(1L);
+    verify(productOptionDao).readProductOptionById(eq(1L));
     assertSame(productOptionImpl, actualFindProductOptionByIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductOptionValueById(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductOptionValueById(Long)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductOptionValueById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ProductOptionValue CatalogServiceImpl.findProductOptionValueById(Long)"})
   public void testFindProductOptionValueById() {
     // Arrange
     ProductOptionValueImpl productOptionValueImpl = new ProductOptionValueImpl();
-    when(productOptionDao.readProductOptionValueById(Mockito.<Long>any()))
-        .thenReturn(productOptionValueImpl);
+    when(productOptionDao.readProductOptionValueById(Mockito.<Long>any())).thenReturn(productOptionValueImpl);
 
     // Act
-    ProductOptionValue actualFindProductOptionValueByIdResult =
-        catalogServiceImpl.findProductOptionValueById(1L);
+    ProductOptionValue actualFindProductOptionValueByIdResult = catalogServiceImpl.findProductOptionValueById(1L);
 
     // Assert
-    verify(productOptionDao).readProductOptionValueById(1L);
+    verify(productOptionDao).readProductOptionValueById(eq(1L));
     assertSame(productOptionValueImpl, actualFindProductOptionValueByIdResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#createCatalogContextDTO()}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#createCatalogContextDTO()}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#createCatalogContextDTO()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"CatalogContextDTO CatalogServiceImpl.createCatalogContextDTO()"})
   public void testCreateCatalogContextDTO() {
     // Arrange, Act and Assert
@@ -1781,160 +1310,101 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#findCategoryByURI(String)}.
-   *
    * <ul>
-   *   <li>Then calls {@link CategoryDao#findCategoryByURI(String)}.
+   *   <li>Then return {@link CategoryImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByURI(String)"
-  })
-  public void testFindCategoryByURI_thenCallsFindCategoryByURI() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByURI(String)"})
+  public void testFindCategoryByURI_thenReturnCategoryImpl() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.findCategoryByURI(Mockito.<String>any())).thenReturn(categoryImpl);
-
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findCategoryByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findCategoryByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(null);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult =
-        catalogServiceImpl.findCategoryByURI("Uri");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult = catalogServiceImpl
+        .findCategoryByURI("Uri");
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(categoryDao).findCategoryByURI("Uri");
-    verify(catalogServiceExtensionHandler)
-        .findCategoryByURI(
-            isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(categoryDao).findCategoryByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findCategoryByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertSame(categoryImpl, actualFindCategoryByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findCategoryByURI(String)}.
-   *
    * <ul>
-   *   <li>Then calls {@link CategoryDaoImpl#findCategoryByURI(String)}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByURI(String)"
-  })
-  public void testFindCategoryByURI_thenCallsFindCategoryByURI2() {
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    CategoryImpl categoryImpl = new CategoryImpl();
-    when(categoryDao.findCategoryByURI(Mockito.<String>any())).thenReturn(categoryImpl);
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setCategoryDao(categoryDao);
-
-    // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult =
-        catalogServiceImpl.findCategoryByURI("Uri");
-
-    // Assert
-    verify(categoryDao).findCategoryByURI("Uri");
-    assertSame(categoryImpl, actualFindCategoryByURIResult);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findCategoryByURI(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findCategoryByURI(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByURI(String)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findCategoryByURI(String)"})
   public void testFindCategoryByURI_thenReturnNull() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findCategoryByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findCategoryByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult =
-        catalogServiceImpl.findCategoryByURI("Uri");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindCategoryByURIResult = catalogServiceImpl
+        .findCategoryByURI("Uri");
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(catalogServiceExtensionHandler)
-        .findCategoryByURI(
-            isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(catalogServiceExtensionHandler).findCategoryByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertNull(actualFindCategoryByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findOriginalCategoryByURI(String)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findOriginalCategoryByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findOriginalCategoryByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findOriginalCategoryByURI(String)"
-  })
+      "org.broadleafcommerce.core.catalog.domain.Category CatalogServiceImpl.findOriginalCategoryByURI(String)"})
   public void testFindOriginalCategoryByURI() {
     // Arrange
     CategoryImpl categoryImpl = new CategoryImpl();
     when(categoryDao.findCategoryByURI(Mockito.<String>any())).thenReturn(categoryImpl);
 
     // Act
-    org.broadleafcommerce.core.catalog.domain.Category actualFindOriginalCategoryByURIResult =
-        catalogServiceImpl.findOriginalCategoryByURI("Uri");
+    org.broadleafcommerce.core.catalog.domain.Category actualFindOriginalCategoryByURIResult = catalogServiceImpl
+        .findOriginalCategoryByURI("Uri");
 
     // Assert
-    verify(categoryDao).findCategoryByURI("Uri");
+    verify(categoryDao).findCategoryByURI(eq("Uri"));
     assertSame(categoryImpl, actualFindOriginalCategoryByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductByURI(String)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
   public void testFindProductByURI() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findProductByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findProductByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
     // Act
@@ -1942,63 +1412,27 @@ public class CatalogServiceImplDiffblueTest {
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(catalogServiceExtensionHandler)
-        .findProductByURI(
-            isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(catalogServiceExtensionHandler).findProductByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertNull(actualFindProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductByURI(String)}.
-   *
    * <ul>
-   *   <li>Then calls {@link ProductDaoImpl#findProductByURI(String)}.
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
-  public void testFindProductByURI_thenCallsFindProductByURI() {
-    // Arrange
-    ProductDaoImpl productDao = mock(ProductDaoImpl.class);
-    when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setProductDao(productDao);
-
-    // Act
-    Product actualFindProductByURIResult = catalogServiceImpl.findProductByURI("Uri");
-
-    // Assert
-    verify(productDao).findProductByURI("Uri");
-    assertNull(actualFindProductByURIResult);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findProductByURI(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
   public void testFindProductByURI_thenReturnNull() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findProductByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findProductByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
     when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
@@ -2007,35 +1441,28 @@ public class CatalogServiceImplDiffblueTest {
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(productDao).findProductByURI("Uri");
-    verify(catalogServiceExtensionHandler)
-        .findProductByURI(
-            isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(productDao).findProductByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findProductByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertNull(actualFindProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductByURI(String)}.
-   *
    * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
   public void testFindProductByURI_thenReturnProductBundleImpl() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findProductByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findProductByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
     ArrayList<Product> productList = new ArrayList<>();
@@ -2048,35 +1475,28 @@ public class CatalogServiceImplDiffblueTest {
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(productDao).findProductByURI("Uri");
-    verify(catalogServiceExtensionHandler)
-        .findProductByURI(
-            isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(productDao).findProductByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findProductByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertSame(productBundleImpl, actualFindProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductByURI(String)}.
-   *
    * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findProductByURI(String)"})
   public void testFindProductByURI_thenReturnProductBundleImpl2() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findProductByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findProductByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
     ArrayList<Product> productList = new ArrayList<>();
@@ -2090,25 +1510,22 @@ public class CatalogServiceImplDiffblueTest {
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(productDao).findProductByURI("Uri");
-    verify(catalogServiceExtensionHandler)
-        .findProductByURI(
-            isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(productDao).findProductByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findProductByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertSame(productBundleImpl, actualFindProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findOriginalProductByURI(String)}.
-   *
    * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findOriginalProductByURI(String)"})
   public void testFindOriginalProductByURI_thenReturnProductBundleImpl() {
     // Arrange
@@ -2118,26 +1535,23 @@ public class CatalogServiceImplDiffblueTest {
     when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(productList);
 
     // Act
-    Product actualFindOriginalProductByURIResult =
-        catalogServiceImpl.findOriginalProductByURI("Uri");
+    Product actualFindOriginalProductByURIResult = catalogServiceImpl.findOriginalProductByURI("Uri");
 
     // Assert
-    verify(productDao).findProductByURI("Uri");
+    verify(productDao).findProductByURI(eq("Uri"));
     assertSame(productBundleImpl, actualFindOriginalProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findOriginalProductByURI(String)}.
-   *
    * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findOriginalProductByURI(String)"})
   public void testFindOriginalProductByURI_thenReturnProductBundleImpl2() {
     // Arrange
@@ -2148,65 +1562,55 @@ public class CatalogServiceImplDiffblueTest {
     when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(productList);
 
     // Act
-    Product actualFindOriginalProductByURIResult =
-        catalogServiceImpl.findOriginalProductByURI("Uri");
+    Product actualFindOriginalProductByURIResult = catalogServiceImpl.findOriginalProductByURI("Uri");
 
     // Assert
-    verify(productDao).findProductByURI("Uri");
+    verify(productDao).findProductByURI(eq("Uri"));
     assertSame(productBundleImpl, actualFindOriginalProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findOriginalProductByURI(String)}.
-   *
    * <ul>
-   *   <li>When {@code Uri}.
-   *   <li>Then return {@code null}.
+   *   <li>When {@code Uri}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findOriginalProductByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Product CatalogServiceImpl.findOriginalProductByURI(String)"})
   public void testFindOriginalProductByURI_whenUri_thenReturnNull() {
     // Arrange
     when(productDao.findProductByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
     // Act
-    Product actualFindOriginalProductByURIResult =
-        catalogServiceImpl.findOriginalProductByURI("Uri");
+    Product actualFindOriginalProductByURIResult = catalogServiceImpl.findOriginalProductByURI("Uri");
 
     // Assert
-    verify(productDao).findProductByURI("Uri");
+    verify(productDao).findProductByURI(eq("Uri"));
     assertNull(actualFindOriginalProductByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link SkuImpl} (default constructor).
-   *   <li>When {@code Uri}.
-   *   <li>Then return {@link SkuImpl} (default constructor).
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SkuImpl} (default constructor).</li>
+   *   <li>When {@code Uri}.</li>
+   *   <li>Then return {@link SkuImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
   public void testFindSkuByURI_givenArrayListAddSkuImpl_whenUri_thenReturnSkuImpl() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findSkuByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
     ArrayList<Sku> skuList = new ArrayList<>();
@@ -2219,36 +1623,28 @@ public class CatalogServiceImplDiffblueTest {
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(skuDao).findSkuByURI("Uri");
-    verify(catalogServiceExtensionHandler)
-        .findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(skuDao).findSkuByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertSame(skuImpl, actualFindSkuByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
-   *
    * <ul>
-   *   <li>Given {@link CatalogServiceExtensionHandler} {@link
-   *       CatalogServiceExtensionHandler#findSkuByURI(CatalogContextDTO, String,
-   *       ExtensionResultHolder)} return {@code HANDLED}.
+   *   <li>Given {@link CatalogServiceExtensionHandler} {@link CatalogServiceExtensionHandler#findSkuByURI(CatalogContextDTO, String, ExtensionResultHolder)} return {@code HANDLED}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
   public void testFindSkuByURI_givenCatalogServiceExtensionHandlerFindSkuByURIReturnHandled() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findSkuByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
 
     // Act
@@ -2256,68 +1652,31 @@ public class CatalogServiceImplDiffblueTest {
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(catalogServiceExtensionHandler)
-        .findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertNull(actualFindSkuByURIResult);
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SkuDaoImpl#findSkuByURI(String)}.
+   *   <li>Then calls {@link SkuImpl#getProduct()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
-  public void testFindSkuByURI_thenCallsFindSkuByURI() {
-    // Arrange
-    SkuDaoImpl skuDao = mock(SkuDaoImpl.class);
-    when(skuDao.findSkuByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
-
-    CatalogServiceImpl catalogServiceImpl = new CatalogServiceImpl();
-    catalogServiceImpl.setSkuDao(skuDao);
-
-    // Act
-    Sku actualFindSkuByURIResult = catalogServiceImpl.findSkuByURI("Uri");
-
-    // Assert
-    verify(skuDao).findSkuByURI("Uri");
-    assertNull(actualFindSkuByURIResult);
-  }
-
-  /**
-   * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link SkuImpl#getProduct()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
   public void testFindSkuByURI_thenCallsGetProduct() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findSkuByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
-
     SkuImpl skuImpl = mock(SkuImpl.class);
     when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
     when(skuImpl.getProduct()).thenReturn(new ProductBundleImpl());
-
     SkuImpl skuImpl2 = mock(SkuImpl.class);
     when(skuImpl2.getUrlKey()).thenReturn("https://example.org/example");
     when(skuImpl2.getProduct()).thenReturn(new ProductBundleImpl());
@@ -2332,37 +1691,32 @@ public class CatalogServiceImplDiffblueTest {
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(skuDao).findSkuByURI("Uri");
+    verify(skuDao).findSkuByURI(eq("Uri"));
     verify(skuImpl2).getProduct();
     verify(skuImpl).getProduct();
     verify(skuImpl2).getUrlKey();
     verify(skuImpl).getUrlKey();
-    verify(catalogServiceExtensionHandler)
-        .findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
   }
 
   /**
    * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
-   *
    * <ul>
-   *   <li>Then return {@code null}.
+   *   <li>When {@code Uri}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
-  public void testFindSkuByURI_thenReturnNull() {
+  public void testFindSkuByURI_whenUri_thenReturnNull() {
     // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findSkuByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    CatalogServiceExtensionHandler catalogServiceExtensionHandler = mock(CatalogServiceExtensionHandler.class);
+    when(catalogServiceExtensionHandler.findSkuByURI(Mockito.<CatalogContextDTO>any(), Mockito.<String>any(),
+        Mockito.<ExtensionResultHolder<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
     when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
     when(skuDao.findSkuByURI(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
@@ -2371,101 +1725,48 @@ public class CatalogServiceImplDiffblueTest {
 
     // Assert
     verify(catalogServiceExtensionManager).getProxy();
-    verify(skuDao).findSkuByURI("Uri");
-    verify(catalogServiceExtensionHandler)
-        .findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"), isA(ExtensionResultHolder.class));
+    verify(skuDao).findSkuByURI(eq("Uri"));
+    verify(catalogServiceExtensionHandler).findSkuByURI(isA(CatalogContextDTO.class), eq("Uri"),
+        isA(ExtensionResultHolder.class));
     assertNull(actualFindSkuByURIResult);
   }
 
   /**
-   * Test {@link CatalogServiceImpl#findSkuByURI(String)}.
-   *
-   * <ul>
-   *   <li>When {@code nullhttps://example.org/example}.
-   *   <li>Then calls {@link SkuImpl#getProduct()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findSkuByURI(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Sku CatalogServiceImpl.findSkuByURI(String)"})
-  public void testFindSkuByURI_whenNullhttpsExampleOrgExample_thenCallsGetProduct() {
-    // Arrange
-    CatalogServiceExtensionHandler catalogServiceExtensionHandler =
-        mock(CatalogServiceExtensionHandler.class);
-    when(catalogServiceExtensionHandler.findSkuByURI(
-            Mockito.<CatalogContextDTO>any(),
-            Mockito.<String>any(),
-            Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
-    when(catalogServiceExtensionManager.getProxy()).thenReturn(catalogServiceExtensionHandler);
-
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.getUrlKey()).thenReturn("https://example.org/example");
-    when(skuImpl.getProduct()).thenReturn(new ProductBundleImpl());
-
-    ArrayList<Sku> skuList = new ArrayList<>();
-    skuList.add(skuImpl);
-    skuList.add(mock(SkuImpl.class));
-    when(skuDao.findSkuByURI(Mockito.<String>any())).thenReturn(skuList);
-
-    // Act
-    catalogServiceImpl.findSkuByURI("nullhttps://example.org/example");
-
-    // Assert
-    verify(catalogServiceExtensionManager).getProxy();
-    verify(skuDao).findSkuByURI("nullhttps://example.org/example");
-    verify(skuImpl).getProduct();
-    verify(skuImpl).getUrlKey();
-    verify(catalogServiceExtensionHandler)
-        .findSkuByURI(
-            isA(CatalogContextDTO.class),
-            eq("nullhttps://example.org/example"),
-            isA(ExtensionResultHolder.class));
-  }
-
-  /**
    * Test {@link CatalogServiceImpl#findAssignedProductOptionsByProductId(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAssignedProductOptionsByProductId(Long)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAssignedProductOptionsByProductId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAssignedProductOptionsByProductId(Long)"})
   public void testFindAssignedProductOptionsByProductId() {
     // Arrange
-    when(productOptionDao.findAssignedProductOptionsByProductId(Mockito.<Long>any()))
-        .thenReturn(new ArrayList<>());
+    when(productOptionDao.findAssignedProductOptionsByProductId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<AssignedProductOptionDTO> actualFindAssignedProductOptionsByProductIdResult =
-        catalogServiceImpl.findAssignedProductOptionsByProductId(1L);
+    List<AssignedProductOptionDTO> actualFindAssignedProductOptionsByProductIdResult = catalogServiceImpl
+        .findAssignedProductOptionsByProductId(1L);
 
     // Assert
-    verify(productOptionDao).findAssignedProductOptionsByProductId(1L);
+    verify(productOptionDao).findAssignedProductOptionsByProductId(eq(1L));
     assertTrue(actualFindAssignedProductOptionsByProductIdResult.isEmpty());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findAssignedProductOptionsByProduct(Product)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findAssignedProductOptionsByProduct(Product)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findAssignedProductOptionsByProduct(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List CatalogServiceImpl.findAssignedProductOptionsByProduct(Product)"})
   public void testFindAssignedProductOptionsByProduct() {
     // Arrange
-    when(productOptionDao.findAssignedProductOptionsByProduct(Mockito.<Product>any()))
-        .thenReturn(new ArrayList<>());
+    when(productOptionDao.findAssignedProductOptionsByProduct(Mockito.<Product>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<AssignedProductOptionDTO> actualFindAssignedProductOptionsByProductResult =
-        catalogServiceImpl.findAssignedProductOptionsByProduct(new ProductBundleImpl());
+    List<AssignedProductOptionDTO> actualFindAssignedProductOptionsByProductResult = catalogServiceImpl
+        .findAssignedProductOptionsByProduct(new ProductBundleImpl());
 
     // Assert
     verify(productOptionDao).findAssignedProductOptionsByProduct(isA(Product.class));
@@ -2474,50 +1775,43 @@ public class CatalogServiceImplDiffblueTest {
 
   /**
    * Test {@link CatalogServiceImpl#countProductsUsingProductOptionById(Long)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#countProductsUsingProductOptionById(Long)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#countProductsUsingProductOptionById(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Long CatalogServiceImpl.countProductsUsingProductOptionById(Long)"})
   public void testCountProductsUsingProductOptionById() {
     // Arrange
     when(productOptionDao.countProductsUsingProductOptionById(Mockito.<Long>any())).thenReturn(1L);
 
     // Act
-    Long actualCountProductsUsingProductOptionByIdResult =
-        catalogServiceImpl.countProductsUsingProductOptionById(1L);
+    Long actualCountProductsUsingProductOptionByIdResult = catalogServiceImpl.countProductsUsingProductOptionById(1L);
 
     // Assert
-    verify(productOptionDao).countProductsUsingProductOptionById(1L);
+    verify(productOptionDao).countProductsUsingProductOptionById(eq(1L));
     assertEquals(1L, actualCountProductsUsingProductOptionByIdResult.longValue());
   }
 
   /**
    * Test {@link CatalogServiceImpl#findProductIdsUsingProductOptionById(Long, int, int)}.
-   *
-   * <p>Method under test: {@link CatalogServiceImpl#findProductIdsUsingProductOptionById(Long, int,
-   * int)}
+   * <p>
+   * Method under test: {@link CatalogServiceImpl#findProductIdsUsingProductOptionById(Long, int, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List CatalogServiceImpl.findProductIdsUsingProductOptionById(Long, int, int)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List CatalogServiceImpl.findProductIdsUsingProductOptionById(Long, int, int)"})
   public void testFindProductIdsUsingProductOptionById() {
     // Arrange
-    when(productOptionDao.findProductIdsUsingProductOptionById(
-            Mockito.<Long>any(), anyInt(), anyInt()))
+    when(productOptionDao.findProductIdsUsingProductOptionById(Mockito.<Long>any(), anyInt(), anyInt()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Long> actualFindProductIdsUsingProductOptionByIdResult =
-        catalogServiceImpl.findProductIdsUsingProductOptionById(1L, 1, 3);
+    List<Long> actualFindProductIdsUsingProductOptionByIdResult = catalogServiceImpl
+        .findProductIdsUsingProductOptionById(1L, 1, 3);
 
     // Assert
-    verify(productOptionDao).findProductIdsUsingProductOptionById(1L, 1, 3);
+    verify(productOptionDao).findProductIdsUsingProductOptionById(eq(1L), eq(1), eq(3));
     assertTrue(actualFindProductIdsUsingProductOptionByIdResult.isEmpty());
   }
 }

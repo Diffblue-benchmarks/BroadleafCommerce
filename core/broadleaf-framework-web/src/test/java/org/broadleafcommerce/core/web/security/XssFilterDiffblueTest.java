@@ -28,7 +28,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Collection;
@@ -39,7 +38,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
@@ -48,8 +46,10 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -57,80 +57,62 @@ import org.springframework.mock.web.MockServletContext;
 
 @ExtendWith(MockitoExtension.class)
 class XssFilterDiffblueTest {
-  @InjectMocks private XssFilter xssFilter;
+  @Mock
+  private Environment environment;
+
+  @InjectMocks
+  private XssFilter xssFilter;
 
   /**
-   * Test {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
+   * Test {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
+   *   <li>Given {@link IOException#IOException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link IOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
+   * <p>
+   * Method under test: {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName(
-      "Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); given IOException(); then throw IOException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); given IOException(String) with 'foo'; then throw IOException")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "void XssFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  void testDoFilterInternalUnlessIgnored_givenIOException_thenThrowIOException()
+      "void XssFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  void testDoFilterInternalUnlessIgnored_givenIOExceptionWithFoo_thenThrowIOException()
       throws IOException, ServletException {
     // Arrange
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}));
     MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
-
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new IOException())
-        .when(filterChain)
+    doThrow(new IOException("foo")).when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act and Assert
-    assertThrows(
-        IOException.class,
-        () ->
-            xssFilter.doFilterInternalUnlessIgnored(
-                httpServletRequest, httpServletResponse, filterChain));
+    assertThrows(IOException.class,
+        () -> xssFilter.doFilterInternalUnlessIgnored(httpServletRequest, httpServletResponse, filterChain));
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
   }
 
   /**
-   * Test {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
+   * Test {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)}
-   *       does nothing.
+   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)} does nothing.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
+   * <p>
+   * Method under test: {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName(
-      "Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); when FilterChain doFilter(ServletRequest, ServletResponse) does nothing")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); when FilterChain doFilter(ServletRequest, ServletResponse) does nothing")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({
-    "void XssFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  void testDoFilterInternalUnlessIgnored_whenFilterChainDoFilterDoesNothing()
-      throws IOException, ServletException {
+      "void XssFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  void testDoFilterInternalUnlessIgnored_whenFilterChainDoFilterDoesNothing() throws IOException, ServletException {
     // Arrange
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}));
     MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
-
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
     xssFilter.doFilterInternalUnlessIgnored(httpServletRequest, httpServletResponse, filterChain);
@@ -141,22 +123,20 @@ class XssFilterDiffblueTest {
 
   /**
    * Test {@link XssFilter#wrapRequest(HttpServletRequest)}.
-   *
    * <ul>
-   *   <li>Then Parts return {@link List}.
+   *   <li>Then Parts return {@link List}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link XssFilter#wrapRequest(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link XssFilter#wrapRequest(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test wrapRequest(HttpServletRequest); then Parts return List")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"XssRequestWrapper XssFilter.wrapRequest(HttpServletRequest)"})
   void testWrapRequest_thenPartsReturnList() throws IOException, ServletException {
     // Arrange
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(
+        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}));
 
     // Act
     XssRequestWrapper actualWrapRequestResult = xssFilter.wrapRequest(httpServletRequest);
@@ -165,7 +145,7 @@ class XssFilterDiffblueTest {
     Collection<Part> parts = actualWrapRequestResult.getParts();
     assertTrue(parts instanceof List);
     ServletRequest request = actualWrapRequestResult.getRequest();
-    assertTrue(request instanceof HttpServletRequestWrapper);
+    assertTrue(request instanceof SearchRequestWrapper);
     assertTrue(actualWrapRequestResult.getSession() instanceof MockHttpSession);
     assertTrue(actualWrapRequestResult.getServletContext() instanceof MockServletContext);
     assertEquals("", actualWrapRequestResult.getContextPath());
@@ -177,6 +157,7 @@ class XssFilterDiffblueTest {
     assertEquals("localhost", actualWrapRequestResult.getLocalName());
     assertEquals("localhost", actualWrapRequestResult.getRemoteHost());
     assertEquals("localhost", actualWrapRequestResult.getServerName());
+    assertNull(actualWrapRequestResult.getCookies());
     assertNull(actualWrapRequestResult.getCharacterEncoding());
     assertNull(actualWrapRequestResult.getContentType());
     assertNull(actualWrapRequestResult.getAuthType());
@@ -187,7 +168,6 @@ class XssFilterDiffblueTest {
     assertNull(actualWrapRequestResult.getRequestedSessionId());
     assertNull(actualWrapRequestResult.getUserPrincipal());
     assertNull(actualWrapRequestResult.getAsyncContext());
-    assertNull(actualWrapRequestResult.getCookies());
     assertNull(actualWrapRequestResult.environment);
     assertEquals(-1, actualWrapRequestResult.getContentLength());
     assertEquals(-1L, actualWrapRequestResult.getContentLengthLong());
@@ -208,13 +188,12 @@ class XssFilterDiffblueTest {
 
   /**
    * Test {@link XssFilter#getOrder()}.
-   *
-   * <p>Method under test: {@link XssFilter#getOrder()}
+   * <p>
+   * Method under test: {@link XssFilter#getOrder()}
    */
   @Test
   @DisplayName("Test getOrder()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int XssFilter.getOrder()"})
   void testGetOrder() {
     // Arrange, Act and Assert

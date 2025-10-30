@@ -23,7 +23,6 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -38,12 +37,12 @@ import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItemAttribute;
 import org.broadleafcommerce.core.order.domain.OrderItemAttributeImpl;
+import org.broadleafcommerce.core.order.domain.OrderItemImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -55,13 +54,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class GoogleAnalytics4ProcessorDiffblueTest {
-  @InjectMocks private GoogleAnalytics4Processor googleAnalytics4Processor;
+  @InjectMocks
+  private GoogleAnalytics4Processor googleAnalytics4Processor;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link GoogleAnalytics4Processor#getName()}
    *   <li>{@link GoogleAnalytics4Processor#getPrecedence()}
@@ -69,12 +68,8 @@ class GoogleAnalytics4ProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String GoogleAnalytics4Processor.getName()",
-    "int GoogleAnalytics4Processor.getPrecedence()"
-  })
+  @Tag("MaintainedByDiffblue")
+  @MethodsUnderTest({"String GoogleAnalytics4Processor.getName()", "int GoogleAnalytics4Processor.getPrecedence()"})
   void testGettersAndSetters() {
     // Arrange
     GoogleAnalytics4Processor googleAnalytics4Processor = new GoogleAnalytics4Processor();
@@ -89,84 +84,23 @@ class GoogleAnalytics4ProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleAnalytics4Processor#getItemJs(Order)}.
-   *
-   * <p>Method under test: {@link GoogleAnalytics4Processor#getItemJs(Order)}
-   */
-  @Test
-  @DisplayName("Test getItemJs(Order)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GoogleAnalytics4Processor.getItemJs(Order)"})
-  void testGetItemJs() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
-    fulfillmentGroupImpl.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
-
-    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
-    fulfillmentGroups.add(fulfillmentGroupImpl);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(fulfillmentGroups);
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName(",items:[");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(new OrderStatus(",items:[", ",items:["));
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-
-    // Act and Assert
-    assertEquals(",items:[]", googleAnalytics4Processor.getItemJs(order));
-  }
-
-  /**
-   * Test {@link GoogleAnalytics4Processor#getItemJs(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default
-   *       constructor).
-   *   <li>Then return {@code ,items:[]}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
+   *   <li>Then return {@code ,items:[]}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleAnalytics4Processor#getItemJs(Order)}
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getItemJs(Order)}
    */
   @Test
-  @DisplayName(
-      "Test getItemJs(Order); given ArrayList() add FulfillmentGroupImpl (default constructor); then return ',items:[]'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getItemJs(Order); given ArrayList() add FulfillmentGroupImpl (default constructor); then return ',items:[]'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleAnalytics4Processor.getItemJs(Order)"})
   void testGetItemJs_givenArrayListAddFulfillmentGroupImpl_thenReturnItems() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
@@ -190,11 +124,11 @@ class GoogleAnalytics4ProcessorDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(new OrderStatus(",items:[", ",items:["));
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
@@ -203,28 +137,23 @@ class GoogleAnalytics4ProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleAnalytics4Processor#getItemJs(Order)}.
-   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
-   *   <li>Then return {@code ,items:[]}.
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
+   *   <li>Then return {@code ,items:[]}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleAnalytics4Processor#getItemJs(Order)}
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getItemJs(Order)}
    */
   @Test
-  @DisplayName(
-      "Test getItemJs(Order); given Auditable (default constructor) CreatedBy is one; then return ',items:[]'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getItemJs(Order); given Auditable (default constructor) CreatedBy is one; then return ',items:[]'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleAnalytics4Processor.getItemJs(Order)"})
   void testGetItemJs_givenAuditableCreatedByIsOne_thenReturnItems() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -245,11 +174,11 @@ class GoogleAnalytics4ProcessorDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(new OrderStatus(",items:[", ",items:["));
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
@@ -258,26 +187,21 @@ class GoogleAnalytics4ProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleAnalytics4Processor#getVariation(OrderItem)}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code name} is {@link OrderItemAttributeImpl} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link HashMap#HashMap()} {@code name} is {@link OrderItemAttributeImpl} (default constructor).</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleAnalytics4Processor#getVariation(OrderItem)}
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getVariation(OrderItem)}
    */
   @Test
-  @DisplayName(
-      "Test getVariation(OrderItem); given HashMap() 'name' is OrderItemAttributeImpl (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVariation(OrderItem); given HashMap() 'name' is OrderItemAttributeImpl (default constructor); then return 'null'")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleAnalytics4Processor.getVariation(OrderItem)"})
   void testGetVariation_givenHashMapNameIsOrderItemAttributeImpl_thenReturnNull() {
     // Arrange
     HashMap<String, OrderItemAttribute> stringOrderItemAttributeMap = new HashMap<>();
     stringOrderItemAttributeMap.put("name", new OrderItemAttributeImpl());
-
     BundleOrderItemImpl item = mock(BundleOrderItemImpl.class);
     when(item.getOrderItemAttributes()).thenReturn(stringOrderItemAttributeMap);
 
@@ -291,18 +215,16 @@ class GoogleAnalytics4ProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleAnalytics4Processor#getVariation(OrderItem)}.
-   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.
-   *   <li>Then calls {@link BundleOrderItemImpl#getCategory()}.
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>Then calls {@link OrderItemImpl#getCategory()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleAnalytics4Processor#getVariation(OrderItem)}
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getVariation(OrderItem)}
    */
   @Test
   @DisplayName("Test getVariation(OrderItem); given HashMap(); then calls getCategory()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleAnalytics4Processor.getVariation(OrderItem)"})
   void testGetVariation_givenHashMap_thenCallsGetCategory() {
     // Arrange
@@ -321,19 +243,16 @@ class GoogleAnalytics4ProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleAnalytics4Processor#getVariation(OrderItem)}.
-   *
    * <ul>
-   *   <li>When {@link BundleOrderItemImpl} (default constructor).
-   *   <li>Then return empty string.
+   *   <li>When {@link BundleOrderItemImpl} (default constructor).</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link GoogleAnalytics4Processor#getVariation(OrderItem)}
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getVariation(OrderItem)}
    */
   @Test
-  @DisplayName(
-      "Test getVariation(OrderItem); when BundleOrderItemImpl (default constructor); then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @DisplayName("Test getVariation(OrderItem); when BundleOrderItemImpl (default constructor); then return empty string")
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String GoogleAnalytics4Processor.getVariation(OrderItem)"})
   void testGetVariation_whenBundleOrderItemImpl_thenReturnEmptyString() {
     // Arrange, Act and Assert

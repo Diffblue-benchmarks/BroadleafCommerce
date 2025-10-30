@@ -29,358 +29,226 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
 import java.io.IOException;
+import java.nio.file.Paths;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.util.HtmlMinifyFilter.CharResponseWrapper;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.owasp.esapi.filters.SecurityWrapperRequest;
-import org.springframework.mock.web.MockFilterConfig;
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
+@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class HtmlMinifyFilterDiffblueTest {
+  @InjectMocks
+  private HtmlMinifyFilter htmlMinifyFilter;
+
   /**
    * Test CharResponseWrapper getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link CharResponseWrapper#CharResponseWrapper(HtmlMinifyFilter, HttpServletResponse)}
    *   <li>{@link CharResponseWrapper#toString()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CharResponseWrapper.<init>(HtmlMinifyFilter, HttpServletResponse)",
-    "String CharResponseWrapper.toString()"
-  })
-  public void testCharResponseWrapperGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CharResponseWrapper.<init>(HtmlMinifyFilter, HttpServletResponse)",
+      "String CharResponseWrapper.toString()"})
+  public void testCharResponseWrapperGettersAndSetters() throws IOException {
     // Arrange
     HtmlMinifyFilter htmlMinifyFilter = new HtmlMinifyFilter();
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act
-    CharResponseWrapper actualCharResponseWrapper =
-        htmlMinifyFilter.new CharResponseWrapper(response);
+    CharResponseWrapper actualCharResponseWrapper = htmlMinifyFilter.new CharResponseWrapper(response2);
 
     // Assert
     assertEquals("", actualCharResponseWrapper.toString());
-    assertSame(response, actualCharResponseWrapper.getResponse());
+    assertSame(response2, actualCharResponseWrapper.getResponse());
   }
 
   /**
    * Test {@link HtmlMinifyFilter#getOrder()}.
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#getOrder()}
+   * <p>
+   * Method under test: {@link HtmlMinifyFilter#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int HtmlMinifyFilter.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(-1001000, new HtmlMinifyFilter().getOrder());
+    assertEquals(-1001000, (new HtmlMinifyFilter()).getOrder());
   }
 
   /**
-   * Test {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void HtmlMinifyFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal() throws IOException, ServletException {
-    // Arrange
-    HtmlMinifyFilter htmlMinifyFilter = new HtmlMinifyFilter();
-    htmlMinifyFilter.init(new MockFilterConfig());
-
-    SecurityWrapperRequest httpServletRequest = mock(SecurityWrapperRequest.class);
-    when(httpServletRequest.getRequestURI()).thenReturn("Request URI");
-    HtmlMinifyFilter htmlMinifyFilter2 = new HtmlMinifyFilter();
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-    CharResponseWrapper response2 = htmlMinifyFilter2.new CharResponseWrapper(response);
-    StatusExposingServletResponse response3 = new StatusExposingServletResponse(response2);
-    HttpServletResponseWrapper httpServletResponse = new HttpServletResponseWrapper(response3);
-
-    FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act
-    htmlMinifyFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
-
-    // Assert
-    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(httpServletRequest).getRequestURI();
-  }
-
-  /**
-   * Test {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
+   * Test {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}.
    * <ul>
-   *   <li>Given {@code /}.
+   *   <li>Given {@code .html}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
+   * <p>
+   * Method under test: {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void HtmlMinifyFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_givenSlash() throws IOException, ServletException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HtmlMinifyFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternal_givenHtml() throws IOException, ServletException {
     // Arrange
-    HtmlMinifyFilter htmlMinifyFilter = new HtmlMinifyFilter();
-    htmlMinifyFilter.init(new MockFilterConfig());
-
-    SecurityWrapperRequest httpServletRequest = mock(SecurityWrapperRequest.class);
-    when(httpServletRequest.getRequestURI()).thenReturn("/");
-    FileSystemResponseWrapper httpServletResponse = mock(FileSystemResponseWrapper.class);
-
+    DefaultMultipartHttpServletRequest httpServletRequest = mock(DefaultMultipartHttpServletRequest.class);
+    when(httpServletRequest.getRequestURI()).thenReturn(".html");
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse httpServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act
-    htmlMinifyFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
-
-    // Assert
-    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(httpServletRequest).getRequestURI();
-  }
-
-  /**
-   * Test {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link DefaultMultipartHttpServletRequest#getRequestURI()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void HtmlMinifyFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_thenCallsGetRequestURI() throws IOException, ServletException {
-    // Arrange
-    HtmlMinifyFilter htmlMinifyFilter = new HtmlMinifyFilter();
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.getRequestURI()).thenReturn("https://example.org/example");
-    SessionlessHttpServletRequestWrapper request2 =
-        new SessionlessHttpServletRequestWrapper(request);
-    HttpServletRequestWrapper httpServletRequest = new HttpServletRequestWrapper(request2);
-    HttpServletResponseWrapper httpServletResponse =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
-    FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act
-    htmlMinifyFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
-
-    // Assert
-    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(request).getRequestURI();
-  }
-
-  /**
-   * Test {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link SecurityWrapperRequest#getRequestURI()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void HtmlMinifyFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_thenCallsGetRequestURI2() throws IOException, ServletException {
-    // Arrange
-    HtmlMinifyFilter htmlMinifyFilter = new HtmlMinifyFilter();
-    htmlMinifyFilter.init(new MockFilterConfig());
-
-    SecurityWrapperRequest httpServletRequest = mock(SecurityWrapperRequest.class);
-    when(httpServletRequest.getRequestURI()).thenReturn("Request URI");
-    HttpServletResponseWrapper httpServletResponse =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
-    FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act
-    htmlMinifyFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
-
-    // Assert
-    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-    verify(httpServletRequest).getRequestURI();
-  }
-
-  /**
-   * Test {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link ServletException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void HtmlMinifyFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_thenThrowServletException()
-      throws IOException, ServletException {
-    // Arrange
-    HtmlMinifyFilter htmlMinifyFilter = new HtmlMinifyFilter();
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper httpServletResponse =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
-    FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new ServletException("An error occurred"))
-        .when(filterChain)
+    doThrow(new ServletException("An error occurred")).when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act and Assert
-    assertThrows(
-        ServletException.class,
-        () ->
-            htmlMinifyFilter.doFilterInternal(
-                httpServletRequest, httpServletResponse, filterChain));
+    assertThrows(ServletException.class,
+        () -> htmlMinifyFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain));
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(httpServletRequest).getRequestURI();
+  }
+
+  /**
+   * Test {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>Given {@code https://example.org/example}.</li>
+   *   <li>Then throw {@link ServletException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HtmlMinifyFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternal_givenHttpsExampleOrgExample_thenThrowServletException()
+      throws IOException, ServletException {
+    // Arrange
+    DefaultMultipartHttpServletRequest httpServletRequest = mock(DefaultMultipartHttpServletRequest.class);
+    when(httpServletRequest.getRequestURI()).thenReturn("https://example.org/example");
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse httpServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doThrow(new ServletException("An error occurred")).when(filterChain)
+        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act and Assert
+    assertThrows(ServletException.class,
+        () -> htmlMinifyFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain));
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(httpServletRequest).getRequestURI();
+  }
+
+  /**
+   * Test {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <ul>
+   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)} does nothing.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link HtmlMinifyFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void HtmlMinifyFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"})
+  public void testDoFilterInternal_whenFilterChainDoFilterDoesNothing() throws IOException, ServletException {
+    // Arrange
+    DefaultMultipartHttpServletRequest httpServletRequest = mock(DefaultMultipartHttpServletRequest.class);
+    when(httpServletRequest.getRequestURI()).thenReturn("https://example.org/example");
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse httpServletResponse = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
+    FilterChain filterChain = mock(FilterChain.class);
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act
+    htmlMinifyFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
+
+    // Assert
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+    verify(httpServletRequest).getRequestURI();
   }
 
   /**
    * Test {@link HtmlMinifyFilter#isWidget(String)}.
-   *
    * <ul>
-   *   <li>When {@code /.}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code /.}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#isWidget(String)}
+   * <p>
+   * Method under test: {@link HtmlMinifyFilter#isWidget(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean HtmlMinifyFilter.isWidget(String)"})
   public void testIsWidget_whenSlashDot_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new HtmlMinifyFilter().isWidget("/."));
+    assertFalse(htmlMinifyFilter.isWidget("/."));
   }
 
   /**
    * Test {@link HtmlMinifyFilter#isWidget(String)}.
-   *
    * <ul>
-   *   <li>When {@code /}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code /}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#isWidget(String)}
+   * <p>
+   * Method under test: {@link HtmlMinifyFilter#isWidget(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean HtmlMinifyFilter.isWidget(String)"})
   public void testIsWidget_whenSlash_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(new HtmlMinifyFilter().isWidget("/"));
+    assertTrue(htmlMinifyFilter.isWidget("/"));
   }
 
   /**
    * Test {@link HtmlMinifyFilter#isWidget(String)}.
-   *
    * <ul>
-   *   <li>When {@code Uri}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@code Uri}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#isWidget(String)}
+   * <p>
+   * Method under test: {@link HtmlMinifyFilter#isWidget(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean HtmlMinifyFilter.isWidget(String)"})
   public void testIsWidget_whenUri_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new HtmlMinifyFilter().isWidget("Uri"));
+    assertFalse(htmlMinifyFilter.isWidget("Uri"));
   }
 
   /**
    * Test {@link HtmlMinifyFilter#initFilterBean()}.
-   *
-   * <p>Method under test: {@link HtmlMinifyFilter#initFilterBean()}
+   * <p>
+   * Method under test: {@link HtmlMinifyFilter#initFilterBean()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void HtmlMinifyFilter.initFilterBean()"})
   public void testInitFilterBean() {
-    // Arrange
-    HtmlMinifyFilter htmlMinifyFilter = new HtmlMinifyFilter();
-
-    // Act
+    // Arrange and Act
     htmlMinifyFilter.initFilterBean();
 
     // Assert

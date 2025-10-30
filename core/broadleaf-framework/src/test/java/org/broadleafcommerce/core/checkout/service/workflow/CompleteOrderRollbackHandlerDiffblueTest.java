@@ -19,8 +19,7 @@ package org.broadleafcommerce.core.checkout.service.workflow;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,34 +40,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {CompleteOrderRollbackHandler.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CompleteOrderRollbackHandlerDiffblueTest {
-  @Autowired private CompleteOrderRollbackHandler completeOrderRollbackHandler;
+  @Autowired
+  private CompleteOrderRollbackHandler completeOrderRollbackHandler;
 
   /**
    * Test {@link CompleteOrderRollbackHandler#rollbackState(Activity, ProcessContext, Map)}.
-   *
    * <ul>
-   *   <li>Then {@link DefaultProcessContextImpl} (default constructor) SeedData Order {@link
-   *       OrderImpl}.
+   *   <li>Then {@link DefaultProcessContextImpl} (default constructor) SeedData Order {@link OrderImpl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link CompleteOrderRollbackHandler#rollbackState(Activity,
-   * ProcessContext, Map)}
+   * <p>
+   * Method under test: {@link CompleteOrderRollbackHandler#rollbackState(Activity, ProcessContext, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CompleteOrderRollbackHandler.rollbackState(Activity, ProcessContext, Map)"
-  })
-  public void testRollbackState_thenDefaultProcessContextImplSeedDataOrderOrderImpl()
-      throws RollbackFailureException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void CompleteOrderRollbackHandler.rollbackState(Activity, ProcessContext, Map)"})
+  public void testRollbackState_thenDefaultProcessContextImplSeedDataOrderOrderImpl() throws RollbackFailureException {
     // Arrange
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
 
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
     OrderImpl order = new OrderImpl();
-    CheckoutSeed checkoutSeed = new CheckoutSeed(order, new HashMap<>());
-    processContext.setSeedData(checkoutSeed);
+    processContext.setSeedData(new CheckoutSeed(order, new HashMap<>()));
 
     // Act
     completeOrderRollbackHandler.rollbackState(activity, processContext, new HashMap<>());

@@ -19,8 +19,7 @@ package org.broadleafcommerce.common.entity.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,24 +43,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
   @Autowired
-  private AbstractEntityInformationServiceExtensionHandler
-      abstractEntityInformationServiceExtensionHandler;
+  private AbstractEntityInformationServiceExtensionHandler abstractEntityInformationServiceExtensionHandler;
 
   /**
-   * Test {@link
-   * AbstractEntityInformationServiceExtensionHandler#updateEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#updateEntityInformationDto(EntityInformationDto,
-   * Object)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#updateEntityInformationDto(EntityInformationDto, Object)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#updateEntityInformationDto(EntityInformationDto, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.updateEntityInformationDto(EntityInformationDto, Object)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.updateEntityInformationDto(EntityInformationDto, Object)"})
   public void testUpdateEntityInformationDto() {
     // Arrange
     EntityInformationDto dto = new EntityInformationDto();
@@ -72,27 +64,19 @@ public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
     dto.setProfileId(1L);
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractEntityInformationServiceExtensionHandler.updateEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractEntityInformationServiceExtensionHandler.updateEntityInformationDto(dto, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link
-   * AbstractEntityInformationServiceExtensionHandler#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#updateBasicEntityInformationDto(EntityInformationDto,
-   * Object)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#updateBasicEntityInformationDto(EntityInformationDto, Object)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#updateBasicEntityInformationDto(EntityInformationDto, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.updateBasicEntityInformationDto(EntityInformationDto, Object)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.updateBasicEntityInformationDto(EntityInformationDto, Object)"})
   public void testUpdateBasicEntityInformationDto() {
     // Arrange
     EntityInformationDto dto = new EntityInformationDto();
@@ -103,31 +87,22 @@ public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
     dto.setProfileId(1L);
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractEntityInformationServiceExtensionHandler.updateBasicEntityInformationDto(
-            dto, BLCFieldUtils.NULL_FIELD));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractEntityInformationServiceExtensionHandler
+        .updateBasicEntityInformationDto(dto, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link AbstractEntityInformationServiceExtensionHandler#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#getBaseProfileIdForSite(Site,
-   * ExtensionResultHolder)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#getBaseProfileIdForSite(Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#getBaseProfileIdForSite(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getBaseProfileIdForSite(Site, ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getBaseProfileIdForSite(Site, ExtensionResultHolder)"})
   public void testGetBaseProfileIdForSite() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            new AbstractEntityInformationServiceExtensionHandler();
+    AbstractEntityInformationServiceExtensionHandler abstractEntityInformationServiceExtensionHandler = new AbstractEntityInformationServiceExtensionHandler();
     SiteImpl site = new SiteImpl();
 
     ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
@@ -135,29 +110,22 @@ public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         abstractEntityInformationServiceExtensionHandler.getBaseProfileIdForSite(site, erh));
   }
 
   /**
-   * Test {@link AbstractEntityInformationServiceExtensionHandler#getTypeForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#getTypeForSite(Site, ExtensionResultHolder)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#getTypeForSite(Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#getTypeForSite(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getTypeForSite(Site, ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getTypeForSite(Site, ExtensionResultHolder)"})
   public void testGetTypeForSite() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            new AbstractEntityInformationServiceExtensionHandler();
+    AbstractEntityInformationServiceExtensionHandler abstractEntityInformationServiceExtensionHandler = new AbstractEntityInformationServiceExtensionHandler();
     SiteImpl site = new SiteImpl();
 
     ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
@@ -165,30 +133,22 @@ public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         abstractEntityInformationServiceExtensionHandler.getTypeForSite(site, erh));
   }
 
   /**
-   * Test {@link AbstractEntityInformationServiceExtensionHandler#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#getChildSiteIdsForProfile(Site,
-   * ExtensionResultHolder)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#getChildSiteIdsForProfile(Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#getChildSiteIdsForProfile(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getChildSiteIdsForProfile(Site, ExtensionResultHolder)"})
   public void testGetChildSiteIdsForProfile() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            new AbstractEntityInformationServiceExtensionHandler();
+    AbstractEntityInformationServiceExtensionHandler abstractEntityInformationServiceExtensionHandler = new AbstractEntityInformationServiceExtensionHandler();
     SiteImpl profile = new SiteImpl();
 
     ExtensionResultHolder<Set<Long>> erh = new ExtensionResultHolder<>();
@@ -196,30 +156,22 @@ public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         abstractEntityInformationServiceExtensionHandler.getChildSiteIdsForProfile(profile, erh));
   }
 
   /**
-   * Test {@link AbstractEntityInformationServiceExtensionHandler#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#getParentSiteForProfile(Site,
-   * ExtensionResultHolder)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#getParentSiteForProfile(Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#getParentSiteForProfile(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getParentSiteForProfile(Site, ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getParentSiteForProfile(Site, ExtensionResultHolder)"})
   public void testGetParentSiteForProfile() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            new AbstractEntityInformationServiceExtensionHandler();
+    AbstractEntityInformationServiceExtensionHandler abstractEntityInformationServiceExtensionHandler = new AbstractEntityInformationServiceExtensionHandler();
     SiteImpl profile = new SiteImpl();
 
     ExtensionResultHolder<Site> erh = new ExtensionResultHolder<>();
@@ -227,26 +179,19 @@ public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         abstractEntityInformationServiceExtensionHandler.getParentSiteForProfile(profile, erh));
   }
 
   /**
-   * Test {@link
-   * AbstractEntityInformationServiceExtensionHandler#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#getOkayToUseSiteDiscriminator(Object,
-   * ExtensionResultHolder)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getOkayToUseSiteDiscriminator(Object, ExtensionResultHolder)"})
   public void testGetOkayToUseSiteDiscriminator() {
     // Arrange
     ExtensionResultHolder<Boolean> erh = new ExtensionResultHolder<>();
@@ -254,31 +199,22 @@ public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractEntityInformationServiceExtensionHandler.getOkayToUseSiteDiscriminator(
-            BLCFieldUtils.NULL_FIELD, erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractEntityInformationServiceExtensionHandler.getOkayToUseSiteDiscriminator(BLCFieldUtils.NULL_FIELD, erh));
   }
 
   /**
-   * Test {@link AbstractEntityInformationServiceExtensionHandler#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#getDefaultCatalogIdForSite(Site,
-   * ExtensionResultHolder)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#getDefaultCatalogIdForSite(Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#getDefaultCatalogIdForSite(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.getDefaultCatalogIdForSite(Site, ExtensionResultHolder)"})
   public void testGetDefaultCatalogIdForSite() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            new AbstractEntityInformationServiceExtensionHandler();
+    AbstractEntityInformationServiceExtensionHandler abstractEntityInformationServiceExtensionHandler = new AbstractEntityInformationServiceExtensionHandler();
     SiteImpl site = new SiteImpl();
 
     ExtensionResultHolder<Long> erh = new ExtensionResultHolder<>();
@@ -286,55 +222,43 @@ public class AbstractEntityInformationServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         abstractEntityInformationServiceExtensionHandler.getDefaultCatalogIdForSite(site, erh));
   }
 
   /**
-   * Test {@link
-   * AbstractEntityInformationServiceExtensionHandler#findAllCatalogs(ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractEntityInformationServiceExtensionHandler#findAllCatalogs(ExtensionResultHolder)}
+   * Test {@link AbstractEntityInformationServiceExtensionHandler#findAllCatalogs(ExtensionResultHolder)}.
+   * <p>
+   * Method under test: {@link AbstractEntityInformationServiceExtensionHandler#findAllCatalogs(ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.findAllCatalogs(ExtensionResultHolder)"
-  })
+      "ExtensionResultStatusType AbstractEntityInformationServiceExtensionHandler.findAllCatalogs(ExtensionResultHolder)"})
   public void testFindAllCatalogs() {
     // Arrange
-    AbstractEntityInformationServiceExtensionHandler
-        abstractEntityInformationServiceExtensionHandler =
-            new AbstractEntityInformationServiceExtensionHandler();
+    AbstractEntityInformationServiceExtensionHandler abstractEntityInformationServiceExtensionHandler = new AbstractEntityInformationServiceExtensionHandler();
 
     ExtensionResultHolder<List<Catalog>> erh = new ExtensionResultHolder<>();
     erh.setResult(new ArrayList<>());
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         abstractEntityInformationServiceExtensionHandler.findAllCatalogs(erh));
   }
 
   /**
    * Test new {@link AbstractEntityInformationServiceExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AbstractEntityInformationServiceExtensionHandler}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link AbstractEntityInformationServiceExtensionHandler}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void AbstractEntityInformationServiceExtensionHandler.<init>()"})
   public void testNewAbstractEntityInformationServiceExtensionHandler() {
     // Arrange and Act
-    AbstractEntityInformationServiceExtensionHandler
-        actualAbstractEntityInformationServiceExtensionHandler =
-            new AbstractEntityInformationServiceExtensionHandler();
+    AbstractEntityInformationServiceExtensionHandler actualAbstractEntityInformationServiceExtensionHandler = new AbstractEntityInformationServiceExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractEntityInformationServiceExtensionHandler.getPriority());

@@ -18,7 +18,6 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -29,32 +28,31 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RatingsProcessorDiffblueTest {
-  @InjectMocks private RatingsProcessor ratingsProcessor;
+  @InjectMocks
+  private RatingsProcessor ratingsProcessor;
 
   /**
    * Test {@link RatingsProcessor#getName()}.
-   *
-   * <p>Method under test: {@link RatingsProcessor#getName()}
+   * <p>
+   * Method under test: {@link RatingsProcessor#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"java.lang.String RatingsProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("ratings", new RatingsProcessor().getName());
+    assertEquals("ratings", (new RatingsProcessor()).getName());
   }
 
   /**
    * Test {@link RatingsProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link RatingsProcessor#getPrecedence()}
+   * <p>
+   * Method under test: {@link RatingsProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"int RatingsProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert

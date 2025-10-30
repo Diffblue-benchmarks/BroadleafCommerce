@@ -23,14 +23,14 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
 import org.hibernate.procedure.internal.ProcedureCallImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -42,38 +42,33 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {QueryHelperImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class QueryHelperImplDiffblueTest {
-  @Autowired private QueryHelperImpl queryHelperImpl;
+  @Autowired
+  private QueryHelperImpl queryHelperImpl;
 
   /**
    * Test {@link QueryHelperImpl#getSingleton()}.
-   *
-   * <p>Method under test: {@link QueryHelperImpl#getSingleton()}
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getSingleton()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.persistence.QueryHelper QueryHelperImpl.getSingleton()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"org.broadleafcommerce.common.persistence.QueryHelper QueryHelperImpl.getSingleton()"})
   public void testGetSingleton() {
     // Arrange, Act and Assert
     assertTrue(QueryHelperImpl.getSingleton() instanceof QueryHelperImpl);
   }
 
   /**
-   * Test {@link QueryHelperImpl#getResultListWithHint(Query, String, Object)} with {@code Query},
-   * {@code String}, {@code Object}.
-   *
+   * Test {@link QueryHelperImpl#getResultListWithHint(Query, String, Object)} with {@code Query}, {@code String}, {@code Object}.
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>Then return Empty.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QueryHelperImpl#getResultListWithHint(Query, String, Object)}
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getResultListWithHint(Query, String, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List QueryHelperImpl.getResultListWithHint(Query, String, Object)"})
   public void testGetResultListWithHintWithQueryStringObject_givenArrayList_thenReturnEmpty() {
     // Arrange
@@ -82,8 +77,7 @@ public class QueryHelperImplDiffblueTest {
     when(query.getResultList()).thenReturn(objectList);
 
     // Act
-    List actualResultListWithHint =
-        queryHelperImpl.getResultListWithHint(query, "Hint Key", BLCFieldUtils.NULL_FIELD);
+    List actualResultListWithHint = queryHelperImpl.getResultListWithHint(query, "Hint Key", BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(query).getResultList();
@@ -92,27 +86,48 @@ public class QueryHelperImplDiffblueTest {
   }
 
   /**
-   * Test {@link QueryHelperImpl#getResultListWithHint(TypedQuery, String, Object)} with {@code
-   * TypedQuery}, {@code String}, {@code Object}.
-   *
+   * Test {@link QueryHelperImpl#getResultListWithHint(Query, String, Object)} with {@code Query}, {@code String}, {@code Object}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>When BroadleafRequestContext is {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QueryHelperImpl#getResultListWithHint(TypedQuery, String, Object)}
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getResultListWithHint(Query, String, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List QueryHelperImpl.getResultListWithHint(Query, String, Object)"})
+  public void testGetResultListWithHintWithQueryStringObject_whenBroadleafRequestContextIsTrue() {
+    // Arrange
+    ProcedureCallImpl<Object> query = mock(ProcedureCallImpl.class);
+    ArrayList<Object> objectList = new ArrayList<>();
+    when(query.getResultList()).thenReturn(objectList);
+
+    // Act
+    List actualResultListWithHint = queryHelperImpl.getResultListWithHint(query, "Hint Key",
+        BroadleafRequestContext.getBroadleafRequestContext(true));
+
+    // Assert
+    verify(query).getResultList();
+    assertTrue(actualResultListWithHint.isEmpty());
+    assertSame(objectList, actualResultListWithHint);
+  }
+
+  /**
+   * Test {@link QueryHelperImpl#getResultListWithHint(TypedQuery, String, Object)} with {@code TypedQuery}, {@code String}, {@code Object}.
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getResultListWithHint(TypedQuery, String, Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List QueryHelperImpl.getResultListWithHint(TypedQuery, String, Object)"})
-  public void testGetResultListWithHintWithTypedQueryStringObject_thenReturnEmpty() {
+  public void testGetResultListWithHintWithTypedQueryStringObject() {
     // Arrange
     ProcedureCallImpl<Object> query = mock(ProcedureCallImpl.class);
     when(query.getResultList()).thenReturn(new ArrayList<>());
 
     // Act
-    List<Object> actualResultListWithHint =
-        queryHelperImpl.getResultListWithHint(query, "Hint Key", BLCFieldUtils.NULL_FIELD);
+    List<Object> actualResultListWithHint = queryHelperImpl.getResultListWithHint(query, "Hint Key",
+        BroadleafRequestContext.getBroadleafRequestContext(true));
 
     // Assert
     verify(query).getResultList();
@@ -120,18 +135,63 @@ public class QueryHelperImplDiffblueTest {
   }
 
   /**
-   * Test {@link QueryHelperImpl#getSingleResultWithHint(Query, String, Object)} with {@code Query},
-   * {@code String}, {@code Object}.
-   *
+   * Test {@link QueryHelperImpl#getResultListWithHint(TypedQuery, String, Object)} with {@code TypedQuery}, {@code String}, {@code Object}.
    * <ul>
-   *   <li>Then return {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QueryHelperImpl#getSingleResultWithHint(Query, String, Object)}
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getResultListWithHint(TypedQuery, String, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"List QueryHelperImpl.getResultListWithHint(TypedQuery, String, Object)"})
+  public void testGetResultListWithHintWithTypedQueryStringObject_thenReturnEmpty() {
+    // Arrange
+    ProcedureCallImpl<Object> query = mock(ProcedureCallImpl.class);
+    when(query.getResultList()).thenReturn(new ArrayList<>());
+
+    // Act
+    List<Object> actualResultListWithHint = queryHelperImpl.getResultListWithHint(query, "Hint Key",
+        BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    verify(query).getResultList();
+    assertTrue(actualResultListWithHint.isEmpty());
+  }
+
+  /**
+   * Test {@link QueryHelperImpl#getSingleResultWithHint(Query, String, Object)} with {@code Query}, {@code String}, {@code Object}.
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getSingleResultWithHint(Query, String, Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object QueryHelperImpl.getSingleResultWithHint(Query, String, Object)"})
+  public void testGetSingleResultWithHintWithQueryStringObject() {
+    // Arrange
+    ProcedureCallImpl<Object> query = mock(ProcedureCallImpl.class);
+    BroadleafRequestContext broadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext(true);
+    when(query.getSingleResult()).thenReturn(broadleafRequestContext);
+
+    // Act
+    Object actualSingleResultWithHint = queryHelperImpl.getSingleResultWithHint(query, "Hint Key",
+        BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    verify(query).getSingleResult();
+    assertSame(broadleafRequestContext, actualSingleResultWithHint);
+  }
+
+  /**
+   * Test {@link QueryHelperImpl#getSingleResultWithHint(Query, String, Object)} with {@code Query}, {@code String}, {@code Object}.
+   * <ul>
+   *   <li>Then return {@link BLCFieldUtils#NULL_FIELD}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getSingleResultWithHint(Query, String, Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object QueryHelperImpl.getSingleResultWithHint(Query, String, Object)"})
   public void testGetSingleResultWithHintWithQueryStringObject_thenReturnNull_field() {
     // Arrange
@@ -140,8 +200,7 @@ public class QueryHelperImplDiffblueTest {
     Object object = BLCFieldUtils.NULL_FIELD;
 
     // Act
-    Object actualSingleResultWithHint =
-        queryHelperImpl.getSingleResultWithHint(query, "Hint Key", object);
+    Object actualSingleResultWithHint = queryHelperImpl.getSingleResultWithHint(query, "Hint Key", object);
 
     // Assert
     verify(query).getSingleResult();
@@ -149,19 +208,38 @@ public class QueryHelperImplDiffblueTest {
   }
 
   /**
-   * Test {@link QueryHelperImpl#getSingleResultWithHint(TypedQuery, String, Object)} with {@code
-   * TypedQuery}, {@code String}, {@code Object}.
-   *
-   * <ul>
-   *   <li>Then return {@link BLCFieldUtils#NULL_FIELD}.
-   * </ul>
-   *
-   * <p>Method under test: {@link QueryHelperImpl#getSingleResultWithHint(TypedQuery, String,
-   * Object)}
+   * Test {@link QueryHelperImpl#getSingleResultWithHint(TypedQuery, String, Object)} with {@code TypedQuery}, {@code String}, {@code Object}.
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getSingleResultWithHint(TypedQuery, String, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object QueryHelperImpl.getSingleResultWithHint(TypedQuery, String, Object)"})
+  public void testGetSingleResultWithHintWithTypedQueryStringObject() {
+    // Arrange
+    ProcedureCallImpl<Object> query = mock(ProcedureCallImpl.class);
+    BroadleafRequestContext broadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext(true);
+    when(query.getSingleResult()).thenReturn(broadleafRequestContext);
+
+    // Act
+    Object actualSingleResultWithHint = queryHelperImpl.getSingleResultWithHint(query, "Hint Key",
+        BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    verify(query).getSingleResult();
+    assertSame(broadleafRequestContext, actualSingleResultWithHint);
+  }
+
+  /**
+   * Test {@link QueryHelperImpl#getSingleResultWithHint(TypedQuery, String, Object)} with {@code TypedQuery}, {@code String}, {@code Object}.
+   * <ul>
+   *   <li>Then return {@link BLCFieldUtils#NULL_FIELD}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getSingleResultWithHint(TypedQuery, String, Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object QueryHelperImpl.getSingleResultWithHint(TypedQuery, String, Object)"})
   public void testGetSingleResultWithHintWithTypedQueryStringObject_thenReturnNull_field() {
     // Arrange
@@ -170,8 +248,7 @@ public class QueryHelperImplDiffblueTest {
     Object object = BLCFieldUtils.NULL_FIELD;
 
     // Act
-    Object actualSingleResultWithHint =
-        queryHelperImpl.getSingleResultWithHint(query, "Hint Key", object);
+    Object actualSingleResultWithHint = queryHelperImpl.getSingleResultWithHint(query, "Hint Key", object);
 
     // Assert
     verify(query).getSingleResult();
@@ -180,16 +257,14 @@ public class QueryHelperImplDiffblueTest {
 
   /**
    * Test {@link QueryHelperImpl#getQueryHint(String)}.
-   *
    * <ul>
-   *   <li>When {@code Hint Key}.
+   *   <li>When {@code Hint Key}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QueryHelperImpl#getQueryHint(String)}
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getQueryHint(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object QueryHelperImpl.getQueryHint(String)"})
   public void testGetQueryHint_whenHintKey() {
     // Arrange, Act and Assert
@@ -198,16 +273,14 @@ public class QueryHelperImplDiffblueTest {
 
   /**
    * Test {@link QueryHelperImpl#getQueryHint(String)}.
-   *
    * <ul>
-   *   <li>When {@code ThreadLocalManager.notify.orphans}.
+   *   <li>When {@code ThreadLocalManager.notify.orphans}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QueryHelperImpl#getQueryHint(String)}
+   * <p>
+   * Method under test: {@link QueryHelperImpl#getQueryHint(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object QueryHelperImpl.getQueryHint(String)"})
   public void testGetQueryHint_whenThreadLocalManagerNotifyOrphans() {
     // Arrange, Act and Assert

@@ -19,87 +19,64 @@ package org.broadleafcommerce.common.sitemap.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockServletContext;
 
 public class BroadleafSiteMapControllerDiffblueTest {
   /**
    * Test {@link BroadleafSiteMapController#getRequestURIWithoutContext(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafSiteMapController#getRequestURIWithoutContext(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link BroadleafSiteMapController#getRequestURIWithoutContext(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafSiteMapController.getRequestURIWithoutContext(HttpServletRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BroadleafSiteMapController.getRequestURIWithoutContext(HttpServletRequest)"})
   public void testGetRequestURIWithoutContext() {
     // Arrange
     BroadleafSiteMapController broadleafSiteMapController = new BroadleafSiteMapController();
 
-    // Act
-    String actualRequestURIWithoutContext =
-        broadleafSiteMapController.getRequestURIWithoutContext(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
-
-    // Assert
-    assertEquals("", actualRequestURIWithoutContext);
+    // Act and Assert
+    assertEquals("", broadleafSiteMapController
+        .getRequestURIWithoutContext(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
   }
 
   /**
    * Test {@link BroadleafSiteMapController#getRequestURIWithoutContext(HttpServletRequest)}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
+   *   <li>Given {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * BroadleafSiteMapController#getRequestURIWithoutContext(HttpServletRequest)}
+   * <p>
+   * Method under test: {@link BroadleafSiteMapController#getRequestURIWithoutContext(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafSiteMapController.getRequestURIWithoutContext(HttpServletRequest)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.lang.String BroadleafSiteMapController.getRequestURIWithoutContext(HttpServletRequest)"})
   public void testGetRequestURIWithoutContext_givenNull() {
     // Arrange
     BroadleafSiteMapController broadleafSiteMapController = new BroadleafSiteMapController();
 
-    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    MockHttpServletRequest request = new MockHttpServletRequest();
     request.setContextPath(null);
 
-    // Act
-    String actualRequestURIWithoutContext =
-        broadleafSiteMapController.getRequestURIWithoutContext(request);
-
-    // Assert
-    assertEquals("", actualRequestURIWithoutContext);
+    // Act and Assert
+    assertEquals("", broadleafSiteMapController.getRequestURIWithoutContext(request));
   }
 
   /**
    * Test new {@link BroadleafSiteMapController} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BroadleafSiteMapController}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link BroadleafSiteMapController}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void BroadleafSiteMapController.<init>()"})
   public void testNewBroadleafSiteMapController() {
     // Arrange, Act and Assert
-    assertNull(new BroadleafSiteMapController().siteMapService);
+    assertNull((new BroadleafSiteMapController()).siteMapService);
   }
 }

@@ -20,20 +20,16 @@ package org.broadleafcommerce.core.workflow.state.test;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.testng.annotations.Test;
 
 public class TestRollbackActivityDiffblueTest {
   /**
    * Test new {@link TestRollbackActivity} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link TestRollbackActivity}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link TestRollbackActivity}
    */
-  @Test(
-      testName = "Test new TestRollbackActivity (default constructor)",
-      groups = "ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Test(testName = "Test new TestRollbackActivity (default constructor)", groups = "MaintainedByDiffblue")
   @MethodsUnderTest({"void TestRollbackActivity.<init>()"})
   public void testNewTestRollbackActivity() {
     // Arrange and Act

@@ -18,8 +18,7 @@
 package org.broadleafcommerce.core.offer.service.workflow;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,21 +36,20 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecordOfferUsageActivityDiffblueTest {
-  @InjectMocks private RecordOfferUsageActivity recordOfferUsageActivity;
+  @InjectMocks
+  private RecordOfferUsageActivity recordOfferUsageActivity;
 
   /**
    * Test {@link RecordOfferUsageActivity#saveOfferIds(Set, Map, Order)}.
-   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
-   *   <li>Then return Empty.
+   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RecordOfferUsageActivity#saveOfferIds(Set, Map, Order)}
+   * <p>
+   * Method under test: {@link RecordOfferUsageActivity#saveOfferIds(Set, Map, Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.util.List RecordOfferUsageActivity.saveOfferIds(Set, Map, Order)"})
   public void testSaveOfferIds_whenHashSet_thenReturnEmpty() {
     // Arrange
@@ -59,9 +57,6 @@ public class RecordOfferUsageActivityDiffblueTest {
     HashMap<Offer, OfferCode> offerToCodeMapping = new HashMap<>();
 
     // Act and Assert
-    assertTrue(
-        recordOfferUsageActivity
-            .saveOfferIds(offers, offerToCodeMapping, new NullOrderImpl())
-            .isEmpty());
+    assertTrue(recordOfferUsageActivity.saveOfferIds(offers, offerToCodeMapping, new NullOrderImpl()).isEmpty());
   }
 }

@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,25 +34,21 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminModuleProcessorDiffblueTest {
-  @InjectMocks private AdminModuleProcessor adminModuleProcessor;
+  @InjectMocks
+  private AdminModuleProcessor adminModuleProcessor;
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link AdminModuleProcessor#getName()}
    *   <li>{@link AdminModuleProcessor#getPrefix()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String AdminModuleProcessor.getName()",
-    "String AdminModuleProcessor.getPrefix()"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"String AdminModuleProcessor.getName()", "String AdminModuleProcessor.getPrefix()"})
   public void testGettersAndSetters() {
     // Arrange
     AdminModuleProcessor adminModuleProcessor = new AdminModuleProcessor();
@@ -68,12 +63,11 @@ public class AdminModuleProcessorDiffblueTest {
 
   /**
    * Test {@link AdminModuleProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link AdminModuleProcessor#getPrecedence()}
+   * <p>
+   * Method under test: {@link AdminModuleProcessor#getPrecedence()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int AdminModuleProcessor.getPrecedence()"})
   public void testGetPrecedence() {
     // Arrange, Act and Assert
@@ -81,38 +75,29 @@ public class AdminModuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link AdminModuleProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link AdminModuleProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
+   * Test {@link AdminModuleProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test: {@link AdminModuleProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map AdminModuleProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Map AdminModuleProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
   public void testPopulateModelVariables() {
     // Arrange, Act and Assert
     assertTrue(
-        adminModuleProcessor
-            .populateModelVariables(
-                "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class))
+        adminModuleProcessor.populateModelVariables("Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class))
             .isEmpty());
   }
 
   /**
    * Test {@link AdminModuleProcessor#getPersistentAdminUser()}.
-   *
-   * <p>Method under test: {@link AdminModuleProcessor#getPersistentAdminUser()}
+   * <p>
+   * Method under test: {@link AdminModuleProcessor#getPersistentAdminUser()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "org.broadleafcommerce.openadmin.server.security.domain.AdminUser AdminModuleProcessor.getPersistentAdminUser()"
-  })
+      "org.broadleafcommerce.openadmin.server.security.domain.AdminUser AdminModuleProcessor.getPersistentAdminUser()"})
   public void testGetPersistentAdminUser() {
     // Arrange, Act and Assert
     assertNull(adminModuleProcessor.getPersistentAdminUser());

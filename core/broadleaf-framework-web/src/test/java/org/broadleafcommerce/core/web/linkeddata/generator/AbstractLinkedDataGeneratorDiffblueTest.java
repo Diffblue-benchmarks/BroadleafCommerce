@@ -18,9 +18,9 @@
 package org.broadleafcommerce.core.web.linkeddata.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.web.BaseUrlResolver;
 import org.junit.jupiter.api.DisplayName;
@@ -35,25 +35,26 @@ import org.springframework.core.env.Environment;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractLinkedDataGeneratorDiffblueTest {
-  @Mock private BaseUrlResolver baseUrlResolver;
+  @Mock
+  private BaseUrlResolver baseUrlResolver;
 
-  @InjectMocks private CategoryLinkedDataGeneratorImpl categoryLinkedDataGeneratorImpl;
+  @InjectMocks
+  private CategoryLinkedDataGeneratorImpl categoryLinkedDataGeneratorImpl;
 
-  @Mock private Environment environment;
+  @Mock
+  private Environment environment;
 
   /**
    * Test {@link AbstractLinkedDataGenerator#getSiteBaseUrl()}.
-   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.
+   *   <li>Then return {@code https://example.org/example}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractLinkedDataGenerator#getSiteBaseUrl()}
+   * <p>
+   * Method under test: {@link AbstractLinkedDataGenerator#getSiteBaseUrl()}
    */
   @Test
   @DisplayName("Test getSiteBaseUrl(); then return 'https://example.org/example'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String AbstractLinkedDataGenerator.getSiteBaseUrl()"})
   void testGetSiteBaseUrl_thenReturnHttpsExampleOrgExample() {
     // Arrange
@@ -69,28 +70,25 @@ class AbstractLinkedDataGeneratorDiffblueTest {
 
   /**
    * Test {@link AbstractLinkedDataGenerator#getStructuredDataContext()}.
-   *
    * <ul>
-   *   <li>Then return {@code Property}.
+   *   <li>Then return {@code Property}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractLinkedDataGenerator#getStructuredDataContext()}
+   * <p>
+   * Method under test: {@link AbstractLinkedDataGenerator#getStructuredDataContext()}
    */
   @Test
   @DisplayName("Test getStructuredDataContext(); then return 'Property'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Tag("MaintainedByDiffblue")
   @MethodsUnderTest({"String AbstractLinkedDataGenerator.getStructuredDataContext()"})
   void testGetStructuredDataContext_thenReturnProperty() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
 
     // Act
     String actualStructuredDataContext = categoryLinkedDataGeneratorImpl.getStructuredDataContext();
 
     // Assert
-    verify(environment).getProperty("structured.data.context", "http://schema.org/");
+    verify(environment).getProperty(eq("structured.data.context"), eq("http://schema.org/"));
     assertEquals("Property", actualStructuredDataContext);
   }
 }

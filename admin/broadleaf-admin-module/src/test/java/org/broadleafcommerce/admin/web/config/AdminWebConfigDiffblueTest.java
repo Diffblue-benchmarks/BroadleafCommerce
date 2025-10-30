@@ -19,8 +19,7 @@ package org.broadleafcommerce.admin.web.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,37 +27,36 @@ import org.broadleafcommerce.admin.web.rulebuilder.service.extension.CookieField
 import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceExtensionManager;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AdminWebConfigDiffblueTest {
+  @InjectMocks
+  private AdminWebConfig adminWebConfig;
+
   /**
-   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List,
-   * RuleBuilderFieldServiceExtensionManager)}.
-   *
+   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List,
-   * RuleBuilderFieldServiceExtensionManager)}
+   * <p>
+   * Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"
-  })
+      "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"})
   public void testBlCookieFieldServiceExtensionHandler_given42_whenArrayListAdd42() {
     // Arrange
-    AdminWebConfig adminWebConfig = new AdminWebConfig();
-
     ArrayList<Object> configs = new ArrayList<>();
     configs.add("42");
 
     // Act
-    CookieFieldServiceExtensionHandler actualBlCookieFieldServiceExtensionHandlerResult =
-        adminWebConfig.blCookieFieldServiceExtensionHandler(
-            configs, new RuleBuilderFieldServiceExtensionManager());
+    CookieFieldServiceExtensionHandler actualBlCookieFieldServiceExtensionHandlerResult = adminWebConfig
+        .blCookieFieldServiceExtensionHandler(configs, new RuleBuilderFieldServiceExtensionManager());
 
     // Assert
     assertEquals(0, actualBlCookieFieldServiceExtensionHandlerResult.getPriority());
@@ -66,35 +64,27 @@ public class AdminWebConfigDiffblueTest {
   }
 
   /**
-   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List,
-   * RuleBuilderFieldServiceExtensionManager)}.
-   *
+   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List,
-   * RuleBuilderFieldServiceExtensionManager)}
+   * <p>
+   * Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"
-  })
+      "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"})
   public void testBlCookieFieldServiceExtensionHandler_given42_whenArrayListAdd422() {
     // Arrange
-    AdminWebConfig adminWebConfig = new AdminWebConfig();
-
     ArrayList<Object> configs = new ArrayList<>();
     configs.add("42");
     configs.add("42");
 
     // Act
-    CookieFieldServiceExtensionHandler actualBlCookieFieldServiceExtensionHandlerResult =
-        adminWebConfig.blCookieFieldServiceExtensionHandler(
-            configs, new RuleBuilderFieldServiceExtensionManager());
+    CookieFieldServiceExtensionHandler actualBlCookieFieldServiceExtensionHandlerResult = adminWebConfig
+        .blCookieFieldServiceExtensionHandler(configs, new RuleBuilderFieldServiceExtensionManager());
 
     // Assert
     assertEquals(0, actualBlCookieFieldServiceExtensionHandlerResult.getPriority());
@@ -102,31 +92,24 @@ public class AdminWebConfigDiffblueTest {
   }
 
   /**
-   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List,
-   * RuleBuilderFieldServiceExtensionManager)}.
-   *
+   * Test {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List,
-   * RuleBuilderFieldServiceExtensionManager)}
+   * <p>
+   * Method under test: {@link AdminWebConfig#blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"
-  })
+      "CookieFieldServiceExtensionHandler AdminWebConfig.blCookieFieldServiceExtensionHandler(List, RuleBuilderFieldServiceExtensionManager)"})
   public void testBlCookieFieldServiceExtensionHandler_whenArrayList() {
     // Arrange
-    AdminWebConfig adminWebConfig = new AdminWebConfig();
     ArrayList<Object> configs = new ArrayList<>();
 
     // Act
-    CookieFieldServiceExtensionHandler actualBlCookieFieldServiceExtensionHandlerResult =
-        adminWebConfig.blCookieFieldServiceExtensionHandler(
-            configs, new RuleBuilderFieldServiceExtensionManager());
+    CookieFieldServiceExtensionHandler actualBlCookieFieldServiceExtensionHandlerResult = adminWebConfig
+        .blCookieFieldServiceExtensionHandler(configs, new RuleBuilderFieldServiceExtensionManager());
 
     // Assert
     assertEquals(0, actualBlCookieFieldServiceExtensionHandlerResult.getPriority());
